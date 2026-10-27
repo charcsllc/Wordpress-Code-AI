@@ -51,10 +51,7 @@ class Config_Admin {
 
 
     public static function is_plugin_page( $slug ) {
-        if ( 'wordpress-code-ai' === $slug || 0 === strpos( $slug, 'wordpress-code-ai-' ) ) {
-            return true;
-        }
-        return class_exists( Themeisle_SDK::class ) && Themeisle_SDK::ABOUT_US_MENU_SLUG === $slug;
+        return 'wordpress-code-ai' === $slug || 0 === strpos( $slug, 'wordpress-code-ai-' );
     }
 
     public static function guard_page() {

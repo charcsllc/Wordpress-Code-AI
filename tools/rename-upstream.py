@@ -25,6 +25,8 @@ REPO = 'https://github.com/charcsllc/wordpress-code-ai'
 # Skill sync follows no redirects, so this uses the repository's exact name and case.
 SKILLS_FEED = 'https://raw.githubusercontent.com/charcsllc/Wordpress-Code-AI/main/skills-feed'
 RELEASES = 'https://github.com/charcsllc/Wordpress-Code-AI/releases'
+# The repository's README replaces the original vendor's documentation site.
+DOCS = 'https://github.com/charcsllc/Wordpress-Code-AI'
 LICENSE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'LICENSE')
 TEXT_EXT = {'.php', '.js', '.css', '.html', '.txt', '.pot', '.json', '.svg', '.md'}
 SKIP = {'assets/skills/release.json', 'assets/skills/release.sig'}  # signed by upstream
@@ -67,15 +69,6 @@ PRE = {
          'function x({api:e}){return null;const{form:t,errors:r,set:o}=e;return(0,v.jsx)(i.a,{"data-testid":"settings-usage"', False),
         # The "Share feedback" form posts to Themeisle's API.
         ('if((0,y.J)().whiteLabel)return null;const l="help-card"===e;', 'return null;const l="help-card"===e;', False),
-    ],
-    'includes/tools/class-tool-registry.php': [
-        # wp_send_feedback reports to Themeisle, the original plugin's authors.
-        (r"""    private static function is_withheld( string $class ): bool {
-        return 'Easy_MCP_AI\\Tools\\Feedback\\Send_Feedback' === $class && class_exists( '\\Easy_MCP_AI\\Config' ) && \Easy_MCP_AI\Config::is_white_labelled();
-    }""", r"""    private static function is_withheld( string $class ): bool {
-        // wp_send_feedback reports to Themeisle, the original plugin's authors.
-        return 'Easy_MCP_AI\\Tools\\Feedback\\Send_Feedback' === $class;
-    }""", False),
     ],
     'assets/build/page-settings.js': [
         ('"Tool filtering, IP restrictions and usage sharing — most sites never need to change these."',
@@ -169,10 +162,134 @@ BROWSER_TEST_BUTTON = [
     ('"Test from the internet"', '"Test from your browser"', False),
 ]
 
-# Exact-text edits made after the generic rename, as (old, new, is_regex), keyed by
-# the Easy MCP AI path. They match the renamed text, so they can be checked against
-# wordpress-code-ai/ directly.
+# Files removed after the rename: the Themeisle SDK, and the feedback reports, which
+# sent text to Themeisle. Feedback_Availability stays: wp_list_disabled_tools uses its
+# word matching.
+DELETE = [
+    'includes/class-themeisle-sdk.php',
+    'includes/feedback/class-feedback-queue.php',
+    'includes/feedback/class-wpdb-feedback-store.php',
+    'includes/feedback/interface-feedback-report-store.php',
+    'includes/tools/feedback/class-send-feedback.php',
+    'includes/admin/rest/class-feedback-controller.php',
+]
+
+# Files whose edits below remove translatable strings; the .pot drops the strings
+# that none of their files still contains.
+PRUNE = {
+    'includes/approvals/class-approval-page.php',
+    'assets/build/index.js',
+    'assets/build/page-tools.js',
+}
+
+
+def method(name):
+    """An edit that removes one method, from its signature to its closing brace."""
+    return (rf'(?s)\n    (?:(?:public|protected|private) )?(?:static )?function {name}\(.*?\n    \}}\n', '\n', True)
+
+
+# Links to the original vendor's documentation now point to this repository's README,
+# which has the same instructions. Where the README has no equivalent, the link goes.
+WELL_KNOWN_DOCS = f'{DOCS}#well-known-addresses'
+PROXY_DOCS = f'{DOCS}#trusted-proxies'
+
+# Exact-text edits made after the generic rename, as (old, new, is_regex[, count]),
+# keyed by the Easy MCP AI path. They match the renamed text, so they can be checked
+# against wordpress-code-ai/ directly. count says how many matches there must be (1).
 POST = {
+    'assets/build/index.js': [
+        ('{id:"docs",href:"https://docs.easymcpai.com/"', f'{{id:"docs",href:"{DOCS}#readme"', False),
+        # There are no reviews to leave for this plugin.
+        (',{id:"rate",href:"https://github.com/charcsllc/wordpress-code-ai",icon:u,'
+         'label:()=>(0,s.__)("Rate the plugin","wordpress-code-ai")}', '', False),
+        # Sent feedback reports to Themeisle. Nothing calls it any more, so it no longer
+        # contains the address.
+        ('async function o(e,t,r){const o=e.trim();if(o.length<6)return"tooShort";try{return(await fetch('
+         '"https://api.themeisle.com/tracking/feedback",{method:"POST",headers:{"Content-Type":"application/json",'
+         'Accept:"application/json, */*;q=0.1","Cache-Control":"no-cache"},body:JSON.stringify({slug:"wordpress-code-ai",'
+         'version:r,feedback:o,data:{"feedback-area":t}})})).ok?"sent":"error"}catch{return"error"}}',
+         'async function o(){return"error"}', False),
+        # The banner for reports waiting to be sent, which polled the removed REST route.
+        ('function Gr(){const e=(0,fr.J)().whiteLabel,', 'function Gr(){return null;const e=(0,fr.J)().whiteLabel,', False),
+    ],
+    'assets/build/page-settings.js': [
+        ('href:"https://docs.easymcpai.com/trusted-proxies"', f'href:"{PROXY_DOCS}"', False),
+    ],
+    'assets/build/page-tools.js': [
+        # The "Browse plugins with abilities" button opened easymcpai.com's directory.
+        ('function he(){return(0,L.jsx)(l.$,{asChild:!0,variant:"secondary",size:"md",children:(0,L.jsxs)("a",'
+         '{href:"https://easymcpai.com/abilities-directory",target:"_blank",rel:"noopener noreferrer",children:['
+         '(0,i.__)("Browse plugins with abilities","wordpress-code-ai"),(0,L.jsx)(j.I,{as:x.A,size:"sm"})]})})}', '', False),
+        ('action:(0,L.jsx)(he,{})', 'action:null', False),
+        ('(0,L.jsx)(y.B,{direction:"row",children:(0,L.jsx)(he,{})}),', '', False),
+    ],
+    'includes/class-client-ip.php': [
+        ("const DOC_URL = 'https://docs.easymcpai.com/trusted-proxies';", f"const DOC_URL = '{PROXY_DOCS}';", False),
+    ],
+    'includes/diagnostics/class-check-transport.php': [
+        ('https://docs.easymcpai.com/trusted-proxies', PROXY_DOCS, False, 2),
+    ],
+    'includes/diagnostics/class-check-discovery.php': [
+        ('Full instructions: https://easymcpai.com/well-known', f'Full instructions: {WELL_KNOWN_DOCS}', False, 3),
+    ],
+    'includes/diagnostics/class-blocker-copy.php': [
+        ('Full instructions at easymcpai.com/well-known.', f'Full instructions: {WELL_KNOWN_DOCS}.', False),
+    ],
+    'includes/admin/rest/class-admin-routes.php': [
+        ('        ( new Feedback_Controller() )->register_routes();\n', '', False),
+    ],
+    'includes/admin/class-app-page.php': [
+        ('            if ( class_exists( \\wordpress_code_ai\\Themeisle_SDK::class ) ) {\n'
+         '                \\remove_submenu_page( self::SLUG_PREFIX, \\wordpress_code_ai\\Themeisle_SDK::ABOUT_US_MENU_SLUG );\n'
+         '            }\n', '', False),
+    ],
+    'includes/class-config-admin.php': [
+        ("        if ( 'wordpress-code-ai' === $slug || 0 === strpos( $slug, 'wordpress-code-ai-' ) ) {\n"
+         "            return true;\n"
+         "        }\n"
+         "        return class_exists( Themeisle_SDK::class ) && Themeisle_SDK::ABOUT_US_MENU_SLUG === $slug;\n",
+         "        return 'wordpress-code-ai' === $slug || 0 === strpos( $slug, 'wordpress-code-ai-' );\n", False),
+    ],
+    'includes/approvals/class-approval-page.php': [
+        ('    private $feedback_queue;\n', '', False),
+        ('    public function __construct( Approval_Gate $gate, ?\\wordpress_code_ai\\Feedback\\Feedback_Queue $feedback_queue = null ) {\n'
+         '        $this->gate           = $gate;\n'
+         '        $this->feedback_queue = $feedback_queue;\n'
+         '    }',
+         '    public function __construct( Approval_Gate $gate ) {\n'
+         '        $this->gate = $gate;\n'
+         '    }', False),
+        ('        if ( self::is_feedback_row( $row ) ) {\n'
+         '            return $this->handle_feedback( (string) $method, $row, $post );\n'
+         '        }\n', '', False),
+    ] + [method(name) for name in ('is_feedback_row', 'feedback_queue', 'handle_feedback', 'handle_feedback_post',
+                                   'render_feedback_form', 'feedback_result', 'console_page', 'feedback_send_script',
+                                   'report_html')],
+    'includes/mcp/class-server.php': [
+        ('    private $feedback_queue      = null;\n', '', False),
+        method('set_feedback_queue'),
+        (r"    const FEEDBACK_INSTRUCTIONS = '[^\n]*';\n", '', True),
+        ("            'feedback' => $this->sentence_while_available( $token_id, $allowed_tools, 'wp_send_feedback', self::FEEDBACK_INSTRUCTIONS ),\n"
+         "            'waiting'  => $this->feedback_line( $token_id ),\n", '', False),
+        method('feedback_line'),
+    ],
+    'includes/diagnostics/class-check-tool-visibility.php': [
+        ('        $names[] = \\wordpress_code_ai\\Tools\\Feedback\\Send_Feedback::NAME;\n', '', False),
+    ],
+    'includes/tools/class-tool-registry.php': [
+        (r"            'wordpress_code_ai\\Tools\\Feedback\\Send_Feedback'," + '\n', '', False),
+        ('            if ( self::is_withheld( $class ) ) {\n'
+         '                continue;\n'
+         '            }\n', '', False),
+        method('is_withheld'),
+    ],
+    'includes/tools/class-tool-directories.php': [
+        ("        'feedback',\n", '', False),
+    ],
+    'includes/auth/class-permission-guard.php': [
+        ("array( 'wp_send_feedback', 'wp_get_skill', 'wp_list_disabled_tools' )",
+         "array( 'wp_get_skill', 'wp_list_disabled_tools' )", False),
+    ],
     'easy-mcp-ai.php': [
         ("\nwordpress_code_ai\\Plugin::instance();\n",
          "\nwordpress_code_ai\\Plugin::instance();\n\n"
@@ -202,8 +319,22 @@ POST = {
         ('msgid "Opens easymcpai.com, which tries to reach this site from the public internet"',
          'msgid "Opens a page where your browser tests the addresses AI clients use to reach this site"', False),
         ('msgid "Test from the internet"', 'msgid "Test from your browser"', False),
+        ('https://docs.easymcpai.com/trusted-proxies', PROXY_DOCS, False, 2),
+        ('Full instructions: https://easymcpai.com/well-known', f'Full instructions: {WELL_KNOWN_DOCS}', False, 3),
+        ('Full instructions at easymcpai.com/well-known.', f'Full instructions: {WELL_KNOWN_DOCS}.', False),
     ],
     'readme.txt': [
+        ('See the [Claude integration guides](https://easymcpai.com/integrations/claude-ai).',
+         f'See the [setup steps for Claude]({DOCS}#claude-desktop-oauth--recommended).', False),
+        ('See the [ChatGPT guide](https://easymcpai.com/integrations/chatgpt).',
+         f'See the [setup steps for ChatGPT]({DOCS}#chatgpt-openai).', False),
+        ('follow the [n8n guide](https://easymcpai.com/integrations/n8n)', f'follow the [setup steps for n8n]({DOCS}#n8n)', False),
+        ('Browse all [integration guides](https://easymcpai.com/integrations).',
+         f'See the [setup steps for every client]({DOCS}#connecting-clients).', False),
+        ('The [integration guides](https://easymcpai.com/integrations) show each step.',
+         f'The [setup steps for Claude]({DOCS}#claude-desktop-oauth--recommended) show each step.', False),
+        (' Find compatible plugins in the [Abilities directory](https://easymcpai.com/abilities-directory).', '', False),
+        ('\n[See changelog for all versions](https://easymcpai.com/changelog).\n', '', False),
         ('The optional outside reachability check is a link that opens easymcpai.com in your browser, and it uses only your site address.',
          'The optional test from your browser runs in your own browser and contacts only your own site.', False),
         ("To turn it off, add `define( 'WORDPRESS_CODE_AI_SKILLS_SYNC', false );` to wp-config.php.\n",
@@ -219,6 +350,11 @@ POST = {
 # Easy MCP AI version it is based on plus a fourth number. Add an entry for every
 # release (see "Publishing a release" in README.md).
 CHANGELOG = [
+    ('2.3.0.2', '2026-10-27', [
+        "Help links and the instructions in Diagnostics now point to this plugin's documentation on GitHub "
+        'instead of easymcpai.com. The "Rate the plugin" and "Browse plugins with abilities" links are gone.',
+        'Removed the code of the Themeisle SDK and of the feedback reports, which were already switched off.',
+    ]),
     ('2.3.0.1', '2026-10-27', [
         "Updates now come from this plugin's GitHub releases. WordPress shows them on the Plugins screen "
         "and can install them automatically.",
@@ -244,10 +380,10 @@ def fail(msg):
     sys.exit(f'error: {msg}\nNothing was written.')
 
 
-def apply_edit(text, old, new, is_regex, path):
+def apply_edit(text, path, old, new, is_regex, count=1):
     found = len(re.findall(old, text)) if is_regex else text.count(old)
-    if found != 1:
-        fail(f'{path}: expected one match for {old[:70]!r}, found {found}')
+    if found != count:
+        fail(f'{path}: expected {count} match(es) for {old[:70]!r}, found {found}')
     return re.sub(old, new, text) if is_regex else text.replace(old, new)
 
 
@@ -259,6 +395,41 @@ def generic(text):
 
 def po_quote(text):
     return '"' + text.replace('\\', '\\\\').replace('"', '\\"') + '"'
+
+
+def po_unquote(lines):
+    """The text of a msgid, from its line and any continuation lines."""
+    text = ''.join(line[line.index('"') + 1:-1] for line in lines)
+    return re.sub(r'\\(.)', lambda m: {'n': '\n', 't': '\t'}.get(m.group(1), m.group(1)), text)
+
+
+def still_in(source, msgid):
+    """Whether a PHP or JS file still has the string, in single or double quotes."""
+    single = "'" + msgid.replace('\\', '\\\\').replace("'", "\\'") + "'"
+    double = '"' + msgid.replace('\\', '\\\\').replace('"', '\\"') + '"'
+    return single in source or double in source
+
+
+def prune_pot(pot, sources, gone):
+    """Drops the references to deleted files, and the strings no edited file still has."""
+    kept, dropped = [], []
+    for block in pot.rstrip('\n').split('\n\n'):
+        lines = block.split('\n')
+        refs = [(line, line[3:].rsplit(':', 1)[0]) for line in lines if line.startswith('#: ')]
+        start = next((i for i, line in enumerate(lines) if line.startswith('msgid ')), None)
+        if start is None or not any(f in gone or f in sources for _, f in refs):
+            kept.append(block)
+            continue
+        end = start + 1
+        while end < len(lines) and lines[end].startswith('"'):
+            end += 1
+        msgid = po_unquote(lines[start:end])
+        stale = {line for line, f in refs if f in gone or (f in sources and not still_in(sources[f], msgid))}
+        if len(stale) == len(refs):
+            dropped.append(msgid)
+            continue
+        kept.append('\n'.join(line for line in lines if line not in stale))
+    return '\n\n'.join(kept) + '\n', dropped
 
 
 def fork_strings(root):
@@ -332,8 +503,12 @@ def main():
     for path, edits in PRE.items():
         if path not in contents:
             fail(f'{path} not found')
-        for old, new, is_regex in edits:
-            contents[path] = apply_edit(contents[path], old, new, is_regex, path)
+        for edit in edits:
+            contents[path] = apply_edit(contents[path], path, *edit)
+    for path in DELETE:
+        if path not in contents:
+            fail(f'{path} not found')
+        del contents[path]
 
     token = re.compile(r'[A-Za-z0-9_$-]+')
     old_name = re.compile(r'(?i)easy[-_]?mcp|EasyMCPAI|(?<![A-Za-z0-9])emcp-')
@@ -356,9 +531,10 @@ def main():
         fail('readme.txt: the "**NNN+ MCP tools**" line that gives the tool count was not found')
     credit = (f" wordpress-code-ai is a modified version of Easy MCP AI {version} by EasyMCPAI\n"
               f" * (https://easymcpai.com), used under the GNU GPL v2 or later. Changed on\n"
-              f" * {date}: renamed the plugin, removed the bundled Themeisle SDK and the\n"
-              f" * feedback reports sent to Themeisle, replaced the easymcpai.com connection\n"
-              f" * test with one that runs in the browser, and added updates from GitHub.")
+              f" * {date}: renamed the plugin, removed the Themeisle SDK and the feedback\n"
+              f" * reports sent to Themeisle, replaced the easymcpai.com connection test with\n"
+              f" * one that runs in the browser, pointed the help links at this plugin's own\n"
+              f" * documentation, and added updates from GitHub.")
     changelog = (f"== Credits ==\n\nwordpress-code-ai is a modified version of Easy MCP AI {version} by EasyMCPAI "
                  f"(https://easymcpai.com), used under the GNU General Public License v2 or later. "
                  f"The changelog below starts with the changes made in wordpress-code-ai, followed by "
@@ -383,23 +559,29 @@ def main():
     if set(post) - set(contents):
         fail(f'{sorted(set(post) - set(contents))[0]} not found')
 
-    changed = {}
+    final = {}
     for path, text in contents.items():
         new = generic(text)
-        for old, rep, is_regex in post.get(path, []):
-            new = apply_edit(new, old, rep, is_regex, path)
-        if path == 'languages/easy-mcp-ai.pot':
-            new = add_fork_strings(new, fork_strings(root))
-        if new != text or path in PRE:
-            changed[path] = new
+        for edit in post.get(path, []):
+            new = apply_edit(new, path, *edit)
+        final[path] = new
+    pot = 'languages/easy-mcp-ai.pot'
+    final[pot], dropped = prune_pot(final[pot], {path: final[path] for path in PRUNE}, set(DELETE))
+    final[pot] = add_fork_strings(final[pot], fork_strings(root))
+    changed = {path: text for path, text in final.items() if text != contents[path] or path in PRE}
     print(f'Easy MCP AI {version} -> wordpress-code-ai {fork_version}: {len(mapping)} identifiers renamed '
-          f'in {len(changed)} files, no collisions')
+          f'in {len(changed)} files, {len(DELETE)} files and {len(dropped)} unused strings removed, no collisions')
     if args.dry_run:
         return
 
     for path, text in changed.items():
         with open(os.path.join(root, path), 'w', encoding='utf-8', newline='') as fh:
             fh.write(text)
+    for path in DELETE:
+        os.remove(os.path.join(root, path))
+        folder = os.path.dirname(os.path.join(root, path))
+        if not os.listdir(folder):
+            os.rmdir(folder)
     for old, new in RENAMES:
         os.rename(os.path.join(root, old), os.path.join(root, new))
     shutil.rmtree(os.path.join(root, 'vendor'), ignore_errors=True)

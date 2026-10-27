@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # The oldest PHP the plugin supports, and a current one.
-        php: ['7.4', '8.3']
+        # The oldest PHP the plugin supports, a common one, and the newest.
+        php: ['7.4', '8.3', '8.5']
     steps:
       - uses: actions/checkout@v4
       - uses: shivammathur/setup-php@v2

@@ -33,6 +33,9 @@
 - [Resources](#resources)
 - [Skills](#skills)
 - [Security](#security)
+- [Troubleshooting](#troubleshooting)
+  - [Well-known addresses](#well-known-addresses)
+  - [Trusted proxies](#trusted-proxies)
 - [Maintaining the Plugin](#maintaining-the-plugin)
 - [Credits](#credits)
 - [License](#license)
@@ -662,6 +665,52 @@ The `skills/wordpress-site-manager.md` file contains a ready-to-use Claude skill
 
 ---
 
+## Troubleshooting
+
+**wordpress-code-ai → Dashboard → Diagnostics** checks the connection from the server itself. Its **Test from your browser** button checks it from your own network, the way an AI client does. Both say what to fix; the two sections below explain the fixes that need your host.
+
+### Well-known addresses
+
+AI clients find where to sign in by reading two documents at fixed addresses at the root of your domain:
+
+- `https://example.com/.well-known/oauth-protected-resource`
+- `https://example.com/.well-known/oauth-authorization-server`
+
+The plugin answers both, but some hosts handle every address that starts with `/.well-known/` themselves, or refuse it, before WordPress runs. A server rule that refuses every path containing `/.`, common in nginx configurations, blocks them too.
+
+- When only the addresses at the domain root are blocked, the plugin points AI clients to copies under its own connection address. Claude and ChatGPT keep working, but other clients may not.
+- When the copies under the connection address are blocked as well, ChatGPT and Codex cannot connect.
+
+To fix it:
+
+1. Ask your host to let `/.well-known/` reach WordPress, or at least the addresses that start with `/.well-known/oauth-`. On nginx, a block like this one, placed in the site's `server` block, sends them to WordPress before any rule that refuses `/.`:
+
+   ```nginx
+   location ^~ /.well-known/oauth- {
+       try_files $uri /index.php?$args;
+   }
+   ```
+
+2. If your host will not change the rule, they can save both documents as ordinary files in the `.well-known` folder of your site instead. The plugin always serves the current version at `https://example.com/wp-json/wordpress-code-ai/v1/discovery/oauth-protected-resource` and `https://example.com/wp-json/wordpress-code-ai/v1/discovery/oauth-authorization-server`. Copy each one again after you change the site address; Diagnostics says when a copy is out of date.
+
+### Trusted proxies
+
+Behind a reverse proxy, a load balancer or a CDN such as Cloudflare, WordPress sees the proxy's address on every request. The IP allow list, the per-token rate limit and the Activity log then cannot tell visitors apart, and Diagnostics reports it under **Client IP resolves per visitor**.
+
+The best fix is on the server, because it corrects WordPress and every other plugin at once: `mod_remoteip` on Apache, or `set_real_ip_from` and `real_ip_header` on nginx. Otherwise, tell the plugin which proxies to trust in `wp-config.php`:
+
+```php
+define( 'WORDPRESS_CODE_AI_TRUSTED_PROXIES', '173.245.48.0/20, 103.21.244.0/22' );
+define( 'WORDPRESS_CODE_AI_CLIENT_IP_HEADER', 'CF-Connecting-IP' );
+```
+
+- `WORDPRESS_CODE_AI_TRUSTED_PROXIES` lists the proxies' addresses, as IP addresses or CIDR ranges separated by commas, spaces or new lines. The plugin reads the visitor's address from a header only on requests that come from one of them. The example shows two of Cloudflare's ranges; use the full list Cloudflare publishes at https://www.cloudflare.com/ips/.
+- `WORDPRESS_CODE_AI_CLIENT_IP_HEADER` names the header the proxy puts the visitor's address in: `X-Forwarded-For` (the default), `CF-Connecting-IP` (Cloudflare), `X-Real-IP` or `True-Client-IP`. With `X-Forwarded-For`, the plugin reads the list from right to left and skips the trusted proxies.
+
+The `wordpress_code_ai_client_ip` filter can also set the address.
+
+---
+
 ## Maintaining the Plugin
 
 ### How the plugin folder is made
@@ -708,7 +757,7 @@ The download address contains this repository's exact name (`charcsllc/Wordpress
 
 The **CI** workflow runs on every push to `main` and on every pull request:
 
-- `php -l` on every PHP file, with PHP 7.4 (the oldest the plugin supports) and PHP 8.3;
+- `php -l` on every PHP file, with PHP 7.4 (the oldest the plugin supports), PHP 8.3 and PHP 8.5;
 - `python3 tools/build-release.py --check`: the versions in the plugin header, the version constant, `readme.txt` and the changelog agree;
 - `python3 tools/rebuild-plugin.py --check`: `wordpress-code-ai/` is exactly what the tools build;
 - a test build of the release files.
@@ -717,7 +766,7 @@ The **CI** workflow runs on every push to `main` and on every pull request:
 
 ## Credits
 
-wordpress-code-ai is a modified version of [Easy MCP AI](https://easymcpai.com) 2.3.0 by EasyMCPAI, used under the GNU General Public License v2 or later. Changes: the plugin is renamed, the bundled Themeisle SDK and the feedback reports sent to Themeisle are removed, support reports go to info@charcs.net, the connection test that opened easymcpai.com is replaced by one that runs in your browser, and updates come from this repository's releases.
+wordpress-code-ai is a modified version of [Easy MCP AI](https://easymcpai.com) 2.3.0 by EasyMCPAI, used under the GNU General Public License v2 or later. Changes: the plugin is renamed, the bundled Themeisle SDK and the feedback reports sent to Themeisle are removed, support reports go to info@charcs.net, the connection test that opened easymcpai.com is replaced by one that runs in your browser, the help links point to this README, and updates come from this repository's releases.
 
 ---
 

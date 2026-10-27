@@ -1093,68 +1093,10 @@ msgstr ""
 msgid "Denied. Nothing was changed. Your assistant will be told the operation was refused."
 msgstr ""
 
-#: includes/approvals/class-approval-page.php:132
-msgid "Not your report"
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:132
-msgid "This report was written for a different WordPress account. Log in as the user whose AI assistant wrote it, or as an administrator."
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:136
-#: includes/approvals/class-approval-page.php:175
-msgid "Sent"
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:137
-#: includes/approvals/class-approval-page.php:178
-msgid "Report discarded"
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:138
-msgid "Report being sent"
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:140
-msgid "Report not sent"
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:144
-msgid "Report expired"
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:144
-#: includes/feedback/class-feedback-queue.php:344
-#: includes/feedback/class-feedback-queue.php:359
-msgid "This report expired without being sent."
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:168
-msgid "Choose Send or Discard."
-msgstr ""
-
-#. translators: 1: who queued the report, 2: when it expires, e.g. "in 2 weeks"
-#: includes/approvals/class-approval-page.php:197
-#, php-format
-msgid "Written by %1$s · Expires %2$s"
-msgstr ""
-
-#. translators: %s: the plugin's name
-#: includes/approvals/class-approval-page.php:209
-#, php-format
-msgid "Your AI assistant ran into something %s cannot do yet and wrote it up for us. New features usually land within 1-2 weeks. Nothing has been sent yet."
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:216
 #: assets/build/index.js:28
 msgid "The report could not be sent, so it is still waiting. Please try again in a moment."
 msgstr ""
 
-#: includes/approvals/class-approval-page.php:217
-msgid "Sending needs JavaScript in this browser. Discard works without it."
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:224
 #: assets/build/index.js:29
 #: assets/build/page-settings.js:1
 #: assets/build/page-tools.js:1
@@ -1162,13 +1104,6 @@ msgstr ""
 msgid "Discard"
 msgstr ""
 
-#. translators: %s: the plugin's name
-#: includes/approvals/class-approval-page.php:231
-#, php-format
-msgid "Send this to the %s team?"
-msgstr ""
-
-#: includes/approvals/class-approval-page.php:265
 #: includes/class-plugin.php:950
 #: includes/oauth/class-authorization-endpoint.php:1010
 #: includes/oauth/views/consent.php:331
@@ -1435,7 +1370,7 @@ msgid "Clients can’t read the two sign-in documents at your domain root, so co
 msgstr ""
 
 #: includes/diagnostics/class-blocker-copy.php:105
-msgid "Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. If they won’t, they can place both documents in /.well-known/ as ordinary files, copied from the /wp-json/ address. Full instructions at easymcpai.com/well-known."
+msgid "Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. If they won’t, they can place both documents in /.well-known/ as ordinary files, copied from the /wp-json/ address. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI#well-known-addresses."
 msgstr ""
 
 #: includes/diagnostics/class-blocker-copy.php:110
@@ -2097,7 +2032,7 @@ msgid "Your host intercepts /.well-known/, and this plugin is working around it.
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:183
-msgid "Nothing is needed for ChatGPT or Claude. To make every client work, ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. Full instructions: https://easymcpai.com/well-known"
+msgid "Nothing is needed for ChatGPT or Claude. To make every client work, ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI#well-known-addresses"
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:193
@@ -2105,7 +2040,7 @@ msgid "Your host blocks /.well-known/, and ChatGPT and Codex can't connect. The 
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:194
-msgid "Ask your host to let /.well-known/ reach WordPress. A rule that refuses every path containing /. (common in nginx configurations) blocks it too. Full instructions: https://easymcpai.com/well-known"
+msgid "Ask your host to let /.well-known/ reach WordPress. A rule that refuses every path containing /. (common in nginx configurations) blocks it too. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI#well-known-addresses"
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:559
@@ -2124,7 +2059,7 @@ msgid "Note that %s could not be checked at all, because this site could not fet
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:623
-msgid "Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. This is a rule on their side; the plugin cannot move these addresses, because the standards AI clients follow define them as sitting at your domain root. If your host will not change it, they can instead place the two documents in the .well-known folder of your site as ordinary files — copy each one from the /wp-json/ address that still works. Full instructions: https://easymcpai.com/well-known"
+msgid "Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. This is a rule on their side; the plugin cannot move these addresses, because the standards AI clients follow define them as sitting at your domain root. If your host will not change it, they can instead place the two documents in the .well-known folder of your site as ordinary files — copy each one from the /wp-json/ address that still works. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI#well-known-addresses"
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:631
@@ -3165,7 +3100,7 @@ msgid "This site appears to be behind a proxy or CDN: every request reaches PHP 
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:422
-msgid "Declare the proxy with the WORDPRESS_CODE_AI_TRUSTED_PROXIES constant in wp-config.php — see https://docs.easymcpai.com/trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The wordpress_code_ai_client_ip filter remains available."
+msgid "Declare the proxy with the WORDPRESS_CODE_AI_TRUSTED_PROXIES constant in wp-config.php — see https://github.com/charcsllc/Wordpress-Code-AI#trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The wordpress_code_ai_client_ip filter remains available."
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:432
@@ -3173,7 +3108,7 @@ msgid "Trusted proxies are declared, but this request still resolved to the prox
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:433
-msgid "Add the address shown in the evidence to WORDPRESS_CODE_AI_TRUSTED_PROXIES in wp-config.php, or set WORDPRESS_CODE_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://docs.easymcpai.com/trusted-proxies."
+msgid "Add the address shown in the evidence to WORDPRESS_CODE_AI_TRUSTED_PROXIES in wp-config.php, or set WORDPRESS_CODE_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://github.com/charcsllc/Wordpress-Code-AI#trusted-proxies."
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:449
@@ -3279,45 +3214,10 @@ msgstr ""
 msgid "Only a network administrator can check the other sites on this network."
 msgstr ""
 
-#: includes/feedback/class-feedback-queue.php:300
-#: includes/feedback/class-feedback-queue.php:324
-msgid "This report was already decided elsewhere."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:308
-msgid "Sent. Thank you, we will take it from here."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:327
-msgid "Discarded. Nothing was sent."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:338
-msgid "This report does not exist. It may have been cleaned up."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:353
-msgid "This report was approved and sent."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:355
-msgid "This report was discarded. Nothing was sent."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:357
-msgid "This report is being sent."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:384
-msgid "Only this text and the plugin version reach us. Your browser sends it, the same way as the Share feedback form; no e-mail or user details are included."
-msgstr ""
-
-#: includes/feedback/class-feedback-queue.php:402
 #: assets/build/index.js:28
 msgid "Send for a fix"
 msgstr ""
 
-#: includes/feedback/class-feedback-queue.php:402
 #: assets/build/index.js:28
 msgid "Send for development"
 msgstr ""
@@ -5077,10 +4977,6 @@ msgstr ""
 
 #: assets/build/index.js:1
 msgid "Support forum"
-msgstr ""
-
-#: assets/build/index.js:1
-msgid "Rate the plugin"
 msgstr ""
 
 #. translators: %s: plugin version
@@ -9020,10 +8916,6 @@ msgstr ""
 
 #: assets/build/page-tools.js:6
 msgid "A whitelist pattern in <link>Settings</link> also narrows what clients see."
-msgstr ""
-
-#: assets/build/page-tools.js:6
-msgid "Browse plugins with abilities"
 msgstr ""
 
 #: assets/build/page-tools.js:6

@@ -85,7 +85,6 @@ class Admin_Routes {
         ( new External_Data_Controller( new \wordpress_code_ai\Admin\External_Data_Service() ) )->register_routes();
 
         
-        ( new Feedback_Controller() )->register_routes();
         
         ( new Rest_Namespaces_Controller() )->register_routes();
     }

@@ -419,7 +419,7 @@ class Check_Transport {
                 Diagnostic_Result::TIER_WARNING,
                 $label,
                 __( 'This site appears to be behind a proxy or CDN: every request reaches PHP from the same internal address. Per-IP rate limits, the failed-authentication lockout, the IP whitelist and the addresses in the Audit Log are therefore shared across all visitors.', 'wordpress-code-ai' ),
-                __( 'Declare the proxy with the WORDPRESS_CODE_AI_TRUSTED_PROXIES constant in wp-config.php — see https://docs.easymcpai.com/trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The wordpress_code_ai_client_ip filter remains available.', 'wordpress-code-ai' ),
+                __( 'Declare the proxy with the WORDPRESS_CODE_AI_TRUSTED_PROXIES constant in wp-config.php — see https://github.com/charcsllc/Wordpress-Code-AI#trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The wordpress_code_ai_client_ip filter remains available.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -430,7 +430,7 @@ class Check_Transport {
                 Diagnostic_Result::TIER_WARNING,
                 $label,
                 __( 'Trusted proxies are declared, but this request still resolved to the proxy address: the proxy that delivered it is not on the list, or the declared client-IP header is not the one it sends.', 'wordpress-code-ai' ),
-                __( 'Add the address shown in the evidence to WORDPRESS_CODE_AI_TRUSTED_PROXIES in wp-config.php, or set WORDPRESS_CODE_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://docs.easymcpai.com/trusted-proxies.', 'wordpress-code-ai' ),
+                __( 'Add the address shown in the evidence to WORDPRESS_CODE_AI_TRUSTED_PROXIES in wp-config.php, or set WORDPRESS_CODE_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://github.com/charcsllc/Wordpress-Code-AI#trusted-proxies.', 'wordpress-code-ai' ),
                 $evidence
             );
         }

@@ -4,7 +4,7 @@ Tags: mcp, claude, chatgpt, wordpress-mcp, connector
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.3.0.1
+Stable tag: 2.3.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,7 +33,7 @@ wordpress-code-ai connects Claude to WordPress from the Claude web app, desktop 
 2. In Claude, open **Settings → Connectors**, add a connector, paste your MCP server URL, then click **Connect**.
 3. Sign in to WordPress, choose what the AI may read or change, and click **Approve**.
 
-For Claude Code, run the command shown on the dashboard, then use `/mcp` in Claude Code to sign in. See the [Claude integration guides](https://easymcpai.com/integrations/claude-ai).
+For Claude Code, run the command shown on the dashboard, then use `/mcp` in Claude Code to sign in. See the [setup steps for Claude](https://github.com/charcsllc/Wordpress-Code-AI#claude-desktop-oauth--recommended).
 
 = Connect ChatGPT to WordPress =
 
@@ -41,7 +41,7 @@ For Claude Code, run the command shown on the dashboard, then use `/mcp` in Clau
 2. Enter a name such as "WordPress", paste your MCP server URL and leave Authentication set to OAuth.
 3. Confirm any warning ChatGPT shows for custom MCP servers, click **Create**, then approve access on your WordPress site.
 
-See the [ChatGPT guide](https://easymcpai.com/integrations/chatgpt).
+See the [setup steps for ChatGPT](https://github.com/charcsllc/Wordpress-Code-AI#chatgpt-openai).
 
 = Connect Cursor, Codex, GitHub Copilot & Other AI Agents =
 
@@ -52,10 +52,10 @@ Every client below uses the same MCP server URL from your dashboard.
 * **OpenAI Codex CLI**: copy the prepared `codex mcp add` command, which includes your API token and connects through the mcp-remote bridge
 * **Google Antigravity** (Gemini): add the server to the MCP config, then authorize with OAuth
 * **Windsurf, Cline, Roo Code, Zed, OpenCode, LibreChat, Manus and Pydantic AI**: copy-paste configs on the dashboard
-* **n8n**: follow the [n8n guide](https://easymcpai.com/integrations/n8n)
+* **n8n**: follow the [setup steps for n8n](https://github.com/charcsllc/Wordpress-Code-AI#n8n)
 * **Any other MCP client** that supports the Streamable HTTP transport. Clients that support only stdio connect through the mcp-remote bridge, which runs on your own computer, not on a hosted server.
 
-Browse all [integration guides](https://easymcpai.com/integrations).
+See the [setup steps for every client](https://github.com/charcsllc/Wordpress-Code-AI#connecting-clients).
 
 = What Your WordPress AI Agent Can Do =
 
@@ -104,7 +104,7 @@ wordpress-code-ai calls a provider in three cases: when you save or test the cre
 
 = WordPress Abilities API & MCP Adapter =
 
-WordPress 6.9+ lets plugins register Abilities. wordpress-code-ai acts as a WordPress MCP adapter for them. Under **wordpress-code-ai → Tools → Abilities**, select the abilities you want and save. The ones you select become MCP tools, and the adapter exposes nothing else. No adapter code is required. Find compatible plugins in the [Abilities directory](https://easymcpai.com/abilities-directory).
+WordPress 6.9+ lets plugins register Abilities. wordpress-code-ai acts as a WordPress MCP adapter for them. Under **wordpress-code-ai → Tools → Abilities**, select the abilities you want and save. The ones you select become MCP tools, and the adapter exposes nothing else. No adapter code is required.
 
 = Change History & Audit Log =
 
@@ -142,7 +142,7 @@ The server runs inside WordPress, with no hosted relay in between. Token records
 
 = Can you connect Claude to WordPress with wordpress-code-ai? =
 
-Yes. wordpress-code-ai is the MCP server that Claude connects to. Install wordpress-code-ai and copy your MCP server URL from **wordpress-code-ai → Dashboard**. Add it under **Settings → Connectors** in Claude Desktop or the web app, sign in to WordPress and approve access. The [integration guides](https://easymcpai.com/integrations) show each step.
+Yes. wordpress-code-ai is the MCP server that Claude connects to. Install wordpress-code-ai and copy your MCP server URL from **wordpress-code-ai → Dashboard**. Add it under **Settings → Connectors** in Claude Desktop or the web app, sign in to WordPress and approve access. The [setup steps for Claude](https://github.com/charcsllc/Wordpress-Code-AI#claude-desktop-oauth--recommended) show each step.
 
 = How do I use Claude Code with WordPress? =
 
@@ -233,6 +233,10 @@ wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI (https
 
 == Changelog ==
 
+= 2.3.0.2 (wordpress-code-ai) =
+- Help links and the instructions in Diagnostics now point to this plugin's documentation on GitHub instead of easymcpai.com. The "Rate the plugin" and "Browse plugins with abilities" links are gone.
+- Removed the code of the Themeisle SDK and of the feedback reports, which were already switched off.
+
 = 2.3.0.1 (wordpress-code-ai) =
 - Updates now come from this plugin's GitHub releases. WordPress shows them on the Plugins screen and can install them automatically.
 - The "Test from the internet" button is now "Test from your browser": the test runs in your own browser and contacts only your site, instead of sending its address to easymcpai.com.
@@ -268,8 +272,6 @@ wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI (https
 - Fixed history, update and list tools returning IDs instead of names and saved values.
 - Fixed Elementor pages showing stale content after a revision restore or cache clear.
 - Fixed database setup repeating on sites with capital letters in the table prefix.
-
-[See changelog for all versions](https://easymcpai.com/changelog).
 
 == Upgrade Notice ==
 

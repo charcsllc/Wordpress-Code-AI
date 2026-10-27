@@ -541,7 +541,6 @@ class Tool_Registry {
             'wordpress_code_ai\\Tools\\Approvals\\Deny_Operation',
             
             
-            'wordpress_code_ai\\Tools\\Feedback\\Send_Feedback',
             
             'wordpress_code_ai\\Tools\\Skills\\Get_Skill',
             
@@ -604,9 +603,6 @@ class Tool_Registry {
 
         $dirs = null === $dirs ? Tool_Directories::enabled() : $dirs;
         foreach ( $tool_classes as $class ) {
-            if ( self::is_withheld( $class ) ) {
-                continue;
-            }
             $dir = Tool_Directories::of( $class );
             if ( null === $dir ) {
                 if ( ! $quiet && ! self::is_plugin_class( $class ) ) {
@@ -656,10 +652,6 @@ class Tool_Registry {
 
 
 
-    private static function is_withheld( string $class ): bool {
-        // wp_send_feedback reports to Themeisle, the original plugin's authors.
-        return 'wordpress_code_ai\\Tools\\Feedback\\Send_Feedback' === $class;
-    }
 
     
 

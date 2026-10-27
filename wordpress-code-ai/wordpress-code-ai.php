@@ -3,7 +3,7 @@
  * Plugin Name: wordpress-code-ai
  * Plugin URI:  https://github.com/charcsllc/wordpress-code-ai
  * Description: Connect Claude, ChatGPT & any AI to WordPress. Manage your entire site by chat — content, media, GA4, Search Console, SEO & more. 280+ tools. Free.
- * Version:     2.3.0.1
+ * Version:     2.3.0.2
  * Author:      charcsllc
  * Author URI:  https://github.com/charcsllc
  * License:     GPL-2.0-or-later
@@ -16,9 +16,10 @@
  *
  * wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI
  * (https://easymcpai.com), used under the GNU GPL v2 or later. Changed on
- * 2026-10-27: renamed the plugin, removed the bundled Themeisle SDK and the
- * feedback reports sent to Themeisle, replaced the easymcpai.com connection
- * test with one that runs in the browser, and added updates from GitHub.
+ * 2026-10-27: renamed the plugin, removed the Themeisle SDK and the feedback
+ * reports sent to Themeisle, replaced the easymcpai.com connection test with
+ * one that runs in the browser, pointed the help links at this plugin's own
+ * documentation, and added updates from GitHub.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -275,7 +276,7 @@ if ( isset( $_SERVER['REQUEST_URI'] ) ) {
     unset( $wordpress_code_ai_req, $wordpress_code_ai_own );
 }
 
-define( 'WORDPRESS_CODE_AI_VERSION', '2.3.0.1' );
+define( 'WORDPRESS_CODE_AI_VERSION', '2.3.0.2' );
 define( 'WORDPRESS_CODE_AI_PLUGIN_FILE', __FILE__ );
 define( 'WORDPRESS_CODE_AI_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WORDPRESS_CODE_AI_PLUGIN_URL', plugin_dir_url( __FILE__ ) );

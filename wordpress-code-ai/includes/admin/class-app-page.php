@@ -357,9 +357,6 @@ class App_Page {
         }
         if ( $setup_pending ) {
             \remove_submenu_page( self::SLUG_PREFIX, self::change_history_slug() );
-            if ( class_exists( \wordpress_code_ai\Themeisle_SDK::class ) ) {
-                \remove_submenu_page( self::SLUG_PREFIX, \wordpress_code_ai\Themeisle_SDK::ABOUT_US_MENU_SLUG );
-            }
         }
     }
 

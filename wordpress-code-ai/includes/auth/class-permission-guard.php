@@ -20,7 +20,7 @@ class Permission_Guard {
 
 
 
-    const EVERY_CREDENTIAL = array( 'wp_send_feedback', 'wp_get_skill', 'wp_list_disabled_tools' );
+    const EVERY_CREDENTIAL = array( 'wp_get_skill', 'wp_list_disabled_tools' );
 
     private $token_manager;
 

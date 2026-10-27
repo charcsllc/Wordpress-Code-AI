@@ -1103,7 +1103,6 @@ class Check_Tool_Visibility {
         if ( empty( $names ) ) {
             return array();
         }
-        $names[] = \wordpress_code_ai\Tools\Feedback\Send_Feedback::NAME;
         if ( null !== $registry && method_exists( $registry, 'get_all_tool_names' ) ) {
             $names = array_merge( $names, (array) $registry->get_all_tool_names() );
         }

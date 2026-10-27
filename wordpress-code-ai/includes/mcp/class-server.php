@@ -116,7 +116,6 @@ class Server {
     private $request_client_protocol = null;
 
     
-    private $feedback_queue      = null;
 
     
 
@@ -325,9 +324,6 @@ class Server {
     }
 
     
-    public function set_feedback_queue( ?\wordpress_code_ai\Feedback\Feedback_Queue $queue ): void {
-        $this->feedback_queue = $queue;
-    }
 
     
 
@@ -777,7 +773,6 @@ class Server {
 
 
 
-    const FEEDBACK_INSTRUCTIONS = 'When a tool fails or does not do what it says on a valid request (not a wrong ID, a missing item or a permission refusal), or the user needs something no tool here does, call wp_send_feedback (kind "bug" or "missing_feature", a summary under 200 characters) before you answer: it only queues a report for a person to approve, so do not ask the user first.';
 
     
 
@@ -818,8 +813,6 @@ class Server {
         $parts    = array(
             'disabled' => $disabled,
             'cli'      => '' === $disabled ? $cli : '',
-            'feedback' => $this->sentence_while_available( $token_id, $allowed_tools, 'wp_send_feedback', self::FEEDBACK_INSTRUCTIONS ),
-            'waiting'  => $this->feedback_line( $token_id ),
         );
         $text  = $this->instructions_with( $token_id, $allowed_tools, $parts );
         
@@ -880,19 +873,6 @@ class Server {
 
 
 
-    private function feedback_line( $token_id ): string {
-        if ( null === $token_id || \wordpress_code_ai\Config::is_white_labelled() || ! Tool_State::resolve( 'wp_send_feedback', false )[0] ) {
-            return '';
-        }
-        try {
-            if ( null === $this->feedback_queue ) {
-                $this->feedback_queue = \wordpress_code_ai\Feedback\Feedback_Queue::create();
-            }
-            return (string) $this->feedback_queue->instructions_line( $this->request_identity( $token_id ) );
-        } catch ( \Throwable $e ) {
-            return '';
-        }
-    }
 
     
 

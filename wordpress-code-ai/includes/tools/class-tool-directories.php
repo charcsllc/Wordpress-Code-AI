@@ -36,7 +36,6 @@ final class Tool_Directories {
         'users', 'site', 'menus', 'plugins', 'themes',
         'revisions', 'meta', 'search', 'blocks', 'cpt', 'templates', 'styles',
         'appearance', 'widgets', 'history', 'audit', 'site-health', 'approvals',
-        'feedback',
         
         'cache',
         
