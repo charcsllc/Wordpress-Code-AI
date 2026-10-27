@@ -1,16 +1,16 @@
-# Wordpres-Code-AI
+# Wordpress-Code-AI
 
 > Connect Claude, ChatGPT, Cursor, Gemini, n8n, and any MCP-compatible AI to your WordPress site. Manage your entire site by chat — content, media, SEO, analytics, WooCommerce, and more. **214 tools. 14 resources. Free.**
 
-**Plugin page:** https://github.com/charcsllc/Wordpres-Code-AI  
-**WordPress.org:** https://wordpress.org/plugins/wordpres-code-ai/  
+**Plugin page:** https://github.com/charcsllc/Wordpress-Code-AI  
+**WordPress.org:** https://wordpress.org/plugins/wordpress-code-ai/  
 **License:** GPL-2.0-or-later  
 **Requires:** WordPress 6.0+, PHP 7.4+
 
 ---
 
 > **This is the setup and integration documentation only.**
-> For installation, download the plugin directly from the [WordPress.org plugin directory](https://wordpress.org/plugins/wordpres-code-ai/). The full plugin source code is available via the [WordPress.org SVN repository](https://plugins.svn.wordpress.org/wordpres-code-ai/).
+> For installation, download the plugin directly from the [WordPress.org plugin directory](https://wordpress.org/plugins/wordpress-code-ai/). The full plugin source code is available via the [WordPress.org SVN repository](https://plugins.svn.wordpress.org/wordpress-code-ai/).
 
 ---
 
@@ -39,7 +39,7 @@
 
 ## What This Is
 
-Wordpres-Code-AI exposes your WordPress site as a **remote MCP server** over HTTPS. Any MCP-compatible AI client — assistant or autonomous agent — connects directly to your site and gets scoped, capability-checked access to content, media, users, SEO data, analytics, and WooCommerce — all over the Model Context Protocol.
+Wordpress-Code-AI exposes your WordPress site as a **remote MCP server** over HTTPS. Any MCP-compatible AI client — assistant or autonomous agent — connects directly to your site and gets scoped, capability-checked access to content, media, users, SEO data, analytics, and WooCommerce — all over the Model Context Protocol.
 
 Install the plugin, generate a token, paste your endpoint URL into your AI client. Nothing else runs on your server. No Node.js, no proxy, no sidecar process.
 
@@ -50,12 +50,12 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 ### Method 1 — WordPress.org (Recommended)
 
 1. Go to **Plugins → Add New** in your WordPress admin.
-2. Search for **Wordpres-Code-AI**.
+2. Search for **Wordpress-Code-AI**.
 3. Click **Install Now**, then **Activate**.
 
 ### Method 2 — Manual ZIP Upload
 
-1. Download `wordpres-code-ai.zip` from https://wordpress.org/plugins/wordpres-code-ai/
+1. Download `wordpress-code-ai.zip` from https://wordpress.org/plugins/wordpress-code-ai/
 2. Go to **Plugins → Add New → Upload Plugin**.
 3. Upload the ZIP and click **Install Now**, then **Activate**.
 
@@ -65,10 +65,10 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 
 ### Step 1 — Find Your Endpoint URL
 
-After activation, go to **Wordpres-Code-AI → Dashboard** in your WordPress admin. Your MCP endpoint is shown there:
+After activation, go to **Wordpress-Code-AI → Dashboard** in your WordPress admin. Your MCP endpoint is shown there:
 
 ```
-https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp
+https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp
 ```
 
 ### Step 2 — Choose a Connection Method
@@ -83,13 +83,13 @@ Use this if your AI client supports OAuth (Claude Desktop, Claude.ai, Cursor, Ch
 4. Log in to WordPress, review the permission scopes, click **Approve**.
 5. Done — the client receives a short-lived token that refreshes automatically.
 
-Manage or revoke connected clients anytime under **Wordpres-Code-AI → API Tokens & OAuth → OAuth** tab.
+Manage or revoke connected clients anytime under **Wordpress-Code-AI → API Tokens & OAuth → OAuth** tab.
 
 **Path B — Manual Token (Bearer)**
 
 Use this if your client does not support OAuth (Claude Code CLI, Windsurf, Cline, Roo Code, n8n, Gemini CLI, Manus).
 
-1. Go to **Wordpres-Code-AI → API Tokens** in your WordPress admin.
+1. Go to **Wordpress-Code-AI → API Tokens** in your WordPress admin.
 2. Click **Create New Token**.
 3. Set a name (e.g. `Cursor — My Mac`).
 4. Choose the WordPress user whose capabilities the token inherits (Administrator = full access).
@@ -123,7 +123,7 @@ Or add manually to `claude_desktop_config.json` (see `config/claude-desktop.json
       "command": "npx",
       "args": [
         "mcp-remote",
-        "https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp",
+        "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
         "--header",
         "Authorization: Bearer ${WP_API_TOKEN}"
       ]
@@ -141,7 +141,7 @@ Add to your `.claude/settings.json`:
   "mcpServers": {
     "wordpress": {
       "type": "http",
-      "url": "https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp",
+      "url": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
       "headers": {
         "Authorization": "Bearer ${WP_API_TOKEN}"
       }
@@ -152,7 +152,7 @@ Add to your `.claude/settings.json`:
 
 Or from the terminal:
 ```bash
-claude mcp add --transport http wordpress https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp \
+claude mcp add --transport http wordpress https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp \
   --header "Authorization: Bearer ${WP_API_TOKEN}"
 ```
 
@@ -164,7 +164,7 @@ Add to `~/.cursor/mcp.json` (see `config/cursor.json`):
 {
   "mcpServers": {
     "wordpress": {
-      "url": "https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp",
+      "url": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
       "headers": {
         "Authorization": "Bearer ${WP_API_TOKEN}"
       }
@@ -183,7 +183,7 @@ Add to `~/.codeium/windsurf/mcp_config.json` (see `config/windsurf.json`):
 {
   "mcpServers": {
     "wordpress": {
-      "serverUrl": "https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp",
+      "serverUrl": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
       "headers": {
         "Authorization": "Bearer ${WP_API_TOKEN}"
       }
@@ -203,7 +203,7 @@ Add via **Cline → MCP Servers → Add Server** or edit `cline_mcp_settings.jso
       "autoApprove": [],
       "disabled": false,
       "transportType": "streamableHttp",
-      "url": "https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp",
+      "url": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
       "headers": {
         "Authorization": "Bearer ${WP_API_TOKEN}"
       }
@@ -220,7 +220,7 @@ Add via **Cline → MCP Servers → Add Server** or edit `cline_mcp_settings.jso
 4. Check **I trust this application** and click **Create**.
 5. Complete the OAuth login flow — no token needed.
 
-Or embed a token directly in the URL: `https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp/${WP_API_TOKEN}`
+Or embed a token directly in the URL: `https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp/${WP_API_TOKEN}`
 
 > Requires Pro, Plus, Business, Enterprise, or Education plan.
 
@@ -233,7 +233,7 @@ Add to `~/.gemini/settings.json`:
   "mcpServers": {
     "wordpress": {
       "type": "http",
-      "url": "https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp",
+      "url": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
       "headers": {
         "Authorization": "Bearer ${WP_API_TOKEN}"
       }
@@ -244,7 +244,7 @@ Add to `~/.gemini/settings.json`:
 
 Or from the terminal:
 ```bash
-gemini mcp add wordpress https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp \
+gemini mcp add wordpress https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp \
   --transport http --scope user \
   -H "Authorization: Bearer ${WP_API_TOKEN}"
 ```
@@ -253,7 +253,7 @@ gemini mcp add wordpress https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp 
 
 1. Add an **MCP Client** node to your workflow.
 2. Set **Transport** to `Streamable HTTP`.
-3. Set **URL** to `https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp`.
+3. Set **URL** to `https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp`.
 4. Add a **Header Auth** credential: name `Authorization`, value `Bearer ${WP_API_TOKEN}`.
 
 ### Manus
@@ -264,7 +264,7 @@ Go to **Connectors → Custom MCP** and fill in the form:
 |---|---|
 | Server Name | WordPress |
 | Transport Type | HTTP |
-| Server URL | `https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp` |
+| Server URL | `https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp` |
 | Header name | `Authorization` |
 | Header value | `Bearer ${WP_API_TOKEN}` |
 
@@ -633,7 +633,7 @@ The `skills/wordpress-site-manager.md` file contains a ready-to-use Claude skill
 - **WordPress capability gate:** Each tool declares a minimum WordPress capability; the plugin verifies it against the user bound to the token before executing anything.
 - **Scoped access:** Tokens can be locked to a subset of tools via glob patterns (e.g. `wp_list_*`, `wp_get_*`), so a read-only AI client can never trigger writes.
 - **Rate limiting:** Configurable per-token call rate (default 60/minute).
-- **Audit log:** A timestamped record of every tool call — arguments, result, token used, and client IP — is kept under **Wordpres-Code-AI → Audit Log**.
+- **Audit log:** A timestamped record of every tool call — arguments, result, token used, and client IP — is kept under **Wordpress-Code-AI → Audit Log**.
 - **Change snapshots:** Write operations store before/after JSON payloads, queryable later via the `wp_history_*` tools.
 - **OAuth 2.1:** Full PKCE S256 flow with rotating refresh tokens, per-scope consent, and RFC 7009 token revocation.
 - **Force Draft:** A global switch that pins all AI-created content to `draft` status, regardless of what the AI requests.

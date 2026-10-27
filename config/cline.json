@@ -4,7 +4,7 @@
       "autoApprove": [],
       "disabled": false,
       "transportType": "streamableHttp",
-      "url": "https://${WP_SITE_URL}/wp-json/wordpres-code-ai/v1/mcp",
+      "url": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
       "headers": {
         "Authorization": "Bearer ${WP_API_TOKEN}"
       }
