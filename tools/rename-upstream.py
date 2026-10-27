@@ -21,6 +21,8 @@ import shutil
 import sys
 
 REPO = 'https://github.com/charcsllc/wordpress-code-ai'
+# Skill sync follows no redirects, so this uses the repository's exact name and case.
+SKILLS_FEED = 'https://raw.githubusercontent.com/charcsllc/Wordpress-Code-AI/main/skills-feed'
 LICENSE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'LICENSE')
 TEXT_EXT = {'.php', '.js', '.css', '.html', '.txt', '.pot', '.json', '.svg', '.md'}
 SKIP = {'assets/skills/release.json', 'assets/skills/release.sig'}  # signed by upstream
@@ -85,6 +87,11 @@ PRE = {
         ("Its released code is readable at https://plugins.svn.wordpress.org/easy-mcp-ai/ — trunk/ is the current release, and tags/ holds each published version.",
          f"Its released code is readable at {REPO} — the wordpress-code-ai/ folder holds the current release.", False),
     ],
+    'includes/skills/class-skill-sync.php': [
+        # Skills come from this repository's copy of the original signed releases
+        # (see tools/update-skills-mirror.py) instead of the original vendor's server.
+        ("const BASE_URL = 'https://skills.easymcpai.com';", f"const BASE_URL = '{SKILLS_FEED}';", False),
+    ],
     'includes/admin/rest/class-settings-controller.php': [
         ("""    public static function usage_ask(): bool {
         return 'yes' !== \\get_option( self::LOGGER_FLAG_OPTION, 'no' )
@@ -111,6 +118,8 @@ PRE = {
     ],
     'readme.txt': [
         ('Contributors: easymcpai\n', 'Contributors: charcsllc\n', False),
+        ('once a day from skills.easymcpai.com.',
+         "once a day from the wordpress-code-ai GitHub repository, which keeps a copy of the original plugin's signed skills.", False),
         ('[**Easy MCP AI**](https://easymcpai.com/)', f'[**Easy MCP AI**]({REPO})', False),
         ('1. In **Plugins → Add New Plugin**, search for "Easy MCP AI", click **Install Now**, then **Activate**. For manual installs, upload the ZIP under **Plugins → Add New Plugin → Upload Plugin**.',
          f'1. Download `wordpress-code-ai.zip` from {REPO}, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.', False),

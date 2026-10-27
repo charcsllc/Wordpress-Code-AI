@@ -172,7 +172,7 @@ Most WordPress AI plugins embed one AI provider inside wp-admin and bill you for
 
 No. Requests and tool results travel between your AI client and your own site, with no hosted relay or third-party server. If you are comparing with a hosted MCP service such as WPVibe, the difference is where the server runs: a hosted service proxies every request through the vendor's servers, while wordpress-code-ai runs inside your own WordPress install. The connection depends only on your site and your AI client, so it keeps working even if our service is down. The plugin is free, all 280+ tools are included, and there is no vendor quota, only rate limits you set yourself, 60 requests per minute per token by default. The plugin sends nothing to us. The optional outside reachability check is a link that opens easymcpai.com in your browser, and it uses only your site address.
 
-Once an AI client has connected, the plugin downloads signed skills (step-by-step instructions for common WordPress tasks) once a day from skills.easymcpai.com. The request carries only the plugin version. To turn it off, add `define( 'WORDPRESS_CODE_AI_SKILLS_SYNC', false );` to wp-config.php.
+Once an AI client has connected, the plugin downloads signed skills (step-by-step instructions for common WordPress tasks) once a day from the wordpress-code-ai GitHub repository, which keeps a copy of the original plugin's signed skills. The request carries only the plugin version. To turn it off, add `define( 'WORDPRESS_CODE_AI_SKILLS_SYNC', false );` to wp-config.php.
 
 = Is wordpress-code-ai free? =
 
