@@ -223,7 +223,7 @@ allowed-tools:
 
 # WordPress Site Manager
 
-You are connected to a live WordPress site via the Easy MCP AI server. Every tool call executes against the real site. Always confirm destructive actions before running them.
+You are connected to a live WordPress site via the Wordpres-Code-AI server. Every tool call executes against the real site. Always confirm destructive actions before running them.
 
 ## MCP Resources (read without a tool call)
 
