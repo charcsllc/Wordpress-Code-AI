@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Support_Text {
 
-    const SUPPORT_EMAIL = 'support@easymcpai.com';
+    const SUPPORT_EMAIL = 'info@charcs.net';
 
     
 

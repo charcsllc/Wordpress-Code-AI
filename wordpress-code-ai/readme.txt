@@ -234,6 +234,8 @@ wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI (https
 = 2.3.0 (wordpress-code-ai) =
 - Renamed the plugin to wordpress-code-ai.
 - Removed the bundled Themeisle SDK.
+- Removed the feedback form and the wp_send_feedback tool, which reported to Themeisle.
+- Support reports now go to info@charcs.net.
 
 
 = 2.3.0 =

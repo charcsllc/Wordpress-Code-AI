@@ -61,6 +61,17 @@ PRE = {
         # The "Share anonymous usage data" setting only fed the Themeisle SDK.
         ('function x({api:e}){const{form:t,errors:r,set:o}=e;return(0,v.jsx)(i.a,{"data-testid":"settings-usage"',
          'function x({api:e}){return null;const{form:t,errors:r,set:o}=e;return(0,v.jsx)(i.a,{"data-testid":"settings-usage"', False),
+        # The "Share feedback" form posts to Themeisle's API.
+        ('if((0,y.J)().whiteLabel)return null;const l="help-card"===e;', 'return null;const l="help-card"===e;', False),
+    ],
+    'includes/tools/class-tool-registry.php': [
+        # wp_send_feedback reports to Themeisle, the original plugin's authors.
+        (r"""    private static function is_withheld( string $class ): bool {
+        return 'Easy_MCP_AI\\Tools\\Feedback\\Send_Feedback' === $class && class_exists( '\\Easy_MCP_AI\\Config' ) && \Easy_MCP_AI\Config::is_white_labelled();
+    }""", r"""    private static function is_withheld( string $class ): bool {
+        // wp_send_feedback reports to Themeisle, the original plugin's authors.
+        return 'Easy_MCP_AI\\Tools\\Feedback\\Send_Feedback' === $class;
+    }""", False),
     ],
     'assets/build/page-settings.js': [
         ('"Tool filtering, IP restrictions and usage sharing — most sites never need to change these."',
@@ -70,6 +81,7 @@ PRE = {
     'assets/build/page-dashboard.js': [(MANUS_REFERRAL, 'signupLink:"https://manus.im/"', False)],
     'assets/build/page-setup.js': [(MANUS_REFERRAL, 'signupLink:"https://manus.im/"', False)],
     'includes/admin/class-support-text.php': [
+        ("const SUPPORT_EMAIL = 'support@easymcpai.com';", "const SUPPORT_EMAIL = 'info@charcs.net';", False),
         ("Its released code is readable at https://plugins.svn.wordpress.org/easy-mcp-ai/ — trunk/ is the current release, and tags/ holds each published version.",
          f"Its released code is readable at {REPO} — the wordpress-code-ai/ folder holds the current release.", False),
     ],
@@ -203,12 +215,15 @@ def main():
 
     credit = (f" wordpress-code-ai is a modified version of Easy MCP AI {version} by EasyMCPAI\n"
               f" * (https://easymcpai.com), used under the GNU GPL v2 or later. Changed on\n"
-              f" * {args.date}: renamed the plugin and removed the bundled Themeisle SDK.")
+              f" * {args.date}: renamed the plugin and removed the bundled Themeisle SDK and\n"
+              f" * the feedback reports sent to Themeisle.")
     changelog = (f"== Credits ==\n\nwordpress-code-ai is a modified version of Easy MCP AI {version} by EasyMCPAI "
                  f"(https://easymcpai.com), used under the GNU General Public License v2 or later. "
                  f"The changelog below is the history of that original plugin.\n\n== Changelog ==\n\n"
                  f"= {version} (wordpress-code-ai) =\n- Renamed the plugin to wordpress-code-ai.\n"
-                 f"- Removed the bundled Themeisle SDK.\n\n")
+                 f"- Removed the bundled Themeisle SDK.\n"
+                 f"- Removed the feedback form and the wp_send_feedback tool, which reported to Themeisle.\n"
+                 f"- Support reports now go to info@charcs.net.\n\n")
     post = {
         'easy-mcp-ai.php': [(' @@CREDIT@@', credit)],
         'readme.txt': [('@@CHANGELOG@@', changelog)],
