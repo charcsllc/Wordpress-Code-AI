@@ -180,7 +180,7 @@ class Check_Discovery {
                 Diagnostic_Result::TIER_WARNING,
                 $result->label(),
                 __( 'Your host intercepts /.well-known/, and this plugin is working around it. The sign-in documents at your domain root never reach WordPress, so this plugin points AI clients at copies served under this site\'s AI connection address instead; ChatGPT and Claude connect through them. A client that only looks at the domain root can still fail.', 'wordpress-code-ai' ),
-                __( 'Nothing is needed for ChatGPT or Claude. To make every client work, ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI#well-known-addresses', 'wordpress-code-ai' ),
+                __( 'Nothing is needed for ChatGPT or Claude. To make every client work, ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI/blob/main/docs/troubleshooting.md#well-known-addresses', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -191,7 +191,7 @@ class Check_Discovery {
             Diagnostic_Result::TIER_WARNING,
             $result->label(),
             __( 'Your host blocks /.well-known/, and ChatGPT and Codex can\'t connect. The host refuses that path at your domain root and under this site\'s AI connection address, so the sign-in documents never reach WordPress. Claude and most other clients should still connect through this plugin\'s workaround at the site root; ChatGPT and Codex look for the documents only at addresses your host refuses.', 'wordpress-code-ai' ),
-            __( 'Ask your host to let /.well-known/ reach WordPress. A rule that refuses every path containing /. (common in nginx configurations) blocks it too. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI#well-known-addresses', 'wordpress-code-ai' ),
+            __( 'Ask your host to let /.well-known/ reach WordPress. A rule that refuses every path containing /. (common in nginx configurations) blocks it too. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI/blob/main/docs/troubleshooting.md#well-known-addresses', 'wordpress-code-ai' ),
             $evidence
         );
     }
@@ -620,7 +620,7 @@ class Check_Discovery {
                 Diagnostic_Result::TIER_BLOCKER,
                 $label,
                 self::blocked_detail( $blocked, $roots ) . $partial,
-                __( 'Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. This is a rule on their side; the plugin cannot move these addresses, because the standards AI clients follow define them as sitting at your domain root. If your host will not change it, they can instead place the two documents in the .well-known folder of your site as ordinary files — copy each one from the /wp-json/ address that still works. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI#well-known-addresses', 'wordpress-code-ai' ),
+                __( 'Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. This is a rule on their side; the plugin cannot move these addresses, because the standards AI clients follow define them as sitting at your domain root. If your host will not change it, they can instead place the two documents in the .well-known folder of your site as ordinary files — copy each one from the /wp-json/ address that still works. Full instructions: https://github.com/charcsllc/Wordpress-Code-AI/blob/main/docs/troubleshooting.md#well-known-addresses', 'wordpress-code-ai' ),
                 $evidence
             );
         }

@@ -16,6 +16,7 @@ name, the script stops before writing anything and says which edit failed.
 """
 import argparse
 import collections
+import hashlib
 import os
 import re
 import shutil
@@ -25,8 +26,10 @@ REPO = 'https://github.com/charcsllc/wordpress-code-ai'
 # Skill sync follows no redirects, so this uses the repository's exact name and case.
 SKILLS_FEED = 'https://raw.githubusercontent.com/charcsllc/Wordpress-Code-AI/main/skills-feed'
 RELEASES = 'https://github.com/charcsllc/Wordpress-Code-AI/releases'
-# The repository's README replaces the original vendor's documentation site.
+# The repository's README (client setup) and docs/ folder replace the original
+# vendor's documentation site.
 DOCS = 'https://github.com/charcsllc/Wordpress-Code-AI'
+DOCS_HOME = f'{DOCS}/blob/main/docs/README.md'
 LICENSE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'LICENSE')
 TEXT_EXT = {'.php', '.js', '.css', '.html', '.txt', '.pot', '.json', '.svg', '.md'}
 SKIP = {'assets/skills/release.json', 'assets/skills/release.sig'}  # signed by upstream
@@ -188,17 +191,17 @@ def method(name):
     return (rf'(?s)\n    (?:(?:public|protected|private) )?(?:static )?function {name}\(.*?\n    \}}\n', '\n', True)
 
 
-# Links to the original vendor's documentation now point to this repository's README,
-# which has the same instructions. Where the README has no equivalent, the link goes.
-WELL_KNOWN_DOCS = f'{DOCS}#well-known-addresses'
-PROXY_DOCS = f'{DOCS}#trusted-proxies'
+# Links to the original vendor's documentation now point to this repository's docs/,
+# which has the same instructions. Where it has no equivalent, the link goes.
+WELL_KNOWN_DOCS = f'{DOCS}/blob/main/docs/troubleshooting.md#well-known-addresses'
+PROXY_DOCS = f'{DOCS}/blob/main/docs/troubleshooting.md#trusted-proxies'
 
 # Exact-text edits made after the generic rename, as (old, new, is_regex[, count]),
 # keyed by the Easy MCP AI path. They match the renamed text, so they can be checked
 # against wordpress-code-ai/ directly. count says how many matches there must be (1).
 POST = {
     'assets/build/index.js': [
-        ('{id:"docs",href:"https://docs.easymcpai.com/"', f'{{id:"docs",href:"{DOCS}#readme"', False),
+        ('{id:"docs",href:"https://docs.easymcpai.com/"', f'{{id:"docs",href:"{DOCS_HOME}"', False),
         # There are no reviews to leave for this plugin.
         (',{id:"rate",href:"https://github.com/charcsllc/wordpress-code-ai",icon:u,'
          'label:()=>(0,s.__)("Rate the plugin","wordpress-code-ai")}', '', False),
@@ -350,6 +353,12 @@ POST = {
 # Easy MCP AI version it is based on plus a fourth number. Add an entry for every
 # release (see "Publishing a release" in README.md).
 CHANGELOG = [
+    ('2.3.0.3', '2026-10-27', [
+        'After an update, the admin screens load the new version of their scripts. Before, a browser could '
+        'keep showing an older copy for up to a year, such as a Documentation link to easymcpai.com.',
+        "The Documentation link and the instructions in Diagnostics open this plugin's documentation, in the "
+        'docs folder of its GitHub repository.',
+    ]),
     ('2.3.0.2', '2026-10-27', [
         "Help links and the instructions in Diagnostics now point to this plugin's documentation on GitHub "
         'instead of easymcpai.com. The "Rate the plugin" and "Browse plugins with abilities" links are gone.',
@@ -391,6 +400,34 @@ def generic(text):
     for rx, new in GENERIC:
         text = rx.sub(new, text)
     return text
+
+
+def content_hash(*texts):
+    return hashlib.md5(''.join(texts).encode('utf-8')).hexdigest()[:20]
+
+
+def bust_caches(final):
+    """Gives each admin script a ?ver= made from its final content, as a rebuild would.
+
+    Easy MCP AI's versions are hashes of its own files, and hosts may tell browsers to
+    keep a script for a year, so an edited script under the old version is never fetched
+    again. The chunk versions are in index.js; index.js's own is in index.asset.php.
+    """
+    index = 'assets/build/index.js'
+    m = re.search(r'\.u=e=>\(\(\{([^}]*)\}\[e\]\|\|e\)\+"\.js\?ver="\+\{([^}]*)\}', final[index])
+    if not m:
+        fail(f'{index}: the map of chunk versions was not found')
+    names = dict(re.findall(r'(\d+):"([^"]+)"', m.group(1)))
+    versions = []
+    for chunk in re.findall(r'(\d+):"[0-9a-f]+"', m.group(2)):
+        path = f'assets/build/{names.get(chunk, chunk)}.js'
+        if path not in final:
+            fail(f'{path} not found')
+        versions.append(f'{chunk}:"{content_hash(final[path])}"')
+    final[index] = final[index][:m.start(2)] + ','.join(versions) + final[index][m.end(2):]
+    asset = 'assets/build/index.asset.php'
+    version = content_hash(final[index], final['assets/build/index.css'], final['assets/build/index-rtl.css'])
+    final[asset] = apply_edit(final[asset], asset, r"'version' => '[0-9a-f]+'", f"'version' => '{version}'", True)
 
 
 def po_quote(text):
@@ -565,6 +602,7 @@ def main():
         for edit in post.get(path, []):
             new = apply_edit(new, path, *edit)
         final[path] = new
+    bust_caches(final)
     pot = 'languages/easy-mcp-ai.pot'
     final[pot], dropped = prune_pot(final[pot], {path: final[path] for path in PRUNE}, set(DELETE))
     final[pot] = add_fork_strings(final[pot], fork_strings(root))

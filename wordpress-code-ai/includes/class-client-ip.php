@@ -42,7 +42,7 @@ class Client_IP {
     const CONSTANT_HEADER = 'WORDPRESS_CODE_AI_CLIENT_IP_HEADER';
 
     
-    const DOC_URL = 'https://github.com/charcsllc/Wordpress-Code-AI#trusted-proxies';
+    const DOC_URL = 'https://github.com/charcsllc/Wordpress-Code-AI/blob/main/docs/troubleshooting.md#trusted-proxies';
 
     
     const HEADER_DEFAULT = 'X-Forwarded-For';

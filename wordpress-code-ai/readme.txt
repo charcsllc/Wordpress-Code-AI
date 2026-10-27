@@ -4,7 +4,7 @@ Tags: mcp, claude, chatgpt, wordpress-mcp, connector
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.3.0.2
+Stable tag: 2.3.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -232,6 +232,10 @@ Flexible SSL sends requests to your server over plain HTTP, so the OAuth sign-in
 wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI (https://easymcpai.com), used under the GNU General Public License v2 or later. The changelog below starts with the changes made in wordpress-code-ai, followed by the history of that original plugin.
 
 == Changelog ==
+
+= 2.3.0.3 (wordpress-code-ai) =
+- After an update, the admin screens load the new version of their scripts. Before, a browser could keep showing an older copy for up to a year, such as a Documentation link to easymcpai.com.
+- The Documentation link and the instructions in Diagnostics open this plugin's documentation, in the docs folder of its GitHub repository.
 
 = 2.3.0.2 (wordpress-code-ai) =
 - Help links and the instructions in Diagnostics now point to this plugin's documentation on GitHub instead of easymcpai.com. The "Rate the plugin" and "Browse plugins with abilities" links are gone.
