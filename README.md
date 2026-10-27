@@ -54,7 +54,7 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 
 ### Method 1 — ZIP Upload (Recommended)
 
-1. Download `wordpress-code-ai.zip` from the [latest release](https://github.com/charcsllc/Wordpress-Code-AI/releases/latest).
+1. Download `wordpress-code-ai.zip` from the [latest release](https://github.com/charcsllc/Wordpress-Code-AI/releases/latest), under **Assets**. The **Source code** files that GitHub adds to every release hold this whole repository, not the plugin, and WordPress refuses them.
 2. Go to **Plugins → Add New Plugin → Upload Plugin** in your WordPress admin.
 3. Upload the ZIP and click **Install Now**, then **Activate**.
 
@@ -69,7 +69,7 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 
 WordPress offers new versions of wordpress-code-ai on the **Plugins** and **Dashboard → Updates** screens, the same way as for any other plugin: about twice a day it checks this repository's [releases](https://github.com/charcsllc/Wordpress-Code-AI/releases). Click **Update now**, or click **Enable auto-updates** on the Plugins screen and WordPress installs new versions on its own.
 
-Version 2.3.0.1 is the first version that gets these updates. A site that runs 2.3.0 needs one manual update: download `wordpress-code-ai.zip` from the [latest release](https://github.com/charcsllc/Wordpress-Code-AI/releases/latest), upload it under **Plugins → Add New Plugin → Upload Plugin**, and click **Replace current with uploaded**. Settings, tokens and connections are kept.
+Version 2.3.0.1 is the first version that gets these updates. A site that runs 2.3.0 needs one manual update: download `wordpress-code-ai.zip` (not **Source code**) from the [latest release](https://github.com/charcsllc/Wordpress-Code-AI/releases/latest), upload it under **Plugins → Add New Plugin → Upload Plugin**, and click **Replace current with uploaded**. Settings, tokens and connections are kept.
 
 ---
 

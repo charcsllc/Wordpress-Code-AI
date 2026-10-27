@@ -117,7 +117,7 @@ PRE = {
          "once a day from the wordpress-code-ai GitHub repository, which keeps a copy of the original plugin's signed skills.", False),
         ('[**Easy MCP AI**](https://easymcpai.com/)', f'[**Easy MCP AI**]({REPO})', False),
         ('1. In **Plugins → Add New Plugin**, search for "Easy MCP AI", click **Install Now**, then **Activate**. For manual installs, upload the ZIP under **Plugins → Add New Plugin → Upload Plugin**.',
-         f'1. Download `wordpress-code-ai.zip` from the latest release at {RELEASES}/latest, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.', False),
+         f'1. Download `wordpress-code-ai.zip` (not the Source code files) from the latest release at {RELEASES}/latest, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.', False),
         # Upstream history that is no longer true for this plugin.
         ('= 1.7.17 =\nEasy MCP AI is now part of Themeisle. Your setup keeps working as before, with no action needed.\n\n', '', False),
         ('== Changelog ==\n', '@@CHANGELOG@@', False),

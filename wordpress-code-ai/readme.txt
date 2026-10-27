@@ -125,7 +125,7 @@ Giving an AI client access to your site is a serious step. This MCP server runs 
 
 == Installation ==
 
-1. Download `wordpress-code-ai.zip` from the latest release at https://github.com/charcsllc/Wordpress-Code-AI/releases/latest, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.
+1. Download `wordpress-code-ai.zip` (not the Source code files) from the latest release at https://github.com/charcsllc/Wordpress-Code-AI/releases/latest, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.
 2. Open **wordpress-code-ai → Dashboard**. Copy the MCP server URL, or use a one-click connect button.
 3. **OAuth** (Claude, Claude Desktop, ChatGPT, Cursor, VS Code, Antigravity): add the URL to your AI client. Then sign in to WordPress as the user you want that client to act on behalf of. Choose permissions and click **Approve**.
 4. **API token** (Codex CLI, Windsurf, Zed, LibreChat and other config-file clients): under **wordpress-code-ai → Connections → API tokens**, create a token, choose the user and tools, then paste the URL and token into your client. Copy the token before you leave the screen. It is shown only once.

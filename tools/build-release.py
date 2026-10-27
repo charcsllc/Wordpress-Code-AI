@@ -109,7 +109,7 @@ def build(version, readme):
         fh.write('\n')
     with open(os.path.join(DIST, 'notes.md'), 'w', encoding='utf-8') as fh:
         fh.write(''.join(f'- {n}\n' for n in notes))
-        fh.write('\nTo install, download `wordpress-code-ai.zip` below and upload it under '
+        fh.write('\nTo install, download `wordpress-code-ai.zip` below, not the Source code files, and upload it under '
                  '**Plugins → Add New Plugin → Upload Plugin**. Sites that run 2.3.0.1 or later '
                  'are offered this version on their Plugins screen.\n')
     print(f'dist/ holds wordpress-code-ai.zip, update.json and notes.md for {tag}')
