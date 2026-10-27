@@ -16,7 +16,7 @@ SHA-256 in release.sig; the plugin itself checks the signature.
 
 With --bundle, the newest release in skills-feed/ is also copied into the plugin
 (wordpress-code-ai/assets/skills/), so a fresh install has it before its first
-daily download. Rebuild the ZIP afterwards.
+daily download. Publish a release afterwards (see README.md).
 """
 import argparse
 import hashlib
@@ -110,7 +110,7 @@ def bundle():
         fh.write(body)
     with open(bundled_sig, 'wb') as fh:
         fh.write(sig)
-    print(f'the plugin now bundles release {serial}; commit it and rebuild the ZIP')
+    print(f'the plugin now bundles release {serial}; commit it, and publish a release so new installs get it')
 
 
 def main():

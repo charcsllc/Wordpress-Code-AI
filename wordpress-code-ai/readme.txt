@@ -4,7 +4,7 @@ Tags: mcp, claude, chatgpt, wordpress-mcp, connector
 Requires at least: 6.0
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 2.3.0
+Stable tag: 2.3.0.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,7 +125,7 @@ Giving an AI client access to your site is a serious step. This MCP server runs 
 
 == Installation ==
 
-1. Download `wordpress-code-ai.zip` from https://github.com/charcsllc/wordpress-code-ai, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.
+1. Download `wordpress-code-ai.zip` from the latest release at https://github.com/charcsllc/Wordpress-Code-AI/releases/latest, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.
 2. Open **wordpress-code-ai → Dashboard**. Copy the MCP server URL, or use a one-click connect button.
 3. **OAuth** (Claude, Claude Desktop, ChatGPT, Cursor, VS Code, Antigravity): add the URL to your AI client. Then sign in to WordPress as the user you want that client to act on behalf of. Choose permissions and click **Approve**.
 4. **API token** (Codex CLI, Windsurf, Zed, LibreChat and other config-file clients): under **wordpress-code-ai → Connections → API tokens**, create a token, choose the user and tools, then paste the URL and token into your client. Copy the token before you leave the screen. It is shown only once.
@@ -170,9 +170,11 @@ Most WordPress AI plugins embed one AI provider inside wp-admin and bill you for
 
 = Are my AI requests private, and do they pass through your servers? =
 
-No. Requests and tool results travel between your AI client and your own site, with no hosted relay or third-party server. If you are comparing with a hosted MCP service such as WPVibe, the difference is where the server runs: a hosted service proxies every request through the vendor's servers, while wordpress-code-ai runs inside your own WordPress install. The connection depends only on your site and your AI client, so it keeps working even if our service is down. The plugin is free, all 280+ tools are included, and there is no vendor quota, only rate limits you set yourself, 60 requests per minute per token by default. The plugin sends nothing to us. The optional outside reachability check is a link that opens easymcpai.com in your browser, and it uses only your site address.
+No. Requests and tool results travel between your AI client and your own site, with no hosted relay or third-party server. If you are comparing with a hosted MCP service such as WPVibe, the difference is where the server runs: a hosted service proxies every request through the vendor's servers, while wordpress-code-ai runs inside your own WordPress install. The connection depends only on your site and your AI client, so it keeps working even if our service is down. The plugin is free, all 280+ tools are included, and there is no vendor quota, only rate limits you set yourself, 60 requests per minute per token by default. The plugin sends nothing to us. The optional test from your browser runs in your own browser and contacts only your own site.
 
 Once an AI client has connected, the plugin downloads signed skills (step-by-step instructions for common WordPress tasks) once a day from the wordpress-code-ai GitHub repository, which keeps a copy of the original plugin's signed skills. The request carries only the plugin version. To turn it off, add `define( 'WORDPRESS_CODE_AI_SKILLS_SYNC', false );` to wp-config.php.
+
+WordPress checks GitHub for a newer release of the plugin about twice a day, and when you open the Plugins or Updates screen, the same way it checks WordPress.org for other plugins. The request carries only the plugin version.
 
 = Is wordpress-code-ai free? =
 
@@ -227,9 +229,14 @@ Flexible SSL sends requests to your server over plain HTTP, so the OAuth sign-in
 
 == Credits ==
 
-wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI (https://easymcpai.com), used under the GNU General Public License v2 or later. The changelog below is the history of that original plugin.
+wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI (https://easymcpai.com), used under the GNU General Public License v2 or later. The changelog below starts with the changes made in wordpress-code-ai, followed by the history of that original plugin.
 
 == Changelog ==
+
+= 2.3.0.1 (wordpress-code-ai) =
+- Updates now come from this plugin's GitHub releases. WordPress shows them on the Plugins screen and can install them automatically.
+- The "Test from the internet" button is now "Test from your browser": the test runs in your own browser and contacts only your site, instead of sending its address to easymcpai.com.
+- The plugin description now gives the same tool count as this readme.
 
 = 2.3.0 (wordpress-code-ai) =
 - Renamed the plugin to wordpress-code-ai.

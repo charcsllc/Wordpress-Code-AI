@@ -1,0 +1,71 @@
+.wcai-browser-test-text {
+    max-width: 760px;
+}
+
+.wcai-browser-test-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.wcai-browser-test-results {
+    max-width: 1100px;
+}
+
+.wcai-browser-test-results td {
+    vertical-align: top;
+}
+
+.wcai-browser-test-results td p {
+    margin: 6px 0 0;
+}
+
+.wcai-browser-test-code {
+    margin-top: 4px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 12px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.wcai-browser-test-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.wcai-browser-test-badge--pass {
+    background: #edfaef;
+    color: #005c12;
+}
+
+.wcai-browser-test-badge--warn {
+    background: #fcf9e8;
+    color: #614200;
+}
+
+.wcai-browser-test-badge--fail {
+    background: #fcf0f1;
+    color: #8a2424;
+}
+
+.wcai-browser-test-badge--unknown {
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.wcai-browser-test-commands {
+    max-width: 1100px;
+    padding: 12px;
+    overflow-x: auto;
+    border: 1px solid #c3c4c7;
+    background: #fff;
+}
+
+.wcai-browser-test-commands code {
+    padding: 0;
+    background: none;
+}

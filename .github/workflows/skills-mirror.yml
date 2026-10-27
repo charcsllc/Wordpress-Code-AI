@@ -1,0 +1,48 @@
+name: Skills mirror
+
+# Once a week, copies a newer signed skills release from Easy MCP AI into
+# skills-feed/ and the plugin, and opens a pull request for it. Sites download
+# the skills from skills-feed/ on main, so merging the pull request publishes them.
+#
+# GitHub Actions may open pull requests only when "Allow GitHub Actions to create
+# and approve pull requests" is on, under Settings → Actions → General.
+on:
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Copy a newer skills release
+        run: python3 tools/update-skills-mirror.py --bundle
+      - name: Open a pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo 'No newer skills release.'
+            exit 0
+          fi
+          serial=$(python3 -c "import json; print(json.load(open('skills-feed/v1/release.sig'))['serial'])")
+          branch="skills-release-$serial"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          git add skills-feed wordpress-code-ai/assets/skills
+          git commit -m "Mirror skills release $serial"
+          git push --force origin "$branch"
+          if [ "$(gh pr view "$branch" --json state --jq .state 2> /dev/null)" = OPEN ]; then
+            exit 0
+          fi
+          gh pr create --base main --head "$branch" --title "Mirror skills release $serial" --body \
+            "Copies Easy MCP AI's signed skills release $serial into skills-feed/ and the plugin. Sites download it within a day of merging; publish a release too, so new installs start with it. CI does not run on pull requests opened by GitHub Actions: the files were checked against their release.sig before they were copied."

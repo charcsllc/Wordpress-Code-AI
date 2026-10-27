@@ -303,7 +303,7 @@ msgid "PASTE EXTERNAL TEST RESULT BELOW"
 msgstr ""
 
 #: includes/admin/class-support-text.php:83
-msgid "(Press \"Test from the internet\", then copy the result and paste here.)"
+msgid "(On the Diagnostics card, press \"Test from your browser\", then press \"Copy result\" and paste here.)"
 msgstr ""
 
 #: includes/admin/class-support-text.php:103
@@ -373,7 +373,7 @@ msgid "EXTERNAL CONNECTION TEST"
 msgstr ""
 
 #: includes/admin/class-support-text.php:129
-msgid "[Paste here. On the same card, press \"Test from the internet\", then copy the result.]"
+msgid "[Paste here. On the same card, press \"Test from your browser\", then press \"Copy result\".]"
 msgstr ""
 
 #: includes/admin/class-support-text.php:131
@@ -443,6 +443,7 @@ msgstr ""
 #: includes/admin/class-support-text.php:177
 #: includes/admin/rest/class-tokens-controller.php:679
 #: assets/build/page-activity.js:1
+#: fork/class-browser-test.php:95
 msgid "Unknown"
 msgstr ""
 
@@ -3212,11 +3213,13 @@ msgid "All cleanup jobs are scheduled."
 msgstr ""
 
 #: includes/diagnostics/class-diagnostic-result.php:193
+#: fork/class-browser-test.php:94
 msgid "Failed"
 msgstr ""
 
 #: includes/diagnostics/class-diagnostic-result.php:197
 #: assets/build/index.js:36
+#: fork/class-browser-test.php:93
 msgid "Warning"
 msgstr ""
 
@@ -5870,6 +5873,7 @@ msgstr[1] ""
 
 #: assets/build/page-activity.js:8
 #: assets/build/page-activity.js:13
+#: fork/class-browser-test.php:129
 msgid "Date"
 msgstr ""
 
@@ -7973,6 +7977,7 @@ msgstr ""
 
 #: assets/build/page-dashboard.js:30
 #: assets/build/page-setup.js:17
+#: fork/class-browser-test.php:162
 msgid "Check"
 msgstr ""
 
@@ -8055,12 +8060,13 @@ msgstr ""
 
 #: assets/build/page-dashboard.js:31
 #: assets/build/page-setup.js:18
-msgid "Opens easymcpai.com, which tries to reach this site from the public internet"
+msgid "Opens a page where your browser tests the addresses AI clients use to reach this site"
 msgstr ""
 
 #: assets/build/page-dashboard.js:31
 #: assets/build/page-setup.js:18
-msgid "Test from the internet"
+#: fork/class-browser-test.php:38
+msgid "Test from your browser"
 msgstr ""
 
 #: assets/build/page-dashboard.js:31
@@ -9528,4 +9534,223 @@ msgstr ""
 
 #: assets/build/page-tools.js:31
 msgid "Descriptions"
+msgstr ""
+
+#: fork/class-browser-test.php:86
+msgid "Testing…"
+msgstr ""
+
+#: fork/class-browser-test.php:87
+msgid "Every check passed: AI clients can reach this site from your network."
+msgstr ""
+
+#: fork/class-browser-test.php:88
+msgid "The checks passed with warnings. See the details below."
+msgstr ""
+
+#: fork/class-browser-test.php:89
+msgid "Some checks failed. See the details below, and include the copied result when you ask for help."
+msgstr ""
+
+#: fork/class-browser-test.php:90
+msgid "Result copied."
+msgstr ""
+
+#: fork/class-browser-test.php:91
+msgid "Your browser did not allow copying. Select the table and copy it instead."
+msgstr ""
+
+#: fork/class-browser-test.php:92
+msgid "Passed"
+msgstr ""
+
+#: fork/class-browser-test.php:96
+msgid "AI connection address asks for sign-in"
+msgstr ""
+
+#: fork/class-browser-test.php:97
+msgid "It refuses a request without a token and says where AI clients sign in, as it should."
+msgstr ""
+
+#: fork/class-browser-test.php:98
+msgid "The WWW-Authenticate header is missing, so AI clients cannot find where to sign in. A proxy, CDN or security rule may be removing it."
+msgstr ""
+
+#: fork/class-browser-test.php:99
+msgid "Your browser hides the WWW-Authenticate header from this page because the admin area and the site use different addresses. Run the first command below to see it."
+msgstr ""
+
+#: fork/class-browser-test.php:100
+msgid "It answered without asking for sign-in. A cache may be serving a stored answer: exclude /wp-json/ from page caching."
+msgstr ""
+
+#: fork/class-browser-test.php:101
+msgid "Sign-in document for the connection address"
+msgstr ""
+
+#: fork/class-browser-test.php:102
+msgid "AI clients find the sign-in server here."
+msgstr ""
+
+#. translators: %s: the address the document describes.
+#: fork/class-browser-test.php:104
+#, php-format
+msgid "The document describes a different address (%s), so AI clients will not use it. Check both addresses under Settings → General."
+msgstr ""
+
+#: fork/class-browser-test.php:105
+msgid "The document names no sign-in server."
+msgstr ""
+
+#: fork/class-browser-test.php:106
+msgid "The sign-in document could not be read, so this test assumed the sign-in server is this site."
+msgstr ""
+
+#: fork/class-browser-test.php:107
+msgid "Sign-in server document"
+msgstr ""
+
+#: fork/class-browser-test.php:108
+msgid "AI clients find the sign-in and token addresses here."
+msgstr ""
+
+#: fork/class-browser-test.php:109
+msgid "None of the addresses AI clients try answered with the sign-in server document."
+msgstr ""
+
+#: fork/class-browser-test.php:110
+msgid "Sign-in documents at the root of the domain"
+msgstr ""
+
+#: fork/class-browser-test.php:111
+msgid "AI clients that look here first find the documents too."
+msgstr ""
+
+#: fork/class-browser-test.php:112
+msgid "Some AI clients look for the sign-in documents here first and cannot connect without them. Ask your host to let /.well-known/ reach WordPress."
+msgstr ""
+
+#. translators: %s: the error message from the browser.
+#: fork/class-browser-test.php:114
+#, php-format
+msgid "Your browser could not reach this address (%s). The site may be down, its certificate may not be valid, or a browser extension may be blocking the request."
+msgstr ""
+
+#: fork/class-browser-test.php:115
+msgid "A web page answered instead of the plugin. It is usually a firewall, cache, security or maintenance page."
+msgstr ""
+
+#: fork/class-browser-test.php:116
+msgid "Your host or a security rule stops addresses starting /.well-known/ before they reach WordPress. Ask your host to let /.well-known/ reach WordPress."
+msgstr ""
+
+#. translators: %s: an HTTP status code.
+#: fork/class-browser-test.php:118
+#, php-format
+msgid "Refused (HTTP %s): a firewall or security rule blocks this address."
+msgstr ""
+
+#: fork/class-browser-test.php:119
+msgid "Not found: the request did not reach the plugin. Open Settings → Permalinks, press Save Changes and test again."
+msgstr ""
+
+#: fork/class-browser-test.php:120
+msgid "Unavailable (HTTP 503). If AI access is paused in wordpress-code-ai, resume it. Otherwise a maintenance mode or the server is refusing requests."
+msgstr ""
+
+#. translators: %s: an HTTP status code.
+#: fork/class-browser-test.php:122
+#, php-format
+msgid "Server error (HTTP %s). The PHP error log usually says why."
+msgstr ""
+
+#. translators: %s: an HTTP status code.
+#: fork/class-browser-test.php:124
+#, php-format
+msgid "Unexpected answer (HTTP %s)."
+msgstr ""
+
+#. translators: %s: the address the request ended at.
+#: fork/class-browser-test.php:126
+#, php-format
+msgid "redirected to %s"
+msgstr ""
+
+#: fork/class-browser-test.php:127
+msgid "The address redirects. Some AI clients do not follow redirects, so make the addresses under Settings → General match the final address."
+msgstr ""
+
+#: fork/class-browser-test.php:128
+msgid "wordpress-code-ai: Test from your browser"
+msgstr ""
+
+#: fork/class-browser-test.php:130
+msgid "Site"
+msgstr ""
+
+#: fork/class-browser-test.php:131
+msgid "MCP endpoint"
+msgstr ""
+
+#: fork/class-browser-test.php:132
+msgid "Plugin version"
+msgstr ""
+
+#: fork/class-browser-test.php:133
+msgid "Browser"
+msgstr ""
+
+#: fork/class-browser-test.php:134
+#: fork/class-browser-test.php:164
+msgid "What came back"
+msgstr ""
+
+#: fork/class-browser-test.php:144
+msgid "Your browser now asks this site for the addresses an AI client uses to connect, the way the client does and without your WordPress login. The requests travel over the internet and through your CDN and firewall like any visitor’s, so they can find blocks that the Diagnostics card, which tests from the server itself, may not see. Nothing is sent anywhere else."
+msgstr ""
+
+#. translators: %s: the site's address.
+#: fork/class-browser-test.php:149
+#, php-format
+msgid "This site’s address (%s) only works on your own computer or network, so AI services on the internet cannot reach it, whatever this test shows."
+msgstr ""
+
+#: fork/class-browser-test.php:153
+msgid "This test needs JavaScript."
+msgstr ""
+
+#: fork/class-browser-test.php:155
+msgid "Run the test again"
+msgstr ""
+
+#: fork/class-browser-test.php:156
+msgid "Copy result"
+msgstr ""
+
+#: fork/class-browser-test.php:163
+msgid "Result"
+msgstr ""
+
+#: fork/class-browser-test.php:169
+msgid "What this test cannot see"
+msgstr ""
+
+#: fork/class-browser-test.php:170
+msgid "The requests come from your network. Blocks that only affect the servers of AI providers, such as a CDN setting that blocks AI bots or a rule that refuses data centre addresses, do not show up here. If Claude or ChatGPT cannot connect while every check passes, look for such a setting at your CDN or host."
+msgstr ""
+
+#: fork/class-browser-test.php:171
+msgid "Test from another computer"
+msgstr ""
+
+#: fork/class-browser-test.php:172
+msgid "To test from another computer or network, run these commands there. On Windows, type curl.exe instead of curl."
+msgstr ""
+
+#: fork/class-browser-test.php:174
+msgid "The first should answer 401 with a WWW-Authenticate: Bearer resource_metadata=\"…\" header, and the second 200 with JSON."
+msgstr ""
+
+#: fork/class-updater.php:83
+msgid "The release details could not be loaded from GitHub. Try again in a few minutes."
 msgstr ""

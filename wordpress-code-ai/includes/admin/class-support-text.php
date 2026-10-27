@@ -27,28 +27,6 @@ class Support_Text {
 
 
 
-    public static function external_test_host( $endpoint_url, $home_url ) {
-        $host = (string) \wp_parse_url( (string) $endpoint_url, PHP_URL_HOST );
-        $port = \wp_parse_url( (string) $endpoint_url, PHP_URL_PORT );
-        if ( $port ) {
-            $host .= ':' . $port;
-        }
-        $path = trim( (string) \wp_parse_url( (string) $home_url, PHP_URL_PATH ), '/' );
-        if ( '' !== $path ) {
-            $host .= '/' . $path;
-        }
-        return $host;
-    }
-
-    
-
-
-
-
-    public static function external_test_url( $endpoint_url, $home_url ) {
-        $host = self::external_test_host( $endpoint_url, $home_url );
-        return '' === $host ? '' : 'https://easymcpai.com/diagnose?url=' . rawurlencode( $host );
-    }
 
     
 
@@ -80,7 +58,7 @@ class Support_Text {
             '',
             '',
             '--- ' . \__( 'PASTE EXTERNAL TEST RESULT BELOW', 'wordpress-code-ai' ) . ' ---',
-            \__( '(Press "Test from the internet", then copy the result and paste here.)', 'wordpress-code-ai' ),
+            \__( '(On the Diagnostics card, press "Test from your browser", then press "Copy result" and paste here.)', 'wordpress-code-ai' ),
             '',
             '',
         ) );
@@ -126,7 +104,7 @@ class Support_Text {
             \__( '[Paste here. On the plugin dashboard, Diagnostics card, press "Copy System Info & Diagnostic".]', 'wordpress-code-ai' ),
             '',
             \__( 'EXTERNAL CONNECTION TEST', 'wordpress-code-ai' ),
-            \__( '[Paste here. On the same card, press "Test from the internet", then copy the result.]', 'wordpress-code-ai' ),
+            \__( '[Paste here. On the same card, press "Test from your browser", then press "Copy result".]', 'wordpress-code-ai' ),
             '',
             \__( 'HOW TO READ THE DATA ABOVE', 'wordpress-code-ai' ),
             \__( '- The "Server" block lists the web server, PHP SAPI and PHP limits. Web server and SAPI together decide whether an Authorization header survives to PHP, which is the most common cause of "it worked yesterday and now the token is rejected".', 'wordpress-code-ai' ),

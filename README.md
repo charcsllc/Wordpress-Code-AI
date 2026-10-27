@@ -9,7 +9,7 @@
 ---
 
 > **The plugin is in this repository.**
-> The plugin code is in the [`wordpress-code-ai/`](wordpress-code-ai/) folder, and [`wordpress-code-ai.zip`](wordpress-code-ai.zip) is the ready-to-install package.
+> The plugin code is in the [`wordpress-code-ai/`](wordpress-code-ai/) folder. The ready-to-install `wordpress-code-ai.zip` is attached to each [release](https://github.com/charcsllc/Wordpress-Code-AI/releases/latest).
 
 ---
 
@@ -17,6 +17,7 @@
 
 - [What This Is](#what-this-is)
 - [Installation](#installation)
+- [Updates](#updates)
 - [Setup](#setup)
 - [Connecting Clients](#connecting-clients)
   - [Claude Desktop](#claude-desktop-oauth--recommended)
@@ -32,7 +33,7 @@
 - [Resources](#resources)
 - [Skills](#skills)
 - [Security](#security)
-- [Updating from Easy MCP AI](#updating-from-easy-mcp-ai)
+- [Maintaining the Plugin](#maintaining-the-plugin)
 - [Credits](#credits)
 - [License](#license)
 
@@ -50,7 +51,7 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 
 ### Method 1 — ZIP Upload (Recommended)
 
-1. Download [`wordpress-code-ai.zip`](wordpress-code-ai.zip) from this repository (open the file on GitHub and click **Download raw file**).
+1. Download `wordpress-code-ai.zip` from the [latest release](https://github.com/charcsllc/Wordpress-Code-AI/releases/latest).
 2. Go to **Plugins → Add New Plugin → Upload Plugin** in your WordPress admin.
 3. Upload the ZIP and click **Install Now**, then **Activate**.
 
@@ -58,6 +59,14 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 
 1. Copy the [`wordpress-code-ai/`](wordpress-code-ai/) folder into `wp-content/plugins/` on your server.
 2. Go to **Plugins** in your WordPress admin and click **Activate** under **wordpress-code-ai**.
+
+---
+
+## Updates
+
+WordPress offers new versions of wordpress-code-ai on the **Plugins** and **Dashboard → Updates** screens, the same way as for any other plugin: about twice a day it checks this repository's [releases](https://github.com/charcsllc/Wordpress-Code-AI/releases). Click **Update now**, or click **Enable auto-updates** on the Plugins screen and WordPress installs new versions on its own.
+
+Version 2.3.0.1 is the first version that gets these updates. A site that runs 2.3.0 needs one manual update: download `wordpress-code-ai.zip` from the [latest release](https://github.com/charcsllc/Wordpress-Code-AI/releases/latest), upload it under **Plugins → Add New Plugin → Upload Plugin**, and click **Replace current with uploaded**. Settings, tokens and connections are kept.
 
 ---
 
@@ -649,32 +658,66 @@ The `skills/wordpress-site-manager.md` file contains a ready-to-use Claude skill
 - **Change snapshots:** Write operations store before/after JSON payloads, queryable later via the `wp_history_*` tools.
 - **OAuth 2.1:** Full PKCE S256 flow with rotating refresh tokens, per-scope consent, and RFC 7009 token revocation.
 - **Force Draft:** A global switch that pins all AI-created content to `draft` status, regardless of what the AI requests.
+- **Updates from this repository only:** The plugin installs an update only from a ZIP attached to a release of this repository.
 
 ---
 
-## Updating from Easy MCP AI
+## Maintaining the Plugin
 
-wordpress-code-ai does not receive Easy MCP AI's updates, including security fixes, on its own. To bring in a new Easy MCP AI release:
+### How the plugin folder is made
 
-1. Download the new Easy MCP AI ZIP and unzip it.
-2. Delete everything inside `wordpress-code-ai/`, then copy in the contents of the unzipped `easy-mcp-ai/` folder.
-3. Run `python3 tools/rename-upstream.py wordpress-code-ai` (on Windows, `py tools\rename-upstream.py wordpress-code-ai`). It renames the plugin, removes the Themeisle SDK and adds the credit. If a new release changed a line the script edits, it stops without writing anything and names that line.
-4. Run `python3 tools/update-skills-mirror.py --from-plugin wordpress-code-ai --bundle`. It copies the skills release bundled with the new version into `skills-feed/` if it is newer, and puts the newest release from `skills-feed/` back into the plugin (see below).
-5. Commit, then rebuild the ZIP: `git archive --format=zip -o wordpress-code-ai.zip HEAD wordpress-code-ai`, and commit the ZIP.
+`wordpress-code-ai/` is Easy MCP AI with three kinds of changes:
+
+- [`tools/rename-upstream.py`](tools/rename-upstream.py) renames the plugin and makes exact-text edits to Easy MCP AI's files. Its `CHANGELOG` list sets the version.
+- [`wordpress-code-ai/fork/`](wordpress-code-ai/fork/) holds the code that exists only here: updates from GitHub and the browser test.
+- `wordpress-code-ai/assets/skills/` holds the newest signed skills release (see [Skill updates](#skill-updates)).
+
+`python3 tools/rebuild-plugin.py` makes the folder again from the Easy MCP AI release named in the plugin's credit (on Windows, `py tools\rebuild-plugin.py`). CI checks on every push that the folder is exactly what it makes, so no change is lost when a new Easy MCP AI release comes in.
+
+### Changing the plugin
+
+- **Code that exists only here** goes in `wordpress-code-ai/fork/`. Edit it there.
+- **A change to one of Easy MCP AI's files** goes in `tools/rename-upstream.py`, as an exact-text edit in `POST` (or in `PRE`, for text the rename changes). Then run `python3 tools/rebuild-plugin.py` to apply it. A change made only in `wordpress-code-ai/` fails CI.
+
+### Publishing a release
+
+1. Add an entry at the top of `CHANGELOG` in `tools/rename-upstream.py`, with the next version (for example `2.3.0.2`), the date and what changed.
+2. Run `python3 tools/rebuild-plugin.py`. It writes the version to the plugin header, the version constant and `readme.txt`, and adds the entry to the changelog.
+3. Commit, push to `main`, and wait for CI to pass.
+4. Tag that commit with `v` and the version, and push the tag: `git tag v2.3.0.2 && git push origin v2.3.0.2`.
+
+The **Release** workflow checks that the tag matches the version, builds `wordpress-code-ai.zip` and `update.json` with [`tools/build-release.py`](tools/build-release.py), and publishes the release with both files. Sites see the update within about 12 hours, or at once under **Dashboard → Updates → Check again**.
+
+### Updating from Easy MCP AI
+
+wordpress-code-ai does not receive Easy MCP AI's updates, including security fixes, on its own. To bring in a new Easy MCP AI release, for example 2.4.0:
+
+1. Add an entry for `2.4.0.1` at the top of `CHANGELOG` in `tools/rename-upstream.py`, for example "Based on Easy MCP AI 2.4.0."
+2. Run `python3 tools/rebuild-plugin.py --upstream 2.4.0`. It downloads the release from WordPress.org, makes every change described above, and copies a newer bundled skills release into `skills-feed/`. If the new release changed a line the script edits, it stops without writing anything and names that line: update the edit and run it again.
+3. Review the changes with `git diff`, commit, and publish a release as above.
 
 ### Skill updates
 
 Once a day the plugin downloads its skills (step-by-step instructions for common tasks) from [`skills-feed/`](skills-feed/) in this repository, not from the original vendor's server. These files are byte-for-byte copies of Easy MCP AI's signed skill releases: the plugin checks the original signature and rejects any file that was edited.
 
-To publish a newer skills release from Easy MCP AI, run `python3 tools/update-skills-mirror.py --bundle` (it downloads the newest release from skills.easymcpai.com, checks it, and also copies it into the plugin), then commit. Sites pick it up within a day. Rebuild the ZIP too, so fresh installs start with the new release before their first download.
+Every Monday the **Skills mirror** workflow looks for a newer release on skills.easymcpai.com. When there is one, it copies it into `skills-feed/` and the plugin and opens a pull request; merging it publishes the skills, and sites pick them up within a day. GitHub Actions can open the pull request only when **Allow GitHub Actions to create and approve pull requests** is on, under **Settings → Actions → General**. To do the same by hand, run `python3 tools/update-skills-mirror.py --bundle` and commit. Publish a release afterwards, so new installs start with the new skills before their first download.
 
-The download address contains this repository's exact name (`charcsllc/Wordpress-Code-AI`) because the plugin follows no redirects. If you rename the repository, update `SKILLS_FEED` in `tools/rename-upstream.py` and run the steps above again.
+The download address contains this repository's exact name (`charcsllc/Wordpress-Code-AI`) because the plugin follows no redirects. If you rename the repository, update `SKILLS_FEED` and `RELEASES` in `tools/rename-upstream.py`, `REPOSITORY` in `tools/build-release.py` and in `wordpress-code-ai/fork/class-updater.php`, and run `python3 tools/rebuild-plugin.py`.
+
+### Checks
+
+The **CI** workflow runs on every push to `main` and on every pull request:
+
+- `php -l` on every PHP file, with PHP 7.4 (the oldest the plugin supports) and PHP 8.3;
+- `python3 tools/build-release.py --check`: the versions in the plugin header, the version constant, `readme.txt` and the changelog agree;
+- `python3 tools/rebuild-plugin.py --check`: `wordpress-code-ai/` is exactly what the tools build;
+- a test build of the release files.
 
 ---
 
 ## Credits
 
-wordpress-code-ai is a modified version of [Easy MCP AI](https://easymcpai.com) 2.3.0 by EasyMCPAI, used under the GNU General Public License v2 or later. Changes: the plugin is renamed, the bundled Themeisle SDK and the feedback reports sent to Themeisle are removed, and support reports go to info@charcs.net.
+wordpress-code-ai is a modified version of [Easy MCP AI](https://easymcpai.com) 2.3.0 by EasyMCPAI, used under the GNU General Public License v2 or later. Changes: the plugin is renamed, the bundled Themeisle SDK and the feedback reports sent to Themeisle are removed, support reports go to info@charcs.net, the connection test that opened easymcpai.com is replaced by one that runs in your browser, and updates come from this repository's releases.
 
 ---
 

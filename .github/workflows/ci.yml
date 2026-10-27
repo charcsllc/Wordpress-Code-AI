@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  php-lint:
+    name: PHP ${{ matrix.php }} syntax
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # The oldest PHP the plugin supports, and a current one.
+        php: ['7.4', '8.3']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: none
+      - name: Check every PHP file for syntax errors
+        # Before PHP 8.3, php -l checks only the first file it is given.
+        run: |
+          if ! find wordpress-code-ai -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l > lint.log 2>&1; then
+            grep -v '^No syntax errors detected' lint.log
+            exit 1
+          fi
+
+  plugin:
+    name: Plugin folder and release files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check the versions agree
+        run: python3 tools/build-release.py --check
+      - name: Check wordpress-code-ai/ is what tools/rebuild-plugin.py builds
+        run: python3 tools/rebuild-plugin.py --check
+      - name: Build the release files
+        run: python3 tools/build-release.py
+      - name: Check the ZIP unpacks to wordpress-code-ai/
+        run: unzip -l dist/wordpress-code-ai.zip wordpress-code-ai/wordpress-code-ai.php wordpress-code-ai/fork/load.php

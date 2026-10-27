@@ -201,7 +201,6 @@ class Status_Controller extends Admin_Rest_Controller {
             }
         }
         $last_run = $this->call( 'last_run' );
-        $endpoint = \rest_url( 'wordpress-code-ai/v1/mcp' );
         $version  = defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '';
         return self::build_payload(
             $results,
@@ -209,7 +208,7 @@ class Status_Controller extends Admin_Rest_Controller {
             $version,
             is_numeric( $last_run ) ? (int) $last_run : null,
             array(
-                'externalTestUrl' => Support_Text::external_test_url( $endpoint, \home_url() ),
+                'externalTestUrl' => \wordpress_code_ai\Fork\Browser_Test::url(),
                 'mailto'          => Support_Text::mailto( \home_url(), $version ),
             ),
             
