@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Privileged\Search_Replace;
+namespace wordpress_code_ai\Privileged\Search_Replace;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -57,7 +57,7 @@ final class Runner {
 
     const RESULT_BUDGET = 60000;
 
-    const PLUGIN_MARK          = 'easy_mcp_ai_';
+    const PLUGIN_MARK          = 'wordpress_code_ai_';
     const PLUGIN_LIKE          = '%easy\\_mcp\\_ai\\_%';
     const SITE_ADDRESS_OPTIONS = array( 'siteurl', 'home' );
     const NAME_COLUMNS         = array( 'option_name', 'meta_key' );
@@ -156,7 +156,7 @@ final class Runner {
                 $pattern = (string) $pattern;
                 foreach ( $ours as $table ) {
                     if ( fnmatch( $pattern, $table ) ) {
-                        throw new \InvalidArgumentException( sprintf( 'The table %s belongs to Easy MCP AI and is never changed by a search-replace.', $table ) );
+                        throw new \InvalidArgumentException( sprintf( 'The table %s belongs to wordpress-code-ai and is never changed by a search-replace.', $table ) );
                     }
                 }
                 $matched = array_values( array_filter( $scope, static function ( $t ) use ( $pattern ) {

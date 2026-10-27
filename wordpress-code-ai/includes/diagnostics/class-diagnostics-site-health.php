@@ -23,7 +23,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -101,7 +101,7 @@ class Diagnostics_Site_Health {
                 continue;
             }
 
-            $tests['direct'][ 'easy_mcp_ai_' . $prefix ] = array(
+            $tests['direct'][ 'wordpress_code_ai_' . $prefix ] = array(
                 'label' => self::group_label( $prefix ),
                 'test'  => function () use ( $prefix ) {
                     return self::run_group_test( $prefix );
@@ -146,7 +146,7 @@ class Diagnostics_Site_Health {
 
         $description = '';
         if ( empty( $problems ) ) {
-            $description = '<p>' . \esc_html__( 'No problems found in this area.', 'easy-mcp-ai' ) . '</p>';
+            $description = '<p>' . \esc_html__( 'No problems found in this area.', 'wordpress-code-ai' ) . '</p>';
         } else {
             
 
@@ -179,16 +179,16 @@ class Diagnostics_Site_Health {
             'label'       => self::group_label( $prefix ),
             'status'      => $status,
             'badge'       => array(
-                'label' => __( 'Easy MCP AI', 'easy-mcp-ai' ),
+                'label' => __( 'wordpress-code-ai', 'wordpress-code-ai' ),
                 'color' => 'blue',
             ),
             'description' => $description,
             'actions'     => sprintf(
                 '<a href="%s">%s</a>',
-                \esc_url( \admin_url( 'admin.php?page=easy-mcp-ai' ) ),
-                \esc_html__( 'Open Easy MCP AI diagnostics', 'easy-mcp-ai' )
+                \esc_url( \admin_url( 'admin.php?page=wordpress-code-ai' ) ),
+                \esc_html__( 'Open wordpress-code-ai diagnostics', 'wordpress-code-ai' )
             ),
-            'test'        => 'easy_mcp_ai_' . $prefix,
+            'test'        => 'wordpress_code_ai_' . $prefix,
         );
     }
 
@@ -296,7 +296,7 @@ class Diagnostics_Site_Health {
 
         $description = sprintf(
             /* translators: 1: total checks, 2: passed, 3: warnings, 4: failures, 5: could not run on this host. */
-            __( '%1$d checks: %2$d passed, %3$d warnings, %4$d failed, %5$d could not be checked on this host.', 'easy-mcp-ai' ),
+            __( '%1$d checks: %2$d passed, %3$d warnings, %4$d failed, %5$d could not be checked on this host.', 'wordpress-code-ai' ),
             $summary['total'],
             $summary['pass'],
             $summary['warn'],
@@ -306,20 +306,20 @@ class Diagnostics_Site_Health {
         if ( $deferred > 0 ) {
             $description .= ' ' . sprintf(
                 /* translators: %d: number of slower checks not run on this page load. */
-                __( '(%d slower checks not run — press Re-run checks.)', 'easy-mcp-ai' ),
+                __( '(%d slower checks not run — press Re-run checks.)', 'wordpress-code-ai' ),
                 $deferred
             );
         }
         if ( $restricted > 0 ) {
             $description .= ' ' . sprintf(
                 /* translators: %d: number of checks hidden because the viewer is not a network administrator. */
-                __( '(%d hidden — only a network administrator can see them.)', 'easy-mcp-ai' ),
+                __( '(%d hidden — only a network administrator can see them.)', 'wordpress-code-ai' ),
                 $restricted
             );
         }
 
-        $info['easy-mcp-ai'] = array(
-            'label'       => __( 'Easy MCP AI diagnostics', 'easy-mcp-ai' ),
+        $info['wordpress-code-ai'] = array(
+            'label'       => __( 'wordpress-code-ai diagnostics', 'wordpress-code-ai' ),
             'description' => $description,
             'fields'      => $fields,
         );
@@ -357,7 +357,7 @@ class Diagnostics_Site_Health {
 
         return sprintf(
             /* translators: %s: diagnostics group name, e.g. "Database schema". */
-            __( 'Easy MCP AI: %s', 'easy-mcp-ai' ),
+            __( 'wordpress-code-ai: %s', 'wordpress-code-ai' ),
             $name
         );
     }

@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Tools\ACF;
+namespace wordpress_code_ai\Tools\ACF;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -372,8 +372,8 @@ final class Acf_Rest_Call {
 
     private static function missing_acf_cause( $opened, $object ) {
         if ( $opened ) {
-            return 'Easy MCP AI turns ACF\'s REST support on for this call, so the likely causes are code that turns it off again after that (a late acf/settings/rest_api_enabled filter), or an endpoint ACF does not recognise.';
+            return 'wordpress-code-ai turns ACF\'s REST support on for this call, so the likely causes are code that turns it off again after that (a late acf/settings/rest_api_enabled filter), or an endpoint ACF does not recognise.';
         }
-        return sprintf( 'Most likely this site has ACF\'s REST support turned off; Easy MCP AI turns it on only for users who can edit the %s.', $object );
+        return sprintf( 'Most likely this site has ACF\'s REST support turned off; wordpress-code-ai turns it on only for users who can edit the %s.', $object );
     }
 }

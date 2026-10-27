@@ -21,7 +21,7 @@
 
 
 
-namespace Easy_MCP_AI\Skills;
+namespace wordpress_code_ai\Skills;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -48,7 +48,7 @@ final class Skills {
     private static $bundled_dir = null;
 
     
-    public static function use_registry( ?\Easy_MCP_AI\Tools\Tool_Registry $registry ): void {
+    public static function use_registry( ?\wordpress_code_ai\Tools\Tool_Registry $registry ): void {
         self::$registry = $registry;
         self::$catalog  = null;
     }
@@ -113,7 +113,7 @@ final class Skills {
 
 
     public static function bundled(): ?Skill_Set {
-        $dir  = null !== self::$bundled_dir ? self::$bundled_dir : ( defined( 'EASY_MCP_AI_PLUGIN_DIR' ) ? EASY_MCP_AI_PLUGIN_DIR . self::BUNDLED_DIR : '' );
+        $dir  = null !== self::$bundled_dir ? self::$bundled_dir : ( defined( 'WORDPRESS_CODE_AI_PLUGIN_DIR' ) ? WORDPRESS_CODE_AI_PLUGIN_DIR . self::BUNDLED_DIR : '' );
         $body = is_readable( $dir . '/release.json' ) ? (string) file_get_contents( $dir . '/release.json' ) : '';
         $sig  = is_readable( $dir . '/release.sig' ) ? json_decode( (string) file_get_contents( $dir . '/release.sig' ), true ) : null;
         if ( '' === $body || ! is_array( $sig ) ) {
@@ -184,7 +184,7 @@ final class Skills {
         }
         $operator = '' === $m[1] ? '>=' : ( '=' === $m[1] ? '==' : $m[1] );
         if ( null === $version ) {
-            $version = defined( 'EASY_MCP_AI_VERSION' ) ? EASY_MCP_AI_VERSION : '0';
+            $version = defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '0';
         }
         return version_compare( (string) $version, $m[2], $operator );
     }

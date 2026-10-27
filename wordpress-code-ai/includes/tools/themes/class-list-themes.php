@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Themes;
+namespace wordpress_code_ai\Tools\Themes;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -41,7 +41,7 @@ class List_Themes extends Base_Tool {
 
 
     public static function lifecycle_hint(): string {
-        return \Easy_MCP_AI\Config::brand( 'Installing and deleting themes have their own tools, which are off by default: when none is in your tools, tell the user an administrator can switch them on in wp-admin under Easy MCP AI › Settings › Advanced › Disabled tools, or allow them for this connection.' );
+        return \wordpress_code_ai\Config::brand( 'Installing and deleting themes have their own tools, which are off by default: when none is in your tools, tell the user an administrator can switch them on in wp-admin under wordpress-code-ai › Settings › Advanced › Disabled tools, or allow them for this connection.' );
     }
 
     public function get_category() {

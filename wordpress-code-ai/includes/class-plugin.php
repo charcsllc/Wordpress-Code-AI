@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -88,24 +88,24 @@ class Plugin {
         \add_action( 'parse_request', array( $this, 'handle_root_fallback' ), 1 );
         
         \add_action( 'update_option_permalink_structure', array( $this, 'remove_plain_routes_after_permalink_change' ), 10, 2 );
-        \add_action( 'easy_mcp_ai_cleanup_audit_log', array( $this, 'cleanup_audit_log' ) );
-        \add_action( 'easy_mcp_ai_cleanup_oauth', array( $this, 'cleanup_oauth_storage' ) );
-        \add_action( 'easy_mcp_ai_cleanup_new_token_meta', array( $this, 'cleanup_new_token_meta' ) );
-        \add_action( 'easy_mcp_ai_cleanup_change_log', array( __CLASS__, 'cleanup_change_log' ) );
-        \add_action( 'easy_mcp_ai_cleanup_tasks', array( $this, 'cleanup_tasks' ) );
-        \add_action( 'easy_mcp_ai_cleanup_approvals', array( __CLASS__, 'cleanup_approvals' ) );
+        \add_action( 'wordpress_code_ai_cleanup_audit_log', array( $this, 'cleanup_audit_log' ) );
+        \add_action( 'wordpress_code_ai_cleanup_oauth', array( $this, 'cleanup_oauth_storage' ) );
+        \add_action( 'wordpress_code_ai_cleanup_new_token_meta', array( $this, 'cleanup_new_token_meta' ) );
+        \add_action( 'wordpress_code_ai_cleanup_change_log', array( __CLASS__, 'cleanup_change_log' ) );
+        \add_action( 'wordpress_code_ai_cleanup_tasks', array( $this, 'cleanup_tasks' ) );
+        \add_action( 'wordpress_code_ai_cleanup_approvals', array( __CLASS__, 'cleanup_approvals' ) );
         
         
-        \add_action( 'easy_mcp_ai_skills_sync', array( __CLASS__, 'run_skills_sync' ) );
+        \add_action( 'wordpress_code_ai_skills_sync', array( __CLASS__, 'run_skills_sync' ) );
         
         
         
         \add_action( OAuth\Client_Metadata_Support::HOOK, array( __CLASS__, 'run_oauth_cimd_probe' ) );
-        \add_action( 'easy_mcp_ai_task_tick', array( $this, 'run_task_tick' ), 10, 1 );
+        \add_action( 'wordpress_code_ai_task_tick', array( $this, 'run_task_tick' ), 10, 1 );
         
-        \add_action( 'easy_mcp_ai_search_replace_tick', array( __CLASS__, 'run_search_replace_tick' ), 10, 1 );
+        \add_action( 'wordpress_code_ai_search_replace_tick', array( __CLASS__, 'run_search_replace_tick' ), 10, 1 );
         
-        \add_action( 'plugins_loaded', array( 'Easy_MCP_AI\Activator', 'maybe_upgrade' ) );
+        \add_action( 'plugins_loaded', array( 'wordpress_code_ai\Activator', 'maybe_upgrade' ) );
         \add_action( 'plugins_loaded', array( $this, 'maybe_upgrade_oauth' ) );
         
         
@@ -124,14 +124,14 @@ class Plugin {
         \add_action( 'wp_abilities_api_init', array( __CLASS__, 'register_learnpress_abilities' ), 1000 );
         
         
-        \add_action( 'update_option_easy_mcp_ai_enabled_plugin_groups', array( __CLASS__, 'learnpress_group_updated' ), 10, 2 );
-        \add_action( 'add_option_easy_mcp_ai_enabled_plugin_groups', array( __CLASS__, 'learnpress_group_added' ), 10, 2 );
+        \add_action( 'update_option_wordpress_code_ai_enabled_plugin_groups', array( __CLASS__, 'learnpress_group_updated' ), 10, 2 );
+        \add_action( 'add_option_wordpress_code_ai_enabled_plugin_groups', array( __CLASS__, 'learnpress_group_added' ), 10, 2 );
         
         
         
         \add_action( 'wp_abilities_api_init', array( __CLASS__, 'register_elementor_abilities' ), 1000 );
-        \add_action( 'update_option_easy_mcp_ai_enabled_plugin_groups', array( __CLASS__, 'elementor_group_updated' ), 10, 2 );
-        \add_action( 'add_option_easy_mcp_ai_enabled_plugin_groups', array( __CLASS__, 'elementor_group_added' ), 10, 2 );
+        \add_action( 'update_option_wordpress_code_ai_enabled_plugin_groups', array( __CLASS__, 'elementor_group_updated' ), 10, 2 );
+        \add_action( 'add_option_wordpress_code_ai_enabled_plugin_groups', array( __CLASS__, 'elementor_group_added' ), 10, 2 );
         
         
         if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -222,7 +222,7 @@ class Plugin {
     private function is_plugin_admin_screen() {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only screen routing; mutates nothing.
         $page = isset( $_GET['page'] ) ? \sanitize_key( \wp_unslash( $_GET['page'] ) ) : '';
-        return '' !== $page && 0 === strpos( $page, 'easy-mcp-ai' );
+        return '' !== $page && 0 === strpos( $page, 'wordpress-code-ai' );
     }
 
     
@@ -249,7 +249,7 @@ class Plugin {
             return;
         }
 
-        if ( ! \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) ) ) {
+        if ( ! \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) ) ) {
             return;
         }
 
@@ -407,7 +407,7 @@ class Plugin {
         
         
         $resource_path = \wp_parse_url(
-            \rest_url( 'easy-mcp-ai/v1/mcp' ),
+            \rest_url( 'wordpress-code-ai/v1/mcp' ),
             PHP_URL_PATH
         );
         if ( ! is_string( $resource_path ) || '' === $resource_path ) {
@@ -548,9 +548,9 @@ class Plugin {
             return null;
         }
         $path          = rtrim( $path, '/' );
-        $resource_path = \wp_parse_url( \rest_url( 'easy-mcp-ai/v1/mcp' ), PHP_URL_PATH );
+        $resource_path = \wp_parse_url( \rest_url( 'wordpress-code-ai/v1/mcp' ), PHP_URL_PATH );
         
-        if ( ! is_string( $resource_path ) || '' === $resource_path || false !== strpos( \rest_url( 'easy-mcp-ai/v1/mcp' ), '?' ) ) {
+        if ( ! is_string( $resource_path ) || '' === $resource_path || false !== strpos( \rest_url( 'wordpress-code-ai/v1/mcp' ), '?' ) ) {
             return null;
         }
         $resource_path = '/' . trim( $resource_path, '/' );
@@ -579,17 +579,17 @@ class Plugin {
 
     public static function authorize_path_mode( $request_uri_raw, string $home_path = '' ): ?string {
         $path = \wp_parse_url( (string) $request_uri_raw, PHP_URL_PATH );
-        if ( ! is_string( $path ) || false === strpos( $path, '/easy-mcp-ai/authorize' ) ) {
+        if ( ! is_string( $path ) || false === strpos( $path, '/wordpress-code-ai/authorize' ) ) {
             return null;
         }
         $path = self::strip_home_path( $path, $home_path );
         if ( 0 === strpos( $path, '/index.php/' ) ) {
             $path = substr( $path, strlen( '/index.php' ) );
         }
-        if ( '/easy-mcp-ai/authorize' === $path ) {
+        if ( '/wordpress-code-ai/authorize' === $path ) {
             return 'site';
         }
-        if ( '/easy-mcp-ai/authorize/resource' === $path ) {
+        if ( '/wordpress-code-ai/authorize/resource' === $path ) {
             return 'resource';
         }
         return null;
@@ -607,18 +607,18 @@ class Plugin {
         
         
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public routing check; the page verifies its own nonce on POST.
-        if ( ! isset( $_GET['easy_mcp_ai_approve'] ) && ! isset( $_POST['easy_mcp_ai_approve'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        if ( ! isset( $_GET['wordpress_code_ai_approve'] ) && ! isset( $_POST['wordpress_code_ai_approve'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
             return;
         }
         
         
         Cache\Page_Cache_Opt_Out::apply_to_direct_response();
         ob_start();
-        \Easy_MCP_AI\Approvals\Approval_Schema::maybe_upgrade();
+        \wordpress_code_ai\Approvals\Approval_Schema::maybe_upgrade();
         Activator::maybe_upgrade_core_tables();
         $method = isset( $_SERVER['REQUEST_METHOD'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) : 'GET';
-        $gate   = new \Easy_MCP_AI\Approvals\Approval_Gate( new \Easy_MCP_AI\Approvals\Wpdb_Approval_Store() );
-        $page   = new \Easy_MCP_AI\Approvals\Approval_Page( $gate );
+        $gate   = new \wordpress_code_ai\Approvals\Approval_Gate( new \wordpress_code_ai\Approvals\Wpdb_Approval_Store() );
+        $page   = new \wordpress_code_ai\Approvals\Approval_Page( $gate );
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.NonceVerification.Missing -- verified inside Approval_Page::handle() for the decision POST.
         $out = $page->handle( $method, isset( $_GET ) ? \wp_unslash( $_GET ) : array(), isset( $_POST ) ? \wp_unslash( $_POST ) : array() );
         while ( ob_get_level() > 0 ) {
@@ -650,7 +650,7 @@ class Plugin {
 
     public static function maybe_register_preview_link(): void {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public routing check; the link's signature is verified when the post is served.
-        if ( ! isset( $_GET['easy_mcp_ai_preview'] ) || \is_admin() ) {
+        if ( ! isset( $_GET['wordpress_code_ai_preview'] ) || \is_admin() ) {
             return;
         }
         Preview\Preview_Link::register_front_end();
@@ -677,10 +677,10 @@ class Plugin {
             return;
         }
         try {
-            $store = new \Easy_MCP_AI\Approvals\Wpdb_Approval_Store();
+            $store = new \wordpress_code_ai\Approvals\Wpdb_Approval_Store();
             $now   = gmdate( 'Y-m-d H:i:s' );
             $store->expire_pending( $now );
-            $cutoff = gmdate( 'Y-m-d H:i:s', time() - \Easy_MCP_AI\Approvals\Approval_Gate::RETENTION_DAYS * DAY_IN_SECONDS );
+            $cutoff = gmdate( 'Y-m-d H:i:s', time() - \wordpress_code_ai\Approvals\Approval_Gate::RETENTION_DAYS * DAY_IN_SECONDS );
             for ( $i = 0; $i < self::CLEANUP_MAX_ITERATIONS; $i++ ) {
                 if ( $store->delete_old( $cutoff, 500 ) < 500 ) {
                     break;
@@ -688,7 +688,7 @@ class Plugin {
             }
         } catch ( \Throwable $e ) {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                error_log( sprintf( 'Easy MCP AI approvals cleanup failed: %s', $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
+                error_log( sprintf( 'wordpress-code-ai approvals cleanup failed: %s', $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
             }
         }
     }
@@ -705,7 +705,7 @@ class Plugin {
 
     public function handle_oauth_authorize_request() {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Public routing check; authorize handler enforces its own nonce downstream.
-        $oauth_param = isset( $_GET['easy_mcp_ai_oauth'] ) ? sanitize_text_field( wp_unslash( $_GET['easy_mcp_ai_oauth'] ) ) : '';
+        $oauth_param = isset( $_GET['wordpress_code_ai_oauth'] ) ? sanitize_text_field( wp_unslash( $_GET['wordpress_code_ai_oauth'] ) ) : '';
         
         
         
@@ -718,8 +718,8 @@ class Plugin {
         if ( null !== $path_mode ) {
             $oauth_param = 'authorize';
             $iss_mode    = $path_mode;
-        } elseif ( 'authorize' === $oauth_param && isset( $_GET['easy_mcp_ai_iss'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- bound into the consent nonce on POST; 'none' is honoured only while the root fallback is armed.
-            $iss_mode = self::requested_iss_mode( sanitize_key( wp_unslash( $_GET['easy_mcp_ai_iss'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        } elseif ( 'authorize' === $oauth_param && isset( $_GET['wordpress_code_ai_iss'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- bound into the consent nonce on POST; 'none' is honoured only while the root fallback is armed.
+            $iss_mode = self::requested_iss_mode( sanitize_key( wp_unslash( $_GET['wordpress_code_ai_iss'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
         }
         
         
@@ -729,7 +729,7 @@ class Plugin {
         if ( 'authorize' !== $oauth_param && 'device' !== $oauth_param ) {
             return;
         }
-        if ( ! \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) ) ) {
+        if ( ! \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) ) ) {
             return;
         }
         
@@ -928,7 +928,7 @@ class Plugin {
             }
             $code    = \esc_html( $response->get_error_code() );
             $message = \esc_html( $response->get_error_message() );
-            $title   = \esc_html__( 'Authorization Error', 'easy-mcp-ai' );
+            $title   = \esc_html__( 'Authorization Error', 'wordpress-code-ai' );
 
             $site = \esc_html( Console_Styles::site_label() );
 
@@ -938,16 +938,16 @@ class Plugin {
                 . '<meta name="robots" content="noindex, nofollow">'
                 . '<title>' . $title . ' &mdash; ' . $site . '</title>'
                 . Console_Styles::inline()
-                . '</head><body class="emcp-page">'
-                . '<div class="emcp-shell emcp-shell--narrow">'
-                . '<div class="emcp-topbar">' . Console_Styles::logo()
-                . '<h1 class="emcp-topbar__title">' . $title . '</h1>'
+                . '</head><body class="wcai-page">'
+                . '<div class="wcai-shell wcai-shell--narrow">'
+                . '<div class="wcai-topbar">' . Console_Styles::logo()
+                . '<h1 class="wcai-topbar__title">' . $title . '</h1>'
                 . Console_Styles::site_name() . '</div>'
-                . '<div class="emcp-body"><div class="emcp-notice emcp-notice--error">'
-                . '<p class="emcp-notice__title"><code class="emcp-mono">' . $code . '</code></p>'
+                . '<div class="wcai-body"><div class="wcai-notice wcai-notice--error">'
+                . '<p class="wcai-notice__title"><code class="wcai-mono">' . $code . '</code></p>'
                 . '<p>' . $message . '</p>'
                 . '</div></div></div>'
-                . '<p class="emcp-pagenote"><span class="emcp-dot"></span>' . \esc_html__( 'Powered by Easy MCP AI', 'easy-mcp-ai' ) . '</p>'
+                . '<p class="wcai-pagenote"><span class="wcai-dot"></span>' . \esc_html__( 'Powered by wordpress-code-ai', 'wordpress-code-ai' ) . '</p>'
                 . '</body></html>';
             // phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
             return;
@@ -1001,7 +1001,7 @@ class Plugin {
     public function register_rest_routes() {
         
         
-        \Easy_MCP_AI\History\Change_Log_Schema::maybe_upgrade();
+        \wordpress_code_ai\History\Change_Log_Schema::maybe_upgrade();
         
         
         
@@ -1009,10 +1009,10 @@ class Plugin {
         Activator::maybe_upgrade_core_tables();
         
         
-        \Easy_MCP_AI\Tasks\Task_Schema::maybe_upgrade();
+        \wordpress_code_ai\Tasks\Task_Schema::maybe_upgrade();
         
         
-        \Easy_MCP_AI\Approvals\Approval_Schema::maybe_upgrade();
+        \wordpress_code_ai\Approvals\Approval_Schema::maybe_upgrade();
 
 
         $this->token_manager     = new Auth\Token_Manager();
@@ -1033,28 +1033,28 @@ class Plugin {
         
         
         
-        if ( \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_enabled', true ) ) {
-            $change_recorder = new \Easy_MCP_AI\History\Change_Recorder(
-                new \Easy_MCP_AI\History\Change_Log_Repository()
+        if ( \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_enabled', true ) ) {
+            $change_recorder = new \wordpress_code_ai\History\Change_Recorder(
+                new \wordpress_code_ai\History\Change_Log_Repository()
             );
             $change_recorder->register();
 
             
             
             
-            \add_action( 'easy_mcp_ai_change_context_disarming', array( $change_recorder, 'reassert_hooks' ), 5 );
+            \add_action( 'wordpress_code_ai_change_context_disarming', array( $change_recorder, 'reassert_hooks' ), 5 );
 
             
             
             
             
-            self::wire_db_interceptor( (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_capture_db', false ) );
+            self::wire_db_interceptor( (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_capture_db', false ) );
 
             
             
-            if ( \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_external_intent', true ) ) {
-                ( new \Easy_MCP_AI\History\Change_External_Intent(
-                    new \Easy_MCP_AI\History\Change_Log_Repository()
+            if ( \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_external_intent', true ) ) {
+                ( new \wordpress_code_ai\History\Change_External_Intent(
+                    new \wordpress_code_ai\History\Change_Log_Repository()
                 ) )->register();
             }
         }
@@ -1070,7 +1070,7 @@ class Plugin {
         MCP\Rest_Auth_Override::register();
 
         
-        if ( \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) ) ) {
+        if ( \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) ) ) {
             
             
             
@@ -1136,16 +1136,16 @@ class Plugin {
         $this->resource_registry->auto_discover();
         
         
-        \Easy_MCP_AI\Skills\Skills::use_registry( $this->tool_registry );
+        \wordpress_code_ai\Skills\Skills::use_registry( $this->tool_registry );
         $this->resource_registry->add_provider( array( __CLASS__, 'skill_resources' ) );
     }
 
     
     public static function skill_resources(): array {
         $out = array();
-        foreach ( \Easy_MCP_AI\Skills\Skills::served()->skills() as $skill ) {
+        foreach ( \wordpress_code_ai\Skills\Skills::served()->skills() as $skill ) {
             foreach ( $skill['files'] as $file ) {
-                $out[] = new \Easy_MCP_AI\Skills\Skill_Resource( $skill, $file );
+                $out[] = new \wordpress_code_ai\Skills\Skill_Resource( $skill, $file );
             }
         }
         return $out;
@@ -1153,7 +1153,7 @@ class Plugin {
 
     
     public static function run_skills_sync(): void {
-        \Easy_MCP_AI\Skills\Skill_Sync::run();
+        \wordpress_code_ai\Skills\Skill_Sync::run();
     }
 
     
@@ -1203,11 +1203,11 @@ class Plugin {
             return;
         }
         global $wpdb;
-        $codes_table    = $wpdb->prefix . 'easy_mcp_ai_oauth_codes';
-        $tokens_table   = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
-        $clients_table  = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
-        $consents_table = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
-        $device_table   = $wpdb->prefix . 'easy_mcp_ai_oauth_device_codes';
+        $codes_table    = $wpdb->prefix . 'wordpress_code_ai_oauth_codes';
+        $tokens_table   = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
+        $clients_table  = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
+        $consents_table = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
+        $device_table   = $wpdb->prefix . 'wordpress_code_ai_oauth_device_codes';
 
         
         
@@ -1287,7 +1287,7 @@ class Plugin {
 
 
     public static function oauth_client_retention_days() {
-        $stored = \Easy_MCP_AI\Config::get( 'easy_mcp_ai_oauth_client_retention', self::DEFAULT_OAUTH_CLIENT_RETENTION );
+        $stored = \wordpress_code_ai\Config::get( 'wordpress_code_ai_oauth_client_retention', self::DEFAULT_OAUTH_CLIENT_RETENTION );
         if ( ! is_numeric( $stored ) ) {
             $days = self::DEFAULT_OAUTH_CLIENT_RETENTION;
         } else {
@@ -1305,7 +1305,7 @@ class Plugin {
 
 
 
-        $days = (int) \apply_filters( 'easy_mcp_ai_oauth_client_retention', $days );
+        $days = (int) \apply_filters( 'wordpress_code_ai_oauth_client_retention', $days );
 
         return ( $days < 0 ) ? 0 : $days;
     }
@@ -1332,7 +1332,7 @@ class Plugin {
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- direct DB required for batched usermeta cleanup.
         $drafts = $wpdb->get_results( $wpdb->prepare(
             "SELECT umeta_id, meta_value FROM {$wpdb->usermeta} WHERE meta_key = %s LIMIT 500",
-            '_easy_mcp_ai_token_form_draft'
+            '_wordpress_code_ai_token_form_draft'
         ), ARRAY_A );
         if ( $drafts ) {
             $expired = array();
@@ -1371,7 +1371,7 @@ class Plugin {
             // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- direct DB required for batched usermeta cleanup.
             $rows = $wpdb->get_results( $wpdb->prepare(
                 "SELECT umeta_id, meta_value FROM {$wpdb->usermeta} WHERE meta_key LIKE %s LIMIT 500",
-                $wpdb->esc_like( '_easy_mcp_ai_new_token_' ) . '%'
+                $wpdb->esc_like( '_wordpress_code_ai_new_token_' ) . '%'
             ), ARRAY_A );
             $deleted = 0;
             if ( $rows ) {
@@ -1396,7 +1396,7 @@ class Plugin {
         
         
         
-        $tokens_table   = $wpdb->prefix . 'easy_mcp_ai_tokens';
+        $tokens_table   = $wpdb->prefix . 'wordpress_code_ai_tokens';
         $inactive_cutoff = gmdate( 'Y-m-d H:i:s', time() - 30 * DAY_IN_SECONDS );
         $i              = 0;
         do {
@@ -1431,7 +1431,7 @@ class Plugin {
 
 
     public static function change_log_retention_days() {
-        $stored = \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_retention', 30 );
+        $stored = \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_retention', 30 );
         if ( ! is_numeric( $stored ) ) {
             return 30;
         }
@@ -1453,10 +1453,10 @@ class Plugin {
         
         
 
-        if ( ! class_exists( '\\Easy_MCP_AI\\History\\Change_Log_Repository' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\History\\Change_Log_Repository' ) ) {
             return;
         }
-        $repo = new \Easy_MCP_AI\History\Change_Log_Repository();
+        $repo = new \wordpress_code_ai\History\Change_Log_Repository();
 
         
         
@@ -1471,7 +1471,7 @@ class Plugin {
         
         
         
-        $stored_db_retention = \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_db_retention', 7 );
+        $stored_db_retention = \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_db_retention', 7 );
         $db_retention        = is_numeric( $stored_db_retention ) ? (int) $stored_db_retention : 7;
         if ( $db_retention < 0 ) {
             $db_retention = 7;
@@ -1507,11 +1507,11 @@ class Plugin {
             return;
         }
         global $wpdb;
-        $retention = max( 1, (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_retention', 30 ) );
+        $retention = max( 1, (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_retention', 30 ) );
         
         $i = 0;
         do {
-            $table   = \esc_sql( $wpdb->prefix . 'easy_mcp_ai_audit_log' );
+            $table   = \esc_sql( $wpdb->prefix . 'wordpress_code_ai_audit_log' );
             // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- table name is not user input, direct DB required for batch cleanup.
             $deleted = $wpdb->query( $wpdb->prepare(
                 "DELETE FROM `{$table}` WHERE created_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL %d DAY) LIMIT 500",
@@ -1532,7 +1532,7 @@ class Plugin {
 
 
     public static function maybe_seed_abilities(): void {
-        if ( ! \get_option( 'easy_mcp_ai_abilities_seed_pending' ) ) {
+        if ( ! \get_option( 'wordpress_code_ai_abilities_seed_pending' ) ) {
             return;
         }
         Ability_Seed::maybe_run();
@@ -1551,7 +1551,7 @@ class Plugin {
             );
             \delete_option( 'rewrite_rules' );
             
-            if ( \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) ) ) {
+            if ( \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) ) ) {
                 self::seed_own_settings( array( OAuth\OAuth_Schema::class, 'create_tables' ) );
             }
         } finally {
@@ -1572,8 +1572,8 @@ class Plugin {
 
 
     private static function seed_own_settings( callable $write ): void {
-        if ( \class_exists( '\\Easy_MCP_AI\\MCP\\Option_Guard' ) ) {
-            \Easy_MCP_AI\MCP\Option_Guard::while_suspended( $write );
+        if ( \class_exists( '\\wordpress_code_ai\\MCP\\Option_Guard' ) ) {
+            \wordpress_code_ai\MCP\Option_Guard::while_suspended( $write );
             return;
         }
         $write();
@@ -1591,16 +1591,16 @@ class Plugin {
     public function on_drop_subsite_tables( $tables ) {
         global $wpdb;
         foreach ( array(
-            'easy_mcp_ai_tokens',
-            'easy_mcp_ai_audit_log',
-            'easy_mcp_ai_oauth_clients',
-            'easy_mcp_ai_oauth_codes',
-            'easy_mcp_ai_oauth_access_tokens',
-            'easy_mcp_ai_oauth_consents',
-            'easy_mcp_ai_oauth_device_codes',
-            'easy_mcp_ai_change_log',
-            'easy_mcp_ai_tasks',
-            'easy_mcp_ai_approvals',
+            'wordpress_code_ai_tokens',
+            'wordpress_code_ai_audit_log',
+            'wordpress_code_ai_oauth_clients',
+            'wordpress_code_ai_oauth_codes',
+            'wordpress_code_ai_oauth_access_tokens',
+            'wordpress_code_ai_oauth_consents',
+            'wordpress_code_ai_oauth_device_codes',
+            'wordpress_code_ai_change_log',
+            'wordpress_code_ai_tasks',
+            'wordpress_code_ai_approvals',
         ) as $suffix ) {
             $tables[] = $wpdb->prefix . $suffix;
         }
@@ -1685,10 +1685,10 @@ class Plugin {
 
 
     public static function map_privileged_meta_cap( $caps, $cap, $user_id ) {
-        if ( ! is_string( $cap ) || 0 !== strpos( $cap, 'easy_mcp_ai_' ) ) {
+        if ( ! is_string( $cap ) || 0 !== strpos( $cap, 'wordpress_code_ai_' ) ) {
             return $caps;
         }
-        return \Easy_MCP_AI\Privileged\Privileged_Groups::map_meta_cap( $caps, $cap, (int) $user_id );
+        return \wordpress_code_ai\Privileged\Privileged_Groups::map_meta_cap( $caps, $cap, (int) $user_id );
     }
 
     
@@ -1701,21 +1701,21 @@ class Plugin {
 
 
     private static function wire_db_interceptor( $capture_db ) {
-        $db_interceptor = new \Easy_MCP_AI\History\Change_DB_Interceptor(
-            new \Easy_MCP_AI\History\Change_Log_Repository()
+        $db_interceptor = new \wordpress_code_ai\History\Change_DB_Interceptor(
+            new \wordpress_code_ai\History\Change_Log_Repository()
         );
         $armed = false;
-        \add_action( 'easy_mcp_ai_change_context_armed', static function () use ( $db_interceptor, $capture_db, &$armed ) {
+        \add_action( 'wordpress_code_ai_change_context_armed', static function () use ( $db_interceptor, $capture_db, &$armed ) {
             
-            if ( \Easy_MCP_AI\History\Change_Context::get( 'own_history', false ) ) {
+            if ( \wordpress_code_ai\History\Change_Context::get( 'own_history', false ) ) {
                 return;
             }
-            if ( $capture_db || '' !== (string) \Easy_MCP_AI\History\Change_Context::get( 'privileged', '' ) ) {
+            if ( $capture_db || '' !== (string) \wordpress_code_ai\History\Change_Context::get( 'privileged', '' ) ) {
                 $armed = true;
                 $db_interceptor->arm();
             }
         } );
-        \add_action( 'easy_mcp_ai_change_context_disarming', static function () use ( $db_interceptor, &$armed ) {
+        \add_action( 'wordpress_code_ai_change_context_disarming', static function () use ( $db_interceptor, &$armed ) {
             if ( $armed ) {
                 $armed = false;
                 $db_interceptor->disarm();
@@ -1824,7 +1824,7 @@ class Plugin {
                 if ( '' === $p ) {
                     continue;
                 }
-                if ( preg_match( '#/easy-mcp-ai/v1/(mcp|header-probe)(/|$)#', $p ) ) {
+                if ( preg_match( '#/wordpress-code-ai/v1/(mcp|header-probe)(/|$)#', $p ) ) {
                     return true;
                 }
             }
@@ -1868,7 +1868,7 @@ class Plugin {
                 if ( '' === $p ) {
                     continue;
                 }
-                foreach ( array( '/easy-mcp-ai/v1/oauth/token', '/easy-mcp-ai/v1/oauth/revoke' ) as $suffix ) {
+                foreach ( array( '/wordpress-code-ai/v1/oauth/token', '/wordpress-code-ai/v1/oauth/revoke' ) as $suffix ) {
                     if ( substr( $p, -strlen( $suffix ) ) === $suffix ) {
                         return true;
                     }
@@ -1892,7 +1892,7 @@ class Plugin {
         if ( ! \is_admin() && ! ( defined( 'REST_REQUEST' ) && REST_REQUEST ) ) {
             return;
         }
-        if ( ! \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) ) ) {
+        if ( ! \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) ) ) {
             return;
         }
         if ( class_exists( OAuth\OAuth_Schema::class ) ) {
@@ -1936,7 +1936,7 @@ class Plugin {
         
         
         self::guarded_search_replace( static function () {
-            \Easy_MCP_AI\Privileged\Search_Replace\Jobs::cleanup();
+            \wordpress_code_ai\Privileged\Search_Replace\Jobs::cleanup();
         } );
     }
 
@@ -1946,7 +1946,7 @@ class Plugin {
 
     public static function run_search_replace_tick( $job_id = null ): void {
         self::guarded_search_replace( static function () use ( $job_id ) {
-            \Easy_MCP_AI\Privileged\Search_Replace\Jobs::tick( $job_id );
+            \wordpress_code_ai\Privileged\Search_Replace\Jobs::tick( $job_id );
         } );
     }
 
@@ -1961,7 +1961,7 @@ class Plugin {
             $work();
         } catch ( \Throwable $e ) {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                error_log( sprintf( 'Easy MCP AI search-replace background work failed: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
+                error_log( sprintf( 'wordpress-code-ai search-replace background work failed: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
             }
         }
     }
@@ -1977,7 +1977,7 @@ class Plugin {
             }
         } catch ( \Throwable $e ) {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                error_log( sprintf( 'Easy MCP AI background task work failed: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
+                error_log( sprintf( 'wordpress-code-ai background task work failed: %s in %s:%d', $e->getMessage(), $e->getFile(), $e->getLine() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
             }
         }
     }

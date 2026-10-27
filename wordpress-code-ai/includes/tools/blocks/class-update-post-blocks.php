@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Blocks;
+namespace wordpress_code_ai\Tools\Blocks;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -208,7 +208,7 @@ class Update_Post_Blocks extends Base_Tool {
 
 
 
-        do_action( 'easy_mcp_ai_post_blocks_saved', $post_id, $changes );
+        do_action( 'wordpress_code_ai_post_blocks_saved', $post_id, $changes );
 
         return $result;
     }

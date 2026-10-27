@@ -1,12 +1,12 @@
 <?php
-namespace Easy_MCP_AI\Tools\SEO;
+namespace wordpress_code_ai\Tools\SEO;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Easy_MCP_AI\Option_Lock;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Option_Lock;
+use wordpress_code_ai\Tools\Base_Tool;
 
 
 
@@ -34,7 +34,7 @@ class Yoast_Update_Settings extends Base_Tool {
 	const MAX_ITEMS = 50;
 
 	
-	const LOCK = 'easy_mcp_ai_yoast_settings_lock';
+	const LOCK = 'wordpress_code_ai_yoast_settings_lock';
 
 	
 	const LOCK_TTL = 30;

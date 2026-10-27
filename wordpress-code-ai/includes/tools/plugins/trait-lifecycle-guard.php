@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -88,7 +88,7 @@ trait Lifecycle_Guard {
 
 
     protected function is_own_plugin( $plugin ) {
-        $own = defined( 'EASY_MCP_AI_PLUGIN_BASENAME' ) ? (string) EASY_MCP_AI_PLUGIN_BASENAME : '';
+        $own = defined( 'WORDPRESS_CODE_AI_PLUGIN_BASENAME' ) ? (string) WORDPRESS_CODE_AI_PLUGIN_BASENAME : '';
         return '' !== $own && $plugin === $own;
     }
 

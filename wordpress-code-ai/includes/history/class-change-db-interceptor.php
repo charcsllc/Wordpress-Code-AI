@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\History;
+namespace wordpress_code_ai\History;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -46,8 +46,8 @@ class Change_DB_Interceptor {
 
     private static $table_denylist = array(
         'users', 'usermeta',
-        'easy_mcp_ai_tokens', 'easy_mcp_ai_audit_log', 'easy_mcp_ai_change_log',
-        'easy_mcp_ai_oauth_',
+        'wordpress_code_ai_tokens', 'wordpress_code_ai_audit_log', 'wordpress_code_ai_change_log',
+        'wordpress_code_ai_oauth_',
     );
 
     
@@ -170,10 +170,10 @@ class Change_DB_Interceptor {
         
         
         global $wpdb;
-        if ( is_object( $wpdb ) && 'wpdb' !== \get_class( $wpdb ) && ! \defined( 'EASY_MCP_AI_DB_DROPIN_NOTICED' ) ) {
-            \define( 'EASY_MCP_AI_DB_DROPIN_NOTICED', true );
+        if ( is_object( $wpdb ) && 'wpdb' !== \get_class( $wpdb ) && ! \defined( 'WORDPRESS_CODE_AI_DB_DROPIN_NOTICED' ) ) {
+            \define( 'WORDPRESS_CODE_AI_DB_DROPIN_NOTICED', true );
             if ( \defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                \error_log( 'easy-mcp-ai: custom $wpdb drop-in (' . \get_class( $wpdb ) . ') detected — Layer-3 change capture requires it to apply the "query" filter.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- one-time operator diagnostic, same pattern as Server's tool-exception logging
+                \error_log( 'wordpress-code-ai: custom $wpdb drop-in (' . \get_class( $wpdb ) . ') detected — Layer-3 change capture requires it to apply the "query" filter.' ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- one-time operator diagnostic, same pattern as Server's tool-exception logging
             }
         }
     }
@@ -429,7 +429,7 @@ class Change_DB_Interceptor {
         
         
         $stripped = strtolower( $this->strip_prefix( self::unqualify( $table ) ) );
-        $deny     = (array) \apply_filters( 'easy_mcp_ai_change_log_db_table_denylist', self::$table_denylist );
+        $deny     = (array) \apply_filters( 'wordpress_code_ai_change_log_db_table_denylist', self::$table_denylist );
         foreach ( $deny as $entry ) {
             $entry = strtolower( (string) $entry );
             if ( '' === $entry ) {
@@ -780,8 +780,8 @@ class Change_DB_Interceptor {
         if ( ! $set_cols || ! is_array( $before ) || ! is_array( $after ) ) {
             return $set_cols ?: null;
         }
-        if ( ! class_exists( '\Easy_MCP_AI\History\Change_Recorder' )
-            || ! method_exists( '\Easy_MCP_AI\History\Change_Recorder', 'values_match' ) ) {
+        if ( ! class_exists( '\wordpress_code_ai\History\Change_Recorder' )
+            || ! method_exists( '\wordpress_code_ai\History\Change_Recorder', 'values_match' ) ) {
             return $set_cols; 
         }
         $changed = array();
@@ -802,8 +802,8 @@ class Change_DB_Interceptor {
         if ( 'option' !== $key[0] && 'site_option' !== $key[0] ) {
             return false;
         }
-        if ( ! class_exists( '\Easy_MCP_AI\History\Change_Recorder' )
-            || ! method_exists( '\Easy_MCP_AI\History\Change_Recorder', 'option_is_recordable' ) ) {
+        if ( ! class_exists( '\wordpress_code_ai\History\Change_Recorder' )
+            || ! method_exists( '\wordpress_code_ai\History\Change_Recorder', 'option_is_recordable' ) ) {
             return false; 
         }
         return ! Change_Recorder::option_is_recordable( (string) $key[1] );
@@ -1013,7 +1013,7 @@ class Change_DB_Interceptor {
             }
         }
 
-        $cap = (int) \apply_filters( 'easy_mcp_ai_change_log_db_rows_per_call', \Easy_MCP_AI\Config::get( 'change_log_db_rows_per_call' ) );
+        $cap = (int) \apply_filters( 'wordpress_code_ai_change_log_db_rows_per_call', \wordpress_code_ai\Config::get( 'change_log_db_rows_per_call' ) );
         if ( $cap > 0 && $this->rows_written >= $cap ) {
             $this->skipped++;
             return;
@@ -1039,7 +1039,7 @@ class Change_DB_Interceptor {
 
 
     private function may_hold( $entry ) {
-        $budget = (int) \apply_filters( 'easy_mcp_ai_change_log_db_held_bytes', 8 * 1024 * 1024 );
+        $budget = (int) \apply_filters( 'wordpress_code_ai_change_log_db_held_bytes', 8 * 1024 * 1024 );
         if ( $budget <= 0 ) {
             return true; 
         }

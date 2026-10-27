@@ -1,14 +1,14 @@
 <?php
-namespace Easy_MCP_AI\Tools\Privileged;
+namespace wordpress_code_ai\Tools\Privileged;
 
-use Easy_MCP_AI\Tools\Privileged_Tool;
-use Easy_MCP_AI\Privileged\Files_Read\Action;
-use Easy_MCP_AI\Privileged\Files_Read\List_Action;
-use Easy_MCP_AI\Privileged\Files_Read\Outline_Action;
-use Easy_MCP_AI\Privileged\Files_Read\Read_Action;
-use Easy_MCP_AI\Privileged\Files_Read\Resolver;
-use Easy_MCP_AI\Privileged\Files_Read\Search_Action;
-use Easy_MCP_AI\Privileged\Files_Read\Searcher;
+use wordpress_code_ai\Tools\Privileged_Tool;
+use wordpress_code_ai\Privileged\Files_Read\Action;
+use wordpress_code_ai\Privileged\Files_Read\List_Action;
+use wordpress_code_ai\Privileged\Files_Read\Outline_Action;
+use wordpress_code_ai\Privileged\Files_Read\Read_Action;
+use wordpress_code_ai\Privileged\Files_Read\Resolver;
+use wordpress_code_ai\Privileged\Files_Read\Search_Action;
+use wordpress_code_ai\Privileged\Files_Read\Searcher;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

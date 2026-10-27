@@ -1,14 +1,14 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Envelope;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Self_Protection;
-use Easy_MCP_AI\Cli_Router\Values;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Envelope;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Self_Protection;
+use wordpress_code_ai\Cli_Router\Values;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -694,10 +694,10 @@ class Option_Handler extends Command_Handler {
 
 
     public static function key_is_secret( string $key ): bool {
-        if ( class_exists( '\\Easy_MCP_AI\\Text_Redactor' ) && preg_match( \Easy_MCP_AI\Text_Redactor::SENSITIVE_KEY_PATTERN, $key ) ) {
+        if ( class_exists( '\\wordpress_code_ai\\Text_Redactor' ) && preg_match( \wordpress_code_ai\Text_Redactor::SENSITIVE_KEY_PATTERN, $key ) ) {
             return true;
         }
-        if ( class_exists( '\\Easy_MCP_AI\\History\\Change_Redactor' ) && \Easy_MCP_AI\History\Change_Redactor::option_name_is_sensitive( $key ) ) {
+        if ( class_exists( '\\wordpress_code_ai\\History\\Change_Redactor' ) && \wordpress_code_ai\History\Change_Redactor::option_name_is_sensitive( $key ) ) {
             return true;
         }
         return self::names_credential( $key );
@@ -957,10 +957,10 @@ class Option_Handler extends Command_Handler {
 
     
     protected function option_is_recordable( string $name ): bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\History\\Change_Recorder' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\History\\Change_Recorder' ) ) {
             return true;
         }
-        return \Easy_MCP_AI\History\Change_Recorder::option_is_recordable( trim( $name ) );
+        return \wordpress_code_ai\History\Change_Recorder::option_is_recordable( trim( $name ) );
     }
 
     

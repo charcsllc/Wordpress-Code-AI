@@ -10,9 +10,9 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Admin\External_Data_Service;
+use wordpress_code_ai\Admin\External_Data_Service;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -67,7 +67,7 @@ class External_Data_Controller extends Admin_Rest_Controller {
         }
         $body = $request->get_json_params();
         if ( ! is_array( $body ) ) {
-            return $this->fail( 'easy_mcp_ai_invalid_param', \__( 'Expected a JSON object.', 'easy-mcp-ai' ), 400, array( 'field' => '' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_param', \__( 'Expected a JSON object.', 'wordpress-code-ai' ), 400, array( 'field' => '' ) );
         }
         $saved = $this->service->save( $key, $body );
         if ( \is_wp_error( $saved ) ) {
@@ -145,7 +145,7 @@ class External_Data_Controller extends Admin_Rest_Controller {
     private function provider_of( $request ) {
         $key = (string) $request->get_param( 'provider' );
         if ( ! External_Data_Service::is_provider( $key ) ) {
-            return $this->fail( 'easy_mcp_ai_not_found', \__( 'Unknown provider.', 'easy-mcp-ai' ), 404 );
+            return $this->fail( 'wordpress_code_ai_not_found', \__( 'Unknown provider.', 'wordpress-code-ai' ), 404 );
         }
         return $key;
     }

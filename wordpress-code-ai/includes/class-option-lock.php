@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

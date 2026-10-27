@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GSC;
+namespace wordpress_code_ai\Tools\GSC;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GSC\GSC_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GSC\GSC_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

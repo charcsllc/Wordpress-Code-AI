@@ -40,7 +40,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -49,7 +49,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Htaccess_Auth_Rule {
 
     
-    const MARKER = 'Easy MCP AI';
+    const MARKER = 'wordpress-code-ai';
 
     
     const WORDPRESS_MARKER = 'WordPress';
@@ -59,7 +59,7 @@ class Htaccess_Auth_Rule {
 
 
 
-    const PLAIN_ROUTES_MARKER = 'Easy MCP AI Plain Permalinks';
+    const PLAIN_ROUTES_MARKER = 'wordpress-code-ai Plain Permalinks';
 
     
 

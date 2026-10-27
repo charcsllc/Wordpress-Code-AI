@@ -1,14 +1,14 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Batch;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Formatter;
-use Easy_MCP_AI\Cli_Router\Ids;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Batch;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Formatter;
+use wordpress_code_ai\Cli_Router\Ids;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -1326,19 +1326,19 @@ final class Term_Adapter extends Command_Handler {
 
 
     private static function would_pause( string $tool, array $arguments ): bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\Approvals\\Approval_Gate' ) || ! \Easy_MCP_AI\Approvals\Approval_Gate::enabled() ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\Approvals\\Approval_Gate' ) || ! \wordpress_code_ai\Approvals\Approval_Gate::enabled() ) {
             return false;
         }
         $object = self::registered_tool( $tool );
-        return null === $object || \Easy_MCP_AI\Approvals\Approval_Gate::requires_approval( $object, $arguments );
+        return null === $object || \wordpress_code_ai\Approvals\Approval_Gate::requires_approval( $object, $arguments );
     }
 
     
     private static function registered_tool( string $tool ): ?object {
-        if ( ! class_exists( '\\Easy_MCP_AI\\Plugin', false ) || ! method_exists( '\\Easy_MCP_AI\\Plugin', 'instance' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\Plugin', false ) || ! method_exists( '\\wordpress_code_ai\\Plugin', 'instance' ) ) {
             return null;
         }
-        $registry = \Easy_MCP_AI\Plugin::instance()->get_tool_registry();
+        $registry = \wordpress_code_ai\Plugin::instance()->get_tool_registry();
         $object   = is_object( $registry ) && method_exists( $registry, 'get_tool' ) ? $registry->get_tool( $tool ) : null;
         return is_object( $object ) ? $object : null;
     }

@@ -5,9 +5,9 @@
 
 
 
-namespace Easy_MCP_AI\Rest_Routes;
+namespace wordpress_code_ai\Rest_Routes;
 
-use Easy_MCP_AI\Tools\Tool_State;
+use wordpress_code_ai\Tools\Tool_State;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -35,10 +35,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Namespace_State {
 
     
-    const OPTION = 'easy_mcp_ai_rest_disabled_namespaces';
+    const OPTION = 'wordpress_code_ai_rest_disabled_namespaces';
 
     
-    const OVERRIDE_NAME = 'EASY_MCP_AI_REST_NAMESPACES';
+    const OVERRIDE_NAME = 'WORDPRESS_CODE_AI_REST_NAMESPACES';
 
     
     const STRICT_ENTRY = '*';

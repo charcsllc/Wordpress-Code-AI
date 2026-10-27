@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Resources;
+namespace wordpress_code_ai\Resources;
 
-use Easy_MCP_AI\Tools\Posts\Count_Posts;
+use wordpress_code_ai\Tools\Posts\Count_Posts;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

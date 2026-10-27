@@ -1,12 +1,12 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Batch;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Ids;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Batch;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Ids;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Meta_Command;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -113,7 +113,7 @@ final class Post_Meta_Adapter extends Meta_Command {
             $inv,
             'patch',
             array( 'wp_get_post_full', 'wp_update_post_meta' ),
-            array( 'wp_get_post_full' => '\\Easy_MCP_AI\\Tools\\Posts\\Get_Post_Full' )
+            array( 'wp_get_post_full' => '\\wordpress_code_ai\\Tools\\Posts\\Get_Post_Full' )
         );
     }
 

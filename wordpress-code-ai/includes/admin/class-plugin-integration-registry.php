@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -292,7 +292,7 @@ class Plugin_Integration_Registry {
             array(
                 'slug'        => 'learnpress',
                 'name'        => 'LearnPress',
-                'description' => 'Lets LearnPress\'s own abilities (courses, lessons, quizzes, enrollments) run with your Easy MCP key or connection, whether or not LearnPress\'s own MCP setting is on. LearnPress allows them to administrators only by default. Without it, LearnPress accepts them only through its own MCP endpoint and key. Open the row to choose which LearnPress abilities are available.',
+                'description' => 'Lets LearnPress\'s own abilities (courses, lessons, quizzes, enrollments) run with your wordpress-code-ai key or connection, whether or not LearnPress\'s own MCP setting is on. LearnPress allows them to administrators only by default. Without it, LearnPress accepts them only through its own MCP endpoint and key. Open the row to choose which LearnPress abilities are available.',
                 'status'      => 'stable',
                 'requires'    => 'LearnPress must be active.',
                 'detector'    => 'class:LearnPress',
@@ -306,7 +306,7 @@ class Plugin_Integration_Registry {
             array(
                 'slug'        => 'elementor',
                 'name'        => 'Elementor',
-                'description' => 'Lets Elementor\'s own abilities (page structure, V4 elements, global classes and variables, page creation and publishing) run with your Easy MCP key or connection, whether or not Elementor\'s own MCP setting (Elementor › Elementor MCP) is on. Elementor\'s own MCP server still follows that setting. Most element edits need Elementor\'s V4 editor. Open the row to choose which Elementor abilities are available.',
+                'description' => 'Lets Elementor\'s own abilities (page structure, V4 elements, global classes and variables, page creation and publishing) run with your wordpress-code-ai key or connection, whether or not Elementor\'s own MCP setting (Elementor › Elementor MCP) is on. Elementor\'s own MCP server still follows that setting. Most element edits need Elementor\'s V4 editor. Open the row to choose which Elementor abilities are available.',
                 'status'      => 'stable',
                 'requires'    => 'Elementor 4.3 or later must be active, on WordPress 6.9 or later.',
                 'detector'    => 'class:Elementor\\Modules\\Mcp\\Module',

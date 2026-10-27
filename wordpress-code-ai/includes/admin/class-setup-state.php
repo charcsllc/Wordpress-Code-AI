@@ -9,7 +9,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -17,10 +17,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Setup_State {
 
-    const OPTION = 'easy_mcp_ai_setup_complete';
+    const OPTION = 'wordpress_code_ai_setup_complete';
 
     
-    const REDIRECT_TRANSIENT = 'easy_mcp_ai_setup_redirect';
+    const REDIRECT_TRANSIENT = 'wordpress_code_ai_setup_redirect';
 
     
 
@@ -57,7 +57,7 @@ class Setup_State {
         if ( self::is_complete() || ! is_object( $wpdb ) || ! method_exists( $wpdb, 'get_var' ) ) {
             return false;
         }
-        $prefix  = $wpdb->prefix . 'easy_mcp_ai_';
+        $prefix  = $wpdb->prefix . 'wordpress_code_ai_';
         $queries = array(
             "SELECT 1 FROM `{$prefix}tokens` LIMIT 1",
             "SELECT 1 FROM `{$prefix}oauth_consents` LIMIT 1",

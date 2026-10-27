@@ -1,10 +1,10 @@
 <?php
-namespace Easy_MCP_AI\Tools\Rest;
+namespace wordpress_code_ai\Tools\Rest;
 
-use Easy_MCP_AI\Rest_Routes\Namespace_State;
-use Easy_MCP_AI\Rest_Routes\Route_Catalogue;
-use Easy_MCP_AI\Rest_Routes\Route_Gate;
-use Easy_MCP_AI\Tools\Rest_Route_Tool;
+use wordpress_code_ai\Rest_Routes\Namespace_State;
+use wordpress_code_ai\Rest_Routes\Route_Catalogue;
+use wordpress_code_ai\Rest_Routes\Route_Gate;
+use wordpress_code_ai\Tools\Rest_Route_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -201,7 +201,7 @@ class Rest_Routes extends Rest_Route_Tool {
 
 
     private static function switched_off_note( array $matches ): string {
-        if ( ! class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) || ! method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_tool_status' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\MCP\\Server' ) || ! method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_tool_status' ) ) {
             return '';
         }
         $tools = array();
@@ -216,7 +216,7 @@ class Rest_Routes extends Rest_Route_Tool {
         $off    = array();
         $locked = array();
         foreach ( array_unique( $tools ) as $name ) {
-            $status = \Easy_MCP_AI\MCP\Server::current_call_tool_status( $name );
+            $status = \wordpress_code_ai\MCP\Server::current_call_tool_status( $name );
             if ( null !== $status && 'off' === $status['status'] ) {
                 $off[] = $name;
             } elseif ( null !== $status && 'off_locked' === $status['status'] ) {
@@ -231,8 +231,8 @@ class Rest_Routes extends Rest_Route_Tool {
             'This site installs and deletes plugins and themes with its own tools, and %s %s switched off: %s.',
             count( $named ) > 1 ? 'these' : 'this one',
             count( $named ) > 1 ? 'are' : 'is',
-            \Easy_MCP_AI\MCP\Tool_Status::names( $named )
-        ) . ' Tell the user which tool to switch on, by its name, and that ' . \Easy_MCP_AI\MCP\Tool_Status::who_switches_on( $off, $locked, \Easy_MCP_AI\MCP\Tool_Status::switch_path( $named[0], true ) ) . '.';
+            \wordpress_code_ai\MCP\Tool_Status::names( $named )
+        ) . ' Tell the user which tool to switch on, by its name, and that ' . \wordpress_code_ai\MCP\Tool_Status::who_switches_on( $off, $locked, \wordpress_code_ai\MCP\Tool_Status::switch_path( $named[0], true ) ) . '.';
     }
 
     
@@ -243,10 +243,10 @@ class Rest_Routes extends Rest_Route_Tool {
 
 
     private static function caller_may_use( string $tool ): bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) || ! method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\MCP\\Server' ) || ! method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' ) ) {
             return true;
         }
-        $may = \Easy_MCP_AI\MCP\Server::current_call_may_use( $tool );
+        $may = \wordpress_code_ai\MCP\Server::current_call_may_use( $tool );
         return null === $may || $may;
     }
 }

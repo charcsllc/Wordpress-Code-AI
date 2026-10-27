@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Audit;
+namespace wordpress_code_ai\Tools\Audit;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Audit_Log_Repository;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Audit_Log_Repository;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

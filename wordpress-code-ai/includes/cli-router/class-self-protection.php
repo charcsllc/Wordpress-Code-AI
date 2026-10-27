@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router;
+namespace wordpress_code_ai\Cli_Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -167,7 +167,7 @@ final class Self_Protection {
 
 
     const CACHE_GROUPS = array(
-        'easy_mcp_ai'    => 'it holds the validated API-key rows of the plugin that serves this MCP connection and its rate-limit and lockout counters. They expire on their own; the plugin\'s Connections and Settings screens in wp-admin change what they hold',
+        'wordpress_code_ai'    => 'it holds the validated API-key rows of the plugin that serves this MCP connection and its rate-limit and lockout counters. They expire on their own; the plugin\'s Connections and Settings screens in wp-admin change what they hold',
         'options'        => 'it holds every option, this plugin\'s settings and credentials included. Use `option get` and `option update`, which apply their own checks',
         'site-options'   => 'it holds every network option. Use `site option get` and `site option update`, which apply their own checks',
         'transient'      => 'it holds the transients, the MCP sessions included. Use `transient get`, `transient set` and `transient delete`, which apply their own checks',
@@ -186,18 +186,18 @@ final class Self_Protection {
     );
 
     
-    const HISTORY_CAPABILITY = 'easy_mcp_ai_view_all_history';
+    const HISTORY_CAPABILITY = 'wordpress_code_ai_view_all_history';
 
     
-    const PRIVILEGED_CAPABILITIES = array( 'easy_mcp_ai_read_files', 'easy_mcp_ai_run_wp_cli', 'easy_mcp_ai_execute_php', 'easy_mcp_ai_search_replace' );
+    const PRIVILEGED_CAPABILITIES = array( 'wordpress_code_ai_read_files', 'wordpress_code_ai_run_wp_cli', 'wordpress_code_ai_execute_php', 'wordpress_code_ai_search_replace' );
 
     
-    const OWN_COMMAND = 'easy-mcp-ai';
+    const OWN_COMMAND = 'wordpress-code-ai';
 
     
     const OWN_SUBCOMMANDS = array(
-        'config export'     => "'easy-mcp-ai config export' prints the settings of the plugin that serves this MCP connection, which wp_cli_run never reads. Run it with the real wp binary on the server, or read the settings on the plugin's Settings screen in wp-admin.",
-        'privileged status' => "'easy-mcp-ai privileged status' reports the privileged-tool switches of the plugin that serves this MCP connection, which wp_cli_run never reads. Run it with the real wp binary on the server, or see Settings › Advanced in wp-admin.",
+        'config export'     => "'wordpress-code-ai config export' prints the settings of the plugin that serves this MCP connection, which wp_cli_run never reads. Run it with the real wp binary on the server, or read the settings on the plugin's Settings screen in wp-admin.",
+        'privileged status' => "'wordpress-code-ai privileged status' reports the privileged-tool switches of the plugin that serves this MCP connection, which wp_cli_run never reads. Run it with the real wp binary on the server, or see Settings › Advanced in wp-admin.",
     );
 
     
@@ -217,7 +217,7 @@ final class Self_Protection {
     const REASON_PLUGIN              = "'%s' is the plugin that serves this MCP connection; deactivating, deleting, uninstalling, updating or reinstalling it through wp_cli_run would cut the connection off in the middle of the request. Do it from the Plugins screen in wp-admin.";
     const REASON_PLUGIN_BYTES        = 'wp_cli_run refuses a plugin name containing a control character or a non-ASCII byte for this command: on a case-insensitive file system such a name can reach the folder of the plugin that serves this MCP connection. Pass the plugin in plain ASCII, as `plugin list` prints it.';
     const REASON_PLUGIN_ESCAPES      = "'%s' points outside the plugins folder, so wp_cli_run cannot rule out that it names the plugin that serves this MCP connection. Pass the plugin as `plugin list` prints it.";
-    const REASON_PLUGIN_UNKNOWN      = 'wp_cli_run cannot tell which plugin serves this MCP connection (EASY_MCP_AI_PLUGIN_BASENAME is not defined), so it refuses this command for every plugin. Use the Plugins screen in wp-admin.';
+    const REASON_PLUGIN_UNKNOWN      = 'wp_cli_run cannot tell which plugin serves this MCP connection (WORDPRESS_CODE_AI_PLUGIN_BASENAME is not defined), so it refuses this command for every plugin. Use the Plugins screen in wp-admin.';
     const REASON_PLUGIN_USER_META    = "the user meta key '%s' belongs to the plugin that serves this MCP connection (a newly created API key shown once, or a saved key form), and wp_cli_run never reads or writes it. API keys are managed on the plugin's Connections screen in wp-admin.";
     const REASON_CORE_USER_META      = "wp_cli_run does not read or write the user meta key '%s' directly: %s.";
     const REASON_USER_META_BYTES     = 'wp_cli_run refuses a user meta key containing a space, a control character or a non-ASCII byte: the usermeta table compares keys without regard to case, accents or trailing spaces, so such a key can address a different one, this plugin\'s among them. Pass the key in plain ASCII, as `user meta list` prints it.';
@@ -225,7 +225,7 @@ final class Self_Protection {
     const REASON_PRIVILEGED_CAP      = "'%s' is a meta capability the plugin that serves this MCP connection maps at run time from its privileged-tool switches; no role or user holds it, and wp_cli_run never grants or removes it. Switch the tool on under Settings › Advanced in wp-admin.";
     const REASON_PLUGIN_CAPABILITY   = "'%s' is in the namespace of the plugin that serves this MCP connection, and wp_cli_run never grants or removes that plugin's capabilities. `cap list` shows what a role holds.";
     const REASON_CAPABILITY_BYTES    = 'wp_cli_run refuses a capability name containing a control character or a non-ASCII byte. Pass the capability in plain ASCII, as `cap list` prints it.';
-    const REASON_OWN_COMMAND         = "'easy-mcp-ai' commands belong to the plugin that serves this MCP connection and are not available through wp_cli_run. Run them with the real wp binary on the server.";
+    const REASON_OWN_COMMAND         = "'wordpress-code-ai' commands belong to the plugin that serves this MCP connection and are not available through wp_cli_run. Run them with the real wp binary on the server.";
     const REASON_CURRENT_SITE        = 'site %d is the site this MCP request runs on; deleting, archiving, deactivating or marking it as spam would drop or lock out the plugin\'s tables and API keys in the middle of the request. Do it from Network Admin › Sites in wp-admin, or through a connection on another site of the network.';
 
     
@@ -577,7 +577,7 @@ final class Self_Protection {
         if ( null !== self::$basename_override ) {
             return self::$basename_override;
         }
-        return defined( 'EASY_MCP_AI_PLUGIN_BASENAME' ) ? (string) EASY_MCP_AI_PLUGIN_BASENAME : '';
+        return defined( 'WORDPRESS_CODE_AI_PLUGIN_BASENAME' ) ? (string) WORDPRESS_CODE_AI_PLUGIN_BASENAME : '';
     }
 
     

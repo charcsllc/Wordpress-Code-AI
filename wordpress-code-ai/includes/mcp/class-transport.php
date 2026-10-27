@@ -1,17 +1,17 @@
 <?php
-namespace Easy_MCP_AI\MCP;
+namespace wordpress_code_ai\MCP;
 
-use Easy_MCP_AI\Auth\Token_Manager;
-use Easy_MCP_AI\Auth\Token_Auth;
-use Easy_MCP_AI\OAuth\OAuth_Token_Validator;
-use Easy_MCP_AI\OAuth\OAuth_Token_Manager;
+use wordpress_code_ai\Auth\Token_Manager;
+use wordpress_code_ai\Auth\Token_Auth;
+use wordpress_code_ai\OAuth\OAuth_Token_Validator;
+use wordpress_code_ai\OAuth\OAuth_Token_Manager;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
 class Transport {
-    const NAMESPACE_V1     = 'easy-mcp-ai/v1';
+    const NAMESPACE_V1     = 'wordpress-code-ai/v1';
     const ROUTE            = '/mcp';
     
     const ROUTE_WITH_KEY   = '/mcp/(?P<api_key>wpmcp_(?:[a-f0-9]{6}_)?[a-f0-9]{64})';
@@ -41,11 +41,11 @@ class Transport {
 
 
     public function header_probe_permitted( $request ) {
-        if ( ! class_exists( '\Easy_MCP_AI\Diagnostics\Check_Header_Probe' ) ) {
+        if ( ! class_exists( '\wordpress_code_ai\Diagnostics\Check_Header_Probe' ) ) {
             return false;
         }
 
-        return \Easy_MCP_AI\Diagnostics\Check_Header_Probe::authorize_probe( (string) $request->get_param( 'probe' ) );
+        return \wordpress_code_ai\Diagnostics\Check_Header_Probe::authorize_probe( (string) $request->get_param( 'probe' ) );
     }
 
     
@@ -74,13 +74,13 @@ class Transport {
         $headers = function_exists( 'getallheaders' ) ? (array) getallheaders() : null;
 
         return \rest_ensure_response(
-            \Easy_MCP_AI\Diagnostics\Check_Header_Probe::probe_response(
+            \wordpress_code_ai\Diagnostics\Check_Header_Probe::probe_response(
                 $_SERVER, // phpcs:ignore WordPressVIPMinimum.Variables.RestrictedVariables.cache_constraints___SERVER -- Presence check only; no value is read or returned.
                 $headers,
                 (string) $request->get_param( 'probe' ),
                 
                 
-                class_exists( '\Easy_MCP_AI\MCP\Rest_Auth_Override' ) ? Rest_Auth_Override::observed() : null
+                class_exists( '\wordpress_code_ai\MCP\Rest_Auth_Override' ) ? Rest_Auth_Override::observed() : null
             )
         );
     }
@@ -255,7 +255,7 @@ class Transport {
         if ( ! $api_keys ) {
             return null;
         }
-        if ( true !== \Easy_MCP_AI\Config::get( 'api_key_header_only' ) ) {
+        if ( true !== \wordpress_code_ai\Config::get( 'api_key_header_only' ) ) {
             return null;
         }
         $identity = array();
@@ -265,9 +265,9 @@ class Transport {
                 break;
             }
         }
-        if ( $identity && $this->refusal_log_budget_allows( 'easy_mcp_ai_urlkeyreflog_', 'legacy', $identity['token_id'] ) ) {
-            $ip = class_exists( '\\Easy_MCP_AI\\Client_IP' )
-                ? (string) \Easy_MCP_AI\Client_IP::get()
+        if ( $identity && $this->refusal_log_budget_allows( 'wordpress_code_ai_urlkeyreflog_', 'legacy', $identity['token_id'] ) ) {
+            $ip = class_exists( '\\wordpress_code_ai\\Client_IP' )
+                ? (string) \wordpress_code_ai\Client_IP::get()
                 : ( isset( $_SERVER['REMOTE_ADDR'] ) ? \sanitize_text_field( \wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
             $this->server->log_auth_failure( $ip, self::ERROR_URL_KEY, $identity );
         }
@@ -364,7 +364,7 @@ class Transport {
             if ( 0 !== stripos( $header, 'Basic ' ) ) {
                 return; 
             }
-            $key = \Easy_MCP_AI\Auth_Header::api_key_from_basic( $header );
+            $key = \wordpress_code_ai\Auth_Header::api_key_from_basic( $header );
             if ( null !== $key ) {
                 $request->set_header( 'Authorization', 'Bearer ' . $key );
             }
@@ -372,7 +372,7 @@ class Transport {
         }
         if ( isset( $_SERVER['PHP_AUTH_USER'] ) || isset( $_SERVER['PHP_AUTH_PW'] ) ) {
             
-            $key = \Easy_MCP_AI\Auth_Header::api_key_from_pair(
+            $key = \wordpress_code_ai\Auth_Header::api_key_from_pair(
                 isset( $_SERVER['PHP_AUTH_USER'] ) ? (string) $_SERVER['PHP_AUTH_USER'] : '', // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
                 isset( $_SERVER['PHP_AUTH_PW'] ) ? (string) $_SERVER['PHP_AUTH_PW'] : '' // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
             );
@@ -391,8 +391,8 @@ class Transport {
 
 
     private static function mark_mcp_request(): void {
-        if ( ! defined( 'EASY_MCP_AI_MCP_REQUEST' ) ) {
-            define( 'EASY_MCP_AI_MCP_REQUEST', true );
+        if ( ! defined( 'WORDPRESS_CODE_AI_MCP_REQUEST' ) ) {
+            define( 'WORDPRESS_CODE_AI_MCP_REQUEST', true );
         }
     }
 
@@ -517,8 +517,8 @@ class Transport {
             
             
             
-            $ip        = class_exists( '\\Easy_MCP_AI\\Client_IP' )
-                ? (string) \Easy_MCP_AI\Client_IP::get()
+            $ip        = class_exists( '\\wordpress_code_ai\\Client_IP' )
+                ? (string) \wordpress_code_ai\Client_IP::get()
                 : trim( explode( ',', isset( $_SERVER['REMOTE_ADDR'] ) ? \sanitize_text_field( \wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' )[0] );
 
             
@@ -544,15 +544,15 @@ class Transport {
                 $this->server->log_auth_failure( $ip, OAuth_Token_Validator::ERROR_INVALID_AUDIENCE, $this->invalid_audience_identity( $oauth_verdict ) );
                 return $this->make_unauthorized_response( null, 401, 'invalid_token' );
             }
-            $cache_key = 'easy_mcp_ai_auth_fail_' . md5( $ip );
+            $cache_key = 'wordpress_code_ai_auth_fail_' . md5( $ip );
 
             
             
             
             
             if ( \wp_using_ext_object_cache() ) {
-                \wp_cache_add( $cache_key, 0, 'easy_mcp_ai', 60 );
-                $new_fails = \wp_cache_incr( $cache_key, 1, 'easy_mcp_ai' );
+                \wp_cache_add( $cache_key, 0, 'wordpress_code_ai', 60 );
+                $new_fails = \wp_cache_incr( $cache_key, 1, 'wordpress_code_ai' );
             } else {
                 
                 $new_fails = (int) \get_transient( $cache_key ) + 1;
@@ -679,7 +679,7 @@ class Transport {
         }
         $granted = preg_split( '/\s+/', trim( (string) $this->oauth_scope ), -1, PREG_SPLIT_NO_EMPTY );
         $added   = array_diff( preg_split( '/\s+/', trim( $scope ), -1, PREG_SPLIT_NO_EMPTY ), $granted );
-        \Easy_MCP_AI\OAuth\Step_Up::record( (int) $wp_user_id, (string) $client_id, $added );
+        \wordpress_code_ai\OAuth\Step_Up::record( (int) $wp_user_id, (string) $client_id, $added );
         $response = new \WP_REST_Response( $body, 403 );
         $response->header( 'Cache-Control', 'no-store, private' );
         $response->header(
@@ -1159,7 +1159,7 @@ class Transport {
             } elseif ( $this->is_site_mismatch( $legacy_result ) ) {
                 
                 
-                $ip = class_exists( '\\Easy_MCP_AI\\Client_IP' ) ? (string) \Easy_MCP_AI\Client_IP::get() : '';
+                $ip = class_exists( '\\wordpress_code_ai\\Client_IP' ) ? (string) \wordpress_code_ai\Client_IP::get() : '';
                 $this->server->log_auth_failure( $ip, Token_Manager::ERROR_SITE_MISMATCH, $this->site_mismatch_identity( $legacy_result ) );
                 return $this->make_unauthorized_response( null, 401, 'invalid_token', self::SITE_MISMATCH_DESCRIPTION );
             }
@@ -1280,7 +1280,7 @@ class Transport {
 
 
 
-        $filtered = \apply_filters( 'easy_mcp_ai_allowed_origins', $defaults );
+        $filtered = \apply_filters( 'wordpress_code_ai_allowed_origins', $defaults );
 
         if ( ! is_array( $filtered ) ) {
             return $defaults;
@@ -1402,7 +1402,7 @@ class Transport {
         return new \WP_REST_Response(
             array(
                 'error'            => 'origin_not_allowed',
-                'message'          => 'The Origin header on this request is not permitted for this site. This is the plugin refusing the request, not the web server. Browser-based clients must be served from an allowed origin; non-browser clients should send no Origin header at all. Site owners can extend the list with the easy_mcp_ai_allowed_origins filter.',
+                'message'          => 'The Origin header on this request is not permitted for this site. This is the plugin refusing the request, not the web server. Browser-based clients must be served from an allowed origin; non-browser clients should send no Origin header at all. Site owners can extend the list with the wordpress_code_ai_allowed_origins filter.',
                 'received_origin'  => \sanitize_text_field( $origin ),
                 'allowed_origins'  => $allowed,
             ),
@@ -1514,7 +1514,7 @@ class Transport {
             }
 
             
-            $throttle_key = 'easy_mcp_ai_oat_srv_' . $token_id;
+            $throttle_key = 'wordpress_code_ai_oat_srv_' . $token_id;
             $cached = \get_transient( $throttle_key );
             if ( is_array( $cached ) ) {
                 $this->server->get_session_manager()->touch( $session_id );
@@ -1522,7 +1522,7 @@ class Transport {
             }
 
             global $wpdb;
-            $table = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+            $table = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
             // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix; token revalidation must be fresh.
             $row = $wpdb->get_row(
                 $wpdb->prepare( "SELECT id, wp_user_id, is_active, expires_at FROM {$table} WHERE id = %d LIMIT 1", $token_id ),
@@ -1597,10 +1597,10 @@ class Transport {
 
 
     private function is_oauth_available() {
-        if ( ! \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) ) ) {
+        if ( ! \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) ) ) {
             return false;
         }
-        $file = EASY_MCP_AI_PLUGIN_DIR . 'includes/oauth/class-oauth-token-validator.php';
+        $file = WORDPRESS_CODE_AI_PLUGIN_DIR . 'includes/oauth/class-oauth-token-validator.php';
         if ( ! file_exists( $file ) ) {
             return false;
         }
@@ -1636,10 +1636,10 @@ class Transport {
         if ( $auth->check_ip_allowed() ) {
             return null;
         }
-        $ip = class_exists( '\\Easy_MCP_AI\\Client_IP' )
-            ? (string) \Easy_MCP_AI\Client_IP::get()
+        $ip = class_exists( '\\wordpress_code_ai\\Client_IP' )
+            ? (string) \wordpress_code_ai\Client_IP::get()
             : ( isset( $_SERVER['REMOTE_ADDR'] ) ? \sanitize_text_field( \wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
-        if ( $this->refusal_log_budget_allows( 'easy_mcp_ai_ipreflog_', $auth_source, $token_id ) ) {
+        if ( $this->refusal_log_budget_allows( 'wordpress_code_ai_ipreflog_', $auth_source, $token_id ) ) {
             $this->server->log_auth_failure( $ip, 'ip_forbidden', array(
                 'token_id'        => (int) $token_id,
                 'auth_source'     => $auth_source,
@@ -1671,15 +1671,15 @@ class Transport {
     private function refusal_log_budget_allows( string $family, ?string $auth_source, int $token_id ): bool {
         
         
-        $limit = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_rate_limit_per_minute', 60 );
+        $limit = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_rate_limit_per_minute', 60 );
         if ( $limit < 1 ) {
             $limit = 60;
         }
         $key = $family . ( 'oauth' === $auth_source ? 'oauth' : 'legacy' ) . '_' . (int) $token_id;
 
         if ( \wp_using_ext_object_cache() ) {
-            \wp_cache_add( $key, 0, 'easy_mcp_ai', 60 );
-            return (int) \wp_cache_incr( $key, 1, 'easy_mcp_ai' ) <= $limit;
+            \wp_cache_add( $key, 0, 'wordpress_code_ai', 60 );
+            return (int) \wp_cache_incr( $key, 1, 'wordpress_code_ai' ) <= $limit;
         }
         $written = (int) \get_transient( $key );
         if ( $written >= $limit ) {
@@ -1764,8 +1764,8 @@ class Transport {
 
 
     public static function resource_metadata_url(): string {
-        if ( \Easy_MCP_AI\OAuth\Root_Fallback::is_armed() ) {
-            if ( \Easy_MCP_AI\OAuth\Root_Fallback::mcp_path_discovery_reachable() ) {
+        if ( \wordpress_code_ai\OAuth\Root_Fallback::is_armed() ) {
+            if ( \wordpress_code_ai\OAuth\Root_Fallback::mcp_path_discovery_reachable() ) {
                 return \rest_url( self::NAMESPACE_V1 . '/mcp/.well-known/oauth-protected-resource' );
             }
             return \rest_url( self::NAMESPACE_V1 . '/discovery/oauth-protected-resource' );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -68,7 +68,7 @@ class Config {
 
 
 
-    const BUCKET_PATTERN = '/^(?:easy_mcp_ai_)?disabled_(ga|gsc|dfs|semrush|ahrefs|seranking|plugin)_tools$/';
+    const BUCKET_PATTERN = '/^(?:wordpress_code_ai_)?disabled_(ga|gsc|dfs|semrush|ahrefs|seranking|plugin)_tools$/';
 
     
     public static function settings() {
@@ -141,7 +141,7 @@ class Config {
             'approval_never' => array( array(), 'array' ),
             'hide_admin' => array( false, 'visibility' ),
             'hide_plugin_row' => array( false, 'boolean' ),
-            'brand_name' => array( 'Easy MCP AI', 'brand' ),
+            'brand_name' => array( 'wordpress-code-ai', 'brand' ),
             
             
             'paused' => array( false, 'paused' ),
@@ -159,15 +159,15 @@ class Config {
     }
 
     public static function brand( $text ) {
-        return str_replace( 'Easy MCP AI', self::get( 'brand_name' ), $text );
+        return str_replace( 'wordpress-code-ai', self::get( 'brand_name' ), $text );
     }
 
     private static function suffix( $option ) {
-        return preg_replace( '/^easy_mcp_ai_/', '', $option );
+        return preg_replace( '/^wordpress_code_ai_/', '', $option );
     }
 
     public static function constant_name( $option ) {
-        return 'EASY_MCP_AI_' . strtoupper( self::suffix( $option ) );
+        return 'WORDPRESS_CODE_AI_' . strtoupper( self::suffix( $option ) );
     }
 
     
@@ -211,7 +211,7 @@ class Config {
         }
         $source = self::source( $suffix );
         if ( '' === $source ) {
-            return self::stored( $suffix, \get_option( 'easy_mcp_ai_' . $suffix, func_num_args() > 1 ? $default : $spec[0] ) );
+            return self::stored( $suffix, \get_option( 'wordpress_code_ai_' . $suffix, func_num_args() > 1 ? $default : $spec[0] ) );
         }
         $name = self::constant_name( $suffix );
         $raw = 'constant' === $source ? constant( $name ) : getenv( $name );
@@ -457,7 +457,7 @@ class Config {
         foreach ( self::settings() as $suffix => $spec ) {
             
             
-            $stored = self::stored( $suffix, \get_option( 'easy_mcp_ai_' . $suffix, $spec[0] ) );
+            $stored = self::stored( $suffix, \get_option( 'wordpress_code_ai_' . $suffix, $spec[0] ) );
             
             if ( 'boolean' === $spec[1] || 'opt_out' === $spec[1] ) {
                 $stored = (bool) $stored;

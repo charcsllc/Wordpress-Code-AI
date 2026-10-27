@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GA;
+namespace wordpress_code_ai\Tools\GA;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GA\GA_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GA\GA_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -13,7 +13,7 @@ class List_Data_Streams extends Base_Tool {
     public function get_name() { return 'wp_ga_list_data_streams'; }
 
     public function get_description() {
-        return 'Lists web, iOS, and Android data streams configured on a GA4 property. Useful for confirming a property is actually receiving traffic from the expected domain or app. Requires a Google service-account credential configured under Easy MCP AI → Tools → External data.';
+        return 'Lists web, iOS, and Android data streams configured on a GA4 property. Useful for confirming a property is actually receiving traffic from the expected domain or app. Requires a Google service-account credential configured under wordpress-code-ai → Tools → External data.';
     }
 
     public function get_category() { return 'ga'; }

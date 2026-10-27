@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\CPT;
+namespace wordpress_code_ai\Tools\CPT;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Post_Type_Tool_Hint;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Post_Type_Tool_Hint;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

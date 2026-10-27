@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Preview;
+namespace wordpress_code_ai\Preview;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -36,7 +36,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Preview_Link {
 
     
-    const QUERY_VAR = 'easy_mcp_ai_preview';
+    const QUERY_VAR = 'wordpress_code_ai_preview';
 
     const MIN_MINUTES     = 5;
     const MAX_MINUTES     = 1440;
@@ -146,17 +146,17 @@ final class Preview_Link {
         }
         $parts = self::parse( $raw );
         if ( null === $parts || ! self::matches( $parts, (int) $post->ID ) ) {
-            return self::refusal( 403, \__( 'This preview link is not valid.', 'easy-mcp-ai' ) );
+            return self::refusal( 403, \__( 'This preview link is not valid.', 'wordpress-code-ai' ) );
         }
         if ( $parts['expires'] <= $now ) {
             /* translators: %s: the date and time the link expired, in UTC. */
-            return self::refusal( 410, sprintf( \__( 'This preview link expired on %s. Ask for a new one.', 'easy-mcp-ai' ), gmdate( 'Y-m-d H:i', $parts['expires'] ) . ' UTC' ) );
+            return self::refusal( 410, sprintf( \__( 'This preview link expired on %s. Ask for a new one.', 'wordpress-code-ai' ), gmdate( 'Y-m-d H:i', $parts['expires'] ) . ' UTC' ) );
         }
         if ( '' !== self::status_problem( $post ) ) {
-            return self::refusal( 404, \__( 'This post can no longer be previewed.', 'easy-mcp-ai' ) );
+            return self::refusal( 404, \__( 'This post can no longer be previewed.', 'wordpress-code-ai' ) );
         }
         if ( ! \user_can( $parts['user_id'], 'edit_post', (int) $post->ID ) ) {
-            return self::refusal( 403, \__( 'This preview link is no longer valid: the person who created it can no longer edit this post.', 'easy-mcp-ai' ) );
+            return self::refusal( 403, \__( 'This preview link is no longer valid: the person who created it can no longer edit this post.', 'wordpress-code-ai' ) );
         }
         return array(
             'action'  => 'show',
@@ -218,7 +218,7 @@ final class Preview_Link {
             exit;
         }
         if ( 'refuse' === $decision['action'] ) {
-            \wp_die( \esc_html( $decision['message'] ), \esc_html__( 'Preview link', 'easy-mcp-ai' ), array( 'response' => $decision['status'] ) );
+            \wp_die( \esc_html( $decision['message'] ), \esc_html__( 'Preview link', 'wordpress-code-ai' ), array( 'response' => $decision['status'] ) );
         }
         self::show( $post, $raw );
         
@@ -339,7 +339,7 @@ final class Preview_Link {
 
 
     private static function signature( int $post_id, int $user_id, int $expires ): string {
-        return substr( hash_hmac( 'sha256', 'easy-mcp-ai-preview|' . $post_id . '|' . $user_id . '|' . $expires, \wp_salt( 'auth' ) ), 0, self::SIGNATURE_LENGTH );
+        return substr( hash_hmac( 'sha256', 'wordpress-code-ai-preview|' . $post_id . '|' . $user_id . '|' . $expires, \wp_salt( 'auth' ) ), 0, self::SIGNATURE_LENGTH );
     }
 
     

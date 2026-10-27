@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Media;
+namespace wordpress_code_ai\Tools\Media;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -57,7 +57,7 @@ class Upload_Media_From_Url extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Downloads a file from a URL and imports it into the WordPress media library. Supply exactly one source: `url` (a public HTTPS URL — HTTPS only by default, local/private IPs blocked via DNS-resolved SSRF check; site owners can allow http via the easy_mcp_ai_allow_http_media_url filter) or `file` (a client file handoff — a generated or user-attached file the client references as an object with download_url and file_id, which the client fills in). Local paths and bare file IDs cannot be fetched. Optional: `filename` (override; for a file handoff the resolved name must carry an allowed extension such as image.png), `title`, `alt_text`, `caption`, `description` (the attachment\'s Description field, stored as post_content), `slug` (the attachment\'s URL slug; WordPress adds a suffix when it is taken), `post_id` (attach to a parent post), `featured_image` (true, with `post_id`: also make the imported image that post\'s featured image; needs edit rights on the post, a post type with featured images, and an image file — otherwise nothing is imported). Size limit: site `wp_max_upload_size()`. Returns { id, source_url, mime_type, title, alt_text, caption, file_size }, the text fields as stored, plus `slug` (as stored) when `slug` was sent and `featured_image` (true when it was set) when that was sent; use id as featured_media or source_url in post content. Avoids the ~33% base64 overhead of wp_upload_media.';
+        return 'Downloads a file from a URL and imports it into the WordPress media library. Supply exactly one source: `url` (a public HTTPS URL — HTTPS only by default, local/private IPs blocked via DNS-resolved SSRF check; site owners can allow http via the wordpress_code_ai_allow_http_media_url filter) or `file` (a client file handoff — a generated or user-attached file the client references as an object with download_url and file_id, which the client fills in). Local paths and bare file IDs cannot be fetched. Optional: `filename` (override; for a file handoff the resolved name must carry an allowed extension such as image.png), `title`, `alt_text`, `caption`, `description` (the attachment\'s Description field, stored as post_content), `slug` (the attachment\'s URL slug; WordPress adds a suffix when it is taken), `post_id` (attach to a parent post), `featured_image` (true, with `post_id`: also make the imported image that post\'s featured image; needs edit rights on the post, a post type with featured images, and an image file — otherwise nothing is imported). Size limit: site `wp_max_upload_size()`. Returns { id, source_url, mime_type, title, alt_text, caption, file_size }, the text fields as stored, plus `slug` (as stored) when `slug` was sent and `featured_image` (true when it was set) when that was sent; use id as featured_media or source_url in post content. Avoids the ~33% base64 overhead of wp_upload_media.';
     }
 
     public function get_category() {
@@ -83,7 +83,7 @@ class Upload_Media_From_Url extends Base_Tool {
             'properties' => array(
                 'url'      => array(
                     'type'        => 'string',
-                    'description' => 'Public HTTPS URL to the file (http allowed only if the site enables the easy_mcp_ai_allow_http_media_url filter). Private/internal IPs are rejected. Supply either url or file, never both.',
+                    'description' => 'Public HTTPS URL to the file (http allowed only if the site enables the wordpress_code_ai_allow_http_media_url filter). Private/internal IPs are rejected. Supply either url or file, never both.',
                 ),
                 'file'     => array(
                     'type'        => 'object',
@@ -725,7 +725,7 @@ class Upload_Media_From_Url extends Base_Tool {
         
         
         
-        $allow_http      = (bool) apply_filters( 'easy_mcp_ai_allow_http_media_url', false );
+        $allow_http      = (bool) apply_filters( 'wordpress_code_ai_allow_http_media_url', false );
         $allowed_schemes = $allow_http ? array( 'http', 'https' ) : array( 'https' );
         if ( ! in_array( $scheme, $allowed_schemes, true ) ) {
             throw new \InvalidArgumentException( $allow_http ? 'URL must use http or https.' : 'URL must use HTTPS.' );

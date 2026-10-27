@@ -1,14 +1,14 @@
 (function () {
     'use strict';
 
-    var section = document.getElementById('easy-mcp-key-create');
+    var section = document.getElementById('wordpress-code-ai-key-create');
     if (!section) {
         return;
     }
 
-    var expiry = document.getElementById('easy-mcp-key-expiry');
-    var custom = section.querySelector('.easy-mcp-key-custom-expiry');
-    var date = document.getElementById('easy-mcp-key-custom-date');
+    var expiry = document.getElementById('wordpress-code-ai-key-expiry');
+    var custom = section.querySelector('.wordpress-code-ai-key-custom-expiry');
+    var date = document.getElementById('wordpress-code-ai-key-custom-date');
     function syncExpiry() {
         var selected = expiry.value === 'custom';
         custom.hidden = !selected;
@@ -18,7 +18,7 @@
     expiry.addEventListener('change', syncExpiry);
     syncExpiry();
 
-    var controls = section.querySelector('.easy-mcp-key-selection');
+    var controls = section.querySelector('.wordpress-code-ai-key-selection');
     var tools = section.querySelectorAll('input[name="key_tools[]"]');
     if (!controls || !tools.length) {
         return;

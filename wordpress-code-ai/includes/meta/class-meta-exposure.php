@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Meta;
+namespace wordpress_code_ai\Meta;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -78,17 +78,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Meta_Exposure {
 
-    const OPTION_ENABLED_GROUPS = 'easy_mcp_ai_enabled_plugin_groups';
+    const OPTION_ENABLED_GROUPS = 'wordpress_code_ai_enabled_plugin_groups';
 
     
 
 
 
     const PROVIDERS = array(
-        'rank-math'         => 'Easy_MCP_AI\\Meta\\Providers\\Rank_Math_Meta_Provider',
-        'yoast-seo'         => 'Easy_MCP_AI\\Meta\\Providers\\Yoast_Meta_Provider',
-        'seopress'          => 'Easy_MCP_AI\\Meta\\Providers\\Seopress_Meta_Provider',
-        'the-seo-framework' => 'Easy_MCP_AI\\Meta\\Providers\\Tsf_Meta_Provider',
+        'rank-math'         => 'wordpress_code_ai\\Meta\\Providers\\Rank_Math_Meta_Provider',
+        'yoast-seo'         => 'wordpress_code_ai\\Meta\\Providers\\Yoast_Meta_Provider',
+        'seopress'          => 'wordpress_code_ai\\Meta\\Providers\\Seopress_Meta_Provider',
+        'the-seo-framework' => 'wordpress_code_ai\\Meta\\Providers\\Tsf_Meta_Provider',
     );
 
     
@@ -113,7 +113,7 @@ final class Meta_Exposure {
 
     public static function all_providers() {
         if ( null === self::$providers ) {
-            self::$providers = \Easy_MCP_AI\Class_Map_Loader::load( self::PROVIDERS, Meta_Field_Provider::class );
+            self::$providers = \wordpress_code_ai\Class_Map_Loader::load( self::PROVIDERS, Meta_Field_Provider::class );
         }
         return self::$providers;
     }
@@ -234,7 +234,7 @@ final class Meta_Exposure {
             $parts[] = sprintf( '"%s" (%s restricts this field for your role)', $key, $label );
         }
         return new \WP_Error(
-            'easy_mcp_ai_meta_forbidden',
+            'wordpress_code_ai_meta_forbidden',
             sprintf( 'You are not allowed to set %s. Nothing was saved.', implode( ', ', $parts ) ),
             array( 'status' => 403 )
         );
@@ -510,7 +510,7 @@ final class Meta_Exposure {
             }
             if ( ! self::is_group_enabled( $slug ) ) {
                 $out[ $key ] = sprintf(
-                    '"%s" is a %s meta key. %s is installed but its integration is not enabled under Easy MCP AI → Tools → Plugins; once an administrator enables it, this key can be written here%s.',
+                    '"%s" is a %s meta key. %s is installed but its integration is not enabled under wordpress-code-ai → Tools → Plugins; once an administrator enables it, this key can be written here%s.',
                     $key,
                     $label,
                     $label,
@@ -520,7 +520,7 @@ final class Meta_Exposure {
             }
             if ( ! array_key_exists( $key, $provider->get_fields() ) ) {
                 $out[ $key ] = sprintf(
-                    '"%s" is a %s meta key that Easy MCP AI does not expose. Writable %s keys: %s.',
+                    '"%s" is a %s meta key that wordpress-code-ai does not expose. Writable %s keys: %s.',
                     $key,
                     $label,
                     $label,
@@ -529,7 +529,7 @@ final class Meta_Exposure {
                 continue;
             }
             $out[ $key ] = sprintf(
-                '"%s" is exposed for %s on public, REST-enabled post types; %s may have registered it for this post type itself without REST exposure, in which case Easy MCP AI defers to it%s.',
+                '"%s" is exposed for %s on public, REST-enabled post types; %s may have registered it for this post type itself without REST exposure, in which case wordpress-code-ai defers to it%s.',
                 $key,
                 $label,
                 $label,

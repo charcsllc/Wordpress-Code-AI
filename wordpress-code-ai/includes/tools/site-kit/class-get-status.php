@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Kit;
+namespace wordpress_code_ai\Tools\Site_Kit;
 
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

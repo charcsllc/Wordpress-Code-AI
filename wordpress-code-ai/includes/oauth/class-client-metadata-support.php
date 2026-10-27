@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
-use Easy_MCP_AI\Config;
+use wordpress_code_ai\Config;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -48,10 +48,10 @@ final class Client_Metadata_Support {
     const SCHEMA_VERSION = '1.0.11';
 
     
-    const HOOK = 'easy_mcp_ai_oauth_cimd_probe';
+    const HOOK = 'wordpress_code_ai_oauth_cimd_probe';
 
     
-    const OPTION_STATE = 'easy_mcp_ai_oauth_cimd_state';
+    const OPTION_STATE = 'wordpress_code_ai_oauth_cimd_state';
 
     
 
@@ -96,7 +96,7 @@ final class Client_Metadata_Support {
 
 
 
-        return true === apply_filters( 'easy_mcp_ai_oauth_cimd', $on );
+        return true === apply_filters( 'wordpress_code_ai_oauth_cimd', $on );
     }
 
     
@@ -260,7 +260,7 @@ final class Client_Metadata_Support {
 
 
 
-        $urls = apply_filters( 'easy_mcp_ai_oauth_cimd_probe_urls', self::PROBE_URLS );
+        $urls = apply_filters( 'wordpress_code_ai_oauth_cimd_probe_urls', self::PROBE_URLS );
         if ( ! is_array( $urls ) ) {
             return array();
         }

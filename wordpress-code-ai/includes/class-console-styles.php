@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -49,7 +49,7 @@ class Console_Styles {
         }
 
         $css = '';
-        $file = EASY_MCP_AI_PLUGIN_DIR . 'assets/css/console.css';
+        $file = WORDPRESS_CODE_AI_PLUGIN_DIR . 'assets/css/console.css';
         if ( is_readable( $file ) ) {
             // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reading a stylesheet shipped inside this plugin, not a remote resource.
             $css = (string) file_get_contents( $file );
@@ -85,7 +85,7 @@ class Console_Styles {
         if ( Config::is_white_labelled() ) {
             return '';
         }
-        return '<span class="emcp-topbar__mark">'
+        return '<span class="wcai-topbar__mark">'
             . '<svg viewBox="0 0 100 100" width="16" height="16" aria-hidden="true" focusable="false">'
             . '<path d="M15 25 L35 85 L50 45" fill="none" stroke="#C5F121" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>'
             . '<path d="M50 45 L65 85 L85 25" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>'
@@ -98,7 +98,7 @@ class Console_Styles {
     }
 
     public static function site_name() {
-        return '<span class="emcp-topbar__site">' . \esc_html( self::site_label() ) . '</span>';
+        return '<span class="wcai-topbar__site">' . \esc_html( self::site_label() ) . '</span>';
     }
 
     
@@ -112,7 +112,7 @@ class Console_Styles {
 
 
     private static function font_face() {
-        $dir = EASY_MCP_AI_PLUGIN_DIR . 'assets/build/fonts';
+        $dir = WORDPRESS_CODE_AI_PLUGIN_DIR . 'assets/build/fonts';
         if ( ! is_dir( $dir ) ) {
             return '';
         }
@@ -137,7 +137,7 @@ class Console_Styles {
                 continue;
             }
             $family = 'sans' === $m[1] ? 'IBM Plex Sans' : 'IBM Plex Mono';
-            $url    = esc_url( EASY_MCP_AI_PLUGIN_URL . 'assets/build/fonts/' . $name );
+            $url    = esc_url( WORDPRESS_CODE_AI_PLUGIN_URL . 'assets/build/fonts/' . $name );
 
             $css .= '@font-face{font-family:"' . $family . '";font-style:normal;font-display:swap;font-weight:' . (int) $m[3] . ';'
                 . 'src:url(' . $url . ') format("woff2");unicode-range:' . $ranges[ $m[2] ] . ';}';

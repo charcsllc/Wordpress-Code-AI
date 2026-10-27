@@ -24,7 +24,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -122,12 +122,12 @@ class Check_Conflicts {
         $foreign_rest_auth = self::foreign_rest_auth_callbacks( self::rest_auth_callback_names() );
 
         return array(
-            self::evaluate_competing_mcp( self::active_from( 'easy_mcp_ai_diagnostics_known_mcp_plugins', self::KNOWN_MCP_PLUGINS ) ),
-            self::evaluate_security_plugins( self::active_from( 'easy_mcp_ai_diagnostics_known_security_plugins', self::KNOWN_SECURITY_PLUGINS ) ),
+            self::evaluate_competing_mcp( self::active_from( 'wordpress_code_ai_diagnostics_known_mcp_plugins', self::KNOWN_MCP_PLUGINS ) ),
+            self::evaluate_security_plugins( self::active_from( 'wordpress_code_ai_diagnostics_known_security_plugins', self::KNOWN_SECURITY_PLUGINS ) ),
             self::evaluate_rest_filters( array() !== $foreign_rest_auth, $foreign_rest_auth, self::rest_auth_override_active(), self::rest_auth_observation(), self::foreign_rest_auth_identities() ),
             self::evaluate_hook_stripping( self::count_hook_reassertions(), self::change_capture_enabled() ),
-            self::evaluate_cache_plugins( self::active_from( 'easy_mcp_ai_diagnostics_known_cache_plugins', self::KNOWN_CACHE_PLUGINS ), self::cache_coverage_now() ),
-            self::evaluate_coming_soon_plugins( self::active_from( 'easy_mcp_ai_diagnostics_known_coming_soon_plugins', self::KNOWN_COMING_SOON_PLUGINS ) ),
+            self::evaluate_cache_plugins( self::active_from( 'wordpress_code_ai_diagnostics_known_cache_plugins', self::KNOWN_CACHE_PLUGINS ), self::cache_coverage_now() ),
+            self::evaluate_coming_soon_plugins( self::active_from( 'wordpress_code_ai_diagnostics_known_coming_soon_plugins', self::KNOWN_COMING_SOON_PLUGINS ) ),
         );
     }
 
@@ -149,10 +149,10 @@ class Check_Conflicts {
         
         
         if ( null === $found ) {
-            return Diagnostic_Result::unknown( 'e1', Diagnostic_Result::TIER_WARNING, __( 'No competing MCP plugin', 'easy-mcp-ai' ), __( 'Could not read the list of active plugins.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'e1', Diagnostic_Result::TIER_WARNING, __( 'No competing MCP plugin', 'wordpress-code-ai' ), __( 'Could not read the list of active plugins.', 'wordpress-code-ai' ) );
         }
         $found = (array) $found;
-        $label = __( 'No competing MCP plugin', 'easy-mcp-ai' );
+        $label = __( 'No competing MCP plugin', 'wordpress-code-ai' );
 
         if ( ! empty( $found ) ) {
             return Diagnostic_Result::warn(
@@ -166,12 +166,12 @@ class Check_Conflicts {
                     
                     count( $found ) > 1
                         /* translators: %s: comma-separated plugin names. */
-                        ? __( 'Also active: %s. If they also serve MCP or OAuth discovery on this site, an AI client may connect to whichever answers first, so a connection can succeed and still reach the wrong plugin.', 'easy-mcp-ai' )
+                        ? __( 'Also active: %s. If they also serve MCP or OAuth discovery on this site, an AI client may connect to whichever answers first, so a connection can succeed and still reach the wrong plugin.', 'wordpress-code-ai' )
                         /* translators: %s: a plugin name. */
-                        : __( 'Also active: %s. If it also serves MCP or OAuth discovery on this site, an AI client may connect to whichever answers first, so a connection can succeed and still reach the wrong plugin.', 'easy-mcp-ai' ),
+                        : __( 'Also active: %s. If it also serves MCP or OAuth discovery on this site, an AI client may connect to whichever answers first, so a connection can succeed and still reach the wrong plugin.', 'wordpress-code-ai' ),
                     implode( ', ', $found )
                 ),
-                __( 'Check which plugin your AI client is actually connected to. If it is the wrong one, keep a single MCP plugin active, deactivate the other, and reconnect.', 'easy-mcp-ai' ),
+                __( 'Check which plugin your AI client is actually connected to. If it is the wrong one, keep a single MCP plugin active, deactivate the other, and reconnect.', 'wordpress-code-ai' ),
                 array( 'competing_mcp_plugins' => $found )
             );
         }
@@ -180,7 +180,7 @@ class Check_Conflicts {
             'e1',
             Diagnostic_Result::TIER_WARNING,
             $label,
-            __( 'None found among the active plugins.', 'easy-mcp-ai' ),
+            __( 'None found among the active plugins.', 'wordpress-code-ai' ),
             array( 'competing_mcp_plugins' => array() )
         );
     }
@@ -213,12 +213,12 @@ class Check_Conflicts {
         
         
         
-        $label = __( 'Firewall and security plugins', 'easy-mcp-ai' );
+        $label = __( 'Firewall and security plugins', 'wordpress-code-ai' );
 
         
         
         if ( null === $found ) {
-            return Diagnostic_Result::unknown( 'e2', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the list of active plugins.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'e2', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the list of active plugins.', 'wordpress-code-ai' ) );
         }
         $found = (array) $found;
 
@@ -230,9 +230,9 @@ class Check_Conflicts {
                 sprintf(
                     count( $found ) > 1
                         /* translators: %s: comma-separated plugin names. */
-                        ? __( 'Detected: %s. These plugins work normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/easy-mcp-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/easy-mcp-ai/ form of the same address too: a rule written only against the path silently misses it.', 'easy-mcp-ai' )
+                        ? __( 'Detected: %s. These plugins work normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/wordpress-code-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/wordpress-code-ai/ form of the same address too: a rule written only against the path silently misses it.', 'wordpress-code-ai' )
                         /* translators: %s: a plugin name. */
-                        : __( 'Detected: %s. This plugin works normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/easy-mcp-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/easy-mcp-ai/ form of the same address too: a rule written only against the path silently misses it.', 'easy-mcp-ai' ),
+                        : __( 'Detected: %s. This plugin works normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/wordpress-code-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/wordpress-code-ai/ form of the same address too: a rule written only against the path silently misses it.', 'wordpress-code-ai' ),
                     implode( ', ', $found )
                 ),
                 array( 'security_plugins' => $found )
@@ -248,7 +248,7 @@ class Check_Conflicts {
             'e2',
             Diagnostic_Result::TIER_INFO,
             $label,
-            __( 'No firewall plugin found among the active plugins. This cannot see protection that runs outside WordPress — a host-level firewall, a must-use plugin, or a CDN rule.', 'easy-mcp-ai' ),
+            __( 'No firewall plugin found among the active plugins. This cannot see protection that runs outside WordPress — a host-level firewall, a must-use plugin, or a CDN rule.', 'wordpress-code-ai' ),
             array( 'security_plugins' => array() )
         );
     }
@@ -304,7 +304,7 @@ class Check_Conflicts {
 
 
     public static function evaluate_rest_filters( $hooked, array $foreign = array(), $override_active = false, $observation = null, $identities = null ) {
-        $label = __( 'REST API authentication unmodified', 'easy-mcp-ai' );
+        $label = __( 'REST API authentication unmodified', 'wordpress-code-ai' );
         
         
         
@@ -317,7 +317,7 @@ class Check_Conflicts {
                 'override_active'            => true,
                 'observation'                => $observation,
             );
-            $fix_own_allowlist = __( 'Identify the plugin the callback above belongs to and allow the easy-mcp-ai/v1 endpoints in its own REST settings. Then press Re-run checks.', 'easy-mcp-ai' );
+            $fix_own_allowlist = __( 'Identify the plugin the callback above belongs to and allow the wordpress-code-ai/v1 endpoints in its own REST settings. Then press Re-run checks.', 'wordpress-code-ai' );
 
             
             
@@ -327,22 +327,22 @@ class Check_Conflicts {
                 if ( $observation['seen'] && $observation['cleared'] ) {
                     $measured = sprintf(
                         /* translators: 1: date, 2: a WP_Error code such as rest_cannot_access. */
-                        __( 'Measured on %1$s: a test request to this plugin\'s endpoints was refused with a sign-in challenge (%2$s) and let through to the plugin, which then checked the credential itself.', 'easy-mcp-ai' ),
+                        __( 'Measured on %1$s: a test request to this plugin\'s endpoints was refused with a sign-in challenge (%2$s) and let through to the plugin, which then checked the credential itself.', 'wordpress-code-ai' ),
                         $when,
                         '' !== $observation['code'] ? $observation['code'] : '401'
                     );
                 } else {
                     $measured = sprintf(
                         /* translators: %s: date. */
-                        __( 'Measured on %s: a test request to this plugin\'s endpoints reached the plugin without being refused by that filter.', 'easy-mcp-ai' ),
+                        __( 'Measured on %s: a test request to this plugin\'s endpoints reached the plugin without being refused by that filter.', 'wordpress-code-ai' ),
                         $when
                     );
                 }
                 return Diagnostic_Result::pass(
                     'e3',
                     Diagnostic_Result::TIER_INFO,
-                    __( 'AI routes get past REST authentication filters', 'easy-mcp-ai' ),
-                    __( 'Another plugin or theme filters REST API authentication on this site, and this plugin\'s own endpoints are exempted from a "sign in required" refusal there; the filter keeps protecting every other REST route.', 'easy-mcp-ai' ) . ' ' . $measured . self::named_callbacks( $foreign ),
+                    __( 'AI routes get past REST authentication filters', 'wordpress-code-ai' ),
+                    __( 'Another plugin or theme filters REST API authentication on this site, and this plugin\'s own endpoints are exempted from a "sign in required" refusal there; the filter keeps protecting every other REST route.', 'wordpress-code-ai' ) . ' ' . $measured . self::named_callbacks( $foreign ),
                     $evidence
                 );
             }
@@ -352,15 +352,15 @@ class Check_Conflicts {
             
             
             if ( ! is_array( $observation ) ) {
-                $why = __( 'Whether the exemption lets a request through on this site has not been measured yet.', 'easy-mcp-ai' );
-                $fix = __( 'Press Re-run checks: the connection test sends a real request through that filter and records what it answered.', 'easy-mcp-ai' );
+                $why = __( 'Whether the exemption lets a request through on this site has not been measured yet.', 'wordpress-code-ai' );
+                $fix = __( 'Press Re-run checks: the connection test sends a real request through that filter and records what it answered.', 'wordpress-code-ai' );
             } elseif ( ! self::observation_matches( $observation, $identities ) ) {
-                $why = __( 'The filter callbacks have changed since the exemption was last measured, so the earlier measurement no longer applies.', 'easy-mcp-ai' );
-                $fix = __( 'Press Re-run checks so the connection test measures the filter as it is now.', 'easy-mcp-ai' );
+                $why = __( 'The filter callbacks have changed since the exemption was last measured, so the earlier measurement no longer applies.', 'wordpress-code-ai' );
+                $fix = __( 'Press Re-run checks so the connection test measures the filter as it is now.', 'wordpress-code-ai' );
             } else {
                 $why = sprintf(
                     /* translators: %s: date. */
-                    __( 'Measured on %s: a test request to this plugin\'s endpoints did not get through to the plugin. The exemption covers a "sign in required" refusal only; a refusal that enforces a policy (an IP or rate rule, or a plugin that blocks at dispatch, as Solid Security\'s and All-In-One Security\'s REST restrictions do) is not cleared, and the callback named here is the likely cause.', 'easy-mcp-ai' ),
+                    __( 'Measured on %s: a test request to this plugin\'s endpoints did not get through to the plugin. The exemption covers a "sign in required" refusal only; a refusal that enforces a policy (an IP or rate rule, or a plugin that blocks at dispatch, as Solid Security\'s and All-In-One Security\'s REST restrictions do) is not cleared, and the callback named here is the likely cause.', 'wordpress-code-ai' ),
                     \wp_date( \get_option( 'date_format', 'Y-m-d' ), $observation['time'] )
                 );
                 $fix = $fix_own_allowlist;
@@ -370,7 +370,7 @@ class Check_Conflicts {
                 'e3',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Another plugin or theme filters REST API authentication on this site. This plugin exempts its own endpoints from a "sign in required" refusal there, but not from a policy refusal.', 'easy-mcp-ai' ) . ' ' . $why . self::named_callbacks( $foreign ),
+                __( 'Another plugin or theme filters REST API authentication on this site. This plugin exempts its own endpoints from a "sign in required" refusal there, but not from a policy refusal.', 'wordpress-code-ai' ) . ' ' . $why . self::named_callbacks( $foreign ),
                 $fix,
                 $evidence
             );
@@ -399,8 +399,8 @@ class Check_Conflicts {
                 'e3',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Another plugin or theme filters REST API authentication on this site, and this plugin reaches WordPress through that API. Plugins that legitimately add their own authentication — WooCommerce, Jetpack and similar — are already excluded from this check, so what is named here is worth identifying: a "disable REST API" or "restrict REST API" feature works the same way.', 'easy-mcp-ai' ) . $named,
-                __( 'Identify the plugin the callback above belongs to. If it offers a "disable REST API" or "restrict REST API" setting, exempt the easy-mcp-ai/v1 namespace so AI clients can authenticate.', 'easy-mcp-ai' ),
+                __( 'Another plugin or theme filters REST API authentication on this site, and this plugin reaches WordPress through that API. Plugins that legitimately add their own authentication — WooCommerce, Jetpack and similar — are already excluded from this check, so what is named here is worth identifying: a "disable REST API" or "restrict REST API" feature works the same way.', 'wordpress-code-ai' ) . $named,
+                __( 'Identify the plugin the callback above belongs to. If it offers a "disable REST API" or "restrict REST API" setting, exempt the wordpress-code-ai/v1 namespace so AI clients can authenticate.', 'wordpress-code-ai' ),
                 
                 
                 
@@ -421,7 +421,7 @@ class Check_Conflicts {
             'e3',
             Diagnostic_Result::TIER_WARNING,
             $label,
-            __( 'Nothing was modifying REST authentication at the time this check ran. A plugin that only hooks in during a REST request would not be visible from the admin screen.', 'easy-mcp-ai' ),
+            __( 'Nothing was modifying REST authentication at the time this check ran. A plugin that only hooks in during a REST request would not be visible from the admin screen.', 'wordpress-code-ai' ),
             array( 'rest_authentication_hooked' => false )
         );
     }
@@ -457,7 +457,7 @@ class Check_Conflicts {
 
 
     public static function evaluate_hook_stripping( $marker_count, $capture_enabled ) {
-        $label = __( 'Change tracking hooks stay registered', 'easy-mcp-ai' );
+        $label = __( 'Change tracking hooks stay registered', 'wordpress-code-ai' );
 
         
         if ( null === $marker_count ) {
@@ -465,7 +465,7 @@ class Check_Conflicts {
                 'e4',
                 Diagnostic_Result::TIER_INFO,
                 $label,
-                __( 'Could not read the change history table.', 'easy-mcp-ai' )
+                __( 'Could not read the change history table.', 'wordpress-code-ai' )
             );
         }
 
@@ -475,7 +475,7 @@ class Check_Conflicts {
                 'e4',
                 Diagnostic_Result::TIER_INFO,
                 $label,
-                __( 'Could not verify — change history recording is switched off, so no evidence is collected either way.', 'easy-mcp-ai' )
+                __( 'Could not verify — change history recording is switched off, so no evidence is collected either way.', 'wordpress-code-ai' )
             );
         }
 
@@ -486,7 +486,7 @@ class Check_Conflicts {
                 $label,
                 sprintf(
                     /* translators: 1: number of recorded reassertion events, 2: number of days in the reporting window. */
-                    __( 'On %1$d occasion(s) in the last %2$d days, another plugin removed this plugin\'s tracking hooks during an AI request. They were re-registered automatically and the change was still recorded, so nothing was lost and no action is needed. If you are investigating missing history entries, Easy MCP AI → Activity → Change history lists the affected requests.', 'easy-mcp-ai' ),
+                    __( 'On %1$d occasion(s) in the last %2$d days, another plugin removed this plugin\'s tracking hooks during an AI request. They were re-registered automatically and the change was still recorded, so nothing was lost and no action is needed. If you are investigating missing history entries, wordpress-code-ai → Activity → Change history lists the affected requests.', 'wordpress-code-ai' ),
                     (int) $marker_count,
                     self::REASSERTION_WINDOW_DAYS
                 ),
@@ -503,7 +503,7 @@ class Check_Conflicts {
             $label,
             sprintf(
                 /* translators: %d: number of days in the reporting window. */
-                __( 'No hook removals recorded in the last %d days.', 'easy-mcp-ai' ),
+                __( 'No hook removals recorded in the last %d days.', 'wordpress-code-ai' ),
                 self::REASSERTION_WINDOW_DAYS
             ),
             array( 'hook_reassertions' => 0 )
@@ -537,7 +537,7 @@ class Check_Conflicts {
         
         
         
-        $label = __( 'Coming-soon and maintenance pages', 'easy-mcp-ai' );
+        $label = __( 'Coming-soon and maintenance pages', 'wordpress-code-ai' );
 
         
         
@@ -546,7 +546,7 @@ class Check_Conflicts {
                 'e6',
                 Diagnostic_Result::TIER_INFO,
                 $label,
-                __( 'Could not read the list of active plugins, so this was not checked.', 'easy-mcp-ai' )
+                __( 'Could not read the list of active plugins, so this was not checked.', 'wordpress-code-ai' )
             );
         }
 
@@ -557,7 +557,7 @@ class Check_Conflicts {
                 'e6',
                 Diagnostic_Result::TIER_INFO,
                 $label,
-                __( 'No coming-soon or maintenance plugin found among the active plugins. A holding page added by your theme or your host would not be visible from here.', 'easy-mcp-ai' ),
+                __( 'No coming-soon or maintenance plugin found among the active plugins. A holding page added by your theme or your host would not be visible from here.', 'wordpress-code-ai' ),
                 array( 'coming_soon_plugins' => array() )
             );
         }
@@ -571,7 +571,7 @@ class Check_Conflicts {
                 
                 
                 /* translators: %s: the plugin name, or a comma-separated list of plugin names when more than one is active. */
-                __( 'Detected: %s. Nothing here indicates a problem — putting a site behind a holding page is a deliberate choice. Worth knowing, though: the screen where you approve an AI client is a normal page on the front of your site, not part of the admin area, so a holding page can hide it. If approving a connection never loads, allow the address ?easy_mcp_ai_oauth=authorize through, or switch the holding page off while you connect.', 'easy-mcp-ai' ),
+                __( 'Detected: %s. Nothing here indicates a problem — putting a site behind a holding page is a deliberate choice. Worth knowing, though: the screen where you approve an AI client is a normal page on the front of your site, not part of the admin area, so a holding page can hide it. If approving a connection never loads, allow the address ?wordpress_code_ai_oauth=authorize through, or switch the holding page off while you connect.', 'wordpress-code-ai' ),
                 implode( ', ', $found )
             ),
             array( 'coming_soon_plugins' => $found )
@@ -598,12 +598,12 @@ class Check_Conflicts {
 
 
     public static function evaluate_cache_plugins( $found, $coverage = null ) {
-        $label = __( 'Caching excludes API endpoints', 'easy-mcp-ai' );
+        $label = __( 'Caching excludes API endpoints', 'wordpress-code-ai' );
 
         
         
         if ( null === $found ) {
-            return Diagnostic_Result::unknown( 'e5', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the list of active plugins.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'e5', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the list of active plugins.', 'wordpress-code-ai' ) );
         }
         $found = (array) $found;
 
@@ -612,7 +612,7 @@ class Check_Conflicts {
                 'e5',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'No caching plugin found among the active plugins. Caching done by the host or a CDN is not visible from here.', 'easy-mcp-ai' ),
+                __( 'No caching plugin found among the active plugins. Caching done by the host or a CDN is not visible from here.', 'wordpress-code-ai' ),
                 array( 'cache_plugins' => array() )
             );
         }
@@ -643,17 +643,17 @@ class Check_Conflicts {
                 sprintf(
                     count( $uncovered ) > 1
                         /* translators: %s: comma-separated plugin names. */
-                        ? __( '%s are caching without an exclusion for this plugin\'s endpoints. A cached authentication or discovery response can make a connection succeed once and then fail, or keep working after a token is revoked.', 'easy-mcp-ai' )
+                        ? __( '%s are caching without an exclusion for this plugin\'s endpoints. A cached authentication or discovery response can make a connection succeed once and then fail, or keep working after a token is revoked.', 'wordpress-code-ai' )
                         /* translators: %s: a plugin name. */
-                        : __( '%s is caching without an exclusion for this plugin\'s endpoints. A cached authentication or discovery response can make a connection succeed once and then fail, or keep working after a token is revoked.', 'easy-mcp-ai' ),
+                        : __( '%s is caching without an exclusion for this plugin\'s endpoints. A cached authentication or discovery response can make a connection succeed once and then fail, or keep working after a token is revoked.', 'wordpress-code-ai' ),
                     implode( ', ', $uncovered )
                 ),
                 sprintf(
                     count( $uncovered ) > 1
                         /* translators: %s: comma-separated URL paths to exclude. */
-                        ? __( 'Exclude %s from page caching in each of those plugins\' settings.', 'easy-mcp-ai' )
+                        ? __( 'Exclude %s from page caching in each of those plugins\' settings.', 'wordpress-code-ai' )
                         /* translators: %s: comma-separated URL paths to exclude. */
-                        : __( 'Exclude %s from page caching in that plugin\'s settings.', 'easy-mcp-ai' ),
+                        : __( 'Exclude %s from page caching in that plugin\'s settings.', 'wordpress-code-ai' ),
                     self::list_paths( self::exclusion_hints() )
                 ),
                 $evidence
@@ -668,9 +668,9 @@ class Check_Conflicts {
                 sprintf(
                     count( $unreadable ) > 1
                         /* translators: 1: comma-separated plugin names, 2: comma-separated URL paths to exclude. */
-                        ? __( 'Detected: %1$s. Their exclusion rules could not be read from here, so this was not verified either way. If AI connections drop or behave inconsistently, exclude %2$s from page caching.', 'easy-mcp-ai' )
+                        ? __( 'Detected: %1$s. Their exclusion rules could not be read from here, so this was not verified either way. If AI connections drop or behave inconsistently, exclude %2$s from page caching.', 'wordpress-code-ai' )
                         /* translators: 1: a plugin name, 2: comma-separated URL paths to exclude. */
-                        : __( 'Detected: %1$s. Its exclusion rules could not be read from here, so this was not verified either way. If AI connections drop or behave inconsistently, exclude %2$s from page caching.', 'easy-mcp-ai' ),
+                        : __( 'Detected: %1$s. Its exclusion rules could not be read from here, so this was not verified either way. If AI connections drop or behave inconsistently, exclude %2$s from page caching.', 'wordpress-code-ai' ),
                     implode( ', ', $unreadable ),
                     self::list_paths( self::exclusion_hints() )
                 ),
@@ -685,9 +685,9 @@ class Check_Conflicts {
             sprintf(
                 count( $found ) > 1
                     /* translators: %s: comma-separated plugin names. */
-                    ? __( 'Detected: %s. Their own exclusion rules already cover this plugin\'s endpoints.', 'easy-mcp-ai' )
+                    ? __( 'Detected: %s. Their own exclusion rules already cover this plugin\'s endpoints.', 'wordpress-code-ai' )
                     /* translators: %s: a plugin name. */
-                    : __( 'Detected: %s. Its own exclusion rules already cover this plugin\'s endpoints.', 'easy-mcp-ai' ),
+                    : __( 'Detected: %s. Its own exclusion rules already cover this plugin\'s endpoints.', 'wordpress-code-ai' ),
                 implode( ', ', $found )
             ),
             $evidence
@@ -718,7 +718,7 @@ class Check_Conflicts {
         
         
         foreach ( array(
-            'MCP endpoint'        => array( 'rest_url', 'easy-mcp-ai/v1/mcp' ),
+            'MCP endpoint'        => array( 'rest_url', 'wordpress-code-ai/v1/mcp' ),
             'OAuth server'        => array( 'home_url', '/.well-known/oauth-authorization-server' ),
             'OAuth resource'      => array( 'home_url', '/.well-known/oauth-protected-resource' ),
             'OpenID discovery'    => array( 'home_url', '/.well-known/openid-configuration' ),
@@ -759,14 +759,14 @@ class Check_Conflicts {
 
         foreach ( self::protected_paths() as $subject ) {
             if ( false !== strpos( $subject, 'rest_route=' ) ) {
-                $hints[] = 'rest_route=/easy-mcp-ai/';
+                $hints[] = 'rest_route=/wordpress-code-ai/';
                 continue;
             }
             
             
-            $ns = strpos( $subject, '/easy-mcp-ai/' );
+            $ns = strpos( $subject, '/wordpress-code-ai/' );
             if ( false !== $ns ) {
-                $hints[] = substr( $subject, 0, $ns + strlen( '/easy-mcp-ai/' ) );
+                $hints[] = substr( $subject, 0, $ns + strlen( '/wordpress-code-ai/' ) );
                 continue;
             }
             $oauth = strpos( $subject, '/oauth-' );
@@ -791,7 +791,7 @@ class Check_Conflicts {
         $last = array_pop( $hints );
         return sprintf(
             /* translators: 1: comma-separated list of all but the last item, 2: the last item. */
-            __( '%1$s and %2$s', 'easy-mcp-ai' ),
+            __( '%1$s and %2$s', 'wordpress-code-ai' ),
             implode( ', ', $hints ),
             $last
         );
@@ -1067,7 +1067,7 @@ class Check_Conflicts {
 
 
     private static function detected_cache_plugins() {
-        $known = \apply_filters( 'easy_mcp_ai_diagnostics_known_cache_plugins', self::KNOWN_CACHE_PLUGINS );
+        $known = \apply_filters( 'wordpress_code_ai_diagnostics_known_cache_plugins', self::KNOWN_CACHE_PLUGINS );
         if ( ! is_array( $known ) ) {
             $known = self::KNOWN_CACHE_PLUGINS;
         }
@@ -1116,7 +1116,7 @@ class Check_Conflicts {
         
         
         
-        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- active_from() is private with three call sites, each passing a literal 'easy_mcp_ai_diagnostics_known_*' name; the sniff only sees the variable.
+        // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- active_from() is private with three call sites, each passing a literal 'wordpress_code_ai_diagnostics_known_*' name; the sniff only sees the variable.
         $filtered = \apply_filters( $filter, $known );
         if ( is_array( $filtered ) ) {
             $known = $filtered;
@@ -1269,7 +1269,7 @@ class Check_Conflicts {
     private static function benign_rest_auth_classes() {
         $list = self::BENIGN_REST_AUTH_CLASSES;
         if ( function_exists( 'apply_filters' ) ) {
-            $filtered = \apply_filters( 'easy_mcp_ai_diagnostics_benign_rest_auth_classes', $list );
+            $filtered = \apply_filters( 'wordpress_code_ai_diagnostics_benign_rest_auth_classes', $list );
             if ( is_array( $filtered ) ) {
                 $list = $filtered;
             }
@@ -1384,14 +1384,14 @@ class Check_Conflicts {
         }
         $named = ' ' . sprintf(
             /* translators: %s: comma-separated list of PHP callback names. */
-            __( 'Found: %s.', 'easy-mcp-ai' ),
+            __( 'Found: %s.', 'wordpress-code-ai' ),
             implode( ', ', $shown )
         );
         $remaining = count( $foreign ) - count( $shown );
         if ( $remaining > 0 ) {
             $named .= ' ' . sprintf(
                 /* translators: %d: number of additional callbacks not listed. */
-                _n( 'And %d more.', 'And %d more.', $remaining, 'easy-mcp-ai' ),
+                _n( 'And %d more.', 'And %d more.', $remaining, 'wordpress-code-ai' ),
                 $remaining
             );
         }
@@ -1408,17 +1408,17 @@ class Check_Conflicts {
 
 
     private static function rest_auth_override_active() {
-        if ( ! class_exists( '\Easy_MCP_AI\MCP\Rest_Auth_Override' ) ) {
+        if ( ! class_exists( '\wordpress_code_ai\MCP\Rest_Auth_Override' ) ) {
             return false;
         }
-        return \Easy_MCP_AI\MCP\Rest_Auth_Override::enabled();
+        return \wordpress_code_ai\MCP\Rest_Auth_Override::enabled();
     }
 
     
 
 
 
-    const REST_AUTH_OBSERVATION_OPTION = 'easy_mcp_ai_rest_auth_observed';
+    const REST_AUTH_OBSERVATION_OPTION = 'wordpress_code_ai_rest_auth_observed';
 
     
 
@@ -1439,7 +1439,7 @@ class Check_Conflicts {
 
     public static function record_rest_auth_observation( $body, $secret ) {
         $reached = is_array( $body ) && ! empty( $body['proof'] )
-            && class_exists( '\Easy_MCP_AI\Diagnostics\Check_Header_Probe' )
+            && class_exists( '\wordpress_code_ai\Diagnostics\Check_Header_Probe' )
             && hash_equals( Check_Header_Probe::expected_proof( $secret ), (string) $body['proof'] );
 
         $seen = ( $reached && isset( $body['rest_auth'] ) && is_array( $body['rest_auth'] ) ) ? $body['rest_auth'] : null;
@@ -1633,7 +1633,7 @@ class Check_Conflicts {
     }
 
     private static function change_capture_enabled() {
-        return (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_enabled', true );
+        return (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_enabled', true );
     }
 
     
@@ -1659,7 +1659,7 @@ class Check_Conflicts {
             return null; 
         }
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_change_log';
+        $table = $wpdb->prefix . 'wordpress_code_ai_change_log';
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table; diagnostics must read live state.
         $count = $wpdb->get_var(
             $wpdb->prepare(

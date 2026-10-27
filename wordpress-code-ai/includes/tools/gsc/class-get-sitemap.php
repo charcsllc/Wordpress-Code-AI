@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GSC;
+namespace wordpress_code_ai\Tools\GSC;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GSC\GSC_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GSC\GSC_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -13,7 +13,7 @@ class Get_Sitemap extends Base_Tool {
     public function get_name() { return 'wp_gsc_get_sitemap'; }
 
     public function get_description() {
-        return 'Gets full details for a specific submitted sitemap including submitted vs indexed URL counts per content type (web, image, video), errors, and warnings. Requires a Google service-account credential configured under Easy MCP AI → Tools → External data.';
+        return 'Gets full details for a specific submitted sitemap including submitted vs indexed URL counts per content type (web, image, video), errors, and warnings. Requires a Google service-account credential configured under wordpress-code-ai → Tools → External data.';
     }
 
     public function get_category() { return 'gsc'; }

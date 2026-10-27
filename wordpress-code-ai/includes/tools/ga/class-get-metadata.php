@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GA;
+namespace wordpress_code_ai\Tools\GA;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GA\GA_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GA\GA_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -13,7 +13,7 @@ class Get_Metadata extends Base_Tool {
     public function get_name() { return 'wp_ga_get_metadata'; }
 
     public function get_description() {
-        return 'Returns the catalog of all dimensions and metrics available for Analytics reports on a property (including custom ones). Critical discovery tool — call this to validate dimension/metric names before sending a report query. Pass property_id="universal" or omit it to get the cross-property universal catalog. Requires a Google service-account credential configured under Easy MCP AI → Tools → External data.';
+        return 'Returns the catalog of all dimensions and metrics available for Analytics reports on a property (including custom ones). Critical discovery tool — call this to validate dimension/metric names before sending a report query. Pass property_id="universal" or omit it to get the cross-property universal catalog. Requires a Google service-account credential configured under wordpress-code-ai → Tools → External data.';
     }
 
     public function get_category() { return 'ga'; }

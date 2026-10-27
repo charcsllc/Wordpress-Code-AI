@@ -5,9 +5,9 @@
 
 
 
-namespace Easy_MCP_AI\Builders;
+namespace wordpress_code_ai\Builders;
 
-use Easy_MCP_AI\Option_Lock;
+use wordpress_code_ai\Option_Lock;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Layout_Lock {
 
     
-    const PREFIX = 'easy_mcp_ai_layout_lock_';
+    const PREFIX = 'wordpress_code_ai_layout_lock_';
 
     
     const TTL = 30;

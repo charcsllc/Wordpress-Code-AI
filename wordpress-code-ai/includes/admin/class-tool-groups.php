@@ -7,7 +7,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -101,13 +101,13 @@ class Tool_Groups {
         
         
         $known_external = array(
-            'gsc' => array( 'label' => 'Google Search Console', 'option' => 'easy_mcp_ai_gsc_service_account_json' ),
-            'ga'  => array( 'label' => 'Google Analytics',      'option' => 'easy_mcp_ai_ga_service_account_json' ),
-            'dfs' => array( 'label' => 'DataforSEO',             'option' => 'easy_mcp_ai_dfs_login' ),
-            'semrush' => array( 'label' => 'Semrush',             'option' => 'easy_mcp_ai_semrush_api_key' ),
-            'seranking' => array( 'label' => 'SE Ranking',         'option' => 'easy_mcp_ai_seranking_api_key' ),
+            'gsc' => array( 'label' => 'Google Search Console', 'option' => 'wordpress_code_ai_gsc_service_account_json' ),
+            'ga'  => array( 'label' => 'Google Analytics',      'option' => 'wordpress_code_ai_ga_service_account_json' ),
+            'dfs' => array( 'label' => 'DataforSEO',             'option' => 'wordpress_code_ai_dfs_login' ),
+            'semrush' => array( 'label' => 'Semrush',             'option' => 'wordpress_code_ai_semrush_api_key' ),
+            'seranking' => array( 'label' => 'SE Ranking',         'option' => 'wordpress_code_ai_seranking_api_key' ),
             
-            'ahrefs' => array( 'label' => 'Ahrefs (DR)',        'option' => 'easy_mcp_ai_ahrefs_api_key' ),
+            'ahrefs' => array( 'label' => 'Ahrefs (DR)',        'option' => 'wordpress_code_ai_ahrefs_api_key' ),
         );
 
         $tools_by_category = $this->tool_registry->get_tools_by_category();
@@ -116,9 +116,9 @@ class Tool_Groups {
         $core           = array();
         $total          = 0;
         $ability_defs   = array();
-        $disabled_tools   = (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_tools', array() );
-        $allowed_patterns = (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_allowed_tool_patterns', array() );
-        $off_tools = \Easy_MCP_AI\Tools\Tool_State::off_names( $this->tool_registry );
+        $disabled_tools   = (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_tools', array() );
+        $allowed_patterns = (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_allowed_tool_patterns', array() );
+        $off_tools = \wordpress_code_ai\Tools\Tool_State::off_names( $this->tool_registry );
 
         
         
@@ -129,7 +129,7 @@ class Tool_Groups {
             if ( in_array( $name, $off_tools, true ) ) {
                 return false;
             }
-            return \Easy_MCP_AI\MCP\Server::matches_tool_patterns( $name, $allowed_patterns );
+            return \wordpress_code_ai\MCP\Server::matches_tool_patterns( $name, $allowed_patterns );
         };
 
         foreach ( $tools_by_category as $category => $tools ) {
@@ -170,7 +170,7 @@ class Tool_Groups {
         $external = array();
         foreach ( $known_external as $category => $info ) {
             
-            $configured = \Easy_MCP_AI\Provider_Credentials::is_configured( $category );
+            $configured = \wordpress_code_ai\Provider_Credentials::is_configured( $category );
             $tools      = isset( $tools_by_category[ $category ] )
                 ? array_values( array_filter( $tools_by_category[ $category ], $is_tool_active ) )
                 : array();
@@ -210,7 +210,7 @@ class Tool_Groups {
 
         if ( function_exists( 'wp_get_abilities' ) ) {
             $wp_abilities      = \wp_get_abilities();
-            $enabled_abilities = (array) \get_option( 'easy_mcp_ai_enabled_abilities', array() );
+            $enabled_abilities = (array) \get_option( 'wordpress_code_ai_enabled_abilities', array() );
 
             
             
@@ -264,7 +264,7 @@ class Tool_Groups {
                 foreach ( $active_paths as $plugin_path ) {
                     if ( ! isset( $all_plugins[ $plugin_path ] ) ) { continue; }
                     $plugin_name = $all_plugins[ $plugin_path ]['Name'];
-                    if ( false !== stripos( $plugin_name, 'Easy MCP' ) ) { continue; }
+                    if ( false !== stripos( $plugin_name, 'wordpress-code-ai' ) ) { continue; }
 
                     $folder = ( false !== strpos( $plugin_path, '/' ) )
                         ? explode( '/', $plugin_path )[0]
@@ -339,7 +339,7 @@ class Tool_Groups {
         
         
         
-        $bucket_disables       = \Easy_MCP_AI\Admin\External_Data_Admin::merge_disabled_tool_buckets();
+        $bucket_disables       = \wordpress_code_ai\Admin\External_Data_Admin::merge_disabled_tool_buckets();
         $settings_only_disabled = array_diff( $disabled_tools, $bucket_disables );
         $has_global_overrides   = ! empty( $settings_only_disabled ) || ! empty( $allowed_patterns );
 
@@ -355,8 +355,8 @@ class Tool_Groups {
 
         
         
-        $enabled_plugin_groups     = (array) \get_option( 'easy_mcp_ai_enabled_plugin_groups', array() );
-        $disabled_plugin_tools_raw = (array) \get_option( 'easy_mcp_ai_disabled_plugin_tools', array() );
+        $enabled_plugin_groups     = (array) \get_option( 'wordpress_code_ai_enabled_plugin_groups', array() );
+        $disabled_plugin_tools_raw = (array) \get_option( 'wordpress_code_ai_disabled_plugin_tools', array() );
         $disabled_plugin_tools_present = false;
         foreach ( Plugin_Integration_Registry::get_groups() as $group ) {
             if ( ! Plugin_Integration_Registry::is_installed( $group ) ) {
@@ -376,16 +376,16 @@ class Tool_Groups {
         }
 
         
-        $ga_configured       = \Easy_MCP_AI\Provider_Credentials::is_configured( 'ga' );
-        $gsc_configured      = \Easy_MCP_AI\Provider_Credentials::is_configured( 'gsc' );
-        $dfs_configured      = \Easy_MCP_AI\Provider_Credentials::is_configured( 'dfs' );
-        $semrush_configured  = \Easy_MCP_AI\Provider_Credentials::is_configured( 'semrush' );
-        $seranking_configured = \Easy_MCP_AI\Provider_Credentials::is_configured( 'seranking' );
-        $disabled_ga_present  = $ga_configured  && ! empty( (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_ga_tools', array() ) );
-        $disabled_gsc_present = $gsc_configured && ! empty( (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_gsc_tools', array() ) );
-        $disabled_dfs_present = $dfs_configured && ! empty( (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_dfs_tools', array() ) );
-        $disabled_semrush_present   = $semrush_configured && ! empty( (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_semrush_tools', array() ) );
-        $disabled_seranking_present = $seranking_configured && ! empty( (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_seranking_tools', array() ) );
+        $ga_configured       = \wordpress_code_ai\Provider_Credentials::is_configured( 'ga' );
+        $gsc_configured      = \wordpress_code_ai\Provider_Credentials::is_configured( 'gsc' );
+        $dfs_configured      = \wordpress_code_ai\Provider_Credentials::is_configured( 'dfs' );
+        $semrush_configured  = \wordpress_code_ai\Provider_Credentials::is_configured( 'semrush' );
+        $seranking_configured = \wordpress_code_ai\Provider_Credentials::is_configured( 'seranking' );
+        $disabled_ga_present  = $ga_configured  && ! empty( (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_ga_tools', array() ) );
+        $disabled_gsc_present = $gsc_configured && ! empty( (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_gsc_tools', array() ) );
+        $disabled_dfs_present = $dfs_configured && ! empty( (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_dfs_tools', array() ) );
+        $disabled_semrush_present   = $semrush_configured && ! empty( (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_semrush_tools', array() ) );
+        $disabled_seranking_present = $seranking_configured && ! empty( (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_seranking_tools', array() ) );
 
         
         $ga_missing       = ! $ga_configured;
@@ -394,8 +394,8 @@ class Tool_Groups {
         $semrush_missing  = ! $semrush_configured;
         $seranking_missing = ! $seranking_configured;
         
-        $ahrefs_disabled  = ! \Easy_MCP_AI\Provider_Credentials::is_configured( 'ahrefs' )
-            || ! (bool) \get_option( 'easy_mcp_ai_ahrefs_enabled', false );
+        $ahrefs_disabled  = ! \wordpress_code_ai\Provider_Credentials::is_configured( 'ahrefs' )
+            || ! (bool) \get_option( 'wordpress_code_ai_ahrefs_enabled', false );
 
         return array(
             'total'    => $total,
@@ -442,7 +442,7 @@ class Tool_Groups {
 
     public static function resolve_ability_tool_def( $ability_name, array $enabled_abilities, array $ability_def_by_name ) {
         $is_enabled = in_array( $ability_name, $enabled_abilities, true );
-        $tool_name  = \Easy_MCP_AI\Tools\Dynamic_Tool_Registrar::build_tool_name( $ability_name );
+        $tool_name  = \wordpress_code_ai\Tools\Dynamic_Tool_Registrar::build_tool_name( $ability_name );
         $tool_def   = isset( $ability_def_by_name[ $tool_name ] ) ? $ability_def_by_name[ $tool_name ] : null;
         return array( 'is_enabled' => $is_enabled, 'tool_def' => $tool_def );
     }

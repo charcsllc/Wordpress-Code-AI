@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -55,7 +55,7 @@ class Consent_Screen {
 
     public static function render( $client, $user, $scope, array $request_params, $script_nonce = '', array $options = array() ) {
 
-        $client_name       = isset( $client->client_name ) ? $client->client_name : __( 'Unknown Application', 'easy-mcp-ai' );
+        $client_name       = isset( $client->client_name ) ? $client->client_name : __( 'Unknown Application', 'wordpress-code-ai' );
         $client_id         = isset( $client->client_id ) ? $client->client_id : '';
         $client_id_prefix  = substr( $client_id, 0, 8 );
         $redirect_host     = isset( $request_params['redirect_uri'] ) ? wp_parse_url( $request_params['redirect_uri'], PHP_URL_HOST ) : '';
@@ -71,10 +71,10 @@ class Consent_Screen {
             $default_hidden[ $field ] = isset( $request_params[ $field ] ) ? (string) $request_params[ $field ] : '';
         }
 
-        $form_action   = isset( $options['form_action'] ) ? (string) $options['form_action'] : home_url( '?easy_mcp_ai_oauth=authorize' );
+        $form_action   = isset( $options['form_action'] ) ? (string) $options['form_action'] : home_url( '?wordpress_code_ai_oauth=authorize' );
         $hidden_fields = isset( $options['hidden_fields'] ) && is_array( $options['hidden_fields'] ) ? $options['hidden_fields'] : $default_hidden;
-        $nonce_action  = isset( $options['nonce_action'] ) ? (string) $options['nonce_action'] : 'easy_mcp_ai_oauth_consent_' . $client_id;
-        $context_label = isset( $options['context_label'] ) ? (string) $options['context_label'] : __( 'Redirects to:', 'easy-mcp-ai' );
+        $nonce_action  = isset( $options['nonce_action'] ) ? (string) $options['nonce_action'] : 'wordpress_code_ai_oauth_consent_' . $client_id;
+        $context_label = isset( $options['context_label'] ) ? (string) $options['context_label'] : __( 'Redirects to:', 'wordpress-code-ai' );
         $context_value = isset( $options['context_value'] ) ? (string) $options['context_value'] : (string) $redirect_host;
         $notice        = isset( $options['notice'] ) ? (string) $options['notice'] : '';
         $client_label  = isset( $options['client_label'] ) ? (string) $options['client_label'] : '';
@@ -97,10 +97,10 @@ class Consent_Screen {
         
         
         $privileged_rows = array();
-        foreach ( \Easy_MCP_AI\Privileged\Privileged_Groups::enabled_groups() as $group ) {
+        foreach ( \wordpress_code_ai\Privileged\Privileged_Groups::enabled_groups() as $group ) {
             $privileged_rows[] = array(
-                'scope' => \Easy_MCP_AI\Privileged\Privileged_Groups::scope_for_group( $group ),
-                'label' => \Easy_MCP_AI\Privileged\Privileged_Groups::group_label( $group ),
+                'scope' => \wordpress_code_ai\Privileged\Privileged_Groups::scope_for_group( $group ),
+                'label' => \wordpress_code_ai\Privileged\Privileged_Groups::group_label( $group ),
             );
         }
 
@@ -222,11 +222,11 @@ class Consent_Screen {
             }
             if ( ! empty( $category['read_scope'] ) ) {
                 /* translators: %s: permission category, e.g. "Posts & Pages" */
-                $labels[ (string) $category['read_scope'] ] = sprintf( __( '%s (read)', 'easy-mcp-ai' ), $label );
+                $labels[ (string) $category['read_scope'] ] = sprintf( __( '%s (read)', 'wordpress-code-ai' ), $label );
             }
             if ( ! empty( $category['write_scope'] ) ) {
                 /* translators: %s: permission category, e.g. "Posts & Pages" */
-                $labels[ (string) $category['write_scope'] ] = sprintf( __( '%s (write)', 'easy-mcp-ai' ), $label );
+                $labels[ (string) $category['write_scope'] ] = sprintf( __( '%s (write)', 'wordpress-code-ai' ), $label );
             }
         }
         foreach ( $privileged_rows as $row ) {
@@ -242,7 +242,7 @@ class Consent_Screen {
                 '%1$s asked for one more permission to finish a task: %2$s. It is ticked below and marked New, and the access you already gave this app stays ticked.',
                 '%1$s asked for more permissions to finish a task: %2$s. They are ticked below and marked New, and the access you already gave this app stays ticked.',
                 count( $names ),
-                'easy-mcp-ai'
+                'wordpress-code-ai'
             ),
             $client_name,
             implode( ', ', $names )

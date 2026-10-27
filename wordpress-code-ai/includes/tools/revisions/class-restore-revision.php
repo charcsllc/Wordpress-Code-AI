@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Revisions;
+namespace wordpress_code_ai\Tools\Revisions;
 
-use Easy_MCP_AI\Cache\Cache_Purger;
-use Easy_MCP_AI\Cache\Purge_Request;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Cache\Cache_Purger;
+use wordpress_code_ai\Cache\Purge_Request;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Taxonomy;
+namespace wordpress_code_ai\Tools\Taxonomy;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -203,7 +203,7 @@ class Update_Term_Meta extends Base_Tool {
 
 
     private function refuse_blocked_key( string $key ): void {
-        $blocked_patterns = apply_filters( 'easy_mcp_ai_term_meta_blocked_key_patterns', array() );
+        $blocked_patterns = apply_filters( 'wordpress_code_ai_term_meta_blocked_key_patterns', array() );
         foreach ( $blocked_patterns as $pattern ) {
             if ( fnmatch( $pattern, $key ) ) {
                 throw new \RuntimeException( 'This meta key cannot be modified via MCP.' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
@@ -310,11 +310,11 @@ class Update_Term_Meta extends Base_Tool {
 
     private function yoast_term_key_refusal( $key ) {
         $message = sprintf( 'Yoast SEO does not read term meta "%s": it keeps category and tag SEO in its own settings, so this write would change nothing on the site.', $key );
-        $enabled = get_option( 'easy_mcp_ai_enabled_plugin_groups', array() );
+        $enabled = get_option( 'wordpress_code_ai_enabled_plugin_groups', array() );
         if ( is_array( $enabled ) && in_array( 'yoast-seo', $enabled, true ) ) {
             return $message . ' Use wp_yoast_update_term_seo.';
         }
-        return $message . ' Enable the Yoast SEO integration under Easy MCP AI → Tools → Plugins to get wp_yoast_update_term_seo.';
+        return $message . ' Enable the Yoast SEO integration under wordpress-code-ai → Tools → Plugins to get wp_yoast_update_term_seo.';
     }
 
     

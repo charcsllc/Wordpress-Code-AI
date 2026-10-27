@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\History;
+namespace wordpress_code_ai\History;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -146,7 +146,7 @@ class Change_Recorder {
         'default_category', 'default_comment_status', 'default_ping_status',
         'posts_per_page', 'date_format', 'time_format', 'start_of_week',
         'timezone_string', 'permalink_structure', 'show_on_front', 'page_on_front', 'page_for_posts',
-        'easy_mcp_ai_force_draft_on_create', 'easy_mcp_ai_disabled_tools', 'easy_mcp_ai_enabled_tools', 'easy_mcp_ai_allowed_tool_patterns',
+        'wordpress_code_ai_force_draft_on_create', 'wordpress_code_ai_disabled_tools', 'wordpress_code_ai_enabled_tools', 'wordpress_code_ai_allowed_tool_patterns',
     );
 
     
@@ -164,12 +164,12 @@ class Change_Recorder {
 
     private static $option_churn_denylist = array(
         '_transient_', '_site_transient_', 'cron', '_wp_session_',
-        'action_scheduler_', 'easy_mcp_ai_change_log_', 'easy_mcp_ai_audit_',
-        'easy_mcp_ai_sr_', 'easy_mcp_ai_last_tool_call', 'easy_mcp_ai_cache_',
+        'action_scheduler_', 'wordpress_code_ai_change_log_', 'wordpress_code_ai_audit_',
+        'wordpress_code_ai_sr_', 'wordpress_code_ai_last_tool_call', 'wordpress_code_ai_cache_',
         
-        'easy_mcp_ai_layout_lock_',
+        'wordpress_code_ai_layout_lock_',
         
-        'easy_mcp_ai_yoast_settings_lock',
+        'wordpress_code_ai_yoast_settings_lock',
     );
 
     
@@ -214,7 +214,7 @@ class Change_Recorder {
 
 
     public static function option_allowlist() {
-        return (array) \apply_filters( 'easy_mcp_ai_change_log_option_allowlist', self::$option_allowlist );
+        return (array) \apply_filters( 'wordpress_code_ai_change_log_option_allowlist', self::$option_allowlist );
     }
 
     
@@ -244,10 +244,10 @@ class Change_Recorder {
         if ( in_array( $name, self::option_allowlist(), true ) ) {
             return true;
         }
-        if ( 'allowlist' === \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_option_mode', 'all_except_denylist' ) ) {
+        if ( 'allowlist' === \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_option_mode', 'all_except_denylist' ) ) {
             return false;
         }
-        $deny = (array) \apply_filters( 'easy_mcp_ai_change_log_option_denylist', array_merge( self::$option_churn_denylist, \Easy_MCP_AI\Cache\Cache_Noise::OPTIONS ) );
+        $deny = (array) \apply_filters( 'wordpress_code_ai_change_log_option_denylist', array_merge( self::$option_churn_denylist, \wordpress_code_ai\Cache\Cache_Noise::OPTIONS ) );
         foreach ( $deny as $entry ) {
             $entry = (string) $entry;
             if ( '' === $entry ) {
@@ -355,7 +355,7 @@ class Change_Recorder {
         
         
         
-        $capture_meta = (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_capture_meta', true );
+        $capture_meta = (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_capture_meta', true );
         if ( $capture_meta ) {
             $this->track( 'update_term_meta', 'on_update_term_meta', 10, 4 );
             $this->track( 'added_term_meta', 'on_added_term_meta', 10, 4 );
@@ -731,7 +731,7 @@ class Change_Recorder {
 
         if ( is_array( $changed ) && in_array( 'post_content', $changed, true ) && ! $this->revisions_available( $post ) ) {
             $after = is_array( $after ) ? $after : array();
-            $after['content_capture'] = __( 'unavailable — this content type does not keep revisions, or revisions are switched off, so the previous body text was not stored anywhere', 'easy-mcp-ai' );
+            $after['content_capture'] = __( 'unavailable — this content type does not keep revisions, or revisions are switched off, so the previous body text was not stored anywhere', 'wordpress-code-ai' );
         }
         
         
@@ -2775,7 +2775,7 @@ class Change_Recorder {
             return;
         }
         $ids   = array_values( array_filter( array_map( 'intval', (array) $activity_ids ) ) );
-        $cap   = (int) apply_filters( 'easy_mcp_ai_bp_activity_delete_log_cap', 100 );
+        $cap   = (int) apply_filters( 'wordpress_code_ai_bp_activity_delete_log_cap', 100 );
         $total = count( $ids );
         $write = $cap > 0 ? array_slice( $ids, 0, $cap ) : $ids;
         foreach ( $write as $id ) {

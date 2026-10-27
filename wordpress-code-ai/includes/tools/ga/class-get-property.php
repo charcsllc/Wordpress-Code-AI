@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GA;
+namespace wordpress_code_ai\Tools\GA;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GA\GA_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GA\GA_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -13,7 +13,7 @@ class Get_Property extends Base_Tool {
     public function get_name() { return 'wp_ga_get_property'; }
 
     public function get_description() {
-        return 'Gets full details for a Google Analytics 4 property — display name, timezone, currency code, industry category, service level, create/update time, and parent account. Requires a Google service-account credential configured under Easy MCP AI → Tools → External data.';
+        return 'Gets full details for a Google Analytics 4 property — display name, timezone, currency code, industry category, service level, create/update time, and parent account. Requires a Google service-account credential configured under wordpress-code-ai → Tools → External data.';
     }
 
     public function get_category() { return 'ga'; }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -14,11 +14,11 @@ class Config_Admin {
         \add_action( 'admin_head', array( __CLASS__, 'hide_menus' ), PHP_INT_MAX );
         \add_action( 'admin_notices', array( __CLASS__, 'invalid_notice' ) );
         \add_filter( 'all_plugins', array( __CLASS__, 'plugin_rows' ) );
-        \add_filter( 'gettext_easy-mcp-ai', array( __CLASS__, 'brand_text' ), 10, 2 );
-        \add_filter( 'ngettext_easy-mcp-ai', array( __CLASS__, 'brand_text' ), 10, 2 );
+        \add_filter( 'gettext_wordpress-code-ai', array( __CLASS__, 'brand_text' ), 10, 2 );
+        \add_filter( 'ngettext_wordpress-code-ai', array( __CLASS__, 'brand_text' ), 10, 2 );
         
         foreach ( Config::settings() as $suffix => $spec ) {
-            $option = 'easy_mcp_ai_' . $suffix;
+            $option = 'wordpress_code_ai_' . $suffix;
             \add_filter( 'pre_update_option_' . $option, static function ( $value, $old ) use ( $option ) {
                 
                 
@@ -26,14 +26,14 @@ class Config_Admin {
                 
                 
                 
-                if ( \doing_action( 'activate_' . EASY_MCP_AI_PLUGIN_BASENAME ) ) {
+                if ( \doing_action( 'activate_' . WORDPRESS_CODE_AI_PLUGIN_BASENAME ) ) {
                     return $value;
                 }
                 return Config::is_locked( $option ) ? $old : $value;
             }, PHP_INT_MAX, 2 );
         }
         if ( defined( 'WP_CLI' ) && WP_CLI ) {
-            \WP_CLI::add_command( 'easy-mcp-ai config export', static function () {
+            \WP_CLI::add_command( 'wordpress-code-ai config export', static function () {
                 \WP_CLI::line( Config::export() );
             } );
         }
@@ -51,7 +51,7 @@ class Config_Admin {
 
 
     public static function is_plugin_page( $slug ) {
-        if ( 'easy-mcp-ai' === $slug || 0 === strpos( $slug, 'easy-mcp-ai-' ) ) {
+        if ( 'wordpress-code-ai' === $slug || 0 === strpos( $slug, 'wordpress-code-ai-' ) ) {
             return true;
         }
         return class_exists( Themeisle_SDK::class ) && Themeisle_SDK::ABOUT_US_MENU_SLUG === $slug;
@@ -63,7 +63,7 @@ class Config_Admin {
         // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only routing.
         $page = isset( $_GET['page'] ) && is_string( $_GET['page'] ) ? \plugin_basename( \wp_unslash( $_GET['page'] ) ) : '';
         if ( true === Config::get( 'hide_admin' ) && self::is_plugin_page( $page ) ) {
-            \wp_die( \esc_html__( 'This administration page is disabled by the site configuration.', 'easy-mcp-ai' ), '', array( 'response' => 403 ) );
+            \wp_die( \esc_html__( 'This administration page is disabled by the site configuration.', 'wordpress-code-ai' ), '', array( 'response' => 403 ) );
         }
     }
 
@@ -72,7 +72,7 @@ class Config_Admin {
             return;
         }
         
-        \remove_menu_page( 'easy-mcp-ai' );
+        \remove_menu_page( 'wordpress-code-ai' );
         global $submenu;
         foreach ( (array) $submenu as $parent => $items ) {
             foreach ( $items as $item ) {
@@ -85,7 +85,7 @@ class Config_Admin {
 
     public static function plugin_rows( $plugins ) {
         if ( Config::get( 'hide_plugin_row' ) && ! ( defined( 'WP_CLI' ) && WP_CLI ) ) {
-            unset( $plugins[ EASY_MCP_AI_PLUGIN_BASENAME ] );
+            unset( $plugins[ WORDPRESS_CODE_AI_PLUGIN_BASENAME ] );
         }
         return $plugins;
     }
@@ -95,7 +95,7 @@ class Config_Admin {
         if ( ! Config::is_locked( $option ) ) {
             return;
         }
-        echo '<div class="easy-mcp-ai-config-field"><fieldset disabled>';
+        echo '<div class="wordpress-code-ai-config-field"><fieldset disabled>';
     }
 
     public static function field_end( $option ) {
@@ -111,11 +111,11 @@ class Config_Admin {
         }
         $message = 'constant' === Config::source( $option )
             /* translators: %s: configuration constant name. */
-            ? __( 'Managed in wp-config.php: %s', 'easy-mcp-ai' )
+            ? __( 'Managed in wp-config.php: %s', 'wordpress-code-ai' )
             /* translators: %s: environment variable name. */
-            : __( 'Managed by environment variable: %s', 'easy-mcp-ai' );
+            : __( 'Managed by environment variable: %s', 'wordpress-code-ai' );
         $label = sprintf( $message, Config::constant_name( $option ) );
-        echo '<span class="easy-mcp-ai-config-lock" tabindex="0" role="img" aria-label="' . \esc_attr( $label ) . '">';
+        echo '<span class="wordpress-code-ai-config-lock" tabindex="0" role="img" aria-label="' . \esc_attr( $label ) . '">';
         echo '<span class="dashicons dashicons-lock" aria-hidden="true"></span></span>';
     }
 
@@ -124,7 +124,7 @@ class Config_Admin {
         if ( ! $controlled ) {
             return;
         }
-        echo '<details class="easy-mcp-ai-config-summary"><summary>' . \esc_html__( 'Deployment-controlled settings', 'easy-mcp-ai' ) . '</summary><ul>';
+        echo '<details class="wordpress-code-ai-config-summary"><summary>' . \esc_html__( 'Deployment-controlled settings', 'wordpress-code-ai' ) . '</summary><ul>';
         foreach ( $controlled as $name => $source ) {
             echo '<li><code>' . \esc_html( $name ) . '</code> (' . \esc_html( $source ) . ')</li>';
         }
@@ -155,7 +155,7 @@ class Config_Admin {
         if ( $invalid ) {
             echo '<div class="notice notice-error"><p>' . \esc_html( sprintf(
                 /* translators: %s: deployment setting names, never values. */
-                __( 'Easy MCP AI: Invalid deployment settings use safe fallback values: %s', 'easy-mcp-ai' ),
+                __( 'wordpress-code-ai: Invalid deployment settings use safe fallback values: %s', 'wordpress-code-ai' ),
                 implode( ', ', $invalid )
             ) ) . '</p></div>';
         }

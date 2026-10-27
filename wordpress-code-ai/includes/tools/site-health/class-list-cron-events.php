@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Health;
+namespace wordpress_code_ai\Tools\Site_Health;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Text_Redactor;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Text_Redactor;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

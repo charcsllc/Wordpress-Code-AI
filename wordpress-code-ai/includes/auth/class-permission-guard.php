@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Auth;
+namespace wordpress_code_ai\Auth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -104,8 +104,8 @@ class Permission_Guard {
     }
 
     private static function is_privileged( $tool_name ) {
-        return class_exists( '\\Easy_MCP_AI\\Privileged\\Privileged_Groups' )
-            && \Easy_MCP_AI\Privileged\Privileged_Groups::is_privileged_tool( $tool_name );
+        return class_exists( '\\wordpress_code_ai\\Privileged\\Privileged_Groups' )
+            && \wordpress_code_ai\Privileged\Privileged_Groups::is_privileged_tool( $tool_name );
     }
 
     public function get_allowed_tools( $token_id ) {

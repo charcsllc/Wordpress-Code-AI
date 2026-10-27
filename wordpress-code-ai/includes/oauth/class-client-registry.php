@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -85,7 +85,7 @@ class Client_Registry {
 
 
     public static function is_dcr_enabled() {
-        return (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_oauth_dcr_enabled', true );
+        return (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_oauth_dcr_enabled', true );
     }
 
     
@@ -115,7 +115,7 @@ class Client_Registry {
             
             return self::dcr_error(
                 'registration_not_supported',
-                __( 'Dynamic Client Registration is disabled on this site. An administrator can enable it under Easy MCP AI > Connections > OAuth > Token lifetimes and client registration.', 'easy-mcp-ai' ),
+                __( 'Dynamic Client Registration is disabled on this site. An administrator can enable it under wordpress-code-ai > Connections > OAuth > Token lifetimes and client registration.', 'wordpress-code-ai' ),
                 404
             );
         }
@@ -130,13 +130,13 @@ class Client_Registry {
         $content_type = $request->get_content_type();
         $ct_value     = is_array( $content_type ) && isset( $content_type['value'] ) ? strtolower( $content_type['value'] ) : '';
         if ( 'application/json' !== $ct_value ) {
-            return self::dcr_error( 'invalid_client_metadata', __( 'Request Content-Type must be application/json.', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_client_metadata', __( 'Request Content-Type must be application/json.', 'wordpress-code-ai' ), 400 );
         }
 
         
         $body = $request->get_json_params();
         if ( empty( $body ) || ! is_array( $body ) ) {
-            return self::dcr_error( 'invalid_client_metadata', __( 'Request body must be a JSON object.', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_client_metadata', __( 'Request body must be a JSON object.', 'wordpress-code-ai' ), 400 );
         }
 
         
@@ -199,7 +199,7 @@ class Client_Registry {
                     return self::dcr_error(
                         'invalid_client_metadata',
                         /* translators: %s: unsupported grant type */
-                        sprintf( __( 'Unsupported grant_type: %s', 'easy-mcp-ai' ), esc_html( $gt ) ),
+                        sprintf( __( 'Unsupported grant_type: %s', 'wordpress-code-ai' ), esc_html( $gt ) ),
                         400
                     );
                 }
@@ -219,21 +219,21 @@ class Client_Registry {
 
         
         if ( $needs_redirect_uris && ! $has_redirect_uris ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'redirect_uris is required and must be a non-empty array of strings.', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'redirect_uris is required and must be a non-empty array of strings.', 'wordpress-code-ai' ), 400 );
         }
         if ( ! $has_redirect_uris && isset( $body['redirect_uris'] ) && ! is_array( $body['redirect_uris'] ) ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'redirect_uris is required and must be a non-empty array of strings.', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'redirect_uris is required and must be a non-empty array of strings.', 'wordpress-code-ai' ), 400 );
         }
 
         
         if ( $has_redirect_uris && count( $body['redirect_uris'] ) > 10 ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'Too many redirect_uris (maximum 10).', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'Too many redirect_uris (maximum 10).', 'wordpress-code-ai' ), 400 );
         }
 
         $redirect_uris = array();
         foreach ( ( $has_redirect_uris ? $body['redirect_uris'] : array() ) as $uri ) {
             if ( ! is_string( $uri ) ) {
-                return self::dcr_error( 'invalid_redirect_uri', __( 'Each redirect_uri must be a string.', 'easy-mcp-ai' ), 400 );
+                return self::dcr_error( 'invalid_redirect_uri', __( 'Each redirect_uri must be a string.', 'wordpress-code-ai' ), 400 );
             }
 
             $validation_error = $this->validate_redirect_uri( $uri );
@@ -273,7 +273,7 @@ class Client_Registry {
                     return self::dcr_error(
                         'invalid_client_metadata',
                         /* translators: %s: unsupported response type */
-                        sprintf( __( 'Unsupported response_type: %s', 'easy-mcp-ai' ), esc_html( $rt ) ),
+                        sprintf( __( 'Unsupported response_type: %s', 'wordpress-code-ai' ), esc_html( $rt ) ),
                         400
                     );
                 }
@@ -288,7 +288,7 @@ class Client_Registry {
         $auth_method = self::AUTH_METHOD_NONE;
         if ( isset( $body['token_endpoint_auth_method'] ) ) {
             if ( ! is_string( $body['token_endpoint_auth_method'] ) || ! in_array( $body['token_endpoint_auth_method'], self::SUPPORTED_AUTH_METHODS, true ) ) {
-                return self::dcr_error( 'invalid_client_metadata', __( 'Unsupported token_endpoint_auth_method. Supported: none, client_secret_post, client_secret_basic.', 'easy-mcp-ai' ), 400 );
+                return self::dcr_error( 'invalid_client_metadata', __( 'Unsupported token_endpoint_auth_method. Supported: none, client_secret_post, client_secret_basic.', 'wordpress-code-ai' ), 400 );
             }
             $auth_method = $body['token_endpoint_auth_method'];
         }
@@ -330,7 +330,7 @@ class Client_Registry {
         $auth_method      = isset( $fields['token_endpoint_auth_method'] ) ? $fields['token_endpoint_auth_method'] : self::AUTH_METHOD_NONE;
 
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
 
         
         
@@ -346,8 +346,8 @@ class Client_Registry {
         
         
         
-        $client_ip = class_exists( '\Easy_MCP_AI\Client_IP' )
-            ? (string) \Easy_MCP_AI\Client_IP::get()
+        $client_ip = class_exists( '\wordpress_code_ai\Client_IP' )
+            ? (string) \wordpress_code_ai\Client_IP::get()
             : ( isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '' );
 
         $row = array(
@@ -385,7 +385,7 @@ class Client_Registry {
         $inserted = $wpdb->insert( $table, $row, $formats );
 
         if ( false === $inserted ) {
-            return self::dcr_error( 'server_error', __( 'Client registration failed. Please try again.', 'easy-mcp-ai' ), 500 );
+            return self::dcr_error( 'server_error', __( 'Client registration failed. Please try again.', 'wordpress-code-ai' ), 500 );
         }
 
         $response_data = array(
@@ -461,7 +461,7 @@ class Client_Registry {
         
         
         if ( strlen( $uri ) > 2048 ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URI is too long (maximum 2048 bytes).', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URI is too long (maximum 2048 bytes).', 'wordpress-code-ai' ), 400 );
         }
 
         
@@ -469,7 +469,7 @@ class Client_Registry {
             return self::dcr_error(
                 'invalid_redirect_uri',
                 /* translators: %s: the offending URI */
-                sprintf( __( 'Invalid redirect URI: %s', 'easy-mcp-ai' ), esc_url( $uri ) ),
+                sprintf( __( 'Invalid redirect URI: %s', 'wordpress-code-ai' ), esc_url( $uri ) ),
                 400
             );
         }
@@ -483,7 +483,7 @@ class Client_Registry {
             return self::dcr_error(
                 'invalid_redirect_uri',
                 /* translators: %s: the offending scheme */
-                sprintf( __( 'Forbidden scheme in redirect URI: %s', 'easy-mcp-ai' ), esc_html( $scheme ) ),
+                sprintf( __( 'Forbidden scheme in redirect URI: %s', 'wordpress-code-ai' ), esc_html( $scheme ) ),
                 400
             );
         }
@@ -493,17 +493,17 @@ class Client_Registry {
         
         
         if ( false !== strpos( $uri, '#' ) ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must not contain a fragment (#).', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must not contain a fragment (#).', 'wordpress-code-ai' ), 400 );
         }
 
         
         if ( isset( $parsed['user'] ) || isset( $parsed['pass'] ) ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must not contain userinfo.', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must not contain userinfo.', 'wordpress-code-ai' ), 400 );
         }
 
         
         if ( false !== strpos( $uri, '*' ) ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must not contain wildcards.', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must not contain wildcards.', 'wordpress-code-ai' ), 400 );
         }
 
         
@@ -535,17 +535,17 @@ class Client_Registry {
         if ( 'http' === $scheme ) {
             $local_hosts = array( 'localhost', '127.0.0.1', '[::1]' );
             if ( ! in_array( $host, $local_hosts, true ) ) {
-                return self::dcr_error( 'invalid_redirect_uri', __( 'Plain-HTTP redirect URIs are allowed only for loopback (localhost, 127.0.0.1, [::1]); use HTTPS otherwise.', 'easy-mcp-ai' ), 400 );
+                return self::dcr_error( 'invalid_redirect_uri', __( 'Plain-HTTP redirect URIs are allowed only for loopback (localhost, 127.0.0.1, [::1]); use HTTPS otherwise.', 'wordpress-code-ai' ), 400 );
             }
             return true;
         }
         
         
         if ( ! in_array( $scheme, self::ALLOWED_CLIENT_URI_SCHEMES, true ) ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must use HTTPS, loopback HTTP, or a supported native-app scheme (cursor://, vscode://).', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'Redirect URIs must use HTTPS, loopback HTTP, or a supported native-app scheme (cursor://, vscode://).', 'wordpress-code-ai' ), 400 );
         }
         if ( '' === $host ) {
-            return self::dcr_error( 'invalid_redirect_uri', __( 'Custom-scheme redirect URIs must include a host (for example cursor://host/path).', 'easy-mcp-ai' ), 400 );
+            return self::dcr_error( 'invalid_redirect_uri', __( 'Custom-scheme redirect URIs must include a host (for example cursor://host/path).', 'wordpress-code-ai' ), 400 );
         }
 
         return true;
@@ -654,18 +654,18 @@ class Client_Registry {
         
         
         
-        $ip = \Easy_MCP_AI\Client_IP::get();
+        $ip = \wordpress_code_ai\Client_IP::get();
 
-        $per_ip_key  = 'easy_mcp_ai_dcr_rl_' . md5( $ip );
-        $global_key  = 'easy_mcp_ai_dcr_rl_global';
+        $per_ip_key  = 'wordpress_code_ai_dcr_rl_' . md5( $ip );
+        $global_key  = 'wordpress_code_ai_dcr_rl_global';
         $global_cap  = self::GLOBAL_RATE_LIMIT_PER_HOUR;
 
         if ( \wp_using_ext_object_cache() ) {
-            \wp_cache_add( $per_ip_key, 0, 'easy_mcp_ai', HOUR_IN_SECONDS );
-            $new_count = \wp_cache_incr( $per_ip_key, 1, 'easy_mcp_ai' );
+            \wp_cache_add( $per_ip_key, 0, 'wordpress_code_ai', HOUR_IN_SECONDS );
+            $new_count = \wp_cache_incr( $per_ip_key, 1, 'wordpress_code_ai' );
 
-            \wp_cache_add( $global_key, 0, 'easy_mcp_ai', HOUR_IN_SECONDS );
-            $new_global = \wp_cache_incr( $global_key, 1, 'easy_mcp_ai' );
+            \wp_cache_add( $global_key, 0, 'wordpress_code_ai', HOUR_IN_SECONDS );
+            $new_global = \wp_cache_incr( $global_key, 1, 'wordpress_code_ai' );
         } else {
             
             $new_count  = Token_Endpoint::rl_transient_increment( $per_ip_key );
@@ -687,8 +687,8 @@ class Client_Registry {
     private function check_client_cap() {
         global $wpdb;
 
-        $table     = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
-        $max       = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_oauth_max_clients', self::DEFAULT_MAX_CLIENTS );
+        $table     = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
+        $max       = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_oauth_max_clients', self::DEFAULT_MAX_CLIENTS );
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix; live count must be fresh for cap check.
         $count     = (int) $wpdb->get_var(
             $wpdb->prepare(
@@ -699,7 +699,7 @@ class Client_Registry {
         // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
 
         if ( $count >= $max ) {
-            return self::dcr_error( 'server_error', __( 'Maximum number of registered clients has been reached.', 'easy-mcp-ai' ), 503 );
+            return self::dcr_error( 'server_error', __( 'Maximum number of registered clients has been reached.', 'wordpress-code-ai' ), 503 );
         }
 
         return null;
@@ -723,11 +723,11 @@ class Client_Registry {
     private function cleanup_stale_duplicates( $client_name, $redirect_uris_json ) {
         global $wpdb;
 
-        $clients_table  = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
-        $tokens_table   = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
-        $codes_table    = $wpdb->prefix . 'easy_mcp_ai_oauth_codes';
-        $consents_table = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
-        $device_table   = $wpdb->prefix . 'easy_mcp_ai_oauth_device_codes';
+        $clients_table  = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
+        $tokens_table   = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
+        $codes_table    = $wpdb->prefix . 'wordpress_code_ai_oauth_codes';
+        $consents_table = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
+        $device_table   = $wpdb->prefix . 'wordpress_code_ai_oauth_device_codes';
 
         $cutoff = gmdate( 'Y-m-d H:i:s', time() - 60 );
 
@@ -834,7 +834,7 @@ class Client_Registry {
     public function get_client( $client_id ) {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix; client lookup must be fresh.
         return $wpdb->get_row(
@@ -957,7 +957,7 @@ class Client_Registry {
         }
 
         global $wpdb;
-        $table  = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $table  = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
         $secret = self::generate_secret();
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Plugin-owned table write.

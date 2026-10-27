@@ -9,7 +9,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -59,7 +59,7 @@ class Tool_Catalogue {
 
     public function sections( array $groups ) {
         return array(
-            'locked'             => \Easy_MCP_AI\Config::is_locked( 'easy_mcp_ai_disabled_tools' ),
+            'locked'             => \wordpress_code_ai\Config::is_locked( 'wordpress_code_ai_disabled_tools' ),
             'abilitiesSupported' => function_exists( 'wp_get_abilities' ),
             'wpVersion'          => (string) \get_bloginfo( 'version' ),
             'core'               => $this->core_rows(),
@@ -75,14 +75,14 @@ class Tool_Catalogue {
     
     private function disabled_tools() {
         if ( null === $this->off_names ) {
-            $this->off_names = \Easy_MCP_AI\Tools\Tool_State::off_names( $this->tool_registry );
+            $this->off_names = \wordpress_code_ai\Tools\Tool_State::off_names( $this->tool_registry );
         }
         return $this->off_names;
     }
 
     
     private static function override_of( $name ) {
-        return \Easy_MCP_AI\Tools\Tool_State::override_of( $name );
+        return \wordpress_code_ai\Tools\Tool_State::override_of( $name );
     }
 
     
@@ -101,7 +101,7 @@ class Tool_Catalogue {
 
     
     private function allowed_patterns() {
-        return (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_allowed_tool_patterns', array() );
+        return (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_allowed_tool_patterns', array() );
     }
 
     
@@ -109,7 +109,7 @@ class Tool_Catalogue {
         if ( in_array( $name, $disabled, true ) ) {
             return false;
         }
-        return \Easy_MCP_AI\MCP\Server::matches_tool_patterns( $name, $patterns );
+        return \wordpress_code_ai\MCP\Server::matches_tool_patterns( $name, $patterns );
     }
 
     
@@ -233,10 +233,10 @@ class Tool_Catalogue {
             return array();
         }
         return array_map(
-            static function ( \Easy_MCP_AI\Builders\Layout_Adapter $adapter ): string {
+            static function ( \wordpress_code_ai\Builders\Layout_Adapter $adapter ): string {
                 return $adapter->label();
             },
-            \Easy_MCP_AI\Builders\Builder_Registry::present()
+            \wordpress_code_ai\Builders\Builder_Registry::present()
         );
     }
 
@@ -244,8 +244,8 @@ class Tool_Catalogue {
     private function plugin_rows() {
         $disabled        = $this->disabled_tools();
         $patterns        = $this->allowed_patterns();
-        $enabled_groups  = (array) \get_option( 'easy_mcp_ai_enabled_plugin_groups', array() );
-        $disabled_plugin = (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_plugin_tools', array() );
+        $enabled_groups  = (array) \get_option( 'wordpress_code_ai_enabled_plugin_groups', array() );
+        $disabled_plugin = (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_plugin_tools', array() );
         $registered      = array();
         foreach ( $this->by_category() as $definitions ) {
             $registered = array_merge( $registered, array_column( $definitions, 'name' ) );
@@ -326,7 +326,7 @@ class Tool_Catalogue {
             $tools  = self::active_names( $items, $disabled, $patterns );
             $rows[] = array(
                 'key'    => $key,
-                'label'  => \Easy_MCP_AI\Admin\Rest\Tools_Controller::EXTERNAL_LABELS[ $key ] ?? (string) $label,
+                'label'  => \wordpress_code_ai\Admin\Rest\Tools_Controller::EXTERNAL_LABELS[ $key ] ?? (string) $label,
                 'status' => empty( $tools ) ? 'no_tools' : 'active',
                 'counts' => self::counts( $items ),
                 'tools'  => $tools,
@@ -347,14 +347,14 @@ class Tool_Catalogue {
         }
         $disabled = $this->disabled_tools();
         $patterns = $this->allowed_patterns();
-        $enabled  = (array) \get_option( 'easy_mcp_ai_enabled_abilities', array() );
+        $enabled  = (array) \get_option( 'wordpress_code_ai_enabled_abilities', array() );
         $grouped  = array();
         foreach ( (array) \wp_get_abilities() as $ability ) {
             $slug        = (string) $ability->get_name();
             $parts       = explode( '/', $slug, 2 );
             $prefix      = count( $parts ) > 1 ? $parts[0] : 'core';
             $annotations = Abilities_Page::ability_annotations( $ability );
-            $name        = \Easy_MCP_AI\Tools\Dynamic_Tool_Registrar::build_tool_name( $slug );
+            $name        = \wordpress_code_ai\Tools\Dynamic_Tool_Registrar::build_tool_name( $slug );
             $override    = self::override_of( $name );
             $grouped[ $prefix ][] = array(
                 'name'               => $name,
@@ -403,7 +403,7 @@ class Tool_Catalogue {
                 continue;
             }
             if ( ! is_array( $body[ $section ] ) ) {
-                return self::invalid( $section, \__( 'Expected a JSON object.', 'easy-mcp-ai' ) );
+                return self::invalid( $section, \__( 'Expected a JSON object.', 'wordpress-code-ai' ) );
             }
             $planned = $this->{"plan_$section"}( $body[ $section ] );
             if ( \is_wp_error( $planned ) ) {
@@ -421,17 +421,17 @@ class Tool_Catalogue {
 
     
     private static function invalid( $field, $message ) {
-        return new \WP_Error( 'easy_mcp_ai_invalid_param', $message, array( 'status' => 400, 'field' => $field ) );
+        return new \WP_Error( 'wordpress_code_ai_invalid_param', $message, array( 'status' => 400, 'field' => $field ) );
     }
 
     
     private static function locked_error() {
-        if ( ! \Easy_MCP_AI\Config::is_locked( 'easy_mcp_ai_disabled_tools' ) ) {
+        if ( ! \wordpress_code_ai\Config::is_locked( 'wordpress_code_ai_disabled_tools' ) ) {
             return null;
         }
         return new \WP_Error(
-            'easy_mcp_ai_locked',
-            \__( 'The disabled-tool list is set by a constant or environment variable on this site, so it cannot be changed here.', 'easy-mcp-ai' ),
+            'wordpress_code_ai_locked',
+            \__( 'The disabled-tool list is set by a constant or environment variable on this site, so it cannot be changed here.', 'wordpress-code-ai' ),
             array( 'status' => 409, 'field' => 'core.disabled' )
         );
     }
@@ -456,8 +456,8 @@ class Tool_Catalogue {
         foreach ( Plugin_Integration_Registry::get_groups() as $group ) {
             $groups[ $group['slug'] ] = $group;
         }
-        $enabled_groups  = (array) \get_option( 'easy_mcp_ai_enabled_plugin_groups', array() );
-        $disabled_plugin = (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_plugin_tools', array() );
+        $enabled_groups  = (array) \get_option( 'wordpress_code_ai_enabled_plugin_groups', array() );
+        $disabled_plugin = (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_plugin_tools', array() );
 
         $group_on = array();
         $checked  = array();
@@ -472,18 +472,18 @@ class Tool_Catalogue {
         foreach ( $spec as $slug => $changes ) {
             $field = 'plugins.' . $slug;
             if ( ! isset( $groups[ $slug ] ) ) {
-                return self::invalid( $field, \__( 'Unknown plugin integration.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'Unknown plugin integration.', 'wordpress-code-ai' ) );
             }
             if ( ! is_array( $changes ) ) {
-                return self::invalid( $field, \__( 'Expected a JSON object.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'Expected a JSON object.', 'wordpress-code-ai' ) );
             }
             if ( ! Plugin_Integration_Registry::is_installed( $groups[ $slug ] ) ) {
-                return self::invalid( $field, \__( 'This plugin is not installed or not active.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'This plugin is not installed or not active.', 'wordpress-code-ai' ) );
             }
             $names = array_column( $groups[ $slug ]['tools'], 'name' );
             if ( array_key_exists( 'enabled', $changes ) ) {
                 if ( ! is_bool( $changes['enabled'] ) ) {
-                    return self::invalid( $field . '.enabled', \__( 'Expected true or false.', 'easy-mcp-ai' ) );
+                    return self::invalid( $field . '.enabled', \__( 'Expected true or false.', 'wordpress-code-ai' ) );
                 }
                 $group_on[ $slug ] = $changes['enabled'];
                 foreach ( self::not_overridden( $names ) as $name ) {
@@ -492,14 +492,14 @@ class Tool_Catalogue {
             }
             if ( array_key_exists( 'tools', $changes ) ) {
                 if ( ! is_array( $changes['tools'] ) ) {
-                    return self::invalid( $field . '.tools', \__( 'Expected a JSON object.', 'easy-mcp-ai' ) );
+                    return self::invalid( $field . '.tools', \__( 'Expected a JSON object.', 'wordpress-code-ai' ) );
                 }
                 foreach ( $changes['tools'] as $name => $on ) {
                     if ( ! in_array( $name, $names, true ) ) {
-                        return self::invalid( $field . '.tools.' . $name, \__( 'Unknown tool.', 'easy-mcp-ai' ) );
+                        return self::invalid( $field . '.tools.' . $name, \__( 'Unknown tool.', 'wordpress-code-ai' ) );
                     }
                     if ( ! is_bool( $on ) ) {
-                        return self::invalid( $field . '.tools.' . $name, \__( 'Expected true or false.', 'easy-mcp-ai' ) );
+                        return self::invalid( $field . '.tools.' . $name, \__( 'Expected true or false.', 'wordpress-code-ai' ) );
                     }
                     if ( null !== self::override_of( $name ) ) {
                         continue;
@@ -532,23 +532,23 @@ class Tool_Catalogue {
             return null;
         }
         if ( ! function_exists( 'wp_get_abilities' ) ) {
-            return self::invalid( 'abilities', \__( 'WordPress Abilities need WordPress 6.9 or later.', 'easy-mcp-ai' ) );
+            return self::invalid( 'abilities', \__( 'WordPress Abilities need WordPress 6.9 or later.', 'wordpress-code-ai' ) );
         }
         $groups = array();
         foreach ( $this->ability_rows() as $row ) {
             $groups[ $row['key'] ] = $row['items'];
         }
-        $current  = (array) \get_option( 'easy_mcp_ai_enabled_abilities', array() );
+        $current  = (array) \get_option( 'wordpress_code_ai_enabled_abilities', array() );
         $rendered = array();
         $checked  = array();
 
         foreach ( $spec as $key => $changes ) {
             $field = 'abilities.' . $key;
             if ( ! isset( $groups[ $key ] ) ) {
-                return self::invalid( $field, \__( 'Unknown ability group.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'Unknown ability group.', 'wordpress-code-ai' ) );
             }
             if ( ! is_array( $changes ) ) {
-                return self::invalid( $field, \__( 'Expected a JSON object.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'Expected a JSON object.', 'wordpress-code-ai' ) );
             }
             $slug_by_name = array();
             foreach ( $groups[ $key ] as $item ) {
@@ -560,7 +560,7 @@ class Tool_Catalogue {
             }
             if ( array_key_exists( 'enabled', $changes ) ) {
                 if ( ! is_bool( $changes['enabled'] ) ) {
-                    return self::invalid( $field . '.enabled', \__( 'Expected true or false.', 'easy-mcp-ai' ) );
+                    return self::invalid( $field . '.enabled', \__( 'Expected true or false.', 'wordpress-code-ai' ) );
                 }
                 foreach ( self::not_overridden( array_keys( $slug_by_name ) ) as $name ) {
                     $checked[ $slug_by_name[ $name ] ] = $changes['enabled'];
@@ -568,14 +568,14 @@ class Tool_Catalogue {
             }
             if ( array_key_exists( 'tools', $changes ) ) {
                 if ( ! is_array( $changes['tools'] ) ) {
-                    return self::invalid( $field . '.tools', \__( 'Expected a JSON object.', 'easy-mcp-ai' ) );
+                    return self::invalid( $field . '.tools', \__( 'Expected a JSON object.', 'wordpress-code-ai' ) );
                 }
                 foreach ( $changes['tools'] as $name => $on ) {
                     if ( ! isset( $slug_by_name[ $name ] ) ) {
-                        return self::invalid( $field . '.tools.' . $name, \__( 'Unknown tool.', 'easy-mcp-ai' ) );
+                        return self::invalid( $field . '.tools.' . $name, \__( 'Unknown tool.', 'wordpress-code-ai' ) );
                     }
                     if ( ! is_bool( $on ) ) {
-                        return self::invalid( $field . '.tools.' . $name, \__( 'Expected true or false.', 'easy-mcp-ai' ) );
+                        return self::invalid( $field . '.tools.' . $name, \__( 'Expected true or false.', 'wordpress-code-ai' ) );
                     }
                     if ( null === self::override_of( $name ) ) {
                         $checked[ $slug_by_name[ $name ] ] = $on;
@@ -586,7 +586,7 @@ class Tool_Catalogue {
 
         $checked_slugs = array_keys( array_filter( $checked ) );
         return static function () use ( $current, $rendered, $checked_slugs ) {
-            \update_option( 'easy_mcp_ai_enabled_abilities', Abilities_Page::compute_enabled( $current, $rendered, $checked_slugs ) );
+            \update_option( 'wordpress_code_ai_enabled_abilities', Abilities_Page::compute_enabled( $current, $rendered, $checked_slugs ) );
         };
     }
 
@@ -613,23 +613,23 @@ class Tool_Catalogue {
         foreach ( $spec as $key => $changes ) {
             $field = 'external.' . $key;
             if ( ! External_Data_Service::is_provider( $key ) ) {
-                return self::invalid( $field, \__( 'Unknown provider.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'Unknown provider.', 'wordpress-code-ai' ) );
             }
             if ( ! is_array( $changes ) ) {
-                return self::invalid( $field, \__( 'Expected a JSON object.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'Expected a JSON object.', 'wordpress-code-ai' ) );
             }
             if ( ! $service->is_configured( $key ) ) {
-                return self::invalid( $field, \__( 'Save credentials for this provider first.', 'easy-mcp-ai' ) );
+                return self::invalid( $field, \__( 'Save credentials for this provider first.', 'wordpress-code-ai' ) );
             }
             $names   = $service->tool_names( $key );
-            $bucket  = (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_' . $key . '_tools', array() );
+            $bucket  = (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_' . $key . '_tools', array() );
             $checked = array();
             foreach ( $names as $name ) {
                 $checked[ $name ] = ! in_array( $name, $bucket, true );
             }
             if ( array_key_exists( 'enabled', $changes ) ) {
                 if ( ! is_bool( $changes['enabled'] ) ) {
-                    return self::invalid( $field . '.enabled', \__( 'Expected true or false.', 'easy-mcp-ai' ) );
+                    return self::invalid( $field . '.enabled', \__( 'Expected true or false.', 'wordpress-code-ai' ) );
                 }
                 foreach ( self::not_overridden( $names ) as $name ) {
                     $checked[ $name ] = $changes['enabled'];
@@ -637,14 +637,14 @@ class Tool_Catalogue {
             }
             if ( array_key_exists( 'tools', $changes ) ) {
                 if ( ! is_array( $changes['tools'] ) ) {
-                    return self::invalid( $field . '.tools', \__( 'Expected a JSON object.', 'easy-mcp-ai' ) );
+                    return self::invalid( $field . '.tools', \__( 'Expected a JSON object.', 'wordpress-code-ai' ) );
                 }
                 foreach ( $changes['tools'] as $name => $on ) {
                     if ( ! in_array( $name, $names, true ) ) {
-                        return self::invalid( $field . '.tools.' . $name, \__( 'Unknown tool.', 'easy-mcp-ai' ) );
+                        return self::invalid( $field . '.tools.' . $name, \__( 'Unknown tool.', 'wordpress-code-ai' ) );
                     }
                     if ( ! is_bool( $on ) ) {
-                        return self::invalid( $field . '.tools.' . $name, \__( 'Expected true or false.', 'easy-mcp-ai' ) );
+                        return self::invalid( $field . '.tools.' . $name, \__( 'Expected true or false.', 'wordpress-code-ai' ) );
                     }
                     if ( null === self::override_of( $name ) ) {
                         $checked[ $name ] = $on;
@@ -680,7 +680,7 @@ class Tool_Catalogue {
             return $locked;
         }
         if ( ! is_array( $spec['disabled'] ) ) {
-            return self::invalid( 'core.disabled', \__( 'Expected a list of tool names.', 'easy-mcp-ai' ) );
+            return self::invalid( 'core.disabled', \__( 'Expected a list of tool names.', 'wordpress-code-ai' ) );
         }
         $core_names = $this->core_tool_names();
         $disabled   = array();
@@ -690,7 +690,7 @@ class Tool_Catalogue {
                     'core.disabled',
                     sprintf(
                         /* translators: %s: tool name */
-                        \__( '%s is not a core tool.', 'easy-mcp-ai' ),
+                        \__( '%s is not a core tool.', 'wordpress-code-ai' ),
                         is_string( $name ) ? $name : \wp_json_encode( $name )
                     )
                 );
@@ -711,13 +711,13 @@ class Tool_Catalogue {
 
 
     public static function defaults_of( $registry, array $names ) {
-        if ( ! class_exists( '\\Easy_MCP_AI\\Tools\\Base_Tool' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\Tools\\Base_Tool' ) ) {
             return array_fill_keys( $names, false );
         }
         $defaults = array();
         foreach ( $names as $name ) {
             $tool              = is_object( $registry ) && method_exists( $registry, 'get_tool' ) ? $registry->get_tool( $name ) : null;
-            $defaults[ $name ] = $tool instanceof \Easy_MCP_AI\Tools\Base_Tool && $tool->is_disabled_by_default();
+            $defaults[ $name ] = $tool instanceof \wordpress_code_ai\Tools\Base_Tool && $tool->is_disabled_by_default();
         }
         return $defaults;
     }
@@ -734,15 +734,15 @@ class Tool_Catalogue {
 
 
     public static function store_choices( array $names, array $off, array $defaults ) {
-        $global  = (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_tools', array() );
-        $current = \Easy_MCP_AI\Tools\Tool_State::stored_enabled_list();
-        list( $disabled, $enabled ) = \Easy_MCP_AI\Tools\Tool_State::apply_choices( $names, $off, $defaults, $global, $current );
-        \Easy_MCP_AI\Config::update(
-            'easy_mcp_ai_disabled_tools',
+        $global  = (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_tools', array() );
+        $current = \wordpress_code_ai\Tools\Tool_State::stored_enabled_list();
+        list( $disabled, $enabled ) = \wordpress_code_ai\Tools\Tool_State::apply_choices( $names, $off, $defaults, $global, $current );
+        \wordpress_code_ai\Config::update(
+            'wordpress_code_ai_disabled_tools',
             External_Data_Admin::merge_disabled_tool_buckets( $disabled )
         );
         if ( $enabled !== $current ) {
-            \update_option( \Easy_MCP_AI\Tools\Tool_State::ENABLED_OPTION, $enabled, false );
+            \update_option( \wordpress_code_ai\Tools\Tool_State::ENABLED_OPTION, $enabled, false );
         }
     }
 }

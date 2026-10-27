@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Taxonomy;
+namespace wordpress_code_ai\Tools\Taxonomy;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

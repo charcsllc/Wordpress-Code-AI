@@ -11,9 +11,9 @@
 
 
 
-namespace Easy_MCP_AI\Skills;
+namespace wordpress_code_ai\Skills;
 
-use Easy_MCP_AI\Resources\Base_Resource;
+use wordpress_code_ai\Resources\Base_Resource;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

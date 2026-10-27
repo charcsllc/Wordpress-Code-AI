@@ -13,7 +13,7 @@
 
 
 
-namespace Easy_MCP_AI\Meta;
+namespace wordpress_code_ai\Meta;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

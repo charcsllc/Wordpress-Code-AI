@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Compat;
+namespace wordpress_code_ai\Compat;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -38,14 +38,14 @@ abstract class Vendor_Abilities {
     const ENABLE_PENDING_OPTION = '';
 
     
-    const ENABLED_ABILITIES_OPTION = 'easy_mcp_ai_enabled_abilities';
+    const ENABLED_ABILITIES_OPTION = 'wordpress_code_ai_enabled_abilities';
 
     
 
 
 
 
-    const TICK_LOCK = 'easy_mcp_ai_abilities_tick_lock';
+    const TICK_LOCK = 'wordpress_code_ai_abilities_tick_lock';
 
     
     const TICK_LOCK_TTL = 30;
@@ -55,7 +55,7 @@ abstract class Vendor_Abilities {
 
     
     public static function group_enabled(): bool {
-        return \Easy_MCP_AI\Meta\Meta_Exposure::is_group_enabled( static::GROUP );
+        return \wordpress_code_ai\Meta\Meta_Exposure::is_group_enabled( static::GROUP );
     }
 
     
@@ -106,8 +106,8 @@ abstract class Vendor_Abilities {
             };
             
             
-            if ( class_exists( '\\Easy_MCP_AI\\MCP\\Option_Guard' ) ) {
-                \Easy_MCP_AI\MCP\Option_Guard::while_suspended( $write );
+            if ( class_exists( '\\wordpress_code_ai\\MCP\\Option_Guard' ) ) {
+                \wordpress_code_ai\MCP\Option_Guard::while_suspended( $write );
                 return;
             }
             $write();
@@ -222,7 +222,7 @@ abstract class Vendor_Abilities {
             $registration();
         } catch ( \Throwable $e ) {
             self::$failed[ static::class ] = true;
-            error_log( sprintf( 'Easy MCP AI: %s %s failed, %s abilities not registered: %s', static::VENDOR, $what, static::VENDOR, $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional: a vendor change must be visible
+            error_log( sprintf( 'wordpress-code-ai: %s %s failed, %s abilities not registered: %s', static::VENDOR, $what, static::VENDOR, $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional: a vendor change must be visible
         }
     }
 

@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\CPT;
+namespace wordpress_code_ai\Tools\CPT;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Post_Type_Rest_Base;
-use Easy_MCP_AI\Tools\Post_Type_Tool_Hint;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Post_Type_Rest_Base;
+use wordpress_code_ai\Tools\Post_Type_Tool_Hint;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -51,7 +51,7 @@ class Create_CPT_Item extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Creates a new item in any custom post type (CPT) registered with `show_in_rest=true`. Required: `rest_base` (the CPT\'s rest_base, or its post_type slug — `wp_get_post_types` lists both) and `title` (unless `allow_empty_title` is true and `content` or `excerpt` is given). Optional: `status` (default draft; publish/draft/pending/private/future or a custom status registered on this site; "future" needs `date` or `date_gmt`), `slug`, `date` (site time, ISO 8601) or `date_gmt` (UTC) — never both, `author` (user ID), `parent` (parent item ID, hierarchical types only), `menu_order`, `comment_status` / `ping_status` (open/closed), `password` (protects the content and excerpt), `featured_media` (attachment ID), `template`, `meta` (only REST-registered keys persist; dropped keys are reported back as `meta_ignored` with a `notice`) `tax_input` ({ taxonomy slug: [term IDs] } for taxonomies registered on the type and shown in the REST API; every term must exist in that taxonomy) and `allow_empty_title` (boolean, default false). `title`, `content` and `excerpt` are forwarded as before and silently ignored when the CPT lacks the matching `supports` entry; every field added since is refused, naming the missing support, when the CPT does not accept it. If **Easy MCP AI → Settings → Force draft on create** is enabled, `status` is silently overridden to `draft` regardless of the value supplied. For built-in post/page use `wp_create_post` / `wp_create_page` for richer schemas. Returns { id, title, status, link }, plus `meta_ignored` and `notice` when sent meta keys were dropped. This tool is listed as `read` for all callers regardless of the target CPT, but WordPress enforces the CPT\'s own write capability on the underlying REST request (some require edit_posts, others a custom capability like WooCommerce\'s edit_products) — a low-privilege caller may still see a permission error even though the tool is visible.';
+        return 'Creates a new item in any custom post type (CPT) registered with `show_in_rest=true`. Required: `rest_base` (the CPT\'s rest_base, or its post_type slug — `wp_get_post_types` lists both) and `title` (unless `allow_empty_title` is true and `content` or `excerpt` is given). Optional: `status` (default draft; publish/draft/pending/private/future or a custom status registered on this site; "future" needs `date` or `date_gmt`), `slug`, `date` (site time, ISO 8601) or `date_gmt` (UTC) — never both, `author` (user ID), `parent` (parent item ID, hierarchical types only), `menu_order`, `comment_status` / `ping_status` (open/closed), `password` (protects the content and excerpt), `featured_media` (attachment ID), `template`, `meta` (only REST-registered keys persist; dropped keys are reported back as `meta_ignored` with a `notice`) `tax_input` ({ taxonomy slug: [term IDs] } for taxonomies registered on the type and shown in the REST API; every term must exist in that taxonomy) and `allow_empty_title` (boolean, default false). `title`, `content` and `excerpt` are forwarded as before and silently ignored when the CPT lacks the matching `supports` entry; every field added since is refused, naming the missing support, when the CPT does not accept it. If **wordpress-code-ai → Settings → Force draft on create** is enabled, `status` is silently overridden to `draft` regardless of the value supplied. For built-in post/page use `wp_create_post` / `wp_create_page` for richer schemas. Returns { id, title, status, link }, plus `meta_ignored` and `notice` when sent meta keys were dropped. This tool is listed as `read` for all callers regardless of the target CPT, but WordPress enforces the CPT\'s own write capability on the underlying REST request (some require edit_posts, others a custom capability like WooCommerce\'s edit_products) — a low-privilege caller may still see a permission error even though the tool is visible.';
     }
 
     public function get_category() {

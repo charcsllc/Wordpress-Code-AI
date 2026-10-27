@@ -5,11 +5,11 @@
 
 
 
-namespace Easy_MCP_AI\Cache\Adapters;
+namespace wordpress_code_ai\Cache\Adapters;
 
-use Easy_MCP_AI\Cache\Cache_Adapter;
-use Easy_MCP_AI\Cache\Layer_Result;
-use Easy_MCP_AI\Cache\Purge_Request;
+use wordpress_code_ai\Cache\Cache_Adapter;
+use wordpress_code_ai\Cache\Layer_Result;
+use wordpress_code_ai\Cache\Purge_Request;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -55,7 +55,7 @@ final class Nitropack extends Cache_Adapter {
     const LIGHT_PURGE = 8;
 
     
-    const REASON = 'Easy MCP AI: wp_clear_cache';
+    const REASON = 'wordpress-code-ai: wp_clear_cache';
 
     
     const FULL_FANOUT = 'nitropack_execute_purge_all';

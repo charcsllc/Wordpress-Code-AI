@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Redirection;
+namespace wordpress_code_ai\Tools\Redirection;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -67,7 +67,7 @@ class Delete_Redirects extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: number of redirects, 2: list of redirects */
-            _n( 'Permanently delete %1$d redirect: %2$s', 'Permanently delete %1$d redirects: %2$s', count( $lines ), 'easy-mcp-ai' ),
+            _n( 'Permanently delete %1$d redirect: %2$s', 'Permanently delete %1$d redirects: %2$s', count( $lines ), 'wordpress-code-ai' ),
             count( $lines ),
             implode( '; ', $lines )
         );

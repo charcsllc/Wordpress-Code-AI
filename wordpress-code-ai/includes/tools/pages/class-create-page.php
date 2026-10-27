@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Pages;
+namespace wordpress_code_ai\Tools\Pages;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\CPT\Create_CPT_Item;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\CPT\Create_CPT_Item;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -15,7 +15,7 @@ class Create_Page extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Creates a new WordPress page. Required: `title` (unless `allow_empty_title` is true and `content` or `excerpt` is given). Optional: `content` (HTML/Gutenberg blocks; sanitized by WordPress per the calling user capability), `status` (default draft; publish/draft/pending/private/future or a custom status registered on this site; use "future" with `date` or `date_gmt` to schedule), `date` (ISO 8601, site time) or `date_gmt` (UTC) — never both, `excerpt`, `parent` (parent page ID — 0 = top-level; pages support hierarchical nesting), `template` (theme template file slug), `menu_order` (integer, for ordering), `slug`, `author` (user ID), `featured_media` (attachment ID), `comment_status` (open/closed), `ping_status` (open/closed), `password` (protects the content and excerpt), `tax_input` ({ taxonomy slug: [term IDs] } for taxonomies registered on pages and shown in the REST API — core registers none; every term must exist in that taxonomy), `allow_empty_title` (boolean, default false). If **Easy MCP AI → Settings → Force draft on create** is enabled, `status` is silently overridden to `draft` regardless of the value supplied. Optional `meta` (object of meta key-value pairs; only REST-registered keys persist, including the SEO keys of enabled plugin integrations, and dropped keys are reported back as `meta_ignored` with a `notice`). Returns { id, title, status, link }.';
+        return 'Creates a new WordPress page. Required: `title` (unless `allow_empty_title` is true and `content` or `excerpt` is given). Optional: `content` (HTML/Gutenberg blocks; sanitized by WordPress per the calling user capability), `status` (default draft; publish/draft/pending/private/future or a custom status registered on this site; use "future" with `date` or `date_gmt` to schedule), `date` (ISO 8601, site time) or `date_gmt` (UTC) — never both, `excerpt`, `parent` (parent page ID — 0 = top-level; pages support hierarchical nesting), `template` (theme template file slug), `menu_order` (integer, for ordering), `slug`, `author` (user ID), `featured_media` (attachment ID), `comment_status` (open/closed), `ping_status` (open/closed), `password` (protects the content and excerpt), `tax_input` ({ taxonomy slug: [term IDs] } for taxonomies registered on pages and shown in the REST API — core registers none; every term must exist in that taxonomy), `allow_empty_title` (boolean, default false). If **wordpress-code-ai → Settings → Force draft on create** is enabled, `status` is silently overridden to `draft` regardless of the value supplied. Optional `meta` (object of meta key-value pairs; only REST-registered keys persist, including the SEO keys of enabled plugin integrations, and dropped keys are reported back as `meta_ignored` with a `notice`). Returns { id, title, status, link }.';
     }
 
     public function get_category() {

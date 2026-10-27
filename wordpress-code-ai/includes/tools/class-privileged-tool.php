@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
-use Easy_MCP_AI\Privileged\Privileged_Groups;
+use wordpress_code_ai\Privileged\Privileged_Groups;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -26,7 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 abstract class Privileged_Tool extends Base_Tool {
 
     
-    const META_KEY = 'easy-mcp-ai/privileged';
+    const META_KEY = 'wordpress-code-ai/privileged';
 
     
     const DESCRIPTION_SUFFIX = 'Privileged: it runs code, reads server files or rewrites the database. While approvals are on, each call waits for a person to approve it.';
@@ -128,7 +128,7 @@ abstract class Privileged_Tool extends Base_Tool {
     final public function describe( array $arguments ) {
         return sprintf(
             /* translators: 1: tool name, 2: privileged group key */
-            __( 'Privileged operation: %1$s (group %2$s). Nothing runs until you approve it.', 'easy-mcp-ai' ),
+            __( 'Privileged operation: %1$s (group %2$s). Nothing runs until you approve it.', 'wordpress-code-ai' ),
             $this->get_name(),
             $this->get_privileged_group()
         ) . "\n\n" . (string) $this->describe_payload( $arguments );

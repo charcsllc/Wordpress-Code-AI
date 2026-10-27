@@ -10,9 +10,9 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Feedback\Feedback_Queue;
+use wordpress_code_ai\Feedback\Feedback_Queue;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -89,7 +89,7 @@ class Feedback_Controller extends Admin_Rest_Controller {
             'expired'     => 409,
         );
         $status = isset( $http[ $outcome['status'] ] ) ? $http[ $outcome['status'] ] : 400;
-        return $this->fail( 'easy_mcp_ai_feedback_' . $outcome['status'], $outcome['message'], $status );
+        return $this->fail( 'wordpress_code_ai_feedback_' . $outcome['status'], $outcome['message'], $status );
     }
 
     

@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Menus;
+namespace wordpress_code_ai\Tools\Menus;
 
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

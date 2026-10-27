@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Meta;
+namespace wordpress_code_ai\Tools\Meta;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -176,10 +176,10 @@ class Delete_Post_Meta extends Base_Tool {
 
 
     private function refuse_restricted_integration_field( string $key, int $post_id ): void {
-        if ( ! class_exists( '\\Easy_MCP_AI\\Meta\\Meta_Exposure' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\Meta\\Meta_Exposure' ) ) {
             return;
         }
-        foreach ( \Easy_MCP_AI\Meta\Meta_Exposure::enabled_providers() as $provider ) {
+        foreach ( \wordpress_code_ai\Meta\Meta_Exposure::enabled_providers() as $provider ) {
             if ( ! array_key_exists( $key, $provider->get_fields() ) ) {
                 continue;
             }

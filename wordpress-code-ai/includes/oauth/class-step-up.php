@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -27,7 +27,7 @@ final class Step_Up {
     const TTL = 3600;
 
     
-    const PREFIX = 'easy_mcp_ai_step_up_';
+    const PREFIX = 'wordpress_code_ai_step_up_';
 
     
 

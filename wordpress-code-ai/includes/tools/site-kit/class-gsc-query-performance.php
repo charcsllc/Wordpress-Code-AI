@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Kit;
+namespace wordpress_code_ai\Tools\Site_Kit;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -26,7 +26,7 @@ class GSC_Query_Performance extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Reads Google Search Console clicks, impressions, CTR and average position for this site through Site Kit by Google\'s own connection, for the property Site Kit is connected to: no Google credentials needed in Easy MCP AI. Site Kit decides who gets data, as on its dashboard. Web search only, including fresh (not yet final) data; Site Kit limits a domain property to this site\'s URLs. Optional: `dimensions` (query, page, country, device, date, searchAppearance; omit for site totals), `start_date`/`end_date` (YYYY-MM-DD, both or neither; default the last 28 days), `url` (only this page), `row_limit` (1-25000, default 1000). Returns { rows: [{ keys, clicks, impressions, ctr, position }], count }. Site Kit offers no query filters and no other search types: for those, and for URL inspection or sitemaps, use the service-account tools (wp_gsc_query_performance, wp_gsc_inspect_url, wp_gsc_list_sitemaps).';
+        return 'Reads Google Search Console clicks, impressions, CTR and average position for this site through Site Kit by Google\'s own connection, for the property Site Kit is connected to: no Google credentials needed in wordpress-code-ai. Site Kit decides who gets data, as on its dashboard. Web search only, including fresh (not yet final) data; Site Kit limits a domain property to this site\'s URLs. Optional: `dimensions` (query, page, country, device, date, searchAppearance; omit for site totals), `start_date`/`end_date` (YYYY-MM-DD, both or neither; default the last 28 days), `url` (only this page), `row_limit` (1-25000, default 1000). Returns { rows: [{ keys, clicks, impressions, ctr, position }], count }. Site Kit offers no query filters and no other search types: for those, and for URL inspection or sitemaps, use the service-account tools (wp_gsc_query_performance, wp_gsc_inspect_url, wp_gsc_list_sitemaps).';
     }
 
     public function get_annotations() {

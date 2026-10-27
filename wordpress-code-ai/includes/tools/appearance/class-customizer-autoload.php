@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Tools\Appearance;
+namespace wordpress_code_ai\Tools\Appearance;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -60,7 +60,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Customizer_Autoload {
 
     
-    const ROUTE = '/easy-mcp-ai/v1/mcp';
+    const ROUTE = '/wordpress-code-ai/v1/mcp';
 
     
     const NOT_AUTOLOADED = array( 'wp_customize_manager' );

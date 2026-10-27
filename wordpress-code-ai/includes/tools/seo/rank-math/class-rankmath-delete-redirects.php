@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Tools\SEO;
+namespace wordpress_code_ai\Tools\SEO;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 
 
@@ -87,10 +87,10 @@ class Rankmath_Delete_Redirects extends Base_Tool {
 		$list  = implode( '; ', $lines );
 		if ( isset( $arguments['force'] ) && rest_sanitize_boolean( $arguments['force'] ) ) {
 			/* translators: 1: number of redirects, 2: list of redirects */
-			return sprintf( _n( 'Permanently delete %1$d Rank Math redirect: %2$s', 'Permanently delete %1$d Rank Math redirects: %2$s', $count, 'easy-mcp-ai' ), $count, $list );
+			return sprintf( _n( 'Permanently delete %1$d Rank Math redirect: %2$s', 'Permanently delete %1$d Rank Math redirects: %2$s', $count, 'wordpress-code-ai' ), $count, $list );
 		}
 		/* translators: 1: number of redirects, 2: list of redirects */
-		return sprintf( _n( 'Move %1$d Rank Math redirect to the trash: %2$s', 'Move %1$d Rank Math redirects to the trash: %2$s', $count, 'easy-mcp-ai' ), $count, $list );
+		return sprintf( _n( 'Move %1$d Rank Math redirect to the trash: %2$s', 'Move %1$d Rank Math redirects to the trash: %2$s', $count, 'wordpress-code-ai' ), $count, $list );
 	}
 
 	
@@ -102,11 +102,11 @@ class Rankmath_Delete_Redirects extends Base_Tool {
 
 
 	public function approval_refusal( array $arguments ): ?string {
-		$length = \Easy_MCP_AI\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
+		$length = \wordpress_code_ai\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
 		if ( null === $length ) {
 			return null;
 		}
-		return sprintf( 'These redirects take %1$d characters to list and the approval page shows %2$d, so the call was not sent for approval: a person must see every redirect they approve deleting. Send fewer redirect_ids per call.', $length, \Easy_MCP_AI\Approvals\Approval_Gate::PREVIEW_MAX );
+		return sprintf( 'These redirects take %1$d characters to list and the approval page shows %2$d, so the call was not sent for approval: a person must see every redirect they approve deleting. Send fewer redirect_ids per call.', $length, \wordpress_code_ai\Approvals\Approval_Gate::PREVIEW_MAX );
 	}
 
 	public function execute( array $arguments ) {

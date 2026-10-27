@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Privileged\Files_Read;
+namespace wordpress_code_ai\Privileged\Files_Read;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -61,8 +61,8 @@ final class Resolver {
     
     const NOISE_DIRS = array( 'vendor', 'node_modules' );
 
-    const EXTENSIONS_FILTER = 'easy_mcp_ai_files_read_extensions';
-    const MU_PLUGINS_FILTER = 'easy_mcp_ai_files_read_include_mu_plugins';
+    const EXTENSIONS_FILTER = 'wordpress_code_ai_files_read_extensions';
+    const MU_PLUGINS_FILTER = 'wordpress_code_ai_files_read_include_mu_plugins';
 
     
     private $content_root;
@@ -120,8 +120,8 @@ final class Resolver {
             $uploads = \wp_upload_dir( null, false );
             $denied  = empty( $uploads['basedir'] ) ? array() : self::upload_dirs( (string) $uploads['basedir'], function_exists( 'is_multisite' ) && \is_multisite() );
         }
-        if ( defined( 'EASY_MCP_AI_PLUGIN_DIR' ) ) {
-            $denied[] = (string) EASY_MCP_AI_PLUGIN_DIR;
+        if ( defined( 'WORDPRESS_CODE_AI_PLUGIN_DIR' ) ) {
+            $denied[] = (string) WORDPRESS_CODE_AI_PLUGIN_DIR;
         }
         if ( ! $include_mu && defined( 'WPMU_PLUGIN_DIR' ) ) {
             $denied[] = (string) WPMU_PLUGIN_DIR;

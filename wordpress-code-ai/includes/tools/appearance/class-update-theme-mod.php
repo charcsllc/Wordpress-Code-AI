@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Appearance;
+namespace wordpress_code_ai\Tools\Appearance;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -166,7 +166,7 @@ class Update_Theme_Mod extends Base_Tool {
                 $live  = $after !== $before || ( $saved && null !== $after && $setting->sanitize( $value ) === $after );
             } catch ( \Throwable $read ) {
                 $unknown = true;
-                throw new \Easy_MCP_AI\MCP\Detailed_Tool_Error(
+                throw new \wordpress_code_ai\MCP\Detailed_Tool_Error(
                     'Whether this change is live is unknown: publishing it failed, and reading it back failed too. Check with wp_get_theme_mods before trying again.',
                     sprintf( 'Publishing "%1$s" failed: %2$s Reading it back failed: %3$s', $id, $e->getMessage(), $read->getMessage() )
                 );

@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Compat;
+namespace wordpress_code_ai\Compat;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -32,12 +32,12 @@ final class Compat_Registry {
 
 
     const SHIMS = array(
-        'buddypress-loggedin-user' => 'Easy_MCP_AI\\Compat\\Shims\\Buddypress_Loggedin_User',
-        'tec-event-update-fill'    => 'Easy_MCP_AI\\Compat\\Shims\\Tec_Event_Update_Fill',
-        'tec-no-duplicate-reuse'   => 'Easy_MCP_AI\\Compat\\Shims\\Tec_No_Duplicate_Reuse',
-        'learnpress-mcp-auth'      => 'Easy_MCP_AI\\Compat\\Shims\\Learnpress_Mcp_Auth',
-        'astra-customizer-loader'  => 'Easy_MCP_AI\\Compat\\Shims\\Astra_Customizer_Loader',
-        'sitekit-user-binding'     => 'Easy_MCP_AI\\Compat\\Shims\\Sitekit_User_Binding',
+        'buddypress-loggedin-user' => 'wordpress_code_ai\\Compat\\Shims\\Buddypress_Loggedin_User',
+        'tec-event-update-fill'    => 'wordpress_code_ai\\Compat\\Shims\\Tec_Event_Update_Fill',
+        'tec-no-duplicate-reuse'   => 'wordpress_code_ai\\Compat\\Shims\\Tec_No_Duplicate_Reuse',
+        'learnpress-mcp-auth'      => 'wordpress_code_ai\\Compat\\Shims\\Learnpress_Mcp_Auth',
+        'astra-customizer-loader'  => 'wordpress_code_ai\\Compat\\Shims\\Astra_Customizer_Loader',
+        'sitekit-user-binding'     => 'wordpress_code_ai\\Compat\\Shims\\Sitekit_User_Binding',
     );
 
     
@@ -53,7 +53,7 @@ final class Compat_Registry {
 
     public static function all_shims() {
         if ( null === self::$shims ) {
-            self::$shims = \Easy_MCP_AI\Class_Map_Loader::load( self::SHIMS, Compat_Shim::class );
+            self::$shims = \wordpress_code_ai\Class_Map_Loader::load( self::SHIMS, Compat_Shim::class );
         }
         return self::$shims;
     }
@@ -95,7 +95,7 @@ final class Compat_Registry {
 
 
 
-            if ( ! $shim->is_required() && false === apply_filters( 'easy_mcp_ai_compat_shim_enabled', true, $id, $tool ) ) {
+            if ( ! $shim->is_required() && false === apply_filters( 'wordpress_code_ai_compat_shim_enabled', true, $id, $tool ) ) {
                 continue;
             }
             if ( ! $shim->is_needed() ) {
@@ -154,7 +154,7 @@ final class Compat_Registry {
             try {
                 $arming['shim']->leave( $arming['state'] );
             } catch ( \Throwable $e ) {
-                error_log( sprintf( 'Easy MCP AI: compatibility shim "%s" failed to unwind: %s', $arming['id'], $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
+                error_log( sprintf( 'wordpress-code-ai: compatibility shim "%s" failed to unwind: %s', $arming['id'], $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
             }
         }
     }

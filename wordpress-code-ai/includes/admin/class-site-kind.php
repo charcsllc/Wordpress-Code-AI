@@ -9,7 +9,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

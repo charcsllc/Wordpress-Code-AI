@@ -11,18 +11,18 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
-use Easy_MCP_AI\Ahrefs\Ahrefs_Client;
-use Easy_MCP_AI\Config;
-use Easy_MCP_AI\DFS\DataforSEO_Client;
-use Easy_MCP_AI\GA\GA_Client;
-use Easy_MCP_AI\GSC\GSC_Client;
-use Easy_MCP_AI\Provider_Credentials;
-use Easy_MCP_AI\Semrush\Semrush_Client;
-use Easy_MCP_AI\SeRanking\SeRanking_Client;
-use Easy_MCP_AI\Tools\Tool_Registry;
-use Easy_MCP_AI\Tools\Tool_State;
+use wordpress_code_ai\Ahrefs\Ahrefs_Client;
+use wordpress_code_ai\Config;
+use wordpress_code_ai\DFS\DataforSEO_Client;
+use wordpress_code_ai\GA\GA_Client;
+use wordpress_code_ai\GSC\GSC_Client;
+use wordpress_code_ai\Provider_Credentials;
+use wordpress_code_ai\Semrush\Semrush_Client;
+use wordpress_code_ai\SeRanking\SeRanking_Client;
+use wordpress_code_ai\Tools\Tool_Registry;
+use wordpress_code_ai\Tools\Tool_State;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -44,7 +44,7 @@ class External_Data_Service {
 
 
 
-    const OPTION_BALANCES = 'easy_mcp_ai_external_data_balances';
+    const OPTION_BALANCES = 'wordpress_code_ai_external_data_balances';
 
     
     private $gateway;
@@ -102,7 +102,7 @@ class External_Data_Service {
         }
         return array(
             'weakSalts' => self::weak_salts(),
-            'locked'    => Config::is_locked( 'easy_mcp_ai_disabled_tools' ),
+            'locked'    => Config::is_locked( 'wordpress_code_ai_disabled_tools' ),
             'providers' => $providers,
         );
     }
@@ -219,10 +219,10 @@ class External_Data_Service {
     
     private static function deployed_error( string $field, string $constant ): \WP_Error {
         return new \WP_Error(
-            'easy_mcp_ai_config_locked',
+            'wordpress_code_ai_config_locked',
             sprintf(
                 /* translators: %s: constant name */
-                \__( 'This value is defined in wp-config.php or the environment as %s. Change it there.', 'easy-mcp-ai' ),
+                \__( 'This value is defined in wp-config.php or the environment as %s. Change it there.', 'wordpress-code-ai' ),
                 $constant
             ),
             array( 'status' => 409, 'field' => $field )
@@ -237,7 +237,7 @@ class External_Data_Service {
         if ( ! $this->is_configured( $key ) ) {
             return false;
         }
-        if ( 'ahrefs' === $key && ! (bool) \get_option( 'easy_mcp_ai_ahrefs_enabled', false ) ) {
+        if ( 'ahrefs' === $key && ! (bool) \get_option( 'wordpress_code_ai_ahrefs_enabled', false ) ) {
             return false;
         }
         foreach ( $items as $item ) {
@@ -255,7 +255,7 @@ class External_Data_Service {
 
     
     private function bucket( $key ) {
-        return array_values( array_map( 'strval', (array) Config::get( 'easy_mcp_ai_disabled_' . $key . '_tools', array() ) ) );
+        return array_values( array_map( 'strval', (array) Config::get( 'wordpress_code_ai_disabled_' . $key . '_tools', array() ) ) );
     }
 
     
@@ -299,11 +299,11 @@ class External_Data_Service {
 
 
     public function load_definitions( $key ) {
-        $dir = EASY_MCP_AI_PLUGIN_DIR . 'includes/tools/' . $key . '/';
+        $dir = WORDPRESS_CODE_AI_PLUGIN_DIR . 'includes/tools/' . $key . '/';
         if ( ! is_dir( $dir ) ) {
             return array();
         }
-        if ( ! class_exists( '\\Easy_MCP_AI\\Tools\\Tool_Registry' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\Tools\\Tool_Registry' ) ) {
             return array();
         }
         
@@ -314,11 +314,11 @@ class External_Data_Service {
         foreach ( (array) ( $registry->get_tools_by_category()[ $key ] ?? array() ) as $definition ) {
             $tool = $registry->get_tool( $definition['name'] );
             $cap  = $tool && method_exists( $tool, 'get_required_capability' ) ? (string) $tool->get_required_capability() : '';
-            if ( class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) ) {
-                $cap = (string) \Easy_MCP_AI\MCP\Server::effective_required_capability( $key, $cap );
+            if ( class_exists( '\\wordpress_code_ai\\MCP\\Server' ) ) {
+                $cap = (string) \wordpress_code_ai\MCP\Server::effective_required_capability( $key, $cap );
             }
             $definition['required_capability'] = $cap;
-            $definition['disabled_by_default'] = $tool instanceof \Easy_MCP_AI\Tools\Base_Tool && $tool->is_disabled_by_default();
+            $definition['disabled_by_default'] = $tool instanceof \wordpress_code_ai\Tools\Base_Tool && $tool->is_disabled_by_default();
             $rows[]                            = $definition;
         }
         return $rows;
@@ -432,14 +432,14 @@ class External_Data_Service {
     
 
     
-    private static function invalid( $field, $message, $code = 'easy_mcp_ai_invalid_param' ) {
+    private static function invalid( $field, $message, $code = 'wordpress_code_ai_invalid_param' ) {
         return new \WP_Error( $code, $message, array( 'status' => 400, 'field' => $field ) );
     }
 
     private static function weak_salts_error() {
         return new \WP_Error(
-            'easy_mcp_ai_weak_salts',
-            \__( 'Credentials cannot be saved: the WordPress security salts are missing or still placeholders. Set unique SECURE_AUTH_KEY and SECURE_AUTH_SALT values in wp-config.php.', 'easy-mcp-ai' ),
+            'wordpress_code_ai_weak_salts',
+            \__( 'Credentials cannot be saved: the WordPress security salts are missing or still placeholders. Set unique SECURE_AUTH_KEY and SECURE_AUTH_SALT values in wp-config.php.', 'wordpress-code-ai' ),
             array( 'status' => 400, 'field' => '' )
         );
     }
@@ -453,7 +453,7 @@ class External_Data_Service {
             return null;
         }
         if ( ! is_string( $input[ $field ] ) ) {
-            return self::invalid( $field, \__( 'Expected a string.', 'easy-mcp-ai' ) );
+            return self::invalid( $field, \__( 'Expected a string.', 'wordpress-code-ai' ) );
         }
         return trim( $input[ $field ] );
     }
@@ -487,7 +487,7 @@ class External_Data_Service {
             case 'ahrefs':
                 return $this->save_key( 'ahrefs', Ahrefs_Client::class, $input );
         }
-        return new \WP_Error( 'easy_mcp_ai_not_found', \__( 'Unknown provider.', 'easy-mcp-ai' ), array( 'status' => 404 ) );
+        return new \WP_Error( 'wordpress_code_ai_not_found', \__( 'Unknown provider.', 'wordpress-code-ai' ), array( 'status' => 404 ) );
     }
 
     
@@ -554,8 +554,8 @@ class External_Data_Service {
                 return self::invalid(
                     $setting_field,
                     'ga' === $key
-                        ? \__( 'Enter a numeric GA4 property ID (for example 123456789) or the full "properties/123456789" form.', 'easy-mcp-ai' )
-                        : \__( 'Use a full URL (https://example.com/) or a domain property (sc-domain:example.com).', 'easy-mcp-ai' )
+                        ? \__( 'Enter a numeric GA4 property ID (for example 123456789) or the full "properties/123456789" form.', 'wordpress-code-ai' )
+                        : \__( 'Use a full URL (https://example.com/) or a domain property (sc-domain:example.com).', 'wordpress-code-ai' )
                 );
             }
         }
@@ -565,7 +565,7 @@ class External_Data_Service {
                 return self::weak_salts_error();
             }
             \update_option( $client::OPTION_JSON, $client::encrypt( $json ), false );
-            External_Data_Admin::purge_transients_by_prefix( 'easy_mcp_ai_' . $key . '_' );
+            External_Data_Admin::purge_transients_by_prefix( 'wordpress_code_ai_' . $key . '_' );
         }
         $setting_option = 'ga' === $key ? GA_Client::OPTION_PROPERTY_ID : GSC_Client::OPTION_SITE_URL;
         if ( null === $setting_value ) {
@@ -586,14 +586,14 @@ class External_Data_Service {
     private static function check_service_account_json( $json ) {
         $decoded = json_decode( $json, true );
         if ( ! is_array( $decoded ) ) {
-            return self::invalid( 'serviceAccountJson', \__( 'That is not valid JSON. Paste the service account key from Google Cloud Console again.', 'easy-mcp-ai' ) );
+            return self::invalid( 'serviceAccountJson', \__( 'That is not valid JSON. Paste the service account key from Google Cloud Console again.', 'wordpress-code-ai' ) );
         }
         if ( ( $decoded['type'] ?? '' ) !== 'service_account' ) {
-            return self::invalid( 'serviceAccountJson', \__( 'The pasted JSON is not a service account key (its type must be "service_account"). Download the service account key from Google Cloud Console again.', 'easy-mcp-ai' ) );
+            return self::invalid( 'serviceAccountJson', \__( 'The pasted JSON is not a service account key (its type must be "service_account"). Download the service account key from Google Cloud Console again.', 'wordpress-code-ai' ) );
         }
         foreach ( array( 'private_key', 'client_email', 'token_uri' ) as $field ) {
             if ( empty( $decoded[ $field ] ) ) {
-                return self::invalid( 'serviceAccountJson', \__( 'The service account JSON is missing one of the required fields (private_key, client_email, token_uri).', 'easy-mcp-ai' ) );
+                return self::invalid( 'serviceAccountJson', \__( 'The service account JSON is missing one of the required fields (private_key, client_email, token_uri).', 'wordpress-code-ai' ) );
             }
         }
         return true;
@@ -627,7 +627,7 @@ class External_Data_Service {
             return true;
         }
         if ( '' === $login || '' === $password ) {
-            return self::invalid( '' === $login ? 'login' : 'apiPassword', \__( 'Save the login and the API password together.', 'easy-mcp-ai' ) );
+            return self::invalid( '' === $login ? 'login' : 'apiPassword', \__( 'Save the login and the API password together.', 'wordpress-code-ai' ) );
         }
         if ( self::weak_salts() ) {
             return self::weak_salts_error();
@@ -646,7 +646,7 @@ class External_Data_Service {
             $balance = $this->gateway->dfs_balance();
         } catch ( \RuntimeException $e ) {
             $this->restore_or_delete( array( DataforSEO_Client::OPTION_LOGIN => $previous_login, DataforSEO_Client::OPTION_API_PASSWORD => $previous_secret ), $was_configured );
-            return self::rejected( 'login', \__( 'DataForSEO rejected these credentials, so they were not saved.', 'easy-mcp-ai' ), $e );
+            return self::rejected( 'login', \__( 'DataForSEO rejected these credentials, so they were not saved.', 'wordpress-code-ai' ), $e );
         }
         $this->store_balance( 'dfs', (float) $balance['balance'], 'USD' );
         if ( ! $was_configured ) {
@@ -688,13 +688,13 @@ class External_Data_Service {
         } catch ( \RuntimeException $e ) {
             $this->restore_or_delete( array( $client::OPTION_API_KEY => $previous ), $was_configured );
             if ( 'ahrefs' === $key && ! $was_configured ) {
-                \update_option( 'easy_mcp_ai_ahrefs_enabled', false );
+                \update_option( 'wordpress_code_ai_ahrefs_enabled', false );
             }
             return self::rejected(
                 'apiKey',
                 sprintf(
                     /* translators: %s: provider name */
-                    \__( '%s rejected this API key, so it was not saved.', 'easy-mcp-ai' ),
+                    \__( '%s rejected this API key, so it was not saved.', 'wordpress-code-ai' ),
                     self::label( $key )
                 ),
                 $e
@@ -725,7 +725,7 @@ class External_Data_Service {
     
     private static function rejected( $field, $message, \RuntimeException $e ) {
         return new \WP_Error(
-            'easy_mcp_ai_invalid_credentials',
+            'wordpress_code_ai_invalid_credentials',
             $message,
             array( 'status' => 400, 'field' => $field, 'detail' => Config::brand( $e->getMessage() ) )
         );
@@ -740,9 +740,9 @@ class External_Data_Service {
         if ( Config::is_locked( 'disabled_tools' ) ) {
             return;
         }
-        Config::update( 'easy_mcp_ai_disabled_' . $key . '_tools', array() );
+        Config::update( 'wordpress_code_ai_disabled_' . $key . '_tools', array() );
         if ( 'ahrefs' === $key ) {
-            \update_option( 'easy_mcp_ai_ahrefs_enabled', ! empty( $this->tool_names( 'ahrefs' ) ) );
+            \update_option( 'wordpress_code_ai_ahrefs_enabled', ! empty( $this->tool_names( 'ahrefs' ) ) );
         }
         $this->sync_global_disabled( $key );
     }
@@ -752,9 +752,9 @@ class External_Data_Service {
 
 
     public function sync_global_disabled( $key ) {
-        $global = (array) Config::get( 'easy_mcp_ai_disabled_tools', array() );
+        $global = (array) Config::get( 'wordpress_code_ai_disabled_tools', array() );
         $other  = array_values( array_diff( $global, $this->tool_names( $key ) ) );
-        Config::update( 'easy_mcp_ai_disabled_tools', External_Data_Admin::merge_disabled_tool_buckets( $other ) );
+        Config::update( 'wordpress_code_ai_disabled_tools', External_Data_Admin::merge_disabled_tool_buckets( $other ) );
     }
 
     
@@ -767,9 +767,9 @@ class External_Data_Service {
 
     public function apply_enabled( $key, array $checked ) {
         $disabled = External_Data_Admin::compute_disabled_tools( $this->tool_names( $key ), $checked );
-        Config::update( 'easy_mcp_ai_disabled_' . $key . '_tools', $disabled );
+        Config::update( 'wordpress_code_ai_disabled_' . $key . '_tools', $disabled );
         if ( 'ahrefs' === $key ) {
-            \update_option( 'easy_mcp_ai_ahrefs_enabled', ! empty( $this->tool_names( 'ahrefs' ) ) && empty( $disabled ) );
+            \update_option( 'wordpress_code_ai_ahrefs_enabled', ! empty( $this->tool_names( 'ahrefs' ) ) && empty( $disabled ) );
         }
         $this->sync_global_disabled( $key );
     }
@@ -783,7 +783,7 @@ class External_Data_Service {
 
     public function test( $key ) {
         if ( ! $this->is_configured( $key ) ) {
-            return array( 'ok' => false, 'message' => \__( 'Save credentials for this provider first.', 'easy-mcp-ai' ) );
+            return array( 'ok' => false, 'message' => \__( 'Save credentials for this provider first.', 'wordpress-code-ai' ) );
         }
         try {
             switch ( $key ) {
@@ -799,7 +799,7 @@ class External_Data_Service {
                         'ok'      => true,
                         'message' => sprintf(
                             /* translators: 1: account count, 2: property count */
-                            \_n( 'Connected. Found %1$d account, %2$d properties.', 'Connected. Found %1$d accounts, %2$d properties.', count( $accounts ), 'easy-mcp-ai' ),
+                            \_n( 'Connected. Found %1$d account, %2$d properties.', 'Connected. Found %1$d accounts, %2$d properties.', count( $accounts ), 'wordpress-code-ai' ),
                             count( $accounts ),
                             $props
                         ),
@@ -812,7 +812,7 @@ class External_Data_Service {
                         'ok'      => true,
                         'message' => sprintf(
                             /* translators: %d: property count */
-                            \_n( 'Connected. Found %d property.', 'Connected. Found %d properties.', $count, 'easy-mcp-ai' ),
+                            \_n( 'Connected. Found %d property.', 'Connected. Found %d properties.', $count, 'wordpress-code-ai' ),
                             $count
                         ),
                     );
@@ -823,7 +823,7 @@ class External_Data_Service {
                         'ok'      => true,
                         'message' => sprintf(
                             /* translators: %s: balance in USD */
-                            \__( 'Connected. Balance: $%s USD.', 'easy-mcp-ai' ),
+                            \__( 'Connected. Balance: $%s USD.', 'wordpress-code-ai' ),
                             number_format( (float) $balance['balance'], 2 )
                         ),
                     );
@@ -834,7 +834,7 @@ class External_Data_Service {
                         'ok'      => true,
                         'message' => sprintf(
                             /* translators: %d: API units */
-                            \__( 'Connected. Balance: %d API units.', 'easy-mcp-ai' ),
+                            \__( 'Connected. Balance: %d API units.', 'wordpress-code-ai' ),
                             $units
                         ),
                     );
@@ -845,18 +845,18 @@ class External_Data_Service {
                         'ok'      => true,
                         'message' => sprintf(
                             /* translators: %d: credits */
-                            \__( 'Connected. Balance: %d credits.', 'easy-mcp-ai' ),
+                            \__( 'Connected. Balance: %d credits.', 'wordpress-code-ai' ),
                             $units
                         ),
                     );
                 case 'ahrefs':
                     $this->gateway->ahrefs_verify();
-                    return array( 'ok' => true, 'message' => \__( 'Connected. Ahrefs accepted the key.', 'easy-mcp-ai' ) );
+                    return array( 'ok' => true, 'message' => \__( 'Connected. Ahrefs accepted the key.', 'wordpress-code-ai' ) );
             }
         } catch ( \RuntimeException $e ) {
             return array( 'ok' => false, 'message' => Config::brand( $e->getMessage() ) );
         }
-        return array( 'ok' => false, 'message' => \__( 'Unknown provider.', 'easy-mcp-ai' ) );
+        return array( 'ok' => false, 'message' => \__( 'Unknown provider.', 'wordpress-code-ai' ) );
     }
 
     
@@ -880,13 +880,13 @@ class External_Data_Service {
                 \delete_option( GA_Client::OPTION_JSON );
                 Config::delete( GA_Client::OPTION_PROPERTY_ID );
                 \delete_option( External_Data_Admin::OPTION_GA_PROPS_CACHE );
-                External_Data_Admin::purge_transients_by_prefix( 'easy_mcp_ai_ga_' );
+                External_Data_Admin::purge_transients_by_prefix( 'wordpress_code_ai_ga_' );
                 break;
             case 'gsc':
                 \delete_option( GSC_Client::OPTION_JSON );
                 Config::delete( GSC_Client::OPTION_SITE_URL );
                 \delete_option( External_Data_Admin::OPTION_GSC_SITES_CACHE );
-                External_Data_Admin::purge_transients_by_prefix( 'easy_mcp_ai_gsc_' );
+                External_Data_Admin::purge_transients_by_prefix( 'wordpress_code_ai_gsc_' );
                 break;
             case 'dfs':
                 \delete_option( DataforSEO_Client::OPTION_LOGIN );
@@ -901,13 +901,13 @@ class External_Data_Service {
                 break;
             case 'ahrefs':
                 \delete_option( Ahrefs_Client::OPTION_API_KEY );
-                \update_option( 'easy_mcp_ai_ahrefs_enabled', false );
+                \update_option( 'wordpress_code_ai_ahrefs_enabled', false );
                 break;
         }
-        Config::delete( 'easy_mcp_ai_disabled_' . $key . '_tools' );
+        Config::delete( 'wordpress_code_ai_disabled_' . $key . '_tools' );
         $this->forget_balance( $key );
-        $global = (array) Config::get( 'easy_mcp_ai_disabled_tools', array() );
-        Config::update( 'easy_mcp_ai_disabled_tools', array_values( array_diff( $global, $this->tool_names( $key ) ) ) );
+        $global = (array) Config::get( 'wordpress_code_ai_disabled_tools', array() );
+        Config::update( 'wordpress_code_ai_disabled_tools', array_values( array_diff( $global, $this->tool_names( $key ) ) ) );
         return true;
     }
 
@@ -920,9 +920,9 @@ class External_Data_Service {
 
     public function clear_cache( $key ) {
         if ( ! in_array( $key, self::CACHE_PROVIDERS, true ) ) {
-            return new \WP_Error( 'easy_mcp_ai_unsupported', \__( 'This provider keeps no cache.', 'easy-mcp-ai' ), array( 'status' => 400 ) );
+            return new \WP_Error( 'wordpress_code_ai_unsupported', \__( 'This provider keeps no cache.', 'wordpress-code-ai' ), array( 'status' => 400 ) );
         }
-        External_Data_Admin::purge_transients_by_prefix( 'easy_mcp_ai_' . $key . '_' );
+        External_Data_Admin::purge_transients_by_prefix( 'wordpress_code_ai_' . $key . '_' );
         if ( $this->is_configured( $key ) ) {
             $this->refresh_google_cache( $key );
         }
@@ -937,10 +937,10 @@ class External_Data_Service {
 
     public function refresh_balance( $key ) {
         if ( ! in_array( $key, self::BALANCE_PROVIDERS, true ) ) {
-            return new \WP_Error( 'easy_mcp_ai_unsupported', \__( 'This provider has no balance to refresh.', 'easy-mcp-ai' ), array( 'status' => 400 ) );
+            return new \WP_Error( 'wordpress_code_ai_unsupported', \__( 'This provider has no balance to refresh.', 'wordpress-code-ai' ), array( 'status' => 400 ) );
         }
         if ( ! $this->is_configured( $key ) ) {
-            return array( 'ok' => false, 'message' => \__( 'Save credentials for this provider first.', 'easy-mcp-ai' ) );
+            return array( 'ok' => false, 'message' => \__( 'Save credentials for this provider first.', 'wordpress-code-ai' ) );
         }
         try {
             switch ( $key ) {

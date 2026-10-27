@@ -22,7 +22,7 @@
 
 
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -34,7 +34,7 @@ class Site_Host {
     const SETTING = 'api_key_site_host';
 
     
-    const FILTER = 'easy_mcp_ai_api_key_site_host';
+    const FILTER = 'wordpress_code_ai_api_key_site_host';
 
     
 

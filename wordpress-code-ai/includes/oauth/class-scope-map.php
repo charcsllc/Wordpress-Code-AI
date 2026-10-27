@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
-use Easy_MCP_AI\Tools\Dynamic_Tool_Registrar;
-use Easy_MCP_AI\Privileged\Privileged_Groups;
+use wordpress_code_ai\Tools\Dynamic_Tool_Registrar;
+use wordpress_code_ai\Privileged\Privileged_Groups;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -149,7 +149,7 @@ class Scope_Map {
         
         
         
-        'mcp:site_health:read'   => array( 'wp_get_site_health', 'wp_list_cron_events', 'wp_get_error_log', 'wp_get_easy_mcp_diagnostics' ),
+        'mcp:site_health:read'   => array( 'wp_get_site_health', 'wp_list_cron_events', 'wp_get_error_log', 'wp_get_wordpress_code_ai_diagnostics' ),
         'mcp:site_health:write'  => array( 'wp_run_cron_event' ),
         
         'mcp:cache:write'        => array( 'wp_clear_cache' ),
@@ -308,15 +308,15 @@ class Scope_Map {
     public static function is_plugin_category_active( string $slug ): bool {
         
         if ( in_array( $slug, array( 'gsc', 'ga', 'dfs', 'semrush', 'seranking' ), true ) ) {
-            return \Easy_MCP_AI\Provider_Credentials::is_configured( $slug );
+            return \wordpress_code_ai\Provider_Credentials::is_configured( $slug );
         }
         
         
         
         
         if ( 'ahrefs' === $slug ) {
-            return \Easy_MCP_AI\Provider_Credentials::is_configured( 'ahrefs' )
-                && (bool) \get_option( 'easy_mcp_ai_ahrefs_enabled', false );
+            return \wordpress_code_ai\Provider_Credentials::is_configured( 'ahrefs' )
+                && (bool) \get_option( 'wordpress_code_ai_ahrefs_enabled', false );
         }
         
         if ( 'seopress' === $slug ) {
@@ -930,57 +930,57 @@ class Scope_Map {
 
     private static function category_labels(): array {
         return array(
-            'posts'       => __( 'Posts & Pages', 'easy-mcp-ai' ),
-            'cpt'         => __( 'Custom Post Types', 'easy-mcp-ai' ),
-            'media'       => __( 'Media', 'easy-mcp-ai' ),
-            'taxonomies'  => __( 'Taxonomies', 'easy-mcp-ai' ),
-            'comments'    => __( 'Comments', 'easy-mcp-ai' ),
-            'users'       => __( 'Users', 'easy-mcp-ai' ),
-            'menus'       => __( 'Menus', 'easy-mcp-ai' ),
-            'blocks'      => __( 'Blocks & Themes', 'easy-mcp-ai' ),
-            'plugins'     => __( 'Plugins', 'easy-mcp-ai' ),
-            'themes'      => __( 'Themes', 'easy-mcp-ai' ),
-            'settings'    => __( 'Settings', 'easy-mcp-ai' ),
+            'posts'       => __( 'Posts & Pages', 'wordpress-code-ai' ),
+            'cpt'         => __( 'Custom Post Types', 'wordpress-code-ai' ),
+            'media'       => __( 'Media', 'wordpress-code-ai' ),
+            'taxonomies'  => __( 'Taxonomies', 'wordpress-code-ai' ),
+            'comments'    => __( 'Comments', 'wordpress-code-ai' ),
+            'users'       => __( 'Users', 'wordpress-code-ai' ),
+            'menus'       => __( 'Menus', 'wordpress-code-ai' ),
+            'blocks'      => __( 'Blocks & Themes', 'wordpress-code-ai' ),
+            'plugins'     => __( 'Plugins', 'wordpress-code-ai' ),
+            'themes'      => __( 'Themes', 'wordpress-code-ai' ),
+            'settings'    => __( 'Settings', 'wordpress-code-ai' ),
             'woocommerce' => 'WooCommerce',
-            'acf'         => __( 'Advanced Custom Fields', 'easy-mcp-ai' ),
-            'acf_posts'   => __( 'Advanced Custom Fields — Post & Page Fields', 'easy-mcp-ai' ),
+            'acf'         => __( 'Advanced Custom Fields', 'wordpress-code-ai' ),
+            'acf_posts'   => __( 'Advanced Custom Fields — Post & Page Fields', 'wordpress-code-ai' ),
             'buddypress'  => 'BuddyPress',
-            'events'      => __( 'The Events Calendar', 'easy-mcp-ai' ),
+            'events'      => __( 'The Events Calendar', 'wordpress-code-ai' ),
             'redirection' => 'Redirection',
             'sitekit'     => 'Site Kit by Google',
             'cf7'         => 'Contact Form 7',
-            'yoast'       => __( 'Yoast SEO', 'easy-mcp-ai' ),
-            'aioseo'      => __( 'All in One SEO', 'easy-mcp-ai' ),
-            'rankmath'    => __( 'Rank Math SEO', 'easy-mcp-ai' ),
-            'gsc'         => __( 'Google Search Console', 'easy-mcp-ai' ),
-            'ga'          => __( 'Google Analytics', 'easy-mcp-ai' ),
-            'dfs'         => __( 'DataforSEO', 'easy-mcp-ai' ),
-            'semrush'     => __( 'Semrush', 'easy-mcp-ai' ),
-            'ahrefs'      => __( 'Ahrefs (DR)', 'easy-mcp-ai' ),
-            'seranking'   => __( 'SE Ranking', 'easy-mcp-ai' ),
-            'seopress'    => __( 'SEOPress', 'easy-mcp-ai' ),
-            'slimseo'     => __( 'Slim SEO', 'easy-mcp-ai' ),
-            'tsf'         => __( 'The SEO Framework', 'easy-mcp-ai' ),
-            'term_meta'   => __( 'Term Meta', 'easy-mcp-ai' ),
-            'user_meta'   => __( 'User Meta', 'easy-mcp-ai' ),
-            'appearance'  => __( 'Site Appearance (templates, global styles, theme mods & CSS)', 'easy-mcp-ai' ),
-            'widgets'     => __( 'Widgets & Sidebars', 'easy-mcp-ai' ),
+            'yoast'       => __( 'Yoast SEO', 'wordpress-code-ai' ),
+            'aioseo'      => __( 'All in One SEO', 'wordpress-code-ai' ),
+            'rankmath'    => __( 'Rank Math SEO', 'wordpress-code-ai' ),
+            'gsc'         => __( 'Google Search Console', 'wordpress-code-ai' ),
+            'ga'          => __( 'Google Analytics', 'wordpress-code-ai' ),
+            'dfs'         => __( 'DataforSEO', 'wordpress-code-ai' ),
+            'semrush'     => __( 'Semrush', 'wordpress-code-ai' ),
+            'ahrefs'      => __( 'Ahrefs (DR)', 'wordpress-code-ai' ),
+            'seranking'   => __( 'SE Ranking', 'wordpress-code-ai' ),
+            'seopress'    => __( 'SEOPress', 'wordpress-code-ai' ),
+            'slimseo'     => __( 'Slim SEO', 'wordpress-code-ai' ),
+            'tsf'         => __( 'The SEO Framework', 'wordpress-code-ai' ),
+            'term_meta'   => __( 'Term Meta', 'wordpress-code-ai' ),
+            'user_meta'   => __( 'User Meta', 'wordpress-code-ai' ),
+            'appearance'  => __( 'Site Appearance (templates, global styles, theme mods & CSS)', 'wordpress-code-ai' ),
+            'widgets'     => __( 'Widgets & Sidebars', 'wordpress-code-ai' ),
             'wc_webhooks' => 'WooCommerce Webhooks',
-            'wc_store'    => __( 'WooCommerce Store Setup (settings, currency, shipping, payment methods, tax)', 'easy-mcp-ai' ),
-            'user_create' => __( 'Users — Create', 'easy-mcp-ai' ),
-            'user_update' => __( 'Users — Update', 'easy-mcp-ai' ),
-            'user_delete' => __( 'Users — Delete', 'easy-mcp-ai' ),
-            'history'     => __( 'Change History (audit log of MCP edits)', 'easy-mcp-ai' ),
-            'audit'       => __( 'Audit Log (every MCP call, all users — admin only)', 'easy-mcp-ai' ),
-            'site_health' => __( 'Site Health, Cron & Error Log', 'easy-mcp-ai' ),
-            'core_update' => __( 'WordPress core update (replaces WordPress itself with a newer release from wordpress.org)', 'easy-mcp-ai' ),
-            'plugin_files' => __( 'Plugin installs and deletions (adds plugins from wordpress.org, or removes plugin code)', 'easy-mcp-ai' ),
-            'theme_files' => __( 'Theme installs and deletions (adds themes from wordpress.org, or removes theme code)', 'easy-mcp-ai' ),
-            'cli'         => __( 'WP-CLI commands (commands no other tool performs, such as options, roles and sites, need only this permission, limited by your WordPress role)', 'easy-mcp-ai' ),
-            'rest'        => __( 'REST routes of plugins and core (the route checks your permissions)', 'easy-mcp-ai' ),
-            'rest_delete' => __( 'REST routes — Delete', 'easy-mcp-ai' ),
-            'cache'       => __( 'Clear caches (page, asset and CDN caches, through each cache plugin)', 'easy-mcp-ai' ),
-            'mail'        => __( 'Send email to the site\'s users (an address outside them only when a person approves that email)', 'easy-mcp-ai' ),
+            'wc_store'    => __( 'WooCommerce Store Setup (settings, currency, shipping, payment methods, tax)', 'wordpress-code-ai' ),
+            'user_create' => __( 'Users — Create', 'wordpress-code-ai' ),
+            'user_update' => __( 'Users — Update', 'wordpress-code-ai' ),
+            'user_delete' => __( 'Users — Delete', 'wordpress-code-ai' ),
+            'history'     => __( 'Change History (audit log of MCP edits)', 'wordpress-code-ai' ),
+            'audit'       => __( 'Audit Log (every MCP call, all users — admin only)', 'wordpress-code-ai' ),
+            'site_health' => __( 'Site Health, Cron & Error Log', 'wordpress-code-ai' ),
+            'core_update' => __( 'WordPress core update (replaces WordPress itself with a newer release from wordpress.org)', 'wordpress-code-ai' ),
+            'plugin_files' => __( 'Plugin installs and deletions (adds plugins from wordpress.org, or removes plugin code)', 'wordpress-code-ai' ),
+            'theme_files' => __( 'Theme installs and deletions (adds themes from wordpress.org, or removes theme code)', 'wordpress-code-ai' ),
+            'cli'         => __( 'WP-CLI commands (commands no other tool performs, such as options, roles and sites, need only this permission, limited by your WordPress role)', 'wordpress-code-ai' ),
+            'rest'        => __( 'REST routes of plugins and core (the route checks your permissions)', 'wordpress-code-ai' ),
+            'rest_delete' => __( 'REST routes — Delete', 'wordpress-code-ai' ),
+            'cache'       => __( 'Clear caches (page, asset and CDN caches, through each cache plugin)', 'wordpress-code-ai' ),
+            'mail'        => __( 'Send email to the site\'s users (an address outside them only when a person approves that email)', 'wordpress-code-ai' ),
         );
     }
 
@@ -1051,7 +1051,7 @@ class Scope_Map {
             $categories[] = array(
                 'slug'            => "abilities_{$norm_prefix}",
                 /* translators: %s: ability prefix (e.g. "Core", "Wpforms") */
-                'label'           => sprintf( __( 'Abilities — %s', 'easy-mcp-ai' ), $display_label ),
+                'label'           => sprintf( __( 'Abilities — %s', 'wordpress-code-ai' ), $display_label ),
                 'read_scope'      => "mcp:abilities:{$norm_prefix}",
                 'write_scope'     => '',     
                 'default_read'    => false,  
@@ -1086,7 +1086,7 @@ class Scope_Map {
                 $display_label = ucfirst( $parts[0] );
             } else {
                 $norm_prefix   = 'core';
-                $display_label = __( 'Core', 'easy-mcp-ai' );
+                $display_label = __( 'Core', 'wordpress-code-ai' );
             }
             if ( '' === $norm_prefix || isset( $seen_prefixes[ $norm_prefix ] ) ) {
                 continue;

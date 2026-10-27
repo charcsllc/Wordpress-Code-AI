@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Feedback;
+namespace wordpress_code_ai\Feedback;
 
-use Easy_MCP_AI\Approvals\Approval_Gate;
-use Easy_MCP_AI\Approvals\Approval_Store;
+use wordpress_code_ai\Approvals\Approval_Gate;
+use wordpress_code_ai\Approvals\Approval_Store;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -41,7 +41,7 @@ class Feedback_Queue {
 
     
     const ENDPOINT = 'https://api.themeisle.com/tracking/feedback';
-    const SLUG     = 'easy-mcp-ai';
+    const SLUG     = 'wordpress-code-ai';
     
     const AREA     = 'agent';
 
@@ -118,11 +118,11 @@ class Feedback_Queue {
         $text = str_replace( array( "\r\n", "\r" ), "\n", $text );
         
         $text = preg_replace( '/[\x00-\x09\x0B-\x1F\x7F]/u', ' ', $text );
-        $text = \Easy_MCP_AI\Text_Redactor::redact( (string) $text );
+        $text = \wordpress_code_ai\Text_Redactor::redact( (string) $text );
         $text = preg_replace( '/[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i', '[email]', (string) $text );
         
         
-        $hosts = class_exists( '\\Easy_MCP_AI\\Site_Host' ) ? array( \Easy_MCP_AI\Site_Host::current(), \Easy_MCP_AI\Site_Host::request_host() ) : array();
+        $hosts = class_exists( '\\wordpress_code_ai\\Site_Host' ) ? array( \wordpress_code_ai\Site_Host::current(), \wordpress_code_ai\Site_Host::request_host() ) : array();
         foreach ( array_unique( array_filter( $hosts ) ) as $host ) {
             
             
@@ -297,7 +297,7 @@ class Feedback_Queue {
         }
         $now = $this->mysql( $this->time() );
         if ( ! $this->store->decide( $row['approval_id'], Approval_Gate::STATUS_APPROVED, (int) $decided_by, (string) $via, $now ) ) {
-            return array( 'ok' => false, 'status' => 'decided', 'message' => \__( 'This report was already decided elsewhere.', 'easy-mcp-ai' ) );
+            return array( 'ok' => false, 'status' => 'decided', 'message' => \__( 'This report was already decided elsewhere.', 'wordpress-code-ai' ) );
         }
         $this->store->update( $row['approval_id'], array(
             'status'      => Approval_Gate::STATUS_CONSUMED,
@@ -305,7 +305,7 @@ class Feedback_Queue {
             'arguments'   => null,
             'result'      => \wp_json_encode( array( 'sent' => true, 'from' => 'browser' ) ),
         ) );
-        return array( 'ok' => true, 'status' => 'sent', 'message' => \__( 'Sent. Thank you, we will take it from here.', 'easy-mcp-ai' ) );
+        return array( 'ok' => true, 'status' => 'sent', 'message' => \__( 'Sent. Thank you, we will take it from here.', 'wordpress-code-ai' ) );
     }
 
     
@@ -321,10 +321,10 @@ class Feedback_Queue {
             return $out;
         }
         if ( ! $this->store->decide( $row['approval_id'], Approval_Gate::STATUS_DENIED, (int) $decided_by, (string) $via, $this->mysql( $this->time() ) ) ) {
-            return array( 'ok' => false, 'status' => 'decided', 'message' => \__( 'This report was already decided elsewhere.', 'easy-mcp-ai' ) );
+            return array( 'ok' => false, 'status' => 'decided', 'message' => \__( 'This report was already decided elsewhere.', 'wordpress-code-ai' ) );
         }
         $this->store->update( $row['approval_id'], array( 'arguments' => null ) );
-        return array( 'ok' => true, 'status' => 'denied', 'message' => \__( 'Discarded. Nothing was sent.', 'easy-mcp-ai' ) );
+        return array( 'ok' => true, 'status' => 'denied', 'message' => \__( 'Discarded. Nothing was sent.', 'wordpress-code-ai' ) );
     }
 
     
@@ -335,13 +335,13 @@ class Feedback_Queue {
 
     private function undecidable( ?array $row ): ?array {
         if ( ! is_array( $row ) ) {
-            return array( 'ok' => false, 'status' => 'not_found', 'message' => \__( 'This report does not exist. It may have been cleaned up.', 'easy-mcp-ai' ) );
+            return array( 'ok' => false, 'status' => 'not_found', 'message' => \__( 'This report does not exist. It may have been cleaned up.', 'wordpress-code-ai' ) );
         }
         if ( Approval_Gate::STATUS_PENDING !== $row['status'] ) {
             return array( 'ok' => false, 'status' => 'decided', 'message' => self::status_sentence( $row ) );
         }
         if ( $this->is_expired( $row ) ) {
-            return array( 'ok' => false, 'status' => 'expired', 'message' => \__( 'This report expired without being sent.', 'easy-mcp-ai' ) );
+            return array( 'ok' => false, 'status' => 'expired', 'message' => \__( 'This report expired without being sent.', 'wordpress-code-ai' ) );
         }
         return null;
     }
@@ -350,13 +350,13 @@ class Feedback_Queue {
     public static function status_sentence( array $row ): string {
         switch ( $row['status'] ) {
             case Approval_Gate::STATUS_CONSUMED:
-                return \__( 'This report was approved and sent.', 'easy-mcp-ai' );
+                return \__( 'This report was approved and sent.', 'wordpress-code-ai' );
             case Approval_Gate::STATUS_DENIED:
-                return \__( 'This report was discarded. Nothing was sent.', 'easy-mcp-ai' );
+                return \__( 'This report was discarded. Nothing was sent.', 'wordpress-code-ai' );
             case Approval_Gate::STATUS_APPROVED:
-                return \__( 'This report is being sent.', 'easy-mcp-ai' );
+                return \__( 'This report is being sent.', 'wordpress-code-ai' );
             default:
-                return \__( 'This report expired without being sent.', 'easy-mcp-ai' );
+                return \__( 'This report expired without being sent.', 'wordpress-code-ai' );
         }
     }
 
@@ -373,7 +373,7 @@ class Feedback_Queue {
     public static function payload( array $row ): array {
         return array(
             'slug'     => self::SLUG,
-            'version'  => defined( 'EASY_MCP_AI_VERSION' ) ? (string) EASY_MCP_AI_VERSION : '',
+            'version'  => defined( 'WORDPRESS_CODE_AI_VERSION' ) ? (string) WORDPRESS_CODE_AI_VERSION : '',
             'feedback' => (string) $row['preview'],
             'data'     => array( 'feedback-area' => self::AREA ),
         );
@@ -381,7 +381,7 @@ class Feedback_Queue {
 
     
     public static function privacy_sentence(): string {
-        return \__( 'Only this text and the plugin version reach us. Your browser sends it, the same way as the Share feedback form; no e-mail or user details are included.', 'easy-mcp-ai' );
+        return \__( 'Only this text and the plugin version reach us. Your browser sends it, the same way as the Share feedback form; no e-mail or user details are included.', 'wordpress-code-ai' );
     }
 
     
@@ -399,7 +399,7 @@ class Feedback_Queue {
 
     
     public static function send_label( string $kind ): string {
-        return 'bug' === $kind ? \__( 'Send for a fix', 'easy-mcp-ai' ) : \__( 'Send for development', 'easy-mcp-ai' );
+        return 'bug' === $kind ? \__( 'Send for a fix', 'wordpress-code-ai' ) : \__( 'Send for development', 'wordpress-code-ai' );
     }
 
     

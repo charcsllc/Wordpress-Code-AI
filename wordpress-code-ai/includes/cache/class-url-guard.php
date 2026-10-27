@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Cache;
+namespace wordpress_code_ai\Cache;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -129,7 +129,7 @@ final class Url_Guard {
 
     private static function rebuild( string $input, string $host, string $path ): string {
         $home      = self::home();
-        $canonical = \Easy_MCP_AI\Site_Host::normalize( $host );
+        $canonical = \wordpress_code_ai\Site_Host::normalize( $host );
         if ( '' === $canonical || ! in_array( $canonical, self::allowed_hosts(), true ) ) {
             throw new \InvalidArgumentException( sprintf( 'Refused %s: it is not on this site (%s). Only this site\'s own pages can be cleared.', $input, $home['authority'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
         }
@@ -150,7 +150,7 @@ final class Url_Guard {
         if ( 0 !== strpos( rtrim( $plain, '/' ) . '/', rtrim( $home['path'], '/' ) . '/' ) ) {
             throw new \InvalidArgumentException( sprintf( 'Refused %s: it is outside this site\'s address %s.', $input, $home['scheme'] . '://' . $home['authority'] . $home['path'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
         }
-        $authority = \Easy_MCP_AI\Site_Host::normalize( $home['authority'] ) === $canonical ? $home['authority'] : strtolower( $host );
+        $authority = \wordpress_code_ai\Site_Host::normalize( $home['authority'] ) === $canonical ? $home['authority'] : strtolower( $host );
         $url       = $home['scheme'] . '://' . $authority . $path;
         self::refuse_other_blog( $input, $authority, $plain );
         return $url;
@@ -222,9 +222,9 @@ final class Url_Guard {
 
 
     public static function allowed_hosts(): array {
-        $hosts = array( \Easy_MCP_AI\Site_Host::normalize( (string) \get_option( 'home' ) ) );
+        $hosts = array( \wordpress_code_ai\Site_Host::normalize( (string) \get_option( 'home' ) ) );
         foreach ( self::language_domains() as $domain ) {
-            $hosts[] = \Easy_MCP_AI\Site_Host::normalize( $domain );
+            $hosts[] = \wordpress_code_ai\Site_Host::normalize( $domain );
         }
         return array_values( array_unique( array_filter( $hosts ) ) );
     }

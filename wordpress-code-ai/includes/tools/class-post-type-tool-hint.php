@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
-use Easy_MCP_AI\Rest_Routes\Route_Gate;
+use wordpress_code_ai\Rest_Routes\Route_Gate;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -150,7 +150,7 @@ final class Post_Type_Tool_Hint {
 
 
     public static function may_use( string $tool ): bool {
-        return class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) && true === \Easy_MCP_AI\MCP\Server::current_call_may_use( $tool );
+        return class_exists( '\\wordpress_code_ai\\MCP\\Server' ) && true === \wordpress_code_ai\MCP\Server::current_call_may_use( $tool );
     }
 
     

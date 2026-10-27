@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Appearance;
+namespace wordpress_code_ai\Tools\Appearance;
 
-use Easy_MCP_AI\MCP\Server;
-use Easy_MCP_AI\Tools\Dynamic_Tool_Registrar;
+use wordpress_code_ai\MCP\Server;
+use wordpress_code_ai\Tools\Dynamic_Tool_Registrar;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -65,15 +65,15 @@ final class Theme_Ability_Guidance {
         );
 
         $abilities = self::theme_abilities();
-        if ( empty( $abilities ) || ! class_exists( '\\Easy_MCP_AI\\Tools\\Dynamic_Tool_Registrar' ) ) {
+        if ( empty( $abilities ) || ! class_exists( '\\wordpress_code_ai\\Tools\\Dynamic_Tool_Registrar' ) ) {
             return $out;
         }
         
         
-        $server_loaded = class_exists( '\\Easy_MCP_AI\\MCP\\Server' );
+        $server_loaded = class_exists( '\\wordpress_code_ai\\MCP\\Server' );
 
         
-        $enabled     = (array) get_option( 'easy_mcp_ai_enabled_abilities', array() );
+        $enabled     = (array) get_option( 'wordpress_code_ai_enabled_abilities', array() );
         $any_enabled = false;
         foreach ( $abilities as $name => $ability ) {
             if ( ! in_array( $name, $enabled, true ) ) {

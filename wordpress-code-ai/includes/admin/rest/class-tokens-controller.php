@@ -22,10 +22,10 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Admin\Access_Presets;
-use Easy_MCP_AI\Auth\Connect_Policy;
+use wordpress_code_ai\Admin\Access_Presets;
+use wordpress_code_ai\Auth\Connect_Policy;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -96,7 +96,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
             'limit'     => self::TOKENS_LIMIT,
             
             
-            'siteHost'  => \Easy_MCP_AI\Site_Host::current(),
+            'siteHost'  => \wordpress_code_ai\Site_Host::current(),
             
             
             'approvalRequired' => self::approval_required(),
@@ -134,7 +134,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
         }
         foreach ( (array) $this->tool_registry->get_all_tool_names() as $name ) {
             $tool = $this->tool_registry->get_tool( $name );
-            if ( $tool instanceof \Easy_MCP_AI\Tools\Privileged_Tool && \Easy_MCP_AI\Tools\Tool_State::is_enabled( $tool ) ) {
+            if ( $tool instanceof \wordpress_code_ai\Tools\Privileged_Tool && \wordpress_code_ai\Tools\Tool_State::is_enabled( $tool ) ) {
                 $on[] = (string) $name;
             }
         }
@@ -154,7 +154,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
             $tools = array();
             foreach ( (array) $defs as $def ) {
                 $name = is_array( $def ) ? (string) ( $def['name'] ?? '' ) : (string) $def;
-                if ( '' === $name || in_array( $name, \Easy_MCP_AI\Auth\Permission_Guard::EVERY_CREDENTIAL, true ) ) {
+                if ( '' === $name || in_array( $name, \wordpress_code_ai\Auth\Permission_Guard::EVERY_CREDENTIAL, true ) ) {
                     continue;
                 }
                 $tools[] = array(
@@ -172,7 +172,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
             $categories[] = array(
                 'key'        => (string) $key,
                 'label'      => $privileged
-                    ? \__( 'Privileged: runs code, reads server files or rewrites the database', 'easy-mcp-ai' )
+                    ? \__( 'Privileged: runs code, reads server files or rewrites the database', 'wordpress-code-ai' )
                     : ucfirst( str_replace( array( '-', '_' ), ' ', (string) $key ) ),
                 'tools'      => $tools,
                 
@@ -208,7 +208,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
     public function create_token( $request ) {
         $name = \sanitize_text_field( (string) $request->get_param( 'name' ) );
         if ( '' === trim( $name ) ) {
-            return $this->fail( 'easy_mcp_ai_name_required', \__( 'Give the token a name.', 'easy-mcp-ai' ), 400, array( 'field' => 'name' ) );
+            return $this->fail( 'wordpress_code_ai_name_required', \__( 'Give the token a name.', 'wordpress-code-ai' ), 400, array( 'field' => 'name' ) );
         }
 
         $user_id = \absint( $request->get_param( 'userId' ) );
@@ -236,7 +236,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
 
         $result = $this->token_manager->create_token( $name, $user_id, $allowed, $expires_at );
         if ( \is_wp_error( $result ) || empty( $result['id'] ) ) {
-            return $this->fail( 'easy_mcp_ai_token_create_failed', \__( "Couldn't create the token. Try again.", 'easy-mcp-ai' ), 500 );
+            return $this->fail( 'wordpress_code_ai_token_create_failed', \__( "Couldn't create the token. Try again.", 'wordpress-code-ai' ), 500 );
         }
         if ( $unattended ) {
             
@@ -265,7 +265,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
         if ( null !== $request->get_param( 'name' ) ) {
             $name = \sanitize_text_field( (string) $request->get_param( 'name' ) );
             if ( '' === trim( $name ) ) {
-                return $this->fail( 'easy_mcp_ai_name_required', \__( 'Give the token a name.', 'easy-mcp-ai' ), 400, array( 'field' => 'name' ) );
+                return $this->fail( 'wordpress_code_ai_name_required', \__( 'Give the token a name.', 'wordpress-code-ai' ), 400, array( 'field' => 'name' ) );
             }
             $data['name'] = $name;
         }
@@ -348,8 +348,8 @@ class Tokens_Controller extends Admin_Rest_Controller {
         }
         if ( false === $result ) {
             return $this->fail(
-                'easy_mcp_ai_rebind_failed',
-                \__( 'The key could not be re-bound. Please try again.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_rebind_failed',
+                \__( 'The key could not be re-bound. Please try again.', 'wordpress-code-ai' ),
                 500
             );
         }
@@ -382,7 +382,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
         $id  = \absint( $request->get_param( 'id' ) );
         $row = $id ? $this->token_manager->get_token_by_id( $id ) : null;
         if ( ! is_array( $row ) || empty( $row['id'] ) ) {
-            return $this->fail( 'easy_mcp_ai_token_not_found', \__( 'Token not found.', 'easy-mcp-ai' ), 404 );
+            return $this->fail( 'wordpress_code_ai_token_not_found', \__( 'Token not found.', 'wordpress-code-ai' ), 404 );
         }
         return $row;
     }
@@ -402,17 +402,17 @@ class Tokens_Controller extends Admin_Rest_Controller {
         list( $kind, $role ) = Access_Presets::split( $preset, is_string( $role ) ? $role : null );
 
         if ( Access_Presets::ROLE === $preset && Access_Presets::ROLE !== $kind ) {
-            return $this->fail( 'easy_mcp_ai_invalid_role', \__( 'Choose Editor or Author.', 'easy-mcp-ai' ), 400, array( 'field' => 'role' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_role', \__( 'Choose Editor or Author.', 'wordpress-code-ai' ), 400, array( 'field' => 'role' ) );
         }
         if ( Access_Presets::CUSTOM !== $kind ) {
             $list = $this->presets->to_allowed_tools( $kind, $role );
             if ( ! is_array( $list ) || empty( $list ) ) {
-                return $this->fail( 'easy_mcp_ai_empty_allowlist', \__( 'This preset matches no tool on this site. Pick another preset or choose tools by hand.', 'easy-mcp-ai' ), 400, array( 'field' => 'preset' ) );
+                return $this->fail( 'wordpress_code_ai_empty_allowlist', \__( 'This preset matches no tool on this site. Pick another preset or choose tools by hand.', 'wordpress-code-ai' ), 400, array( 'field' => 'preset' ) );
             }
             return $list;
         }
         if ( Access_Presets::CUSTOM !== $preset ) {
-            return $this->fail( 'easy_mcp_ai_invalid_preset', \__( 'Choose an access level.', 'easy-mcp-ai' ), 400, array( 'field' => 'preset' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_preset', \__( 'Choose an access level.', 'wordpress-code-ai' ), 400, array( 'field' => 'preset' ) );
         }
 
         $custom = $request->get_param( 'customTools' );
@@ -429,8 +429,8 @@ class Tokens_Controller extends Admin_Rest_Controller {
         }
         if ( empty( $tools ) ) {
             return $this->fail(
-                'easy_mcp_ai_empty_allowlist',
-                \__( 'Nothing was saved: no tools were selected. Choose at least one tool, or pick a preset.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_empty_allowlist',
+                \__( 'Nothing was saved: no tools were selected. Choose at least one tool, or pick a preset.', 'wordpress-code-ai' ),
                 400,
                 array( 'field' => 'customTools' )
             );
@@ -450,20 +450,20 @@ class Tokens_Controller extends Admin_Rest_Controller {
     private function resolve_expiry( $request, $stored = null ) {
         $preset = $request->get_param( 'expiresPreset' );
         $custom = $request->get_param( 'expiresAt' );
-        $result = \Easy_MCP_AI\Admin\Admin_Page::resolve_submitted_expiry(
+        $result = \wordpress_code_ai\Admin\Admin_Page::resolve_submitted_expiry(
             is_string( $preset ) ? \sanitize_key( $preset ) : '',
             is_string( $custom ) ? \sanitize_text_field( $custom ) : '',
             $stored
         );
         if ( \is_wp_error( $result ) ) {
-            return $this->fail( 'easy_mcp_ai_invalid_expiry', $result->get_error_message(), 400, array( 'field' => 'expiresAt' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_expiry', $result->get_error_message(), 400, array( 'field' => 'expiresAt' ) );
         }
         return $result;
     }
 
     
     public static function approval_required() {
-        return true === \Easy_MCP_AI\Config::get( 'approval_required' );
+        return true === \wordpress_code_ai\Config::get( 'approval_required' );
     }
 
     
@@ -481,16 +481,16 @@ class Tokens_Controller extends Admin_Rest_Controller {
             return 0;
         }
         if ( ! is_bool( $raw ) && ! in_array( $raw, array( 0, 1, '0', '1', 'true', 'false' ), true ) ) {
-            return $this->fail( 'easy_mcp_ai_invalid_param', \__( 'Unattended must be on or off.', 'easy-mcp-ai' ), 400, array( 'field' => 'unattended' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_param', \__( 'Unattended must be on or off.', 'wordpress-code-ai' ), 400, array( 'field' => 'unattended' ) );
         }
         $on = \rest_sanitize_boolean( $raw );
         if ( $on && ! self::approval_required() ) {
             return $this->fail(
-                'easy_mcp_ai_approvals_off',
+                'wordpress_code_ai_approvals_off',
                 \sprintf(
                     /* translators: %s: the "Ask before destructive actions" setting label */
-                    \__( 'Unattended only applies while "%s" is on in Settings.', 'easy-mcp-ai' ),
-                    \__( 'Ask before destructive actions', 'easy-mcp-ai' )
+                    \__( 'Unattended only applies while "%s" is on in Settings.', 'wordpress-code-ai' ),
+                    \__( 'Ask before destructive actions', 'wordpress-code-ai' )
                 ),
                 400,
                 array( 'field' => 'unattended' )
@@ -501,8 +501,8 @@ class Tokens_Controller extends Admin_Rest_Controller {
 
     private function invalid_user() {
         return $this->fail(
-            'easy_mcp_ai_invalid_user',
-            \__( 'Tokens can only be assigned to users who can publish posts (Authors and above), or who hold a role allowed to connect under Settings.', 'easy-mcp-ai' ),
+            'wordpress_code_ai_invalid_user',
+            \__( 'Tokens can only be assigned to users who can publish posts (Authors and above), or who hold a role allowed to connect under Settings.', 'wordpress-code-ai' ),
             400,
             array( 'field' => 'userId' )
         );
@@ -571,7 +571,7 @@ class Tokens_Controller extends Admin_Rest_Controller {
             'status'       => self::status( $row ),
             
             
-            'boundElsewhere' => \Easy_MCP_AI\Auth\Token_Manager::is_bound_elsewhere( $row ),
+            'boundElsewhere' => \wordpress_code_ai\Auth\Token_Manager::is_bound_elsewhere( $row ),
             
             
             'selfService'  => ! empty( $row['created_by'] ) && (int) $row['created_by'] === $user_id
@@ -676,6 +676,6 @@ class Tokens_Controller extends Admin_Rest_Controller {
 
     private static function display_name( $user_id ) {
         $user = $user_id ? \get_userdata( $user_id ) : false;
-        return $user && ! empty( $user->display_name ) ? (string) $user->display_name : \__( 'Unknown', 'easy-mcp-ai' );
+        return $user && ! empty( $user->display_name ) ? (string) $user->display_name : \__( 'Unknown', 'wordpress-code-ai' );
     }
 }

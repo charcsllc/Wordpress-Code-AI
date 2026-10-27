@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Privileged\Files_Read;
+namespace wordpress_code_ai\Privileged\Files_Read;
 
-use Easy_MCP_AI\Text_Redactor;
+use wordpress_code_ai\Text_Redactor;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GA;
+namespace wordpress_code_ai\Tools\GA;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GA\GA_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GA\GA_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

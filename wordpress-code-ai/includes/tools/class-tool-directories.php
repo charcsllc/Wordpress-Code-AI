@@ -5,9 +5,9 @@
 
 
 
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
-use Easy_MCP_AI\Autoloader;
+use wordpress_code_ai\Autoloader;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -106,25 +106,25 @@ final class Tool_Directories {
         
         
         
-        if ( \get_option( 'easy_mcp_ai_ahrefs_enabled', false ) ) {
+        if ( \get_option( 'wordpress_code_ai_ahrefs_enabled', false ) ) {
             $tool_dirs[] = 'ahrefs';
         }
         
         
         
-        if ( \Easy_MCP_AI\Provider_Credentials::is_configured( 'gsc' ) ) {
+        if ( \wordpress_code_ai\Provider_Credentials::is_configured( 'gsc' ) ) {
             $tool_dirs[] = 'gsc';
         }
-        if ( \Easy_MCP_AI\Provider_Credentials::is_configured( 'ga' ) ) {
+        if ( \wordpress_code_ai\Provider_Credentials::is_configured( 'ga' ) ) {
             $tool_dirs[] = 'ga';
         }
-        if ( \Easy_MCP_AI\Provider_Credentials::is_configured( 'dfs' ) ) {
+        if ( \wordpress_code_ai\Provider_Credentials::is_configured( 'dfs' ) ) {
             $tool_dirs[] = 'dfs';
         }
-        if ( \Easy_MCP_AI\Provider_Credentials::is_configured( 'semrush' ) ) {
+        if ( \wordpress_code_ai\Provider_Credentials::is_configured( 'semrush' ) ) {
             $tool_dirs[] = 'semrush';
         }
-        if ( \Easy_MCP_AI\Provider_Credentials::is_configured( 'seranking' ) ) {
+        if ( \wordpress_code_ai\Provider_Credentials::is_configured( 'seranking' ) ) {
             $tool_dirs[] = 'seranking';
         }
         return $tool_dirs;
@@ -142,7 +142,7 @@ final class Tool_Directories {
 
 
     public static function builders(): array {
-        return \Easy_MCP_AI\Builders\Builder_Registry::any_present() ? array( self::BUILDERS ) : array();
+        return \wordpress_code_ai\Builders\Builder_Registry::any_present() ? array( self::BUILDERS ) : array();
     }
 
     
@@ -152,7 +152,7 @@ final class Tool_Directories {
 
     public static function plugin_groups(): array {
         $dirs_on = array();
-        foreach ( (array) \get_option( 'easy_mcp_ai_enabled_plugin_groups', array() ) as $group_slug ) {
+        foreach ( (array) \get_option( 'wordpress_code_ai_enabled_plugin_groups', array() ) as $group_slug ) {
             if ( isset( self::PLUGIN_GROUPS[ $group_slug ] ) ) {
                 $dirs_on[ self::PLUGIN_GROUPS[ $group_slug ] ] = true;
             }

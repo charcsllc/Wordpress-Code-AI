@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Plugins;
+namespace wordpress_code_ai\Tools\Plugins;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -21,7 +21,7 @@ class Deactivate_Plugin extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Deactivates an active plugin, exactly as the Deactivate link on Plugins → Installed Plugins does (deactivation hooks run; nothing is deleted). Required: `plugin` (e.g. "hello-dolly/hello.php" — the `plugin` field from wp_list_plugins). Optional: `network_wide` (boolean, default false; multisite only, deactivates a network-active plugin for every site and requires a super admin with manage_network_plugins). Returns { plugin, name, status ("inactive"), changed (false when it was already inactive), network_wide }. Refused when the plugin is not installed, when your WordPress user may not deactivate that plugin, when a network-active plugin is deactivated for a single site (a super admin must use network_wide: true), and always for Easy MCP AI itself — deactivating it would cut off this connection. Use wp_activate_plugin to reverse it.';
+        return 'Deactivates an active plugin, exactly as the Deactivate link on Plugins → Installed Plugins does (deactivation hooks run; nothing is deleted). Required: `plugin` (e.g. "hello-dolly/hello.php" — the `plugin` field from wp_list_plugins). Optional: `network_wide` (boolean, default false; multisite only, deactivates a network-active plugin for every site and requires a super admin with manage_network_plugins). Returns { plugin, name, status ("inactive"), changed (false when it was already inactive), network_wide }. Refused when the plugin is not installed, when your WordPress user may not deactivate that plugin, when a network-active plugin is deactivated for a single site (a super admin must use network_wide: true), and always for wordpress-code-ai itself — deactivating it would cut off this connection. Use wp_activate_plugin to reverse it.';
     }
 
     public function get_category() {
@@ -73,7 +73,7 @@ class Deactivate_Plugin extends Base_Tool {
         
         
         if ( $this->is_own_plugin( $plugin ) ) {
-            throw new \RuntimeException( 'Easy MCP AI cannot deactivate itself: this MCP connection runs through it. Deactivate it from wp-admin → Plugins instead.' );
+            throw new \RuntimeException( 'wordpress-code-ai cannot deactivate itself: this MCP connection runs through it. Deactivate it from wp-admin → Plugins instead.' );
         }
 
         if ( $network_wide ) {

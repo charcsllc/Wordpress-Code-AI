@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Tools\SEO;
+namespace wordpress_code_ai\Tools\SEO;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 
 
@@ -206,20 +206,20 @@ class Yoast_Update_Term_Seo extends Base_Tool {
 
 
 	private function write_and_refresh( $term, array $values ) {
-		$history = class_exists( '\\Easy_MCP_AI\\History\\Change_Context' );
+		$history = class_exists( '\\wordpress_code_ai\\History\\Change_Context' );
 
 		
 		
 		if ( $history ) {
-			\Easy_MCP_AI\History\Change_Context::expect_scoped_option( 'wpseo_taxonomy_meta', array( $term->taxonomy, (string) $term->term_id ) );
+			\wordpress_code_ai\History\Change_Context::expect_scoped_option( 'wpseo_taxonomy_meta', array( $term->taxonomy, (string) $term->term_id ) );
 		}
 		\WPSEO_Taxonomy_Meta::set_values( (int) $term->term_id, $term->taxonomy, $values );
 		if ( $history ) {
 			
 			
-			\Easy_MCP_AI\History\Change_Context::consume_scoped_option( 'wpseo_taxonomy_meta' );
+			\wordpress_code_ai\History\Change_Context::consume_scoped_option( 'wpseo_taxonomy_meta' );
 			
-			\Easy_MCP_AI\History\Change_Context::expect_refresh_only( 'term', (int) $term->term_id );
+			\wordpress_code_ai\History\Change_Context::expect_refresh_only( 'term', (int) $term->term_id );
 		}
 		do_action( 'edited_term', (int) $term->term_id, (int) $term->term_taxonomy_id, $term->taxonomy, array() );
 	}

@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -63,7 +63,7 @@ class Delete_Shipping_Class extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: class name, 2: class id, 3: number of products */
-            __( "Permanently delete shipping class '%1\$s' (ID %2\$d); %3\$d product(s) will have no shipping class.", 'easy-mcp-ai' ),
+            __( "Permanently delete shipping class '%1\$s' (ID %2\$d); %3\$d product(s) will have no shipping class.", 'wordpress-code-ai' ),
             (string) ( $class['name'] ?? '' ),
             $id,
             (int) ( $class['count'] ?? 0 )

@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Taxonomy;
+namespace wordpress_code_ai\Tools\Taxonomy;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -750,10 +750,10 @@ class List_Terms extends Base_Tool {
 
 
     protected function caller_may_read_term_meta(): ?bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\MCP\\Server' ) ) {
             return null;
         }
-        return \Easy_MCP_AI\MCP\Server::current_call_may_use( 'wp_get_term_meta' );
+        return \wordpress_code_ai\MCP\Server::current_call_may_use( 'wp_get_term_meta' );
     }
 
     

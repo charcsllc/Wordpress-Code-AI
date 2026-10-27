@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router;
+namespace wordpress_code_ai\Cli_Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -136,7 +136,7 @@ final class Redactor {
             $out[] = self::mask_word( (string) $word, $replace, $names );
         }
 
-        $text = \Easy_MCP_AI\Text_Redactor::redact( implode( ' ', $out ) );
+        $text = \wordpress_code_ai\Text_Redactor::redact( implode( ' ', $out ) );
         return array( $text, array_values( array_unique( $names ) ) );
     }
 
@@ -466,7 +466,7 @@ final class Redactor {
         list( $rest ) = self::fail_closed( implode( ' ', array_slice( $words, $at ) ) );
         $kept[]       = $rest;
         $names[]      = 'unparseable';
-        return array( \Easy_MCP_AI\Text_Redactor::redact( implode( ' ', $kept ) ), array_values( array_unique( $names ) ) );
+        return array( \wordpress_code_ai\Text_Redactor::redact( implode( ' ', $kept ) ), array_values( array_unique( $names ) ) );
     }
 
     

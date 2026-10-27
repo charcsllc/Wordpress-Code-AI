@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -36,10 +36,10 @@ class Client_IP {
 
 
 
-    const CONSTANT_TRUSTED_PROXIES = 'EASY_MCP_AI_TRUSTED_PROXIES';
+    const CONSTANT_TRUSTED_PROXIES = 'WORDPRESS_CODE_AI_TRUSTED_PROXIES';
 
     
-    const CONSTANT_HEADER = 'EASY_MCP_AI_CLIENT_IP_HEADER';
+    const CONSTANT_HEADER = 'WORDPRESS_CODE_AI_CLIENT_IP_HEADER';
 
     
     const DOC_URL = 'https://docs.easymcpai.com/trusted-proxies';
@@ -121,7 +121,7 @@ class Client_IP {
 
 
 
-        $filtered = \apply_filters( 'easy_mcp_ai_client_ip', $remote );
+        $filtered = \apply_filters( 'wordpress_code_ai_client_ip', $remote );
 
         if ( is_string( $filtered ) && '' !== $filtered ) {
             $candidate = trim( $filtered, '[]' );
@@ -247,7 +247,7 @@ class Client_IP {
 
 
 
-        $filtered = \apply_filters( 'easy_mcp_ai_trusted_proxies', $entries );
+        $filtered = \apply_filters( 'wordpress_code_ai_trusted_proxies', $entries );
 
         return self::parse_trusted_proxies( is_array( $filtered ) ? $filtered : $entries );
     }
@@ -302,7 +302,7 @@ class Client_IP {
 
 
 
-        return self::sanitize_header_name( \apply_filters( 'easy_mcp_ai_client_ip_header', $name ) );
+        return self::sanitize_header_name( \apply_filters( 'wordpress_code_ai_client_ip_header', $name ) );
     }
 
     

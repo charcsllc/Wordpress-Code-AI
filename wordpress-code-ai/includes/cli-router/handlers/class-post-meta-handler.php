@@ -1,12 +1,12 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Adapters\Post_Adapter;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Ids;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Adapters\Post_Adapter;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Ids;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Meta_Command;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -281,10 +281,10 @@ final class Post_Meta_Handler extends Meta_Command {
 
 
     private function require_integration_field( string $key, int $post_id ): void {
-        if ( ! class_exists( '\\Easy_MCP_AI\\Meta\\Meta_Exposure' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\Meta\\Meta_Exposure' ) ) {
             return;
         }
-        foreach ( \Easy_MCP_AI\Meta\Meta_Exposure::enabled_providers() as $provider ) {
+        foreach ( \wordpress_code_ai\Meta\Meta_Exposure::enabled_providers() as $provider ) {
             if ( array_key_exists( $key, $provider->get_fields() ) && ! $provider->can_edit_field( $key, \get_current_user_id(), $post_id ) ) {
                 $this->ctx->out->error( sprintf( self::MSG_REFUSED_INTEGRATION, $key, $provider->get_label() ) );
             }
@@ -307,8 +307,8 @@ final class Post_Meta_Handler extends Meta_Command {
                 }
             }
         }
-        if ( class_exists( '\\Easy_MCP_AI\\Meta\\Meta_Exposure' ) ) {
-            foreach ( \Easy_MCP_AI\Meta\Meta_Exposure::enabled_providers() as $provider ) {
+        if ( class_exists( '\\wordpress_code_ai\\Meta\\Meta_Exposure' ) ) {
+            foreach ( \wordpress_code_ai\Meta\Meta_Exposure::enabled_providers() as $provider ) {
                 foreach ( array_keys( $provider->get_fields() ) as $name ) {
                     $names[] = (string) $name;
                 }

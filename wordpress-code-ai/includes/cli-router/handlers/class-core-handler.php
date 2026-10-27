@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Cli_Exit;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Cli_Exit;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

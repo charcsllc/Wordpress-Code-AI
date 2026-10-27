@@ -5,10 +5,10 @@
 
 
 
-namespace Easy_MCP_AI\MCP;
+namespace wordpress_code_ai\MCP;
 
-use Easy_MCP_AI\Config;
-use Easy_MCP_AI\Tools\Tool_State;
+use wordpress_code_ai\Config;
+use wordpress_code_ai\Tools\Tool_State;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -34,22 +34,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Tool_Status {
 
     
-    const SETTINGS_PATH = 'Easy MCP AI › Settings › Advanced › Disabled tools';
+    const SETTINGS_PATH = 'wordpress-code-ai › Settings › Advanced › Disabled tools';
 
     
-    const TOOLS_PATH = 'Easy MCP AI › Tools';
+    const TOOLS_PATH = 'wordpress-code-ai › Tools';
 
     
-    const PATTERNS_PATH = 'Easy MCP AI › Settings › Advanced';
+    const PATTERNS_PATH = 'wordpress-code-ai › Settings › Advanced';
 
     
-    const ABILITIES_PATH = 'Easy MCP AI › Tools › Abilities';
+    const ABILITIES_PATH = 'wordpress-code-ai › Tools › Abilities';
 
     
-    const CORE_ABILITIES_PATH = 'Easy MCP AI › Tools › Core';
+    const CORE_ABILITIES_PATH = 'wordpress-code-ai › Tools › Core';
 
     
-    const EXTERNAL_PATH = 'Easy MCP AI › Tools › External data';
+    const EXTERNAL_PATH = 'wordpress-code-ai › Tools › External data';
 
     
     const IN_CONFIGURATION = 'switched off in this site\'s configuration (wp-config.php or the server environment), where only the site owner can switch %s on';
@@ -65,7 +65,7 @@ final class Tool_Status {
 
 
     public static function switch_locked( string $tool_name ): bool {
-        return null !== Tool_State::override_of( $tool_name ) || Config::is_locked( 'easy_mcp_ai_disabled_tools' );
+        return null !== Tool_State::override_of( $tool_name ) || Config::is_locked( 'wordpress_code_ai_disabled_tools' );
     }
 
     
@@ -77,7 +77,7 @@ final class Tool_Status {
 
 
     public static function switch_path( string $tool_name, bool $default_off ): string {
-        $in_grid = $default_off || in_array( $tool_name, \Easy_MCP_AI\Admin\Settings_Validator::destructive_tools(), true );
+        $in_grid = $default_off || in_array( $tool_name, \wordpress_code_ai\Admin\Settings_Validator::destructive_tools(), true );
         return Config::brand( $in_grid ? self::SETTINGS_PATH : self::TOOLS_PATH );
     }
 
@@ -135,7 +135,7 @@ final class Tool_Status {
             case 'paused':
                 return 'is unavailable, like every tool, while this site has paused AI access; only the site owner can resume it.';
             case 'policy':
-                return 'is unavailable, like every tool, while the tool policy set in this site\'s configuration (EASY_MCP_AI_DISABLED_TOOLS or EASY_MCP_AI_ALLOWED_TOOL_PATTERNS, in wp-config.php or the server environment) cannot be read; only the site owner can fix it.';
+                return 'is unavailable, like every tool, while the tool policy set in this site\'s configuration (WORDPRESS_CODE_AI_DISABLED_TOOLS or WORDPRESS_CODE_AI_ALLOWED_TOOL_PATTERNS, in wp-config.php or the server environment) cannot be read; only the site owner can fix it.';
             case 'not_allowed':
                 return 'is not included in this connection\'s allowed tools (the site owner can widen the API key or the OAuth grant).';
             case 'not_registered':
@@ -147,7 +147,7 @@ final class Tool_Status {
             case 'off_locked':
                 return sprintf( 'is ' . self::IN_CONFIGURATION . '.', 'it' );
             case 'pattern':
-                return Config::is_locked( 'easy_mcp_ai_allowed_tool_patterns' )
+                return Config::is_locked( 'wordpress_code_ai_allowed_tool_patterns' )
                     ? 'is excluded by the allowed tool patterns set in this site\'s configuration (wp-config.php or the server environment), where only the site owner can change them.'
                     : sprintf( 'is excluded by this site\'s allowed tool patterns. An administrator can change them in wp-admin under %s.', Config::brand( self::PATTERNS_PATH ) );
             case 'app_only':

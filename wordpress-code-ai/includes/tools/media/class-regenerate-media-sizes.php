@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Media;
+namespace wordpress_code_ai\Tools\Media;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -93,7 +93,7 @@ class Regenerate_Media_Sizes extends Base_Tool {
         $named = isset( $arguments['sizes'] ) && is_array( $arguments['sizes'] ) && array() !== $arguments['sizes'];
         $title = self::rest_title( $media );
         $file  = isset( $media['source_url'] ) ? basename( (string) $media['source_url'] ) : '';
-        $file  = '' !== $file ? $file : __( 'unknown file', 'easy-mcp-ai' );
+        $file  = '' !== $file ? $file : __( 'unknown file', 'wordpress-code-ai' );
 
         
         
@@ -101,9 +101,9 @@ class Regenerate_Media_Sizes extends Base_Tool {
             return sprintf(
                 $all
                     /* translators: 1: media title, 2: file name, 3: media id */
-                    ? __( "Rebuild every image size of media '%1\$s' (%2\$s, ID %3\$d).", 'easy-mcp-ai' )
+                    ? __( "Rebuild every image size of media '%1\$s' (%2\$s, ID %3\$d).", 'wordpress-code-ai' )
                     /* translators: 1: media title, 2: file name, 3: media id */
-                    : __( "Create the missing image sizes of media '%1\$s' (%2\$s, ID %3\$d).", 'easy-mcp-ai' ),
+                    : __( "Create the missing image sizes of media '%1\$s' (%2\$s, ID %3\$d).", 'wordpress-code-ai' ),
                 $title,
                 $file,
                 $id
@@ -112,9 +112,9 @@ class Regenerate_Media_Sizes extends Base_Tool {
         return sprintf(
             $all
                 /* translators: 1: comma-separated image size names, 2: media title, 3: file name, 4: media id */
-                ? __( "Rebuild the image sizes %1\$s of media '%2\$s' (%3\$s, ID %4\$d).", 'easy-mcp-ai' )
+                ? __( "Rebuild the image sizes %1\$s of media '%2\$s' (%3\$s, ID %4\$d).", 'wordpress-code-ai' )
                 /* translators: 1: comma-separated image size names, 2: media title, 3: file name, 4: media id */
-                : __( "Create the missing image sizes among %1\$s of media '%2\$s' (%3\$s, ID %4\$d).", 'easy-mcp-ai' ),
+                : __( "Create the missing image sizes among %1\$s of media '%2\$s' (%3\$s, ID %4\$d).", 'wordpress-code-ai' ),
             implode( ', ', array_map( 'strval', $arguments['sizes'] ) ),
             $title,
             $file,

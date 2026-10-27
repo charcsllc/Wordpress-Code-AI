@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Cache;
+namespace wordpress_code_ai\Cache;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -30,7 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Page_Cache_Queue {
 
     
-    const ACTION = 'easy_mcp_ai_clear_page_cache';
+    const ACTION = 'wordpress_code_ai_clear_page_cache';
 
     
     const TIME_BUDGET = 10;

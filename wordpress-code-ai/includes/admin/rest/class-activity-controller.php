@@ -7,10 +7,10 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\History\Change_Log_Repository;
-use Easy_MCP_AI\Rest_Routes\Route_Gate;
+use wordpress_code_ai\History\Change_Log_Repository;
+use wordpress_code_ai\Rest_Routes\Route_Gate;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,7 +29,7 @@ class Activity_Controller extends Admin_Rest_Controller {
     const CHANGE_ACTIONS = array( 'create', 'update', 'delete' );
 
     
-    const OBJECT_TYPES_TRANSIENT = 'easy_mcp_ai_change_log_object_types';
+    const OBJECT_TYPES_TRANSIENT = 'wordpress_code_ai_change_log_object_types';
 
     
     private $db;
@@ -122,7 +122,7 @@ class Activity_Controller extends Admin_Rest_Controller {
 
     public function cleanup_audit( $request ) {
         $retention = self::audit_retention_days();
-        $more      = call_user_func( $this->cleanup, $this->db->prefix . 'easy_mcp_ai_audit_log', $retention );
+        $more      = call_user_func( $this->cleanup, $this->db->prefix . 'wordpress_code_ai_audit_log', $retention );
         return $this->ok( array( 'retentionDays' => $retention, 'more' => (bool) $more ) );
     }
 
@@ -221,7 +221,7 @@ class Activity_Controller extends Admin_Rest_Controller {
 
 
     public static function audit_row( array $row, $count ) {
-        $credential = \Easy_MCP_AI\Audit_Log_Repository::credential_label( $row );
+        $credential = \wordpress_code_ai\Audit_Log_Repository::credential_label( $row );
         $status     = strtolower( (string) ( $row['result_status'] ?? 'success' ) );
         $arguments  = null;
         if ( ! empty( $row['arguments'] ) ) {
@@ -284,8 +284,8 @@ class Activity_Controller extends Admin_Rest_Controller {
             'total'                    => (int) $total,
             'page'                     => $paging['page'],
             'perPage'                  => $paging['per_page'],
-            'retentionDays'            => \Easy_MCP_AI\Plugin::change_log_retention_days(),
-            'captureSettingsAvailable' => is_readable( EASY_MCP_AI_PLUGIN_DIR . 'includes/admin/class-history-settings-page.php' ),
+            'retentionDays'            => \wordpress_code_ai\Plugin::change_log_retention_days(),
+            'captureSettingsAvailable' => is_readable( WORDPRESS_CODE_AI_PLUGIN_DIR . 'includes/admin/class-history-settings-page.php' ),
             'objectTypes'              => $this->object_types(),
             'rows'                     => $this->change_rows( $rows ),
         ) );
@@ -296,7 +296,7 @@ class Activity_Controller extends Admin_Rest_Controller {
 
 
     public function cleanup_changes( $request ) {
-        $retention = \Easy_MCP_AI\Plugin::change_log_retention_days();
+        $retention = \wordpress_code_ai\Plugin::change_log_retention_days();
         $more      = call_user_func( $this->cleanup, $this->changes->table(), $retention );
         return $this->ok( array( 'retentionDays' => $retention, 'more' => (bool) $more ) );
     }
@@ -587,7 +587,7 @@ class Activity_Controller extends Admin_Rest_Controller {
 
 
     public static function audit_retention_days() {
-        $stored = \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_retention', 30 );
+        $stored = \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_retention', 30 );
         if ( ! is_numeric( $stored ) ) {
             return 30;
         }
@@ -596,9 +596,9 @@ class Activity_Controller extends Admin_Rest_Controller {
 
     private static function invalid( $field ) {
         return new \WP_Error(
-            'easy_mcp_ai_invalid_filter',
+            'wordpress_code_ai_invalid_filter',
             /* translators: %s: query parameter name */
-            sprintf( \__( 'The value of "%s" is not valid.', 'easy-mcp-ai' ), $field ),
+            sprintf( \__( 'The value of "%s" is not valid.', 'wordpress-code-ai' ), $field ),
             array( 'status' => 400, 'field' => $field )
         );
     }
@@ -610,7 +610,7 @@ class Activity_Controller extends Admin_Rest_Controller {
         }
         $row = $this->changes->find( (int) $id );
         if ( ! is_array( $row ) || empty( $row['id'] ) ) {
-            return $this->fail( 'easy_mcp_ai_not_found', \__( 'That change-history entry does not exist.', 'easy-mcp-ai' ), 404 );
+            return $this->fail( 'wordpress_code_ai_not_found', \__( 'That change-history entry does not exist.', 'wordpress-code-ai' ), 404 );
         }
         return $row;
     }
@@ -656,7 +656,7 @@ class Activity_Controller extends Admin_Rest_Controller {
         if ( ! $ids ) {
             return array();
         }
-        $table        = $this->db->prefix . 'easy_mcp_ai_audit_log';
+        $table        = $this->db->prefix . 'wordpress_code_ai_audit_log';
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- placeholders generated, plugin-owned table.
         $rows = $this->db->get_results( $this->db->prepare( "SELECT id, result_status FROM `{$table}` WHERE id IN ({$placeholders})", ...$ids ), ARRAY_A );

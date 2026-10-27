@@ -11,9 +11,9 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Admin\Setup_State;
+use wordpress_code_ai\Admin\Setup_State;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

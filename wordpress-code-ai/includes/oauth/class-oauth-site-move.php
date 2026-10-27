@@ -34,7 +34,7 @@
 
 
 
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -43,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class OAuth_Site_Move {
 
     
-    const OPTION = 'easy_mcp_ai_oauth_site_host';
+    const OPTION = 'wordpress_code_ai_oauth_site_host';
 
     
     const IDLE_DAYS = 30;
@@ -61,7 +61,7 @@ class OAuth_Site_Move {
 
 
     public static function current_resource(): string {
-        return Token_Endpoint::canonicalize_resource_uri( (string) \rest_url( 'easy-mcp-ai/v1/mcp' ) );
+        return Token_Endpoint::canonicalize_resource_uri( (string) \rest_url( 'wordpress-code-ai/v1/mcp' ) );
     }
 
     
@@ -346,7 +346,7 @@ class OAuth_Site_Move {
     private static function incomplete( string $stage ): \WP_Error {
         return new \WP_Error(
             self::ERROR_INCOMPLETE,
-            __( 'Revocation did not finish. Grants issued for the previous address may still be active; try again.', 'easy-mcp-ai' ),
+            __( 'Revocation did not finish. Grants issued for the previous address may still be active; try again.', 'wordpress-code-ai' ),
             array( 'stage' => $stage )
         );
     }
@@ -430,7 +430,7 @@ class OAuth_Site_Move {
     
     private static function tables(): array {
         global $wpdb;
-        $prefix = $wpdb->prefix . 'easy_mcp_ai_oauth_';
+        $prefix = $wpdb->prefix . 'wordpress_code_ai_oauth_';
         return array(
             'tokens'   => $prefix . 'access_tokens',
             'consents' => $prefix . 'consents',

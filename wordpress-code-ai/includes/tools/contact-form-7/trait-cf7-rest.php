@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Contact_Form_7;
+namespace wordpress_code_ai\Tools\Contact_Form_7;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

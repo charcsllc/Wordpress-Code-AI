@@ -33,7 +33,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Check_Header_Probe {
 
     
-    const SECRET_OPTION = 'easy_mcp_ai_header_probe_secret';
+    const SECRET_OPTION = 'wordpress_code_ai_header_probe_secret';
 
     
     const ROUTE = '/header-probe';
@@ -107,9 +107,9 @@ class Check_Header_Probe {
                 
                 
                 return array(
-                    self::unknown( __( 'Could not prepare the connection test on this site.', 'easy-mcp-ai' ) ),
-                    self::unknown_mcp_headers( __( 'Could not prepare the connection test on this site.', 'easy-mcp-ai' ) ),
-                    self::unknown_basic( __( 'Could not prepare the connection test on this site.', 'easy-mcp-ai' ) ),
+                    self::unknown( __( 'Could not prepare the connection test on this site.', 'wordpress-code-ai' ) ),
+                    self::unknown_mcp_headers( __( 'Could not prepare the connection test on this site.', 'wordpress-code-ai' ) ),
+                    self::unknown_basic( __( 'Could not prepare the connection test on this site.', 'wordpress-code-ai' ) ),
                 );
             }
 
@@ -133,9 +133,9 @@ class Check_Header_Probe {
             
             
             return array(
-                self::unknown( __( 'Could not prepare the connection test on this site.', 'easy-mcp-ai' ) ),
-                self::unknown_mcp_headers( __( 'Could not prepare the connection test on this site.', 'easy-mcp-ai' ) ),
-                self::unknown_basic( __( 'Could not prepare the connection test on this site.', 'easy-mcp-ai' ) ),
+                self::unknown( __( 'Could not prepare the connection test on this site.', 'wordpress-code-ai' ) ),
+                self::unknown_mcp_headers( __( 'Could not prepare the connection test on this site.', 'wordpress-code-ai' ) ),
+                self::unknown_basic( __( 'Could not prepare the connection test on this site.', 'wordpress-code-ai' ) ),
             );
         } finally {
             self::disarm();
@@ -147,7 +147,7 @@ class Check_Header_Probe {
         
         
         
-        if ( class_exists( '\Easy_MCP_AI\Diagnostics\Check_Conflicts' ) ) {
+        if ( class_exists( '\wordpress_code_ai\Diagnostics\Check_Conflicts' ) ) {
             try {
                 Check_Conflicts::record_rest_auth_observation( $body, $secret );
             } catch ( \Throwable $e ) {
@@ -189,13 +189,13 @@ class Check_Header_Probe {
         if ( ! is_array( $body ) || empty( $body['proof'] )
             || ! hash_equals( self::expected_proof( $secret ), (string) $body['proof'] ) ) {
             return self::unknown_basic(
-                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts block a site from calling itself; that on its own is not a fault.', 'easy-mcp-ai' )
+                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts block a site from calling itself; that on its own is not a fault.', 'wordpress-code-ai' )
             );
         }
 
         
         if ( ! array_key_exists( 'php_auth', $body ) ) {
-            return self::unknown_basic( __( 'This site answered without the username-and-password result, so it was not measured.', 'easy-mcp-ai' ) );
+            return self::unknown_basic( __( 'This site answered without the username-and-password result, so it was not measured.', 'wordpress-code-ai' ) );
         }
 
         $label      = self::basic_label();
@@ -205,7 +205,7 @@ class Check_Header_Probe {
         $evidence   = array( 'server_var' => $in_server, 'php_auth' => $in_php, 'getallheaders' => $in_headers );
 
         if ( $in_server || $in_php ) {
-            return Diagnostic_Result::pass( 'a13', Diagnostic_Result::TIER_WARNING, $label, __( 'Confirmed: an API key sent as a username and password reaches WordPress.', 'easy-mcp-ai' ), $evidence );
+            return Diagnostic_Result::pass( 'a13', Diagnostic_Result::TIER_WARNING, $label, __( 'Confirmed: an API key sent as a username and password reaches WordPress.', 'wordpress-code-ai' ), $evidence );
         }
 
         if ( $in_headers ) {
@@ -213,8 +213,8 @@ class Check_Header_Probe {
                 'a13',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'The web server is not passing a username-and-password sign-in to PHP in the normal way. This plugin recovers it from a fallback source, so bridges that sign in this way still work today — but a site relying on that fallback breaks as soon as anything about the server changes.', 'easy-mcp-ai' ),
-                __( 'Open Settings → Permalinks and press Save Changes so WordPress writes the rewrite that passes the header to PHP properly.', 'easy-mcp-ai' ),
+                __( 'The web server is not passing a username-and-password sign-in to PHP in the normal way. This plugin recovers it from a fallback source, so bridges that sign in this way still work today — but a site relying on that fallback breaks as soon as anything about the server changes.', 'wordpress-code-ai' ),
+                __( 'Open Settings → Permalinks and press Save Changes so WordPress writes the rewrite that passes the header to PHP properly.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -223,14 +223,14 @@ class Check_Header_Probe {
             'a13',
             Diagnostic_Result::TIER_WARNING,
             $label,
-            __( 'A username-and-password sign-in sent to this site never reaches WordPress. Bridges and connectors that only offer username and password fields cannot sign in with an API key here; clients that send a Bearer token are unaffected.', 'easy-mcp-ai' ),
-            __( 'On Apache, with mod_php or FastCGI, re-save Settings → Permalinks so WordPress writes the rewrite that passes the header to PHP, or add the rule to .htaccess by hand where WordPress cannot write it. If the header is still lost with the rule in place, the web server needs CGIPassAuth On in its configuration, or on nginx the equivalent fastcgi_param, which usually only the host can set — quote this check when asking them.', 'easy-mcp-ai' ),
+            __( 'A username-and-password sign-in sent to this site never reaches WordPress. Bridges and connectors that only offer username and password fields cannot sign in with an API key here; clients that send a Bearer token are unaffected.', 'wordpress-code-ai' ),
+            __( 'On Apache, with mod_php or FastCGI, re-save Settings → Permalinks so WordPress writes the rewrite that passes the header to PHP, or add the rule to .htaccess by hand where WordPress cannot write it. If the header is still lost with the rule in place, the web server needs CGIPassAuth On in its configuration, or on nginx the equivalent fastcgi_param, which usually only the host can set — quote this check when asking them.', 'wordpress-code-ai' ),
             $evidence
         );
     }
 
     private static function basic_label() {
-        return __( 'API keys sent as a username and password reach WordPress', 'easy-mcp-ai' );
+        return __( 'API keys sent as a username and password reach WordPress', 'wordpress-code-ai' );
     }
 
     private static function unknown_basic( $detail ) {
@@ -249,7 +249,7 @@ class Check_Header_Probe {
 
 
     public static function evaluate_mcp_headers( $body, $secret ) {
-        $label = __( 'AI session headers reach this site', 'easy-mcp-ai' );
+        $label = __( 'AI session headers reach this site', 'wordpress-code-ai' );
 
         
         if ( ! is_array( $body ) || ! isset( $body['proof'] )
@@ -258,7 +258,7 @@ class Check_Header_Probe {
                 'a11',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'The test request did not reach this site\'s own code, so there is nothing to report. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'easy-mcp-ai' )
+                __( 'The test request did not reach this site\'s own code, so there is nothing to report. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'wordpress-code-ai' )
             );
         }
 
@@ -272,7 +272,7 @@ class Check_Header_Probe {
                 'a11',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'This site\'s server does not hand PHP a list of the request headers, so whether the session headers arrived could not be measured. That is a property of the server software, not a fault, and sign-in itself is checked separately.', 'easy-mcp-ai' )
+                __( 'This site\'s server does not hand PHP a list of the request headers, so whether the session headers arrived could not be measured. That is a property of the server software, not a fault, and sign-in itself is checked separately.', 'wordpress-code-ai' )
             );
         }
 
@@ -283,7 +283,7 @@ class Check_Header_Probe {
                 'a11',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'This site answered without the session-header result, so it was not measured.', 'easy-mcp-ai' )
+                __( 'This site answered without the session-header result, so it was not measured.', 'wordpress-code-ai' )
             );
         }
 
@@ -296,7 +296,7 @@ class Check_Header_Probe {
                 'a11',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'The headers an AI client uses to keep its session reached this site unchanged.', 'easy-mcp-ai' ),
+                __( 'The headers an AI client uses to keep its session reached this site unchanged.', 'wordpress-code-ai' ),
                 $body['mcp_headers']
             );
         }
@@ -307,10 +307,10 @@ class Check_Header_Probe {
             $label,
             sprintf(
                 /* translators: %s: comma-separated HTTP header names. */
-                __( 'A test request carrying the headers an AI client uses to keep its session arrived without them, or with them altered: %s. Something between the internet and PHP is removing or rewriting them. Signing in can still succeed, and then every call after it behaves as though it were the first — which reads as an assistant that connects and then forgets.', 'easy-mcp-ai' ),
+                __( 'A test request carrying the headers an AI client uses to keep its session arrived without them, or with them altered: %s. Something between the internet and PHP is removing or rewriting them. Signing in can still succeed, and then every call after it behaves as though it were the first — which reads as an assistant that connects and then forgets.', 'wordpress-code-ai' ),
                 implode( ', ', $lost )
             ),
-            __( 'Ask your host or CDN to pass these headers through unchanged. They are ordinary request headers; a proxy, a security rule or an aggressive header allow-list is the usual cause.', 'easy-mcp-ai' ),
+            __( 'Ask your host or CDN to pass these headers through unchanged. They are ordinary request headers; a proxy, a security rule or an aggressive header allow-list is the usual cause.', 'wordpress-code-ai' ),
             $body['mcp_headers']
         );
     }
@@ -324,7 +324,7 @@ class Check_Header_Probe {
 
 
     public static function expected_proof( $secret ) {
-        return \wp_hash( 'easy_mcp_ai_header_probe|' . (string) $secret );
+        return \wp_hash( 'wordpress_code_ai_header_probe|' . (string) $secret );
     }
 
     
@@ -376,8 +376,8 @@ class Check_Header_Probe {
         
         
         
-        $server_delivered = isset( $GLOBALS['easy_mcp_ai_server_had_auth_header'] )
-            ? (bool) $GLOBALS['easy_mcp_ai_server_had_auth_header']
+        $server_delivered = isset( $GLOBALS['wordpress_code_ai_server_had_auth_header'] )
+            ? (bool) $GLOBALS['wordpress_code_ai_server_had_auth_header']
             : ! empty( $server['HTTP_AUTHORIZATION'] );
 
         
@@ -430,7 +430,7 @@ class Check_Header_Probe {
         if ( ! is_array( $body ) || empty( $body['proof'] )
             || ! hash_equals( self::expected_proof( $secret ), (string) $body['proof'] ) ) {
             return self::unknown(
-                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts block a site from calling itself; that on its own is not a fault.', 'easy-mcp-ai' )
+                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts block a site from calling itself; that on its own is not a fault.', 'wordpress-code-ai' )
             );
         }
 
@@ -440,7 +440,7 @@ class Check_Header_Probe {
         $evidence   = array( 'server_var' => $in_server, 'getallheaders' => $in_headers );
 
         if ( $in_server ) {
-            return Diagnostic_Result::pass( 'a1', Diagnostic_Result::TIER_WARNING, $label, __( 'Confirmed: an Authorization header sent to this site reaches WordPress.', 'easy-mcp-ai' ), $evidence );
+            return Diagnostic_Result::pass( 'a1', Diagnostic_Result::TIER_WARNING, $label, __( 'Confirmed: an Authorization header sent to this site reaches WordPress.', 'wordpress-code-ai' ), $evidence );
         }
 
         if ( $in_headers ) {
@@ -448,8 +448,8 @@ class Check_Header_Probe {
                 'a1',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'The web server is not passing the Authorization header to PHP in the normal way. This plugin recovers it from a fallback source, so AI clients still work today — but a site relying on that fallback breaks as soon as anything about the server changes.', 'easy-mcp-ai' ),
-                __( 'Open Settings → Permalinks and press Save Changes so WordPress writes the rewrite that passes the header to PHP properly.', 'easy-mcp-ai' ),
+                __( 'The web server is not passing the Authorization header to PHP in the normal way. This plugin recovers it from a fallback source, so AI clients still work today — but a site relying on that fallback breaks as soon as anything about the server changes.', 'wordpress-code-ai' ),
+                __( 'Open Settings → Permalinks and press Save Changes so WordPress writes the rewrite that passes the header to PHP properly.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -458,8 +458,8 @@ class Check_Header_Probe {
             'a1',
             Diagnostic_Result::TIER_WARNING,
             $label,
-            __( 'An Authorization header sent to this site never reaches WordPress. This is the usual reason an AI client that worked yesterday suddenly reports an invalid token: the credential is fine, the web server is removing it before WordPress sees it.', 'easy-mcp-ai' ),
-            __( 'On Apache, with mod_php or FastCGI, re-save Settings → Permalinks so WordPress writes the rewrite that passes the header to PHP, or add the rule to .htaccess by hand where WordPress cannot write it. If the header is still lost with the rule in place, the web server needs CGIPassAuth On in its configuration, or on nginx the equivalent fastcgi_param, which usually only the host can set — quote this check when asking them.', 'easy-mcp-ai' ),
+            __( 'An Authorization header sent to this site never reaches WordPress. This is the usual reason an AI client that worked yesterday suddenly reports an invalid token: the credential is fine, the web server is removing it before WordPress sees it.', 'wordpress-code-ai' ),
+            __( 'On Apache, with mod_php or FastCGI, re-save Settings → Permalinks so WordPress writes the rewrite that passes the header to PHP, or add the rule to .htaccess by hand where WordPress cannot write it. If the header is still lost with the rule in place, the web server needs CGIPassAuth On in its configuration, or on nginx the equivalent fastcgi_param, which usually only the host can set — quote this check when asking them.', 'wordpress-code-ai' ),
             $evidence
         );
     }
@@ -520,7 +520,7 @@ class Check_Header_Probe {
         $url = \add_query_arg(
             'probe',
             rawurlencode( $secret ),
-            \rest_url( 'easy-mcp-ai/v1' . self::ROUTE )
+            \rest_url( 'wordpress-code-ai/v1' . self::ROUTE )
         );
 
         $response = \wp_remote_get(
@@ -569,13 +569,13 @@ class Check_Header_Probe {
 
     public static function probe_authorization( $secret, $scheme = 'bearer' ) {
         if ( 'basic' === $scheme ) {
-            return 'Basic ' . base64_encode( 'easy-mcp:wpmcp_' . (string) $secret );
+            return 'Basic ' . base64_encode( 'wordpress-code-ai:wpmcp_' . (string) $secret );
         }
         return 'Bearer ' . (string) $secret;
     }
 
     private static function label() {
-        return __( 'Login credentials reach WordPress', 'easy-mcp-ai' );
+        return __( 'Login credentials reach WordPress', 'wordpress-code-ai' );
     }
 
     private static function unknown( $reason ) {
@@ -590,7 +590,7 @@ class Check_Header_Probe {
         return Diagnostic_Result::unknown(
             'a11',
             Diagnostic_Result::TIER_WARNING,
-            __( 'AI session headers reach this site', 'easy-mcp-ai' ),
+            __( 'AI session headers reach this site', 'wordpress-code-ai' ),
             $reason
         );
     }

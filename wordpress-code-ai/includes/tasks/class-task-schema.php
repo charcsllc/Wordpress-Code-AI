@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tasks;
+namespace wordpress_code_ai\Tasks;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -28,19 +28,19 @@ class Task_Schema {
 
     
     const REQUIRED_COLUMNS = array( 'signature', 'approval_id' );
-    const OPTION_NAME = 'easy_mcp_ai_tasks_db_version';
-    const TABLE       = 'easy_mcp_ai_tasks';
+    const OPTION_NAME = 'wordpress_code_ai_tasks_db_version';
+    const TABLE       = 'wordpress_code_ai_tasks';
 
     public static function maybe_upgrade() {
         $installed = (string) \get_option( self::OPTION_NAME, '0' );
         if ( \version_compare( $installed, self::DB_VERSION, '>=' ) ) {
             return;
         }
-        if ( ! \Easy_MCP_AI\Schema_Guard::may_retry( self::OPTION_NAME, self::DB_VERSION ) ) {
+        if ( ! \wordpress_code_ai\Schema_Guard::may_retry( self::OPTION_NAME, self::DB_VERSION ) ) {
             return;
         }
         self::create_tables();
-        \Easy_MCP_AI\Schema_Guard::settle(
+        \wordpress_code_ai\Schema_Guard::settle(
             self::OPTION_NAME,
             self::DB_VERSION,
             \version_compare( (string) \get_option( self::OPTION_NAME, '0' ), self::DB_VERSION, '>=' )
@@ -102,7 +102,7 @@ class Task_Schema {
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Plugin-owned table existence check.
         $exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
-        if ( ! \Easy_MCP_AI\Schema_Guard::table_found( $exists, $table ) ) {
+        if ( ! \wordpress_code_ai\Schema_Guard::table_found( $exists, $table ) ) {
             return;
         }
         

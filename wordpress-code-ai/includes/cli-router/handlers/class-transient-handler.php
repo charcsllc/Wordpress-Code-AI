@@ -1,13 +1,13 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Self_Protection;
-use Easy_MCP_AI\Cli_Router\Values;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Self_Protection;
+use wordpress_code_ai\Cli_Router\Values;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

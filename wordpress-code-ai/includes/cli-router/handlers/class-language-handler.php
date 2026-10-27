@@ -1,15 +1,15 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Cli_Exit;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Formatter;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Router;
-use Easy_MCP_AI\Cli_Router\Values;
+use wordpress_code_ai\Cli_Router\Cli_Exit;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Formatter;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Router;
+use wordpress_code_ai\Cli_Router\Values;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -129,8 +129,8 @@ class Language_Handler extends Command_Handler {
         if ( count( $codes ) > 1 ) {
             $ctx->out->error( 'Only a single language can be active.' );
         }
-        if ( class_exists( '\\Easy_MCP_AI\\MCP\\Server', false ) && method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' )
-            && false === \Easy_MCP_AI\MCP\Server::current_call_may_use( self::ACTIVATE_TOOL ) ) {
+        if ( class_exists( '\\wordpress_code_ai\\MCP\\Server', false ) && method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' )
+            && false === \wordpress_code_ai\MCP\Server::current_call_may_use( self::ACTIVATE_TOOL ) ) {
             
             $ctx->out->error( Fetchers::tool_unavailable( $ctx, $inv->command . ' --activate', self::ACTIVATE_TOOL ) );
         }

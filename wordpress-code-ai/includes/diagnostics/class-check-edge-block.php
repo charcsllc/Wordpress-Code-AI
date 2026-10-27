@@ -34,7 +34,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -95,8 +95,8 @@ class Check_Edge_Block {
             
             
             return array(
-                self::unknown( __( 'The connection test could not run on this site.', 'easy-mcp-ai' ) ),
-                self::unknown_post( __( 'The connection test could not run on this site.', 'easy-mcp-ai' ) ),
+                self::unknown( __( 'The connection test could not run on this site.', 'wordpress-code-ai' ) ),
+                self::unknown_post( __( 'The connection test could not run on this site.', 'wordpress-code-ai' ) ),
             );
         }
 
@@ -118,9 +118,9 @@ class Check_Edge_Block {
 
 
     public static function control_agent() {
-        $version = defined( 'EASY_MCP_AI_VERSION' ) ? EASY_MCP_AI_VERSION : '0';
+        $version = defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '0';
 
-        return 'EasyMCPAI/' . $version;
+        return 'wordpress-code-ai/' . $version;
     }
 
     
@@ -160,13 +160,13 @@ class Check_Edge_Block {
         
         if ( ! is_array( $control ) ) {
             return self::unknown(
-                __( 'The test request could not leave this site, so there is nothing to compare. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'easy-mcp-ai' )
+                __( 'The test request could not leave this site, so there is nothing to compare. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'wordpress-code-ai' )
             );
         }
 
         if ( ! self::is_our_challenge( $control ) ) {
             return self::unknown(
-                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'easy-mcp-ai' ),
+                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'wordpress-code-ai' ),
                 array( 'control_status' => $control['status'], 'control_server' => $control['server'] )
             );
         }
@@ -215,8 +215,8 @@ class Check_Edge_Block {
                 'a9',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'A test request carrying the AI assistant\'s name got no reply, while the same request from this plugin was answered normally. That may be a passing network problem, or something in front of WordPress dropping the assistant\'s requests.', 'easy-mcp-ai' ),
-                __( 'Run the checks again. If it keeps happening, check your CDN or firewall for a bot-filtering rule naming Claude.', 'easy-mcp-ai' ),
+                __( 'A test request carrying the AI assistant\'s name got no reply, while the same request from this plugin was answered normally. That may be a passing network problem, or something in front of WordPress dropping the assistant\'s requests.', 'wordpress-code-ai' ),
+                __( 'Run the checks again. If it keeps happening, check your CDN or firewall for a bot-filtering rule naming Claude.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -226,8 +226,8 @@ class Check_Edge_Block {
                 'a9',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Something in front of WordPress refuses Anthropic\'s crawler (ClaudeBot), while the assistant itself gets through. Connecting is not affected: the assistant never uses the crawler\'s name.', 'easy-mcp-ai' ),
-                __( 'No action is needed to connect. This is usually a "block AI bots" setting on a CDN or security plugin. If that rule is widened to the assistant itself, this check will fail.', 'easy-mcp-ai' ),
+                __( 'Something in front of WordPress refuses Anthropic\'s crawler (ClaudeBot), while the assistant itself gets through. Connecting is not affected: the assistant never uses the crawler\'s name.', 'wordpress-code-ai' ),
+                __( 'No action is needed to connect. This is usually a "block AI bots" setting on a CDN or security plugin. If that rule is widened to the assistant itself, this check will fail.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -236,7 +236,7 @@ class Check_Edge_Block {
             'a9',
             Diagnostic_Result::TIER_BLOCKER,
             $label,
-            __( 'Requests carrying the AI assistant\'s name reach WordPress normally.', 'easy-mcp-ai' ),
+            __( 'Requests carrying the AI assistant\'s name reach WordPress normally.', 'wordpress-code-ai' ),
             $evidence
         );
     }
@@ -262,20 +262,20 @@ class Check_Edge_Block {
             }
         }
 
-        $intro = __( 'Something in front of WordPress is refusing the AI assistant. An identical request to this site\'s AI endpoint is answered normally for this plugin but rejected when it carries the assistant\'s name, so the request never reaches WordPress and nothing is recorded here to explain it.', 'easy-mcp-ai' );
+        $intro = __( 'Something in front of WordPress is refusing the AI assistant. An identical request to this site\'s AI endpoint is answered normally for this plugin but rejected when it carries the assistant\'s name, so the request never reaches WordPress and nothing is recorded here to explain it.', 'wordpress-code-ai' );
 
         $handshake = isset( $legs[ self::LEG_HANDSHAKE ] );
         $mcp       = isset( $legs[ self::LEG_MCP ] );
 
         if ( $handshake && $mcp ) {
-            return $intro . ' ' . __( 'Both stages are affected: adding this site as a connector will fail straight away, and even if one were already set up it would stop working.', 'easy-mcp-ai' );
+            return $intro . ' ' . __( 'Both stages are affected: adding this site as a connector will fail straight away, and even if one were already set up it would stop working.', 'wordpress-code-ai' );
         }
 
         if ( $handshake ) {
-            return $intro . ' ' . __( 'The sign-in stage is the one being blocked, so adding this site as a connector fails immediately — the assistant cannot register with the site at all. Anyone already connected is unaffected.', 'easy-mcp-ai' );
+            return $intro . ' ' . __( 'The sign-in stage is the one being blocked, so adding this site as a connector fails immediately — the assistant cannot register with the site at all. Anyone already connected is unaffected.', 'wordpress-code-ai' );
         }
 
-        return $intro . ' ' . __( 'The sign-in stage still works, which is what makes this confusing: connecting appears to succeed, access is approved, and only then does the assistant report that it could not connect.', 'easy-mcp-ai' );
+        return $intro . ' ' . __( 'The sign-in stage still works, which is what makes this confusing: connecting appears to succeed, access is approved, and only then does the assistant report that it could not connect.', 'wordpress-code-ai' );
     }
 
     
@@ -307,19 +307,19 @@ class Check_Edge_Block {
             }
         }
 
-        $where = __( 'This is a setting on your CDN, firewall or security plugin, not in WordPress.', 'easy-mcp-ai' );
+        $where = __( 'This is a setting on your CDN, firewall or security plugin, not in WordPress.', 'wordpress-code-ai' );
 
-        $mcp_advice = __( 'If you use Cloudflare, look for the AI bot or AI Scrapers and Crawlers blocking option and allow this site\'s AI endpoint through; on other providers look for a bot-filtering rule that blocks AI assistants. A robots.txt on this site that disallows ClaudeBot is a sign the same rule set is switched on.', 'easy-mcp-ai' );
+        $mcp_advice = __( 'If you use Cloudflare, look for the AI bot or AI Scrapers and Crawlers blocking option and allow this site\'s AI endpoint through; on other providers look for a bot-filtering rule that blocks AI assistants. A robots.txt on this site that disallows ClaudeBot is a sign the same rule set is switched on.', 'wordpress-code-ai' );
 
         
         
-        $handshake_advice = __( 'The agent being refused is an ordinary HTTP client library, not an AI name, so an "AI bot" setting is usually not the cause. Look instead for a rule that blocks user agents beginning "python-" — these are common in generic scraper and vulnerability-scanner rule sets, and appear in nginx and Apache configuration, ModSecurity rule sets and security plugins as often as in a CDN. Allow that agent through for this site\'s AI endpoint.', 'easy-mcp-ai' );
+        $handshake_advice = __( 'The agent being refused is an ordinary HTTP client library, not an AI name, so an "AI bot" setting is usually not the cause. Look instead for a rule that blocks user agents beginning "python-" — these are common in generic scraper and vulnerability-scanner rule sets, and appear in nginx and Apache configuration, ModSecurity rule sets and security plugins as often as in a CDN. Allow that agent through for this site\'s AI endpoint.', 'wordpress-code-ai' );
 
         $handshake = isset( $legs[ self::LEG_HANDSHAKE ] );
         $mcp       = isset( $legs[ self::LEG_MCP ] );
 
         if ( $handshake && $mcp ) {
-            return $where . ' ' . __( 'Two different kinds of rule are involved, so check for both.', 'easy-mcp-ai' )
+            return $where . ' ' . __( 'Two different kinds of rule are involved, so check for both.', 'wordpress-code-ai' )
                 . ' ' . $handshake_advice . ' ' . $mcp_advice;
         }
 
@@ -355,7 +355,7 @@ class Check_Edge_Block {
 
 
     public static function evaluate_post( $control, $posted ) {
-        $label = __( 'This site accepts posted AI requests', 'easy-mcp-ai' );
+        $label = __( 'This site accepts posted AI requests', 'wordpress-code-ai' );
 
         
         if ( ! self::is_our_challenge( $control ) ) {
@@ -363,7 +363,7 @@ class Check_Edge_Block {
                 'a12',
                 Diagnostic_Result::TIER_BLOCKER,
                 $label,
-                __( 'The test request did not reach this site\'s own code, so there is nothing to compare. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'easy-mcp-ai' )
+                __( 'The test request did not reach this site\'s own code, so there is nothing to compare. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'wordpress-code-ai' )
             );
         }
 
@@ -372,7 +372,7 @@ class Check_Edge_Block {
                 'a12',
                 Diagnostic_Result::TIER_BLOCKER,
                 $label,
-                __( 'Requests sent the way an AI assistant sends them reach WordPress normally.', 'easy-mcp-ai' ),
+                __( 'Requests sent the way an AI assistant sends them reach WordPress normally.', 'wordpress-code-ai' ),
                 array( 'post_status' => (int) $posted['status'] )
             );
         }
@@ -381,8 +381,8 @@ class Check_Edge_Block {
             'a12',
             Diagnostic_Result::TIER_BLOCKER,
             $label,
-            __( 'An ordinary request to this site\'s AI endpoint is answered correctly, but the same request sent the way an AI assistant actually sends it — as a POST carrying JSON — is not. Something in front of WordPress is refusing it on the request type alone, so no AI client can make a single call, however it signs in.', 'easy-mcp-ai' ),
-            __( 'Ask your host, CDN or security plugin to allow POST requests carrying JSON to /wp-json/easy-mcp-ai/. A rule that only permits GET, or that rejects JSON bodies, is the usual cause.', 'easy-mcp-ai' ),
+            __( 'An ordinary request to this site\'s AI endpoint is answered correctly, but the same request sent the way an AI assistant actually sends it — as a POST carrying JSON — is not. Something in front of WordPress is refusing it on the request type alone, so no AI client can make a single call, however it signs in.', 'wordpress-code-ai' ),
+            __( 'Ask your host, CDN or security plugin to allow POST requests carrying JSON to /wp-json/wordpress-code-ai/. A rule that only permits GET, or that rejects JSON bodies, is the usual cause.', 'wordpress-code-ai' ),
             array( 'post_status' => is_array( $posted ) ? (int) $posted['status'] : 'no response' )
         );
     }
@@ -404,7 +404,7 @@ class Check_Edge_Block {
         }
 
         $response = \wp_remote_post(
-            \rest_url( 'easy-mcp-ai/v1/mcp' ),
+            \rest_url( 'wordpress-code-ai/v1/mcp' ),
             array(
                 'timeout'     => self::TIMEOUT,
                 'redirection' => 0,
@@ -439,7 +439,7 @@ class Check_Edge_Block {
         }
 
         $response = \wp_remote_get(
-            \rest_url( 'easy-mcp-ai/v1/mcp' ),
+            \rest_url( 'wordpress-code-ai/v1/mcp' ),
             array(
                 'timeout'     => self::TIMEOUT,
                 'redirection' => 0,
@@ -463,7 +463,7 @@ class Check_Edge_Block {
     }
 
     private static function label() {
-        return __( 'AI assistant can reach this site', 'easy-mcp-ai' );
+        return __( 'AI assistant can reach this site', 'wordpress-code-ai' );
     }
 
     private static function unknown( $reason, array $evidence = array() ) {
@@ -478,7 +478,7 @@ class Check_Edge_Block {
         return Diagnostic_Result::unknown(
             'a12',
             Diagnostic_Result::TIER_BLOCKER,
-            __( 'This site accepts posted AI requests', 'easy-mcp-ai' ),
+            __( 'This site accepts posted AI requests', 'wordpress-code-ai' ),
             $reason,
             $evidence
         );

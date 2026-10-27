@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Plugins;
+namespace wordpress_code_ai\Tools\Plugins;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
-use Easy_MCP_AI\Tools\Package_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Package_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -31,7 +31,7 @@ class Uninstall_Plugin extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Uninstalls an inactive plugin, as `wp plugin uninstall` does and as the Delete link on the Plugins screen does: runs the plugin\'s own uninstall routine (its uninstall.php or uninstall hook — typically deleting its settings and database tables), then deletes its files and translations. Required: `plugin` (e.g. "hello-dolly/hello.php" — the `plugin` field from wp_list_plugins). Optional: `deactivate` (boolean, default false: deactivate an active plugin first instead of refusing), `skip_delete` (boolean, default false: run only the uninstall routine and keep the files). Returns { plugin, name, version, deactivated, uninstall_routine ("uninstall.php" | "uninstall hook" | "none"), files_deleted, changed }; with skip_delete and no uninstall routine nothing runs and changed is false. Irreversible: change history records option deletions but not dropped tables or deleted files. The plugin\'s uninstall code runs in this request, so a fatal error in it fails the call. Refused when the plugin is not installed, when it is active (unless deactivate: true) or network-active, when other installed plugins require it, when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress cannot write the plugins folder or wp-content directly, on multisite unless you are a super admin with manage_network_plugins, and for Easy MCP AI itself. Use wp_delete_plugin to delete the files without the uninstall routine. Off by default; an administrator switches it on.';
+        return 'Uninstalls an inactive plugin, as `wp plugin uninstall` does and as the Delete link on the Plugins screen does: runs the plugin\'s own uninstall routine (its uninstall.php or uninstall hook — typically deleting its settings and database tables), then deletes its files and translations. Required: `plugin` (e.g. "hello-dolly/hello.php" — the `plugin` field from wp_list_plugins). Optional: `deactivate` (boolean, default false: deactivate an active plugin first instead of refusing), `skip_delete` (boolean, default false: run only the uninstall routine and keep the files). Returns { plugin, name, version, deactivated, uninstall_routine ("uninstall.php" | "uninstall hook" | "none"), files_deleted, changed }; with skip_delete and no uninstall routine nothing runs and changed is false. Irreversible: change history records option deletions but not dropped tables or deleted files. The plugin\'s uninstall code runs in this request, so a fatal error in it fails the call. Refused when the plugin is not installed, when it is active (unless deactivate: true) or network-active, when other installed plugins require it, when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress cannot write the plugins folder or wp-content directly, on multisite unless you are a super admin with manage_network_plugins, and for wordpress-code-ai itself. Use wp_delete_plugin to delete the files without the uninstall routine. Off by default; an administrator switches it on.';
     }
 
     public function get_category() {
@@ -88,13 +88,13 @@ class Uninstall_Plugin extends Base_Tool {
     public function describe( array $arguments ) {
         if ( $this->parse_flag( $arguments, 'skip_delete' ) ) {
             /* translators: 1: quoted plugin name and version, 2: plugin file */
-            $format = __( 'Run the uninstall routine of plugin %1$s (%2$s), which typically deletes its settings and tables, and keep its files.', 'easy-mcp-ai' );
+            $format = __( 'Run the uninstall routine of plugin %1$s (%2$s), which typically deletes its settings and tables, and keep its files.', 'wordpress-code-ai' );
         } else {
             /* translators: 1: quoted plugin name and version, 2: plugin file */
-            $format = __( 'Uninstall plugin %1$s (%2$s): run its uninstall routine, which typically deletes its settings and tables, then delete its files. Nothing can be restored.', 'easy-mcp-ai' );
+            $format = __( 'Uninstall plugin %1$s (%2$s): run its uninstall routine, which typically deletes its settings and tables, then delete its files. Nothing can be restored.', 'wordpress-code-ai' );
         }
         if ( $this->parse_flag( $arguments, 'deactivate' ) ) {
-            $format .= ' ' . __( 'It is deactivated first if active.', 'easy-mcp-ai' );
+            $format .= ' ' . __( 'It is deactivated first if active.', 'wordpress-code-ai' );
         }
         return $this->describe_removal( $arguments, $format );
     }

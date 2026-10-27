@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\SeRanking;
+namespace wordpress_code_ai\SeRanking;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

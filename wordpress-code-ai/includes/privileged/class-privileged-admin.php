@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Privileged;
+namespace wordpress_code_ai\Privileged;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -17,7 +17,7 @@ final class Privileged_Admin {
         if ( ! defined( 'WP_CLI' ) || ! WP_CLI || ! class_exists( '\\WP_CLI' ) ) {
             return;
         }
-        \WP_CLI::add_command( 'easy-mcp-ai privileged status', array( __CLASS__, 'cli_status' ) );
+        \WP_CLI::add_command( 'wordpress-code-ai privileged status', array( __CLASS__, 'cli_status' ) );
     }
 
     
@@ -33,7 +33,7 @@ final class Privileged_Admin {
         if ( ! empty( $status['strict'] ) ) {
             $source .= ', strict: tools it does not name are off';
         }
-        \WP_CLI::line( sprintf( 'EASY_MCP_AI_TOOLS: %s', $source ) );
+        \WP_CLI::line( sprintf( 'WORDPRESS_CODE_AI_TOOLS: %s', $source ) );
         $rows = array();
         foreach ( $status['groups'] as $group => $state ) {
             $on = array();

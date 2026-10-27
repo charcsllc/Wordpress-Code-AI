@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,7 +16,7 @@ class Create_Product_Variation extends Base_Tool {
 	}
 
 	public function get_description() {
-		return 'Creates a variation for a WooCommerce variable product. Required: product_id, attributes (array of {name, option}). Optional: regular_price, sale_price, sku, stock_quantity, manage_stock, stock_status, weight, description, status, virtual, downloadable, image ({id} or {src}, as for product images), gallery_image_ids (WooCommerce 11.1+: media library image IDs in order; the main image is left out). Returns the variation summary, plus image / gallery_image_ids as saved, each when sent. If **Easy MCP AI → Settings → Force draft on create** is enabled, status is silently overridden to `draft` regardless of the value supplied — outside the declared publish/private enum.';
+		return 'Creates a variation for a WooCommerce variable product. Required: product_id, attributes (array of {name, option}). Optional: regular_price, sale_price, sku, stock_quantity, manage_stock, stock_status, weight, description, status, virtual, downloadable, image ({id} or {src}, as for product images), gallery_image_ids (WooCommerce 11.1+: media library image IDs in order; the main image is left out). Returns the variation summary, plus image / gallery_image_ids as saved, each when sent. If **wordpress-code-ai → Settings → Force draft on create** is enabled, status is silently overridden to `draft` regardless of the value supplied — outside the declared publish/private enum.';
 	}
 
 	public function get_category() {

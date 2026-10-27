@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\MCP;
+namespace wordpress_code_ai\MCP;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -201,7 +201,7 @@ class Gemini_Safe_Schema {
 
         // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
         error_log( sprintf(
-            'Easy MCP AI: schema transform recorded at %s, which tools/call cannot reverse — the value is advertised converted but reaches the ability unconverted, so the ability may reject it. This covers array-item paths, schema-structure paths (oneOf/anyOf/allOf/not, patternProperties, if/then/else) and property names containing "." or empty. Path(s): %s. See findings A1/A11/A12 in docs/plans/2026-07-22-gemini-schema-compatibility.md.',
+            'wordpress-code-ai: schema transform recorded at %s, which tools/call cannot reverse — the value is advertised converted but reaches the ability unconverted, so the ability may reject it. This covers array-item paths, schema-structure paths (oneOf/anyOf/allOf/not, patternProperties, if/then/else) and property names containing "." or empty. Path(s): %s. See findings A1/A11/A12 in docs/plans/2026-07-22-gemini-schema-compatibility.md.',
             1 === count( $unreachable ) ? 'a path coerce() cannot reach' : 'paths coerce() cannot reach',
             implode( ', ', $readable )
         ) );

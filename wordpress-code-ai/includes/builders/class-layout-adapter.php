@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Builders;
+namespace wordpress_code_ai\Builders;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -263,12 +263,12 @@ abstract class Layout_Adapter {
 
 
 
-    public static function refusal( array $problems ): \Easy_MCP_AI\MCP\Detailed_Tool_Error {
-        if ( 1 === count( $problems ) && strlen( $problems[0] ) <= \Easy_MCP_AI\MCP\Detailed_Tool_Error::MAX_MESSAGE ) {
-            return new \Easy_MCP_AI\MCP\Detailed_Tool_Error( $problems[0] );
+    public static function refusal( array $problems ): \wordpress_code_ai\MCP\Detailed_Tool_Error {
+        if ( 1 === count( $problems ) && strlen( $problems[0] ) <= \wordpress_code_ai\MCP\Detailed_Tool_Error::MAX_MESSAGE ) {
+            return new \wordpress_code_ai\MCP\Detailed_Tool_Error( $problems[0] );
         }
         $summary = 1 === count( $problems ) ? 'Nothing was saved; the reason follows.' : sprintf( 'Nothing was saved: %d problems, each listed below.', count( $problems ) );
-        return new \Easy_MCP_AI\MCP\Detailed_Tool_Error( $summary, '- ' . implode( "\n- ", $problems ) );
+        return new \wordpress_code_ai\MCP\Detailed_Tool_Error( $summary, '- ' . implode( "\n- ", $problems ) );
     }
 
     

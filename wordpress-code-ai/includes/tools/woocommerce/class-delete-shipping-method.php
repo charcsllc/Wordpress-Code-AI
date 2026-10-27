@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -68,7 +68,7 @@ class Delete_Shipping_Method extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: method title, 2: method type, 3: instance id, 4: zone id */
-            __( "Permanently remove shipping method '%1\$s' (%2\$s, instance %3\$d) from shipping zone %4\$d.", 'easy-mcp-ai' ),
+            __( "Permanently remove shipping method '%1\$s' (%2\$s, instance %3\$d) from shipping zone %4\$d.", 'wordpress-code-ai' ),
             (string) ( $method['title'] ?? '' ),
             (string) ( $method['method_id'] ?? '' ),
             $instance_id,

@@ -8,7 +8,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -16,9 +16,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class App_Page {
 
-    const SLUG_PREFIX = 'easy-mcp-ai';
-    const HANDLE      = 'easy-mcp-ai-app';
-    const ROOT_ID     = 'easy-mcp-ai-app';
+    const SLUG_PREFIX = 'wordpress-code-ai';
+    const HANDLE      = 'wordpress-code-ai-app';
+    const ROOT_ID     = 'wordpress-code-ai-app';
 
     
 
@@ -46,10 +46,10 @@ class App_Page {
     private $setup_hook = '';
 
     
-    const BODY_CLASS = 'easy-mcp-ai-app';
+    const BODY_CLASS = 'wordpress-code-ai-app';
 
     
-    const SETUP_BODY_CLASS = 'easy-mcp-ai-setup';
+    const SETUP_BODY_CLASS = 'wordpress-code-ai-setup';
 
     public function __construct() {
         
@@ -86,12 +86,12 @@ class App_Page {
 
     public function admin_title( $admin_title, $title ) {
         $hook = isset( $GLOBALS['hook_suffix'] ) ? $GLOBALS['hook_suffix'] : '';
-        if ( ! \Easy_MCP_AI\Config::is_white_labelled() || ! $this->is_app_hook( $hook ) ) {
+        if ( ! \wordpress_code_ai\Config::is_white_labelled() || ! $this->is_app_hook( $hook ) ) {
             return $admin_title;
         }
         /* translators: Admin screen title. 1: Admin screen name, 2: Network or site name. */
         $format = \__( '%1$s &lsaquo; %2$s &#8212; WordPress' ); // phpcs:ignore WordPress.WP.I18n.MissingArgDomain -- core's own string, so the title is translated as on every other screen.
-        return sprintf( $format, $title, (string) \Easy_MCP_AI\Config::get( 'brand_name' ) );
+        return sprintf( $format, $title, (string) \wordpress_code_ai\Config::get( 'brand_name' ) );
     }
 
     
@@ -205,12 +205,12 @@ class App_Page {
 
     public static function pages() {
         $pages = array(
-            'dashboard'   => array( '', \__( 'Dashboard', 'easy-mcp-ai' ) ),
-            'connections' => array( '-connections', \__( 'Connections', 'easy-mcp-ai' ) ),
-            'tools'       => array( '-tools', \__( 'Tools', 'easy-mcp-ai' ) ),
-            'activity'    => array( '-activity', \__( 'Activity', 'easy-mcp-ai' ) ),
-            'settings'    => array( '-settings', \__( 'Settings', 'easy-mcp-ai' ) ),
-            'setup'       => array( '-setup', \__( 'Set up', 'easy-mcp-ai' ) ),
+            'dashboard'   => array( '', \__( 'Dashboard', 'wordpress-code-ai' ) ),
+            'connections' => array( '-connections', \__( 'Connections', 'wordpress-code-ai' ) ),
+            'tools'       => array( '-tools', \__( 'Tools', 'wordpress-code-ai' ) ),
+            'activity'    => array( '-activity', \__( 'Activity', 'wordpress-code-ai' ) ),
+            'settings'    => array( '-settings', \__( 'Settings', 'wordpress-code-ai' ) ),
+            'setup'       => array( '-setup', \__( 'Set up', 'wordpress-code-ai' ) ),
         );
         
         
@@ -235,10 +235,10 @@ class App_Page {
 
 
     public static function has_kit_page() {
-        $chunk = defined( 'EASY_MCP_AI_PLUGIN_DIR' )
-            ? EASY_MCP_AI_PLUGIN_DIR . 'assets/build/page-kit.js'
+        $chunk = defined( 'WORDPRESS_CODE_AI_PLUGIN_DIR' )
+            ? WORDPRESS_CODE_AI_PLUGIN_DIR . 'assets/build/page-kit.js'
             : '';
-        return (bool) \apply_filters( 'easy_mcp_ai_kit_page', '' !== $chunk && is_readable( $chunk ) );
+        return (bool) \apply_filters( 'wordpress_code_ai_kit_page', '' !== $chunk && is_readable( $chunk ) );
     }
 
     
@@ -265,8 +265,8 @@ class App_Page {
 
     public function register_menus() {
         $this->hooks[] = \add_menu_page(
-            \__( 'Easy MCP AI', 'easy-mcp-ai' ),
-            \__( 'Easy MCP AI', 'easy-mcp-ai' ),
+            \__( 'wordpress-code-ai', 'wordpress-code-ai' ),
+            \__( 'wordpress-code-ai', 'wordpress-code-ai' ),
             'manage_options',
             self::SLUG_PREFIX,
             array( $this, 'render_app' ),
@@ -294,8 +294,8 @@ class App_Page {
         
         \add_submenu_page(
             self::SLUG_PREFIX,
-            \__( 'Change history', 'easy-mcp-ai' ),
-            \__( 'Change history', 'easy-mcp-ai' ),
+            \__( 'Change history', 'wordpress-code-ai' ),
+            \__( 'Change history', 'wordpress-code-ai' ),
             'manage_options',
             self::change_history_slug(),
             '',
@@ -310,7 +310,7 @@ class App_Page {
 
 
     public static function menu_icon(): string {
-        if ( \Easy_MCP_AI\Config::is_white_labelled() ) {
+        if ( \wordpress_code_ai\Config::is_white_labelled() ) {
             return self::GENERIC_MENU_ICON;
         }
         return 'data:image/svg+xml;base64,' . base64_encode( self::MENU_ICON_SVG ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode -- core's svg-painter.js reads only a base64 data URI.
@@ -357,8 +357,8 @@ class App_Page {
         }
         if ( $setup_pending ) {
             \remove_submenu_page( self::SLUG_PREFIX, self::change_history_slug() );
-            if ( class_exists( \Easy_MCP_AI\Themeisle_SDK::class ) ) {
-                \remove_submenu_page( self::SLUG_PREFIX, \Easy_MCP_AI\Themeisle_SDK::ABOUT_US_MENU_SLUG );
+            if ( class_exists( \wordpress_code_ai\Themeisle_SDK::class ) ) {
+                \remove_submenu_page( self::SLUG_PREFIX, \wordpress_code_ai\Themeisle_SDK::ABOUT_US_MENU_SLUG );
             }
         }
     }
@@ -417,16 +417,16 @@ class App_Page {
         if ( 'setup' === $key ) {
             return '';
         }
-        $bar  = '<span class="easy-mcp-ai-sk__bone easy-mcp-ai-sk__bone--line"></span>';
-        $card = '<div class="easy-mcp-ai-sk__card">' . str_replace( '--line', '--line easy-mcp-ai-sk__bone--short', $bar ) . $bar . str_replace( '--line', '--line easy-mcp-ai-sk__bone--mid', $bar ) . '</div>';
-        $main = '<div class="easy-mcp-ai-sk__col">' . $card . $card . '</div>';
+        $bar  = '<span class="wordpress-code-ai-sk__bone wordpress-code-ai-sk__bone--line"></span>';
+        $card = '<div class="wordpress-code-ai-sk__card">' . str_replace( '--line', '--line wordpress-code-ai-sk__bone--short', $bar ) . $bar . str_replace( '--line', '--line wordpress-code-ai-sk__bone--mid', $bar ) . '</div>';
+        $main = '<div class="wordpress-code-ai-sk__col">' . $card . $card . '</div>';
         $body = in_array( $key, self::FRAMED_PAGES, true )
-            ? '<div class="easy-mcp-ai-sk__frame"><span class="easy-mcp-ai-sk__bone easy-mcp-ai-sk__bone--title"></span>' . $main . '<div class="easy-mcp-ai-sk__col easy-mcp-ai-sk__aside">' . $card . $card . '</div></div>'
-            : '<div class="easy-mcp-ai-sk__frame easy-mcp-ai-sk__frame--single"><span class="easy-mcp-ai-sk__bone easy-mcp-ai-sk__bone--title"></span>' . $main . '</div>';
-        return '<div class="easy-mcp-ai-sk" aria-busy="true" data-testid="app-skeleton">'
-            . '<div class="easy-mcp-ai-sk__bar"><span class="easy-mcp-ai-sk__bone easy-mcp-ai-sk__bone--logo"></span><span class="easy-mcp-ai-sk__bone easy-mcp-ai-sk__bone--status"></span></div>'
-            . '<div class="easy-mcp-ai-sk__main">' . $body . '</div>'
-            . '<span class="screen-reader-text">' . \esc_html__( 'Loading…', 'easy-mcp-ai' ) . '</span>'
+            ? '<div class="wordpress-code-ai-sk__frame"><span class="wordpress-code-ai-sk__bone wordpress-code-ai-sk__bone--title"></span>' . $main . '<div class="wordpress-code-ai-sk__col wordpress-code-ai-sk__aside">' . $card . $card . '</div></div>'
+            : '<div class="wordpress-code-ai-sk__frame wordpress-code-ai-sk__frame--single"><span class="wordpress-code-ai-sk__bone wordpress-code-ai-sk__bone--title"></span>' . $main . '</div>';
+        return '<div class="wordpress-code-ai-sk" aria-busy="true" data-testid="app-skeleton">'
+            . '<div class="wordpress-code-ai-sk__bar"><span class="wordpress-code-ai-sk__bone wordpress-code-ai-sk__bone--logo"></span><span class="wordpress-code-ai-sk__bone wordpress-code-ai-sk__bone--status"></span></div>'
+            . '<div class="wordpress-code-ai-sk__main">' . $body . '</div>'
+            . '<span class="screen-reader-text">' . \esc_html__( 'Loading…', 'wordpress-code-ai' ) . '</span>'
             . '</div>';
     }
 
@@ -439,14 +439,14 @@ class App_Page {
 
 
     public static function skeleton_css() {
-        $s = '#' . self::ROOT_ID . ' .easy-mcp-ai-sk';
+        $s = '#' . self::ROOT_ID . ' .wordpress-code-ai-sk';
         return $s . '{display:flex;flex-direction:column;min-height:calc(100vh - var(--wp-admin--admin-bar--height,32px));}'
             . $s . '__bar{display:flex;align-items:center;gap:16px;height:3.25rem;padding:0 24px;background:#FFFFFF;border-bottom:1px solid #D9DCE1;box-sizing:border-box;}'
             . $s . '__main{padding:24px;}'
             . $s . '__frame{display:grid;grid-template-columns:minmax(0,1fr);gap:20px;max-width:87.5rem;margin:0 auto;}'
             . $s . '__col{display:flex;flex-direction:column;gap:20px;min-width:0;}'
             . $s . '__card{display:flex;flex-direction:column;gap:12px;padding:20px;background:#FFFFFF;border:1px solid #D9DCE1;border-radius:3px;}'
-            . $s . '__bone{display:block;background:#EEF0F3;border-radius:3px;animation:easy-mcp-ai-sk-pulse 1.4s cubic-bezier(0.4,0,0.6,1) infinite;}'
+            . $s . '__bone{display:block;background:#EEF0F3;border-radius:3px;animation:wordpress-code-ai-sk-pulse 1.4s cubic-bezier(0.4,0,0.6,1) infinite;}'
             . $s . '__bone--line{height:12px;}'
             . $s . '__bone--short{width:40%;}'
             . $s . '__bone--mid{width:80%;}'
@@ -455,7 +455,7 @@ class App_Page {
             . $s . '__bone--status{height:14px;width:6rem;}'
             . '@media (min-width:1100px){' . $s . '__frame{grid-template-columns:minmax(0,1fr) minmax(16.25rem,18.75rem);}' . $s . '__frame--single{grid-template-columns:minmax(0,1fr);}' . $s . '__bone--title{grid-column:1/-1;}}'
             . '@media (max-width:782px){' . $s . '__bar{padding:0 12px;}}'
-            . '@keyframes easy-mcp-ai-sk-pulse{50%{opacity:.5;}}'
+            . '@keyframes wordpress-code-ai-sk-pulse{50%{opacity:.5;}}'
             . '@media (prefers-reduced-motion:reduce){' . $s . '__bone{animation:none;}}';
     }
 
@@ -467,14 +467,14 @@ class App_Page {
             return;
         }
 
-        $build      = EASY_MCP_AI_PLUGIN_DIR . 'assets/build/';
+        $build      = WORDPRESS_CODE_AI_PLUGIN_DIR . 'assets/build/';
         $asset_file = $build . 'index.asset.php';
         if ( ! is_readable( $asset_file ) ) {
             return;
         }
         $asset = require $asset_file;
         $deps  = isset( $asset['dependencies'] ) && is_array( $asset['dependencies'] ) ? $asset['dependencies'] : array();
-        $ver   = isset( $asset['version'] ) ? (string) $asset['version'] : EASY_MCP_AI_VERSION;
+        $ver   = isset( $asset['version'] ) ? (string) $asset['version'] : WORDPRESS_CODE_AI_VERSION;
 
         
         
@@ -482,7 +482,7 @@ class App_Page {
             $runtime = require $build . 'runtime.asset.php';
             \wp_enqueue_script(
                 self::HANDLE . '-runtime',
-                EASY_MCP_AI_PLUGIN_URL . 'assets/build/runtime.js',
+                WORDPRESS_CODE_AI_PLUGIN_URL . 'assets/build/runtime.js',
                 isset( $runtime['dependencies'] ) && is_array( $runtime['dependencies'] ) ? $runtime['dependencies'] : array(),
                 isset( $runtime['version'] ) ? (string) $runtime['version'] : $ver,
                 true
@@ -490,18 +490,18 @@ class App_Page {
             $deps[] = self::HANDLE . '-runtime';
         }
 
-        \wp_enqueue_script( self::HANDLE, EASY_MCP_AI_PLUGIN_URL . 'assets/build/index.js', $deps, $ver, true );
+        \wp_enqueue_script( self::HANDLE, WORDPRESS_CODE_AI_PLUGIN_URL . 'assets/build/index.js', $deps, $ver, true );
         if ( file_exists( $build . 'index.css' ) ) {
-            \wp_enqueue_style( self::HANDLE, EASY_MCP_AI_PLUGIN_URL . 'assets/build/index.css', array(), $ver );
+            \wp_enqueue_style( self::HANDLE, WORDPRESS_CODE_AI_PLUGIN_URL . 'assets/build/index.css', array(), $ver );
         } else {
             \wp_register_style( self::HANDLE, false, array(), $ver );
             \wp_enqueue_style( self::HANDLE );
         }
         \wp_add_inline_style( self::HANDLE, self::canvas_css() );
-        \wp_set_script_translations( self::HANDLE, 'easy-mcp-ai', EASY_MCP_AI_PLUGIN_DIR . 'languages' );
+        \wp_set_script_translations( self::HANDLE, 'wordpress-code-ai', WORDPRESS_CODE_AI_PLUGIN_DIR . 'languages' );
         \wp_add_inline_script(
             self::HANDLE,
-            'window.easyMcpAi = ' . \wp_json_encode( self::bootstrap() ) . ';',
+            'window.wordpresscodeai = ' . \wp_json_encode( self::bootstrap() ) . ';',
             'before'
         );
     }
@@ -520,7 +520,7 @@ class App_Page {
             'slugPrefix'        => self::SLUG_PREFIX,
             'siteKind'          => Site_Kind::detect( \home_url() ),
             'isRtl'             => \is_rtl(),
-            'version'           => EASY_MCP_AI_VERSION,
+            'version'           => WORDPRESS_CODE_AI_VERSION,
             'userDisplayName'   => isset( $user->display_name ) ? (string) $user->display_name : '',
             'adminUrl'          => \admin_url( 'admin.php' ),
             
@@ -528,8 +528,8 @@ class App_Page {
             'timezone'          => self::site_timezone(),
             'dateFormat'        => self::site_date_format(),
             
-            'brandName'         => \__( 'Easy MCP AI', 'easy-mcp-ai' ),
-            'whiteLabel'        => \Easy_MCP_AI\Config::is_white_labelled(),
+            'brandName'         => \__( 'wordpress-code-ai', 'wordpress-code-ai' ),
+            'whiteLabel'        => \wordpress_code_ai\Config::is_white_labelled(),
         );
     }
 

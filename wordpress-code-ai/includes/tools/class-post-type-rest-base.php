@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
-use Easy_MCP_AI\Rest_Routes\Route_Gate;
+use wordpress_code_ai\Rest_Routes\Route_Gate;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

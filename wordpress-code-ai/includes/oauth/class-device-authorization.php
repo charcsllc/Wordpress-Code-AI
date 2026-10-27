@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -42,7 +42,7 @@ class Device_Authorization {
 
 
 
-    const NAMESPACE_V1 = 'easy-mcp-ai/v1';
+    const NAMESPACE_V1 = 'wordpress-code-ai/v1';
 
     
 
@@ -139,7 +139,7 @@ class Device_Authorization {
 
 
     public static function verification_uri() {
-        return home_url( '?easy_mcp_ai_oauth=device' );
+        return home_url( '?wordpress_code_ai_oauth=device' );
     }
 
     
@@ -181,14 +181,14 @@ class Device_Authorization {
             return $client_id;
         }
         if ( '' === $client_id ) {
-            return self::device_error( 'invalid_request', __( 'Missing required parameter: client_id', 'easy-mcp-ai' ) );
+            return self::device_error( 'invalid_request', __( 'Missing required parameter: client_id', 'wordpress-code-ai' ) );
         }
 
         
         
         $client = ( new Client_Registry() )->find_client( $client_id );
         if ( null === $client ) {
-            return self::device_error( 'invalid_client', __( 'Client not found or inactive.', 'easy-mcp-ai' ), 401 );
+            return self::device_error( 'invalid_client', __( 'Client not found or inactive.', 'wordpress-code-ai' ), 401 );
         }
 
         $auth_error = Token_Endpoint::authenticate_client( $request, $client, $basic );
@@ -202,7 +202,7 @@ class Device_Authorization {
         
         
         if ( ! self::client_supports_device_grant( $client ) ) {
-            return self::device_error( 'unauthorized_client', __( 'This client is not registered for the device authorization grant. Register with grant_types including urn:ietf:params:oauth:grant-type:device_code.', 'easy-mcp-ai' ) );
+            return self::device_error( 'unauthorized_client', __( 'This client is not registered for the device authorization grant. Register with grant_types including urn:ietf:params:oauth:grant-type:device_code.', 'wordpress-code-ai' ) );
         }
 
         
@@ -217,7 +217,7 @@ class Device_Authorization {
         $valid_scopes = Scope_Map::get_all_scopes();
         foreach ( $scope_list as $s ) {
             if ( 'mcp' !== $s && ! in_array( $s, $valid_scopes, true ) ) {
-                return self::device_error( 'invalid_scope', __( 'Unknown scope requested.', 'easy-mcp-ai' ) );
+                return self::device_error( 'invalid_scope', __( 'Unknown scope requested.', 'wordpress-code-ai' ) );
             }
         }
         $scope = implode( ' ', $scope_list );
@@ -230,13 +230,13 @@ class Device_Authorization {
             ? esc_url_raw( $resource_raw )
             : rest_url( self::NAMESPACE_V1 . '/mcp' );
         if ( ! Token_Endpoint::resource_matches( $resource, rest_url( self::NAMESPACE_V1 . '/mcp' ) ) ) {
-            return self::device_error( 'invalid_target', __( 'Resource parameter does not match this server.', 'easy-mcp-ai' ) );
+            return self::device_error( 'invalid_target', __( 'Resource parameter does not match this server.', 'wordpress-code-ai' ) );
         }
 
         $device_code = bin2hex( random_bytes( 32 ) );
         $user_code   = self::store_pending( $device_code, $client_id, $scope, $resource );
         if ( null === $user_code ) {
-            return self::device_error( 'server_error', __( 'Failed to store the device authorization request.', 'easy-mcp-ai' ), 500 );
+            return self::device_error( 'server_error', __( 'Failed to store the device authorization request.', 'wordpress-code-ai' ), 500 );
         }
 
         $response = new \WP_REST_Response(
@@ -354,7 +354,7 @@ class Device_Authorization {
 
     public static function table() {
         global $wpdb;
-        return $wpdb->prefix . 'easy_mcp_ai_oauth_device_codes';
+        return $wpdb->prefix . 'wordpress_code_ai_oauth_device_codes';
     }
 
     
@@ -386,7 +386,7 @@ class Device_Authorization {
             $inserted = $wpdb->insert(
                 $table,
                 array(
-                    'device_code_hash' => \Easy_MCP_AI\Auth\Token_Keys::hash_current( $device_code ),
+                    'device_code_hash' => \wordpress_code_ai\Auth\Token_Keys::hash_current( $device_code ),
                     'user_code_hash'   => self::hash_user_code( $user_code ),
                     'client_id'        => $client_id,
                     'wp_user_id'       => 0,
@@ -447,7 +447,7 @@ class Device_Authorization {
         $table = self::table();
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix; the lookup must be fresh.
         $row = $wpdb->get_row(
-            $wpdb->prepare( "SELECT * FROM {$table} WHERE device_code_hash = %s LIMIT 1", \Easy_MCP_AI\Auth\Token_Keys::hash_current( (string) $device_code ) )
+            $wpdb->prepare( "SELECT * FROM {$table} WHERE device_code_hash = %s LIMIT 1", \wordpress_code_ai\Auth\Token_Keys::hash_current( (string) $device_code ) )
         );
         // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
         return is_object( $row ) ? $row : null;
@@ -604,17 +604,17 @@ class Device_Authorization {
 
 
     public static function enforce_rate_limit() {
-        $ip = \Easy_MCP_AI\Client_IP::get();
+        $ip = \wordpress_code_ai\Client_IP::get();
 
-        $per_ip_key = 'easy_mcp_ai_device_rl_' . md5( $ip );
-        $global_key = 'easy_mcp_ai_device_rl_global';
+        $per_ip_key = 'wordpress_code_ai_device_rl_' . md5( $ip );
+        $global_key = 'wordpress_code_ai_device_rl_global';
 
         if ( \wp_using_ext_object_cache() ) {
-            \wp_cache_add( $per_ip_key, 0, 'easy_mcp_ai', HOUR_IN_SECONDS );
-            $ip_count = \wp_cache_incr( $per_ip_key, 1, 'easy_mcp_ai' );
+            \wp_cache_add( $per_ip_key, 0, 'wordpress_code_ai', HOUR_IN_SECONDS );
+            $ip_count = \wp_cache_incr( $per_ip_key, 1, 'wordpress_code_ai' );
 
-            \wp_cache_add( $global_key, 0, 'easy_mcp_ai', HOUR_IN_SECONDS );
-            $global_count = \wp_cache_incr( $global_key, 1, 'easy_mcp_ai' );
+            \wp_cache_add( $global_key, 0, 'wordpress_code_ai', HOUR_IN_SECONDS );
+            $global_count = \wp_cache_incr( $global_key, 1, 'wordpress_code_ai' );
         } else {
             $ip_count     = Token_Endpoint::rl_transient_increment( $per_ip_key );
             $global_count = Token_Endpoint::rl_transient_increment( $global_key );

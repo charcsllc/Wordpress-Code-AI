@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Tools\Privileged;
+namespace wordpress_code_ai\Tools\Privileged;
 
-use Easy_MCP_AI\Tools\Privileged_Tool;
-use Easy_MCP_AI\Privileged\Search_Replace\Jobs;
-use Easy_MCP_AI\Privileged\Search_Replace\Job_Store;
-use Easy_MCP_AI\Privileged\Search_Replace\Runner;
-use Easy_MCP_AI\Privileged\Search_Replace\Replacer;
+use wordpress_code_ai\Tools\Privileged_Tool;
+use wordpress_code_ai\Privileged\Search_Replace\Jobs;
+use wordpress_code_ai\Privileged\Search_Replace\Job_Store;
+use wordpress_code_ai\Privileged\Search_Replace\Runner;
+use wordpress_code_ai\Privileged\Search_Replace\Replacer;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -186,11 +186,11 @@ class Search_Replace_Run extends Privileged_Tool {
 
 
     public function approval_refusal( array $arguments ): ?string {
-        $length = \Easy_MCP_AI\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
+        $length = \wordpress_code_ai\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
         if ( null === $length ) {
             return null;
         }
-        return sprintf( 'This search-replace is %1$d characters long to describe and the approval page shows %2$d, so it was not sent for approval: a person must see every argument they approve. Use shorter old/new strings or fewer table names.', $length, \Easy_MCP_AI\Approvals\Approval_Gate::PREVIEW_MAX );
+        return sprintf( 'This search-replace is %1$d characters long to describe and the approval page shows %2$d, so it was not sent for approval: a person must see every argument they approve. Use shorter old/new strings or fewer table names.', $length, \wordpress_code_ai\Approvals\Approval_Gate::PREVIEW_MAX );
     }
 
     
@@ -433,7 +433,7 @@ class Search_Replace_Run extends Privileged_Tool {
 
     
     private function identity( int $user_id ): array {
-        $ctx = class_exists( '\\Easy_MCP_AI\\History\\Change_Context' ) ? \Easy_MCP_AI\History\Change_Context::all() : array();
+        $ctx = class_exists( '\\wordpress_code_ai\\History\\Change_Context' ) ? \wordpress_code_ai\History\Change_Context::all() : array();
         return array(
             'user_id'         => $user_id,
             'audit_id'        => $ctx['audit_id'] ?? null,

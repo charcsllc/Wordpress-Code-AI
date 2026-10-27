@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -64,7 +64,7 @@ class Delete_Shipping_Zone extends Base_Tool {
         $methods = $this->peek( '/wc/v3/shipping/zones/' . $id . '/methods', 'instance_id' );
         return sprintf(
             /* translators: 1: zone name, 2: zone id, 3: number of shipping methods */
-            __( "Permanently delete shipping zone '%1\$s' (ID %2\$d) with its locations and %3\$d shipping method(s).", 'easy-mcp-ai' ),
+            __( "Permanently delete shipping zone '%1\$s' (ID %2\$d) with its locations and %3\$d shipping method(s).", 'wordpress-code-ai' ),
             (string) ( $zone['name'] ?? '' ),
             $id,
             is_array( $methods ) ? count( $methods ) : 0

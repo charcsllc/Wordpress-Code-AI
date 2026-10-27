@@ -5,12 +5,12 @@
 
 
 
-namespace Easy_MCP_AI\Cache\Adapters;
+namespace wordpress_code_ai\Cache\Adapters;
 
-use Easy_MCP_AI\Cache\Cache_Adapter;
-use Easy_MCP_AI\Cache\Layer_Result;
-use Easy_MCP_AI\Cache\Purge_Request;
-use Easy_MCP_AI\Cache\Url_Guard;
+use wordpress_code_ai\Cache\Cache_Adapter;
+use wordpress_code_ai\Cache\Layer_Result;
+use wordpress_code_ai\Cache\Purge_Request;
+use wordpress_code_ai\Cache\Url_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

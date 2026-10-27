@@ -5,12 +5,12 @@
 
 
 
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
-use Easy_MCP_AI\Rest_Routes\Dedicated_Tools;
-use Easy_MCP_AI\Rest_Routes\Namespace_State;
-use Easy_MCP_AI\Rest_Routes\Route_Gate;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\Rest_Routes\Dedicated_Tools;
+use wordpress_code_ai\Rest_Routes\Namespace_State;
+use wordpress_code_ai\Rest_Routes\Route_Gate;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,7 +29,7 @@ abstract class Rest_Route_Tool extends Base_Tool {
     const MAX_RESPONSE_BYTES = 100000;
 
     
-    const MAX_RESPONSE_FILTER = 'easy_mcp_ai_rest_max_response_bytes';
+    const MAX_RESPONSE_FILTER = 'wordpress_code_ai_rest_max_response_bytes';
 
     
     const NAME_PREFIX = 'wp_rest_';
@@ -255,7 +255,7 @@ abstract class Rest_Route_Tool extends Base_Tool {
     protected function namespace_refusal( string $namespace ): ?string {
         if ( ! Namespace_State::is_enabled( $namespace ) ) {
             return 'constant' === Namespace_State::off_by( $namespace )
-                ? sprintf( 'The %s namespace is switched off on this site by EASY_MCP_AI_REST_NAMESPACES.', $namespace )
+                ? sprintf( 'The %s namespace is switched off on this site by WORDPRESS_CODE_AI_REST_NAMESPACES.', $namespace )
                 : sprintf( 'The %s namespace is switched off on this site. An administrator can switch it on under Tools.', $namespace );
         }
         return null;
@@ -291,10 +291,10 @@ abstract class Rest_Route_Tool extends Base_Tool {
                 if ( $route === $resolved['route'] && Namespace_State::normalize( $namespace ) === Namespace_State::normalize( $resolved['namespace'] ) ) {
                     return null;
                 }
-                return new \WP_Error( 'easy_mcp_ai_route_changed', 'WordPress matched a different route than the one this call was checked against, so it was not run.', array( 'status' => 409 ) );
+                return new \WP_Error( 'wordpress_code_ai_route_changed', 'WordPress matched a different route than the one this call was checked against, so it was not run.', array( 'status' => 409 ) );
             }
             $refusal = Route_Gate::refusal( $dispatched->get_method(), array( 'route' => (string) $route, 'namespace' => $namespace ), self::request_params( $dispatched ) );
-            return null === $refusal ? null : new \WP_Error( 'easy_mcp_ai_nested_route_refused', 'The route called another route that these tools never reach. ' . $refusal, array( 'status' => 403 ) );
+            return null === $refusal ? null : new \WP_Error( 'wordpress_code_ai_nested_route_refused', 'The route called another route that these tools never reach. ' . $refusal, array( 'status' => 403 ) );
         };
         \add_filter( 'rest_dispatch_request', $confirm, PHP_INT_MIN, 3 );
         try {
@@ -427,13 +427,13 @@ abstract class Rest_Route_Tool extends Base_Tool {
 
 
     private static function changes_so_far(): ?int {
-        if ( ! class_exists( '\\Easy_MCP_AI\\History\\Change_Context' ) || ! \Easy_MCP_AI\History\Change_Context::is_active() ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\History\\Change_Context' ) || ! \wordpress_code_ai\History\Change_Context::is_active() ) {
             return null;
         }
-        if ( class_exists( '\\Easy_MCP_AI\\Config' ) && ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_enabled', true ) ) {
+        if ( class_exists( '\\wordpress_code_ai\\Config' ) && ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_enabled', true ) ) {
             return null;
         }
-        return \Easy_MCP_AI\History\Change_Context::rows_written();
+        return \wordpress_code_ai\History\Change_Context::rows_written();
     }
 
     

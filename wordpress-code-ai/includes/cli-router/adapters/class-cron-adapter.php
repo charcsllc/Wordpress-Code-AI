@@ -1,15 +1,15 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Batch;
-use Easy_MCP_AI\Cli_Router\Cli_Exit;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Output;
-use Easy_MCP_AI\Cli_Router\Self_Protection;
-use Easy_MCP_AI\Cli_Router\Handlers\Cron_Handler;
+use wordpress_code_ai\Cli_Router\Batch;
+use wordpress_code_ai\Cli_Router\Cli_Exit;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Output;
+use wordpress_code_ai\Cli_Router\Self_Protection;
+use wordpress_code_ai\Cli_Router\Handlers\Cron_Handler;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -295,7 +295,7 @@ class Cron_Adapter extends Command_Handler {
             array(),
             static function () {
                 try {
-                    \Easy_MCP_AI\Tools\Site_Health\Site_Health_Guard::require_network_admin_on_multisite( 'run cron events' );
+                    \wordpress_code_ai\Tools\Site_Health\Site_Health_Guard::require_network_admin_on_multisite( 'run cron events' );
                 } catch ( \RuntimeException $e ) {
                     return $e->getMessage();
                 }
@@ -315,10 +315,10 @@ class Cron_Adapter extends Command_Handler {
             'current_call_may_use',
             array( self::TOOL ),
             static function ( $tool ) {
-                if ( ! class_exists( '\\Easy_MCP_AI\\MCP\\Server', false ) || ! method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' ) ) {
+                if ( ! class_exists( '\\wordpress_code_ai\\MCP\\Server', false ) || ! method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' ) ) {
                     return true;
                 }
-                return false !== \Easy_MCP_AI\MCP\Server::current_call_may_use( $tool );
+                return false !== \wordpress_code_ai\MCP\Server::current_call_may_use( $tool );
             }
         );
     }

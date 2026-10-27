@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router;
+namespace wordpress_code_ai\Cli_Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

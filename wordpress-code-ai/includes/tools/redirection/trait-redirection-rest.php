@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Redirection;
+namespace wordpress_code_ai\Tools\Redirection;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

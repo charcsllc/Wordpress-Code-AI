@@ -5,13 +5,13 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Admin\Setup_State;
-use Easy_MCP_AI\Admin\Site_Kind;
-use Easy_MCP_AI\Admin\Support_Text;
-use Easy_MCP_AI\Diagnostics\Blocker_Copy;
-use Easy_MCP_AI\Diagnostics\Diagnostic_Result;
+use wordpress_code_ai\Admin\Setup_State;
+use wordpress_code_ai\Admin\Site_Kind;
+use wordpress_code_ai\Admin\Support_Text;
+use wordpress_code_ai\Diagnostics\Blocker_Copy;
+use wordpress_code_ai\Diagnostics\Diagnostic_Result;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -126,7 +126,7 @@ class Status_Controller extends Admin_Rest_Controller {
         return $this->htaccess_write(
             'write_auth_rule',
             'auth_rule',
-            array( 'auth_rule_refused' => array( 'easy_mcp_ai_auth_rule_refused', self::network_refusal(), 403 ) )
+            array( 'auth_rule_refused' => array( 'wordpress_code_ai_auth_rule_refused', self::network_refusal(), 403 ) )
         );
     }
 
@@ -143,10 +143,10 @@ class Status_Controller extends Admin_Rest_Controller {
             'write_plain_routes',
             'plain_routes',
             array(
-                'plain_routes_refused'        => array( 'easy_mcp_ai_plain_routes_refused', self::network_refusal(), 403 ),
+                'plain_routes_refused'        => array( 'wordpress_code_ai_plain_routes_refused', self::network_refusal(), 403 ),
                 'plain_routes_not_applicable' => array(
-                    'easy_mcp_ai_plain_routes_not_applicable',
-                    \__( 'Permalinks are no longer Plain on this site, so there are no rules to add. Reload the page.', 'easy-mcp-ai' ),
+                    'wordpress_code_ai_plain_routes_not_applicable',
+                    \__( 'Permalinks are no longer Plain on this site, so there are no rules to add. Reload the page.', 'wordpress-code-ai' ),
                     409,
                 ),
             )
@@ -182,7 +182,7 @@ class Status_Controller extends Admin_Rest_Controller {
 
     
     private static function network_refusal(): string {
-        return \__( 'Not permitted: on a network only a super administrator can change .htaccess.', 'easy-mcp-ai' );
+        return \__( 'Not permitted: on a network only a super administrator can change .htaccess.', 'wordpress-code-ai' );
     }
 
     private function payload( $results ) {
@@ -201,8 +201,8 @@ class Status_Controller extends Admin_Rest_Controller {
             }
         }
         $last_run = $this->call( 'last_run' );
-        $endpoint = \rest_url( 'easy-mcp-ai/v1/mcp' );
-        $version  = defined( 'EASY_MCP_AI_VERSION' ) ? EASY_MCP_AI_VERSION : '';
+        $endpoint = \rest_url( 'wordpress-code-ai/v1/mcp' );
+        $version  = defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '';
         return self::build_payload(
             $results,
             Site_Kind::detect( \home_url() ),
@@ -213,12 +213,12 @@ class Status_Controller extends Admin_Rest_Controller {
                 'mailto'          => Support_Text::mailto( \home_url(), $version ),
             ),
             
-            true === \Easy_MCP_AI\Config::get( 'paused' ),
+            true === \wordpress_code_ai\Config::get( 'paused' ),
             Setup_State::is_complete(),
-            \Easy_MCP_AI\Config::is_locked( 'paused' ) ? \Easy_MCP_AI\Config::constant_name( 'paused' ) : null,
+            \wordpress_code_ai\Config::is_locked( 'paused' ) ? \wordpress_code_ai\Config::constant_name( 'paused' ) : null,
             $actions,
-            \Easy_MCP_AI\Config_Admin::invalid_settings(),
-            \Easy_MCP_AI\Config::source( 'paused' ),
+            \wordpress_code_ai\Config_Admin::invalid_settings(),
+            \wordpress_code_ai\Config::source( 'paused' ),
             true === $this->call( 'connection_due' )
         );
     }

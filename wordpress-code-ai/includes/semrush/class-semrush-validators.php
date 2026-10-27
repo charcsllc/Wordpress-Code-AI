@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Semrush;
+namespace wordpress_code_ai\Semrush;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

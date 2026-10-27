@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Invocation;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

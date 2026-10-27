@@ -31,16 +31,16 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Admin\Access_Presets;
-use Easy_MCP_AI\Admin\OAuth_Admin;
-use Easy_MCP_AI\Config;
-use Easy_MCP_AI\OAuth\Client_Metadata_Support;
-use Easy_MCP_AI\OAuth\Client_Registry;
-use Easy_MCP_AI\OAuth\OAuth_Site_Move;
-use Easy_MCP_AI\OAuth\Scope_Map;
-use Easy_MCP_AI\Privileged\Privileged_Groups;
+use wordpress_code_ai\Admin\Access_Presets;
+use wordpress_code_ai\Admin\OAuth_Admin;
+use wordpress_code_ai\Config;
+use wordpress_code_ai\OAuth\Client_Metadata_Support;
+use wordpress_code_ai\OAuth\Client_Registry;
+use wordpress_code_ai\OAuth\OAuth_Site_Move;
+use wordpress_code_ai\OAuth\Scope_Map;
+use wordpress_code_ai\Privileged\Privileged_Groups;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -138,10 +138,10 @@ class OAuth_Controller extends Admin_Rest_Controller {
             $seconds = self::ttl_seconds( $raw );
             if ( null === $seconds ) {
                 return $this->fail(
-                    'easy_mcp_ai_invalid_param',
+                    'wordpress_code_ai_invalid_param',
                     sprintf(
                         /* translators: %d: minimum seconds */
-                        \__( 'Enter a whole number of seconds, at least %d.', 'easy-mcp-ai' ),
+                        \__( 'Enter a whole number of seconds, at least %d.', 'wordpress-code-ai' ),
                         self::TTL_MIN
                     ),
                     400,
@@ -155,7 +155,7 @@ class OAuth_Controller extends Admin_Rest_Controller {
         $dcr = $request->get_param( 'dcrEnabled' );
         if ( null !== $dcr ) {
             if ( ! is_bool( $dcr ) && ! in_array( $dcr, array( 0, 1, '0', '1', 'true', 'false' ), true ) ) {
-                return $this->fail( 'easy_mcp_ai_invalid_param', \__( 'Expected true or false.', 'easy-mcp-ai' ), 400, array( 'field' => 'dcrEnabled' ) );
+                return $this->fail( 'wordpress_code_ai_invalid_param', \__( 'Expected true or false.', 'wordpress-code-ai' ), 400, array( 'field' => 'dcrEnabled' ) );
             }
             $next['dcrEnabled'] = \rest_sanitize_boolean( $dcr );
             $touched[]          = 'dcrEnabled';
@@ -164,8 +164,8 @@ class OAuth_Controller extends Admin_Rest_Controller {
         foreach ( $touched as $field ) {
             if ( $current['locked'][ $field ] ) {
                 return $this->fail(
-                    'easy_mcp_ai_setting_locked',
-                    \__( 'This setting is set in wp-config.php or the environment and cannot be changed here.', 'easy-mcp-ai' ),
+                    'wordpress_code_ai_setting_locked',
+                    \__( 'This setting is set in wp-config.php or the environment and cannot be changed here.', 'wordpress-code-ai' ),
                     409,
                     array( 'field' => $field )
                 );
@@ -187,9 +187,9 @@ class OAuth_Controller extends Admin_Rest_Controller {
 
     public static function settings_payload() {
         return array(
-            'accessTokenTtl'  => (int) Config::validate( 'oauth_access_token_ttl', Config::get( 'easy_mcp_ai_oauth_access_token_ttl', 3600 ) ),
-            'refreshTokenTtl' => (int) Config::validate( 'oauth_refresh_token_ttl', Config::get( 'easy_mcp_ai_oauth_refresh_token_ttl', 2592000 ) ),
-            'dcrEnabled'      => (bool) Config::get( 'easy_mcp_ai_oauth_dcr_enabled', true ),
+            'accessTokenTtl'  => (int) Config::validate( 'oauth_access_token_ttl', Config::get( 'wordpress_code_ai_oauth_access_token_ttl', 3600 ) ),
+            'refreshTokenTtl' => (int) Config::validate( 'oauth_refresh_token_ttl', Config::get( 'wordpress_code_ai_oauth_refresh_token_ttl', 2592000 ) ),
+            'dcrEnabled'      => (bool) Config::get( 'wordpress_code_ai_oauth_dcr_enabled', true ),
             'defaults'        => array(
                 'accessTokenTtl'  => 3600,
                 'refreshTokenTtl' => 2592000,
@@ -254,8 +254,8 @@ class OAuth_Controller extends Admin_Rest_Controller {
 
 
     public function get_clients( $request ) {
-        $clients = $this->wpdb->prefix . 'easy_mcp_ai_oauth_clients';
-        $tokens  = $this->wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $clients = $this->wpdb->prefix . 'wordpress_code_ai_oauth_clients';
+        $tokens  = $this->wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
         $now     = \current_time( 'mysql', true );
         
         
@@ -306,7 +306,7 @@ class OAuth_Controller extends Admin_Rest_Controller {
     public function delete_client( $request ) {
         $client_id = \sanitize_text_field( (string) $request->get_param( 'id' ) );
         if ( '' === $client_id || ! $this->client_exists( $client_id ) ) {
-            return $this->fail( 'easy_mcp_ai_client_not_found', \__( 'Client not found.', 'easy-mcp-ai' ), 404 );
+            return $this->fail( 'wordpress_code_ai_client_not_found', \__( 'Client not found.', 'wordpress-code-ai' ), 404 );
         }
         OAuth_Admin::revoke_client( $client_id );
         return $this->ok( array( 'deleted' => true, 'clientId' => $client_id ) );
@@ -321,13 +321,13 @@ class OAuth_Controller extends Admin_Rest_Controller {
     public function rotate_client_secret( $request ) {
         $client_id = \sanitize_text_field( (string) $request->get_param( 'id' ) );
         if ( '' === $client_id || ! $this->client_exists( $client_id ) ) {
-            return $this->fail( 'easy_mcp_ai_client_not_found', \__( 'Client not found.', 'easy-mcp-ai' ), 404 );
+            return $this->fail( 'wordpress_code_ai_client_not_found', \__( 'Client not found.', 'wordpress-code-ai' ), 404 );
         }
         $secret = ( new Client_Registry() )->rotate_secret( $client_id );
         if ( null === $secret ) {
             return $this->fail(
-                'easy_mcp_ai_client_not_confidential',
-                \__( 'The client secret was not rotated: the client is not an active confidential client.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_client_not_confidential',
+                \__( 'The client secret was not rotated: the client is not an active confidential client.', 'wordpress-code-ai' ),
                 409
             );
         }
@@ -434,7 +434,7 @@ class OAuth_Controller extends Admin_Rest_Controller {
 
         $raw = $request->get_param( 'scopes' );
         if ( ! is_array( $raw ) ) {
-            return $this->fail( 'easy_mcp_ai_invalid_param', \__( 'scopes must be a list of scope names.', 'easy-mcp-ai' ), 400, array( 'field' => 'scopes' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_param', \__( 'scopes must be a list of scope names.', 'wordpress-code-ai' ), 400, array( 'field' => 'scopes' ) );
         }
         $valid  = Scope_Map::get_all_scopes();
         $scopes = array();
@@ -450,15 +450,15 @@ class OAuth_Controller extends Admin_Rest_Controller {
         if ( empty( $scopes ) ) {
             
             
-            return $this->fail( 'easy_mcp_ai_empty_scope', \__( 'Pick at least one category, or revoke the grant instead.', 'easy-mcp-ai' ), 400, array( 'field' => 'scopes' ) );
+            return $this->fail( 'wordpress_code_ai_empty_scope', \__( 'Pick at least one category, or revoke the grant instead.', 'wordpress-code-ai' ), 400, array( 'field' => 'scopes' ) );
         }
 
         $current = self::scope_parts( (string) $row['scope'] );
         $scopes  = self::with_privileged_scopes( $scopes, $current, $request->get_param( 'privilegedScopes' ), $valid );
         if ( ! self::is_narrower_or_equal( $current, $scopes ) ) {
             return $this->fail(
-                'easy_mcp_ai_scope_widening',
-                \__( 'A grant can only be narrowed here. To give this client more access, the user has to approve it again.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_scope_widening',
+                \__( 'A grant can only be narrowed here. To give this client more access, the user has to approve it again.', 'wordpress-code-ai' ),
                 400,
                 array( 'field' => 'scopes' )
             );
@@ -585,9 +585,9 @@ class OAuth_Controller extends Admin_Rest_Controller {
 
 
     private function grant_rows() {
-        $consents = $this->wpdb->prefix . 'easy_mcp_ai_oauth_consents';
-        $clients  = $this->wpdb->prefix . 'easy_mcp_ai_oauth_clients';
-        $tokens   = $this->wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $consents = $this->wpdb->prefix . 'wordpress_code_ai_oauth_consents';
+        $clients  = $this->wpdb->prefix . 'wordpress_code_ai_oauth_clients';
+        $tokens   = $this->wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
         $now      = \current_time( 'mysql', true );
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned tables; names prefixed by $wpdb->prefix.
@@ -629,7 +629,7 @@ class OAuth_Controller extends Admin_Rest_Controller {
                 }
             }
         }
-        return $this->fail( 'easy_mcp_ai_grant_not_found', \__( 'Grant not found.', 'easy-mcp-ai' ), 404 );
+        return $this->fail( 'wordpress_code_ai_grant_not_found', \__( 'Grant not found.', 'wordpress-code-ai' ), 404 );
     }
 
     
@@ -667,8 +667,8 @@ class OAuth_Controller extends Admin_Rest_Controller {
 
 
     public function get_device( $request ) {
-        $device  = $this->wpdb->prefix . 'easy_mcp_ai_oauth_device_codes';
-        $clients = $this->wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $device  = $this->wpdb->prefix . 'wordpress_code_ai_oauth_device_codes';
+        $clients = $this->wpdb->prefix . 'wordpress_code_ai_oauth_clients';
         $now     = \current_time( 'mysql', true );
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned tables; names prefixed by $wpdb->prefix.
@@ -731,15 +731,15 @@ class OAuth_Controller extends Admin_Rest_Controller {
 
 
     private function client_exists( $client_id ) {
-        $clients = $this->wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $clients = $this->wpdb->prefix . 'wordpress_code_ai_oauth_clients';
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table; name prefixed by $wpdb->prefix.
         return (int) $this->wpdb->get_var( $this->wpdb->prepare( "SELECT COUNT(*) FROM {$clients} WHERE client_id = %s AND is_active = 1", $client_id ) ) > 0;
     }
 
     
     public static function retention_days() {
-        if ( class_exists( '\\Easy_MCP_AI\\Plugin' ) && method_exists( '\\Easy_MCP_AI\\Plugin', 'oauth_client_retention_days' ) ) {
-            return (int) \Easy_MCP_AI\Plugin::oauth_client_retention_days();
+        if ( class_exists( '\\wordpress_code_ai\\Plugin' ) && method_exists( '\\wordpress_code_ai\\Plugin', 'oauth_client_retention_days' ) ) {
+            return (int) \wordpress_code_ai\Plugin::oauth_client_retention_days();
         }
         return 7;
     }
@@ -768,7 +768,7 @@ class OAuth_Controller extends Admin_Rest_Controller {
             return (string) $user->display_name;
         }
         /* translators: %d: WordPress user id */
-        return sprintf( \__( 'Unknown user #%d', 'easy-mcp-ai' ), (int) $user_id );
+        return sprintf( \__( 'Unknown user #%d', 'wordpress-code-ai' ), (int) $user_id );
     }
 
     
@@ -789,8 +789,8 @@ class OAuth_Controller extends Admin_Rest_Controller {
         $result = OAuth_Site_Move::revoke_mismatching();
         if ( \is_wp_error( $result ) ) {
             return $this->fail(
-                'easy_mcp_ai_site_move_incomplete',
-                \__( 'Nothing was acknowledged. Grants issued for the previous address are refused either way; try again to finish removing them.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_site_move_incomplete',
+                \__( 'Nothing was acknowledged. Grants issued for the previous address are refused either way; try again to finish removing them.', 'wordpress-code-ai' ),
                 500
             );
         }

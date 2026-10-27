@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Tasks;
+namespace wordpress_code_ai\Tasks;
 
-use Easy_MCP_AI\MCP\Server;
-use Easy_MCP_AI\MCP\JSON_RPC;
-use Easy_MCP_AI\MCP\Error_Codes;
-use Easy_MCP_AI\Tools\Tool_Registry;
-use Easy_MCP_AI\Tools\Dynamic_Tool_Registrar;
+use wordpress_code_ai\MCP\Server;
+use wordpress_code_ai\MCP\JSON_RPC;
+use wordpress_code_ai\MCP\Error_Codes;
+use wordpress_code_ai\Tools\Tool_Registry;
+use wordpress_code_ai\Tools\Dynamic_Tool_Registrar;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -503,7 +503,7 @@ class Task_Manager {
 
 
     private static function oauth_enabled(): bool {
-        return (bool) \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) );
+        return (bool) \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) );
     }
 
     
@@ -527,7 +527,7 @@ class Task_Manager {
             if ( ! $this->oauth_audience_matches( isset( $token['resource'] ) ? (string) $token['resource'] : '' ) ) {
                 return null;
             }
-            return array( 'allowed_tools' => \Easy_MCP_AI\OAuth\Scope_Map::resolve_allowed_tools( (string) $token['scope'] ) );
+            return array( 'allowed_tools' => \wordpress_code_ai\OAuth\Scope_Map::resolve_allowed_tools( (string) $token['scope'] ) );
         }
         $token = $this->server->get_token_manager()->get_token_by_id( (int) $row['token_id'] );
         if ( ! is_array( $token ) || empty( $token['is_active'] ) || (int) $token['wp_user_id'] !== (int) $row['wp_user_id'] ) {
@@ -536,23 +536,23 @@ class Task_Manager {
         if ( ! empty( $token['expires_at'] ) && strtotime( $token['expires_at'] . ' UTC' ) < $this->now() ) {
             return null;
         }
-        if ( \Easy_MCP_AI\Auth\Token_Manager::is_bound_elsewhere( $token ) ) {
+        if ( \wordpress_code_ai\Auth\Token_Manager::is_bound_elsewhere( $token ) ) {
             return null;
         }
         return array( 'allowed_tools' => null ); 
     }
 
     protected function oauth_audience_matches( $resource ) {
-        if ( ! class_exists( '\\Easy_MCP_AI\\OAuth\\Token_Endpoint' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\OAuth\\Token_Endpoint' ) ) {
             return false;
         }
-        $canonical = \rest_url( 'easy-mcp-ai/v1/mcp' );
-        return \Easy_MCP_AI\OAuth\Token_Endpoint::resource_matches( '' !== $resource ? $resource : $canonical, $canonical );
+        $canonical = \rest_url( 'wordpress-code-ai/v1/mcp' );
+        return \wordpress_code_ai\OAuth\Token_Endpoint::resource_matches( '' !== $resource ? $resource : $canonical, $canonical );
     }
 
     protected function oauth_token_row( $token_id ) {
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table; a grant check must be fresh.
         $row = $wpdb->get_row( $wpdb->prepare( "SELECT id, wp_user_id, client_id, scope, resource, is_active, expires_at FROM {$table} WHERE id = %d LIMIT 1", (int) $token_id ), ARRAY_A );
         return is_array( $row ) ? $row : null;
@@ -573,13 +573,13 @@ class Task_Manager {
     }
 
     private function retention_seconds() {
-        $days = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_tasks_retention_days', 7 );
+        $days = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_tasks_retention_days', 7 );
         return 86400 * ( $days >= 1 && $days <= 365 ? $days : 7 );
     }
 
     
     public function tick_budget() {
-        $configured = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_tasks_tick_budget_seconds', 0 );
+        $configured = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_tasks_tick_budget_seconds', 0 );
         if ( $configured >= 1 && $configured <= 300 ) {
             return $configured;
         }
@@ -712,7 +712,7 @@ class Task_Manager {
             $fields[] = isset( $row[ $key ] ) ? (string) $row[ $key ] : '';
         }
         $fields[] = hash( 'sha256', isset( $row['arguments'] ) ? (string) $row['arguments'] : '' );
-        return hash_hmac( 'sha256', 'easy-mcp-ai-task|' . implode( '|', $fields ), (string) \Easy_MCP_AI\Auth\Token_Keys::signing_key() );
+        return hash_hmac( 'sha256', 'wordpress-code-ai-task|' . implode( '|', $fields ), (string) \wordpress_code_ai\Auth\Token_Keys::signing_key() );
     }
 
     private static function signature_valid( array $row ) {
@@ -721,12 +721,12 @@ class Task_Manager {
     }
 
     private function max_per_credential() {
-        $max = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_tasks_max_per_credential', 5 );
+        $max = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_tasks_max_per_credential', 5 );
         return $max >= 1 && $max <= 100 ? $max : 5;
     }
 
     private function max_concurrent_ticks() {
-        $max = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_tasks_max_concurrent_ticks', 3 );
+        $max = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_tasks_max_concurrent_ticks', 3 );
         return $max >= 1 && $max <= 50 ? $max : 3;
     }
 

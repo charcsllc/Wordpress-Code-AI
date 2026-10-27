@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -77,7 +77,7 @@ class Audit_Log_Repository {
 
     public function table() {
         global $wpdb;
-        return $wpdb->prefix . 'easy_mcp_ai_audit_log';
+        return $wpdb->prefix . 'wordpress_code_ai_audit_log';
     }
 
     
@@ -242,7 +242,7 @@ class Audit_Log_Repository {
         if ( ! in_array( $column, array( 'tool_name', 'result_status', 'wp_user_id' ), true ) ) {
             return array();
         }
-        $key    = 'easy_mcp_ai_audit_distinct_' . $column;
+        $key    = 'wordpress_code_ai_audit_distinct_' . $column;
         $cached = \get_transient( $key );
         if ( is_array( $cached ) ) {
             return $cached;
@@ -298,12 +298,12 @@ class Audit_Log_Repository {
         if ( $token_ids && is_object( $wpdb ) && method_exists( $wpdb, 'get_results' ) ) {
             $ids          = array_keys( $token_ids );
             $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
-            $table        = $wpdb->prefix . 'easy_mcp_ai_tokens';
+            $table        = $wpdb->prefix . 'wordpress_code_ai_tokens';
             // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- placeholders generated per id, plugin-owned table.
             foreach ( (array) $wpdb->get_results( $wpdb->prepare( "SELECT id, name, created_by, wp_user_id FROM `{$table}` WHERE id IN ({$placeholders})", ...$ids ), ARRAY_A ) as $t ) {
                 $tokens[ (int) $t['id'] ] = (string) $t['name'];
                 if ( ! empty( $t['created_by'] ) && (int) $t['created_by'] === (int) $t['wp_user_id'] ) {
-                    $tokens[ (int) $t['id'] ] .= ' (' . __( 'self-service', 'easy-mcp-ai' ) . ')';
+                    $tokens[ (int) $t['id'] ] .= ' (' . __( 'self-service', 'wordpress-code-ai' ) . ')';
                 }
             }
             // phpcs:enable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
@@ -313,7 +313,7 @@ class Audit_Log_Repository {
         if ( $client_ids && is_object( $wpdb ) && method_exists( $wpdb, 'get_results' ) ) {
             $ids          = array_keys( $client_ids );
             $placeholders = implode( ',', array_fill( 0, count( $ids ), '%s' ) );
-            $table        = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+            $table        = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
             // phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- placeholders generated per id, plugin-owned table.
             foreach ( (array) $wpdb->get_results( $wpdb->prepare( "SELECT client_id, client_name FROM `{$table}` WHERE client_id IN ({$placeholders})", ...$ids ), ARRAY_A ) as $c ) {
                 $clients[ (string) $c['client_id'] ] = (string) $c['client_name'];
@@ -359,7 +359,7 @@ class Audit_Log_Repository {
             $label = ! empty( $row['token_name'] )
                 ? (string) $row['token_name']
                 /* translators: %d: API key row id */
-                : sprintf( __( 'API key #%d', 'easy-mcp-ai' ), $token_id );
+                : sprintf( __( 'API key #%d', 'wordpress-code-ai' ), $token_id );
             return array( 'source' => $source, 'label' => $label );
         }
         if ( 'oauth' === $source ) {
@@ -373,13 +373,13 @@ class Audit_Log_Repository {
                 return array( 'source' => $source, 'label' => '—' );
             }
             /* translators: %d: OAuth access-token row id */
-            return array( 'source' => $source, 'label' => sprintf( __( 'OAuth token #%d', 'easy-mcp-ai' ), $token_id ) );
+            return array( 'source' => $source, 'label' => sprintf( __( 'OAuth token #%d', 'wordpress-code-ai' ), $token_id ) );
         }
         if ( 0 === $token_id ) {
             return array( 'source' => self::SOURCE_UNKNOWN, 'label' => '—' );
         }
         /* translators: %d: credential row id whose table is not recorded */
-        return array( 'source' => self::SOURCE_UNKNOWN, 'label' => sprintf( __( '#%d (unknown source)', 'easy-mcp-ai' ), $token_id ) );
+        return array( 'source' => self::SOURCE_UNKNOWN, 'label' => sprintf( __( '#%d (unknown source)', 'wordpress-code-ai' ), $token_id ) );
     }
 
     

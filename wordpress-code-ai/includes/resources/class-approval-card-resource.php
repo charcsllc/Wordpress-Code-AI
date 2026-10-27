@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Resources;
+namespace wordpress_code_ai\Resources;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -19,11 +19,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Approval_Card_Resource extends Base_Resource {
 
-    const URI       = 'ui://easy-mcp-ai/approval';
+    const URI       = 'ui://wordpress-code-ai/approval';
     const MIME_TYPE = 'text/html;profile=mcp-app';
 
     
-    const I18N_MARKER = '<!-- easy-mcp-ai:i18n -->';
+    const I18N_MARKER = '<!-- wordpress-code-ai:i18n -->';
 
     public function get_uri() {
         return self::URI;
@@ -76,25 +76,25 @@ class Approval_Card_Resource extends Base_Resource {
 
     public static function labels() {
         return array(
-            'connecting'      => __( 'Connecting to the chat host…', 'easy-mcp-ai' ),
-            'waiting'         => __( 'Waiting for the tool result…', 'easy-mcp-ai' ),
-            'title'           => __( 'Approve this operation?', 'easy-mcp-ai' ),
+            'connecting'      => __( 'Connecting to the chat host…', 'wordpress-code-ai' ),
+            'waiting'         => __( 'Waiting for the tool result…', 'wordpress-code-ai' ),
+            'title'           => __( 'Approve this operation?', 'wordpress-code-ai' ),
             /* translators: 1: tool name, 2: expiry date and time (UTC) */
-            'meta'            => __( 'Tool: %1$s · expires %2$s UTC', 'easy-mcp-ai' ),
-            'working'         => __( 'Working…', 'easy-mcp-ai' ),
-            'approve'         => __( 'Approve', 'easy-mcp-ai' ),
-            'deny'            => __( 'Deny', 'easy-mcp-ai' ),
-            'noSecret'        => __( 'This host did not receive a card secret; use the link in the chat to approve.', 'easy-mcp-ai' ),
-            'notRun'          => __( 'Not run', 'easy-mcp-ai' ),
-            'decisionRefused' => __( 'The decision was refused.', 'easy-mcp-ai' ),
-            'denied'          => __( 'Denied', 'easy-mcp-ai' ),
-            'deniedText'      => __( 'Nothing was changed. Your assistant has been told the operation was refused.', 'easy-mcp-ai' ),
-            'failedText'      => __( 'The operation was approved but could not be carried out.', 'easy-mcp-ai' ),
-            'done'            => __( 'Done', 'easy-mcp-ai' ),
-            'doneText'        => __( 'Approved and carried out.', 'easy-mcp-ai' ),
-            'hostRefused'     => __( 'The host refused the call.', 'easy-mcp-ai' ),
-            'needed'          => __( 'Approval needed', 'easy-mcp-ai' ),
-            'noHandshake'     => __( 'This chat host did not complete the card handshake. Use the approval link in the message above, then ask the assistant to run the operation again.', 'easy-mcp-ai' ),
+            'meta'            => __( 'Tool: %1$s · expires %2$s UTC', 'wordpress-code-ai' ),
+            'working'         => __( 'Working…', 'wordpress-code-ai' ),
+            'approve'         => __( 'Approve', 'wordpress-code-ai' ),
+            'deny'            => __( 'Deny', 'wordpress-code-ai' ),
+            'noSecret'        => __( 'This host did not receive a card secret; use the link in the chat to approve.', 'wordpress-code-ai' ),
+            'notRun'          => __( 'Not run', 'wordpress-code-ai' ),
+            'decisionRefused' => __( 'The decision was refused.', 'wordpress-code-ai' ),
+            'denied'          => __( 'Denied', 'wordpress-code-ai' ),
+            'deniedText'      => __( 'Nothing was changed. Your assistant has been told the operation was refused.', 'wordpress-code-ai' ),
+            'failedText'      => __( 'The operation was approved but could not be carried out.', 'wordpress-code-ai' ),
+            'done'            => __( 'Done', 'wordpress-code-ai' ),
+            'doneText'        => __( 'Approved and carried out.', 'wordpress-code-ai' ),
+            'hostRefused'     => __( 'The host refused the call.', 'wordpress-code-ai' ),
+            'needed'          => __( 'Approval needed', 'wordpress-code-ai' ),
+            'noHandshake'     => __( 'This chat host did not complete the card handshake. Use the approval link in the message above, then ask the assistant to run the operation again.', 'wordpress-code-ai' ),
         );
     }
 
@@ -106,7 +106,7 @@ class Approval_Card_Resource extends Base_Resource {
 
     public static function i18n_script( array $labels ) {
         $json = \wp_json_encode( $labels, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE );
-        return '<script>window.EASY_MCP_AI_CARD_I18N = ' . ( is_string( $json ) ? $json : '{}' ) . ';</script>';
+        return '<script>window.WORDPRESS_CODE_AI_CARD_I18N = ' . ( is_string( $json ) ? $json : '{}' ) . ';</script>';
     }
 
     

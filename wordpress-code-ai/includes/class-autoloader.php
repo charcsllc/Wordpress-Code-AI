@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Autoloader {
 
-    const PREFIX = 'Easy_MCP_AI\\';
+    const PREFIX = 'wordpress_code_ai\\';
 
     
     const IDENTIFIER_CHARS = 'abcdefghijklmnopqrstuvwxyz0123456789_';
@@ -49,39 +49,39 @@ final class Autoloader {
 
 
     const EXCEPTIONS = array(
-        'easy_mcp_ai\\tools\\lifecycle_guard'                => 'tools/plugins/trait-lifecycle-guard.php',
-        'easy_mcp_ai\\tools\\package_guard'                  => 'tools/plugins/trait-package-guard.php',
-        'easy_mcp_ai\\tools\\seo\\aioseo_get_breadcrumb'     => 'tools/seo/aioseo/class-aioseo-get-breadcrumb.php',
-        'easy_mcp_ai\\tools\\seo\\aioseo_get_post_seo'       => 'tools/seo/aioseo/class-aioseo-get-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\aioseo_update_post_seo'    => 'tools/seo/aioseo/class-aioseo-update-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_get_head'         => 'tools/seo/rank-math/class-rankmath-get-head.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_get_post_seo'     => 'tools/seo/rank-math/class-rankmath-get-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_update_post_seo'  => 'tools/seo/rank-math/class-rankmath-update-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\rank_math_redirects'       => 'tools/seo/rank-math/trait-rank-math-redirects.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_list_redirects'   => 'tools/seo/rank-math/class-rankmath-list-redirects.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_get_redirect'     => 'tools/seo/rank-math/class-rankmath-get-redirect.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_create_redirect'  => 'tools/seo/rank-math/class-rankmath-create-redirect.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_update_redirect'  => 'tools/seo/rank-math/class-rankmath-update-redirect.php',
-        'easy_mcp_ai\\tools\\seo\\rankmath_delete_redirects' => 'tools/seo/rank-math/class-rankmath-delete-redirects.php',
-        'easy_mcp_ai\\tools\\seo\\seopress_get_content_analysis' => 'tools/seo/seopress/class-seopress-get-content-analysis.php',
-        'easy_mcp_ai\\tools\\seo\\seopress_get_post_seo'     => 'tools/seo/seopress/class-seopress-get-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\seopress_get_term_seo'     => 'tools/seo/seopress/class-seopress-get-term-seo.php',
-        'easy_mcp_ai\\tools\\seo\\seopress_update_keywords'  => 'tools/seo/seopress/class-seopress-update-keywords.php',
-        'easy_mcp_ai\\tools\\seo\\seopress_update_robots'    => 'tools/seo/seopress/class-seopress-update-robots.php',
-        'easy_mcp_ai\\tools\\seo\\seopress_update_social'    => 'tools/seo/seopress/class-seopress-update-social.php',
-        'easy_mcp_ai\\tools\\seo\\seopress_update_title_desc' => 'tools/seo/seopress/class-seopress-update-title-desc.php',
-        'easy_mcp_ai\\tools\\seo\\slimseo_get_post_seo'      => 'tools/seo/slim-seo/class-slimseo-get-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\slimseo_update_post_seo'   => 'tools/seo/slim-seo/class-slimseo-update-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\tsf_get_post_seo'          => 'tools/seo/the-seo-framework/class-tsf-get-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\tsf_update_post_seo'       => 'tools/seo/the-seo-framework/class-tsf-update-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_get_head'            => 'tools/seo/yoast/class-yoast-get-head.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_get_post_seo'        => 'tools/seo/yoast/class-yoast-get-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_get_settings'        => 'tools/seo/yoast/class-yoast-get-settings.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_site_settings'       => 'tools/seo/yoast/class-yoast-site-settings.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_get_term_seo'        => 'tools/seo/yoast/class-yoast-get-term-seo.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_update_post_seo'     => 'tools/seo/yoast/class-yoast-update-post-seo.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_update_settings'     => 'tools/seo/yoast/class-yoast-update-settings.php',
-        'easy_mcp_ai\\tools\\seo\\yoast_update_term_seo'     => 'tools/seo/yoast/class-yoast-update-term-seo.php',
+        'wordpress_code_ai\\tools\\lifecycle_guard'                => 'tools/plugins/trait-lifecycle-guard.php',
+        'wordpress_code_ai\\tools\\package_guard'                  => 'tools/plugins/trait-package-guard.php',
+        'wordpress_code_ai\\tools\\seo\\aioseo_get_breadcrumb'     => 'tools/seo/aioseo/class-aioseo-get-breadcrumb.php',
+        'wordpress_code_ai\\tools\\seo\\aioseo_get_post_seo'       => 'tools/seo/aioseo/class-aioseo-get-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\aioseo_update_post_seo'    => 'tools/seo/aioseo/class-aioseo-update-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_get_head'         => 'tools/seo/rank-math/class-rankmath-get-head.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_get_post_seo'     => 'tools/seo/rank-math/class-rankmath-get-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_update_post_seo'  => 'tools/seo/rank-math/class-rankmath-update-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\rank_math_redirects'       => 'tools/seo/rank-math/trait-rank-math-redirects.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_list_redirects'   => 'tools/seo/rank-math/class-rankmath-list-redirects.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_get_redirect'     => 'tools/seo/rank-math/class-rankmath-get-redirect.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_create_redirect'  => 'tools/seo/rank-math/class-rankmath-create-redirect.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_update_redirect'  => 'tools/seo/rank-math/class-rankmath-update-redirect.php',
+        'wordpress_code_ai\\tools\\seo\\rankmath_delete_redirects' => 'tools/seo/rank-math/class-rankmath-delete-redirects.php',
+        'wordpress_code_ai\\tools\\seo\\seopress_get_content_analysis' => 'tools/seo/seopress/class-seopress-get-content-analysis.php',
+        'wordpress_code_ai\\tools\\seo\\seopress_get_post_seo'     => 'tools/seo/seopress/class-seopress-get-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\seopress_get_term_seo'     => 'tools/seo/seopress/class-seopress-get-term-seo.php',
+        'wordpress_code_ai\\tools\\seo\\seopress_update_keywords'  => 'tools/seo/seopress/class-seopress-update-keywords.php',
+        'wordpress_code_ai\\tools\\seo\\seopress_update_robots'    => 'tools/seo/seopress/class-seopress-update-robots.php',
+        'wordpress_code_ai\\tools\\seo\\seopress_update_social'    => 'tools/seo/seopress/class-seopress-update-social.php',
+        'wordpress_code_ai\\tools\\seo\\seopress_update_title_desc' => 'tools/seo/seopress/class-seopress-update-title-desc.php',
+        'wordpress_code_ai\\tools\\seo\\slimseo_get_post_seo'      => 'tools/seo/slim-seo/class-slimseo-get-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\slimseo_update_post_seo'   => 'tools/seo/slim-seo/class-slimseo-update-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\tsf_get_post_seo'          => 'tools/seo/the-seo-framework/class-tsf-get-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\tsf_update_post_seo'       => 'tools/seo/the-seo-framework/class-tsf-update-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_get_head'            => 'tools/seo/yoast/class-yoast-get-head.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_get_post_seo'        => 'tools/seo/yoast/class-yoast-get-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_get_settings'        => 'tools/seo/yoast/class-yoast-get-settings.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_site_settings'       => 'tools/seo/yoast/class-yoast-site-settings.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_get_term_seo'        => 'tools/seo/yoast/class-yoast-get-term-seo.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_update_post_seo'     => 'tools/seo/yoast/class-yoast-update-post-seo.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_update_settings'     => 'tools/seo/yoast/class-yoast-update-settings.php',
+        'wordpress_code_ai\\tools\\seo\\yoast_update_term_seo'     => 'tools/seo/yoast/class-yoast-update-term-seo.php',
     );
 
     private static bool $registered = false;

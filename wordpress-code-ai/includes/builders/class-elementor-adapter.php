@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Builders;
+namespace wordpress_code_ai\Builders;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -860,13 +860,13 @@ final class Elementor_Adapter extends Layout_Adapter {
         
         
         if ( ! self::ability_registered( self::V4_ABILITY ) ) {
-            $off[] = \Easy_MCP_AI\Compat\Elementor_Abilities::group_enabled()
-                ? 'Elementor’s abilities are not registered although Elementor is switched on in Easy MCP AI › Tools › Abilities: they need Elementor 4.3 or later on WordPress 6.9 or later, and a change in Elementor’s code or an error while registering them also stops them (an error is written to the PHP error log)'
-                : 'Elementor’s abilities are not registered: switch on Elementor in Easy MCP AI › Tools › Abilities, which registers them without Elementor’s own MCP setting';
+            $off[] = \wordpress_code_ai\Compat\Elementor_Abilities::group_enabled()
+                ? 'Elementor’s abilities are not registered although Elementor is switched on in wordpress-code-ai › Tools › Abilities: they need Elementor 4.3 or later on WordPress 6.9 or later, and a change in Elementor’s code or an error while registering them also stops them (an error is written to the PHP error log)'
+                : 'Elementor’s abilities are not registered: switch on Elementor in wordpress-code-ai › Tools › Abilities, which registers them without Elementor’s own MCP setting';
         }
-        $enabled = array_map( 'strval', array_filter( (array) get_option( 'easy_mcp_ai_enabled_abilities', array() ), 'is_scalar' ) );
+        $enabled = array_map( 'strval', array_filter( (array) get_option( 'wordpress_code_ai_enabled_abilities', array() ), 'is_scalar' ) );
         if ( ! in_array( self::V4_ABILITY, $enabled, true ) ) {
-            $off[] = 'Elementor’s abilities are not switched on in Easy MCP AI › Tools › Abilities';
+            $off[] = 'Elementor’s abilities are not switched on in wordpress-code-ai › Tools › Abilities';
         }
         return array(
             'elements'  => 'atomic',

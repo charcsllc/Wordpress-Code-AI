@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Cache;
+namespace wordpress_code_ai\Cache;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -164,8 +164,8 @@ final class Cache_Purger {
         }
         if ( ! Cache_Registry::is_switched_on( $adapter ) ) {
             $detail = $adapter->enabled_by_default()
-                ? 'Switched off on this site by the easy_mcp_ai_cache_adapter_enabled filter.'
-                : 'This cache ships switched off; a site can switch it on with the easy_mcp_ai_cache_adapter_enabled filter.';
+                ? 'Switched off on this site by the wordpress_code_ai_cache_adapter_enabled filter.'
+                : 'This cache ships switched off; a site can switch it on with the wordpress_code_ai_cache_adapter_enabled filter.';
             return $this->skipped( $adapter, 'disabled_by_filter', $detail );
         }
         if ( ! in_array( $request->scope, $adapter->scopes(), true ) ) {

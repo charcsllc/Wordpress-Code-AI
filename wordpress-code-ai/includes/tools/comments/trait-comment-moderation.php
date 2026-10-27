@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Comments;
+namespace wordpress_code_ai\Tools\Comments;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

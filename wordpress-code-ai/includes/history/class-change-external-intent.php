@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\History;
+namespace wordpress_code_ai\History;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -50,8 +50,8 @@ class Change_External_Intent {
         
         
         
-        \add_action( 'easy_mcp_ai_change_context_disarming', array( $this, 'maybe_record' ), 30 );
-        \add_action( 'easy_mcp_ai_change_context_armed', array( $this, 'on_armed' ) );
+        \add_action( 'wordpress_code_ai_change_context_disarming', array( $this, 'maybe_record' ), 30 );
+        \add_action( 'wordpress_code_ai_change_context_armed', array( $this, 'on_armed' ) );
     }
 
     public function on_armed() {
@@ -100,7 +100,7 @@ class Change_External_Intent {
             && preg_match( '/(?:^|_)(?:' . self::WRITE_VERBS . ')(?:_|$)/i', $tool_name ) ) {
             $is_write = true;
         }
-        return (bool) \apply_filters( 'easy_mcp_ai_change_log_is_write_ability', $is_write, $tool_name );
+        return (bool) \apply_filters( 'wordpress_code_ai_change_log_is_write_ability', $is_write, $tool_name );
     }
 
     

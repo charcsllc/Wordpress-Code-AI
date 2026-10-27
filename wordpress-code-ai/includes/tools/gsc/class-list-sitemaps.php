@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GSC;
+namespace wordpress_code_ai\Tools\GSC;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GSC\GSC_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GSC\GSC_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -13,7 +13,7 @@ class List_Sitemaps extends Base_Tool {
     public function get_name() { return 'wp_gsc_list_sitemaps'; }
 
     public function get_description() {
-        return 'Lists all submitted sitemaps for a Google Search Console property, including submission dates, download dates, error and warning counts, and URL counts by content type. Requires a Google service-account credential configured under Easy MCP AI → Tools → External data.';
+        return 'Lists all submitted sitemaps for a Google Search Console property, including submission dates, download dates, error and warning counts, and URL counts by content type. Requires a Google service-account credential configured under wordpress-code-ai → Tools → External data.';
     }
 
     public function get_category() { return 'gsc'; }

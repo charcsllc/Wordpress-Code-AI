@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Rest_Routes;
+namespace wordpress_code_ai\Rest_Routes;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -32,7 +32,7 @@ final class Route_Gate {
 
 
 
-    const OWN_NAMESPACES = array( 'easy-mcp-ai/v1', 'easy-mcp-ai-admin/v1' );
+    const OWN_NAMESPACES = array( 'wordpress-code-ai/v1', 'wordpress-code-ai-admin/v1' );
 
     
     const MAX_ROUTE_LENGTH = 2048;
@@ -219,7 +219,7 @@ final class Route_Gate {
             return 'This route belongs to no namespace (the REST index or the batch route), so it cannot be called through these tools.';
         }
         if ( in_array( $namespace, self::OWN_NAMESPACES, true ) ) {
-            return 'Easy MCP AI\'s own REST routes cannot be called through these tools.';
+            return 'wordpress-code-ai\'s own REST routes cannot be called through these tools.';
         }
         if ( 'wp-abilities/v1' === $namespace && preg_match( '#/run$#', $route ) ) {
             return 'Abilities run through their own wp_ability_* tools, which apply the site\'s ability switches; the abilities run route cannot be called here.';

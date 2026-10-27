@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Ahrefs;
+namespace wordpress_code_ai\Ahrefs;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,12 +23,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Ahrefs_Client {
 
-	const OPTION_API_KEY = 'easy_mcp_ai_ahrefs_api_key';
+	const OPTION_API_KEY = 'wordpress_code_ai_ahrefs_api_key';
 
 	
 	const CIPHER_VERSION    = "v2\x00";
 	const CIPHER_PREFIX_LEN = 3;
-	const HKDF_INFO         = 'easy_mcp_ai_ahrefs_v2';
+	const HKDF_INFO         = 'wordpress_code_ai_ahrefs_v2';
 
 	private static function derive_key(): string {
 		if ( ! defined( 'SECURE_AUTH_KEY' ) || ! defined( 'SECURE_AUTH_SALT' ) ) {
@@ -79,7 +79,7 @@ class Ahrefs_Client {
 
 
 	public static function has_api_key(): bool {
-		return \Easy_MCP_AI\Provider_Credentials::is_configured( 'ahrefs' );
+		return \wordpress_code_ai\Provider_Credentials::is_configured( 'ahrefs' );
 	}
 
 	const ENDPOINT     = 'https://api.ahrefs.com/v3/public/domain-rating-free';
@@ -108,7 +108,7 @@ class Ahrefs_Client {
 			array(
 				'timeout'             => 10,
 				'redirection'         => 0,
-				'user-agent'          => 'EasyMCPAI/' . ( defined( 'EASY_MCP_AI_VERSION' ) ? EASY_MCP_AI_VERSION : '0' ),
+				'user-agent'          => 'wordpress-code-ai/' . ( defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '0' ),
 				'headers'             => array(
 					'Accept'        => 'application/json',
 					'Authorization' => 'Bearer ' . $key,
@@ -141,17 +141,17 @@ class Ahrefs_Client {
 
 
 	public function get_api_key(): string {
-		$deployed = \Easy_MCP_AI\Provider_Credentials::deployed_secret( self::OPTION_API_KEY );
+		$deployed = \wordpress_code_ai\Provider_Credentials::deployed_secret( self::OPTION_API_KEY );
 		if ( null !== $deployed ) {
 			return $deployed; 
 		}
 		$enc = \get_option( self::OPTION_API_KEY, '' );
 		if ( empty( $enc ) ) {
-			throw new \RuntimeException( 'Ahrefs API key not configured. Add one at Easy MCP AI → Tools → External data → Ahrefs. The key is free — create it in your Ahrefs account under Account settings → API keys.' );
+			throw new \RuntimeException( 'Ahrefs API key not configured. Add one at wordpress-code-ai → Tools → External data → Ahrefs. The key is free — create it in your Ahrefs account under Account settings → API keys.' );
 		}
 		$plain = self::decrypt( $enc );
 		if ( false === $plain || '' === $plain ) {
-			throw new \RuntimeException( 'Failed to decrypt Ahrefs API key. Re-save it in Easy MCP AI → Tools → External data.' );
+			throw new \RuntimeException( 'Failed to decrypt Ahrefs API key. Re-save it in wordpress-code-ai → Tools → External data.' );
 		}
 		return $plain;
 	}

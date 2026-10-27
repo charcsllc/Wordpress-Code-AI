@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Appearance;
+namespace wordpress_code_ai\Tools\Appearance;
 
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -315,6 +315,6 @@ final class Theme_Mod_Value {
 
 
     private static function measure( string $text ): int {
-        return strlen( class_exists( '\Easy_MCP_AI\Config' ) ? \Easy_MCP_AI\Config::brand( $text ) : $text );
+        return strlen( class_exists( '\wordpress_code_ai\Config' ) ? \wordpress_code_ai\Config::brand( $text ) : $text );
     }
 }

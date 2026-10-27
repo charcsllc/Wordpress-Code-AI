@@ -11,7 +11,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 abstract class Admin_Rest_Controller {
 
-    const REST_NAMESPACE = 'easy-mcp-ai-admin/v1';
+    const REST_NAMESPACE = 'wordpress-code-ai-admin/v1';
 
     
     const CAPABILITY = 'manage_options';
@@ -48,10 +48,10 @@ abstract class Admin_Rest_Controller {
 
     public function permission() {
         
-        if ( true === \Easy_MCP_AI\Config::get( 'hide_admin' ) ) {
+        if ( true === \wordpress_code_ai\Config::get( 'hide_admin' ) ) {
             return $this->fail(
-                'easy_mcp_ai_admin_hidden',
-                \__( 'This administration page is disabled by the site configuration.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_admin_hidden',
+                \__( 'This administration page is disabled by the site configuration.', 'wordpress-code-ai' ),
                 403
             );
         }
@@ -59,8 +59,8 @@ abstract class Admin_Rest_Controller {
             return true;
         }
         return $this->fail(
-            'easy_mcp_ai_forbidden',
-            \__( 'Sorry, you are not allowed to do that.', 'easy-mcp-ai' ),
+            'wordpress_code_ai_forbidden',
+            \__( 'Sorry, you are not allowed to do that.', 'wordpress-code-ai' ),
             403
         );
     }

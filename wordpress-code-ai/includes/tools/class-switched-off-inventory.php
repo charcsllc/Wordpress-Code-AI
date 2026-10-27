@@ -5,13 +5,13 @@
 
 
 
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
-use Easy_MCP_AI\Admin\Plugin_Integration_Registry;
-use Easy_MCP_AI\Config;
-use Easy_MCP_AI\MCP\Server;
-use Easy_MCP_AI\MCP\Tool_Status;
-use Easy_MCP_AI\OAuth\Scope_Map;
+use wordpress_code_ai\Admin\Plugin_Integration_Registry;
+use wordpress_code_ai\Config;
+use wordpress_code_ai\MCP\Server;
+use wordpress_code_ai\MCP\Tool_Status;
+use wordpress_code_ai\OAuth\Scope_Map;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -163,7 +163,7 @@ final class Switched_Off_Inventory {
         } catch ( \Throwable $e ) {
             return array();
         }
-        $enabled = array_map( 'strval', array_filter( (array) \get_option( 'easy_mcp_ai_enabled_abilities', array() ), 'is_scalar' ) );
+        $enabled = array_map( 'strval', array_filter( (array) \get_option( 'wordpress_code_ai_enabled_abilities', array() ), 'is_scalar' ) );
         $entries = array();
         foreach ( $all as $key => $ability ) {
             if ( ! is_object( $ability ) ) {
@@ -230,7 +230,7 @@ final class Switched_Off_Inventory {
                 $status    = Tool_Status::off( $name, (bool) $tool->is_disabled_by_default() );
                 $entries[] = self::tool_entry( $tool, $name, self::OFF, 'off' === $status['status'] ? Tool_Status::in_admin( $status['where'] ) : Tool_Status::CONFIGURATION_PLACE );
             } elseif ( ! Server::matches_tool_patterns( $name, $patterns ) ) {
-                $entries[] = self::tool_entry( $tool, $name, self::PATTERN, Tool_Status::place( Tool_Status::PATTERNS_PATH, Config::is_locked( 'easy_mcp_ai_allowed_tool_patterns' ) ) );
+                $entries[] = self::tool_entry( $tool, $name, self::PATTERN, Tool_Status::place( Tool_Status::PATTERNS_PATH, Config::is_locked( 'wordpress_code_ai_allowed_tool_patterns' ) ) );
             }
         }
         usort( $entries, static function ( array $a, array $b ): int {
@@ -245,7 +245,7 @@ final class Switched_Off_Inventory {
 
 
     private static function groups_off(): array {
-        $enabled = array_filter( (array) \get_option( 'easy_mcp_ai_enabled_plugin_groups', array() ), 'is_string' );
+        $enabled = array_filter( (array) \get_option( 'wordpress_code_ai_enabled_plugin_groups', array() ), 'is_string' );
         $groups  = array();
         foreach ( Plugin_Integration_Registry::get_groups() as $group ) {
             if ( ! in_array( $group['slug'], $enabled, true ) && Plugin_Integration_Registry::is_installed( $group ) ) {
@@ -260,7 +260,7 @@ final class Switched_Off_Inventory {
 
 
     private static function integration_place(): string {
-        return Tool_Status::place( Tool_Status::ABILITIES_PATH, Config::is_locked( 'easy_mcp_ai_disabled_tools' ) );
+        return Tool_Status::place( Tool_Status::ABILITIES_PATH, Config::is_locked( 'wordpress_code_ai_disabled_tools' ) );
     }
 
     
@@ -378,7 +378,7 @@ final class Switched_Off_Inventory {
 
 
     private static function required_capability( Base_Tool $tool, string $name ): string {
-        if ( class_exists( '\\Easy_MCP_AI\\Privileged\\Privileged_Groups' ) && null !== \Easy_MCP_AI\Privileged\Privileged_Groups::group_of_tool( $name ) ) {
+        if ( class_exists( '\\wordpress_code_ai\\Privileged\\Privileged_Groups' ) && null !== \wordpress_code_ai\Privileged\Privileged_Groups::group_of_tool( $name ) ) {
             return '';
         }
         return (string) Server::effective_required_capability( $tool->get_category(), $tool->get_required_capability() );

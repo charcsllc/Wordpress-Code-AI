@@ -5,10 +5,10 @@
 
 
 
-namespace Easy_MCP_AI\Tools\ACF;
+namespace wordpress_code_ai\Tools\ACF;
 
-use Easy_MCP_AI\Tools\Post_Type_Rest_Base;
-use Easy_MCP_AI\Tools\Post_Type_Tool_Hint;
+use wordpress_code_ai\Tools\Post_Type_Rest_Base;
+use wordpress_code_ai\Tools\Post_Type_Tool_Hint;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

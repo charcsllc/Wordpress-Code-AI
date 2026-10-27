@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

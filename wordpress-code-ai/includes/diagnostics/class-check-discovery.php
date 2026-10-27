@@ -35,7 +35,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -87,7 +87,7 @@ class Check_Discovery {
                 }
             }
         } catch ( \Throwable $e ) {
-            return array( self::unknown( __( 'The discovery test could not run on this site.', 'easy-mcp-ai' ) ) );
+            return array( self::unknown( __( 'The discovery test could not run on this site.', 'wordpress-code-ai' ) ) );
         }
 
         $result   = self::evaluate( $mirrors, $roots, $slashed );
@@ -98,17 +98,17 @@ class Check_Discovery {
                 foreach ( self::mcp_path_urls() as $name => $url ) {
                     $probes[ $name ] = self::probe( $url );
                 }
-                $mcp_path = self::mcp_path_verdict( $probes, \rest_url( 'easy-mcp-ai/v1/mcp' ) );
+                $mcp_path = self::mcp_path_verdict( $probes, \rest_url( 'wordpress-code-ai/v1/mcp' ) );
             } catch ( \Throwable $e ) {
                 $mcp_path = null;
             }
         }
         self::record( $result, $mcp_path );
-        if ( defined( 'EASY_MCP_AI_PLUGIN_DIR' ) ) {
+        if ( defined( 'WORDPRESS_CODE_AI_PLUGIN_DIR' ) ) {
             $result = self::with_workaround(
                 $result,
-                \Easy_MCP_AI\OAuth\Root_Fallback::mode(),
-                \Easy_MCP_AI\OAuth\Root_Fallback::is_armed(),
+                \wordpress_code_ai\OAuth\Root_Fallback::mode(),
+                \wordpress_code_ai\OAuth\Root_Fallback::is_armed(),
                 $mcp_path,
                 '' === (string) \get_option( 'permalink_structure' )
             );
@@ -151,7 +151,7 @@ class Check_Discovery {
                 'a10',
                 Diagnostic_Result::TIER_BLOCKER,
                 $result->label(),
-                $result->detail() . ' ' . __( 'This plugin\'s workaround for blocked hosts is switched off on this site (EASY_MCP_AI_OAUTH_ROOT_FALLBACK).', 'easy-mcp-ai' ),
+                $result->detail() . ' ' . __( 'This plugin\'s workaround for blocked hosts is switched off on this site (WORDPRESS_CODE_AI_OAUTH_ROOT_FALLBACK).', 'wordpress-code-ai' ),
                 $result->fix(),
                 $evidence
             );
@@ -167,7 +167,7 @@ class Check_Discovery {
                 'a10',
                 Diagnostic_Result::TIER_WARNING,
                 $result->label(),
-                __( 'Your server redirects the sign-in addresses at your domain root to the same address with a slash added. This site answers there, so a client that follows the redirect connects, and this plugin points AI clients at copies that need no redirect. A client that only looks at the domain root and does not follow redirects can still fail.', 'easy-mcp-ai' ),
+                __( 'Your server redirects the sign-in addresses at your domain root to the same address with a slash added. This site answers there, so a client that follows the redirect connects, and this plugin points AI clients at copies that need no redirect. A client that only looks at the domain root and does not follow redirects can still fail.', 'wordpress-code-ai' ),
                 self::slash_fix(),
                 $evidence
             );
@@ -179,8 +179,8 @@ class Check_Discovery {
                 'a10',
                 Diagnostic_Result::TIER_WARNING,
                 $result->label(),
-                __( 'Your host intercepts /.well-known/, and this plugin is working around it. The sign-in documents at your domain root never reach WordPress, so this plugin points AI clients at copies served under this site\'s AI connection address instead; ChatGPT and Claude connect through them. A client that only looks at the domain root can still fail.', 'easy-mcp-ai' ),
-                __( 'Nothing is needed for ChatGPT or Claude. To make every client work, ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. Full instructions: https://easymcpai.com/well-known', 'easy-mcp-ai' ),
+                __( 'Your host intercepts /.well-known/, and this plugin is working around it. The sign-in documents at your domain root never reach WordPress, so this plugin points AI clients at copies served under this site\'s AI connection address instead; ChatGPT and Claude connect through them. A client that only looks at the domain root can still fail.', 'wordpress-code-ai' ),
+                __( 'Nothing is needed for ChatGPT or Claude. To make every client work, ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. Full instructions: https://easymcpai.com/well-known', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -190,8 +190,8 @@ class Check_Discovery {
             'a10',
             Diagnostic_Result::TIER_WARNING,
             $result->label(),
-            __( 'Your host blocks /.well-known/, and ChatGPT and Codex can\'t connect. The host refuses that path at your domain root and under this site\'s AI connection address, so the sign-in documents never reach WordPress. Claude and most other clients should still connect through this plugin\'s workaround at the site root; ChatGPT and Codex look for the documents only at addresses your host refuses.', 'easy-mcp-ai' ),
-            __( 'Ask your host to let /.well-known/ reach WordPress. A rule that refuses every path containing /. (common in nginx configurations) blocks it too. Full instructions: https://easymcpai.com/well-known', 'easy-mcp-ai' ),
+            __( 'Your host blocks /.well-known/, and ChatGPT and Codex can\'t connect. The host refuses that path at your domain root and under this site\'s AI connection address, so the sign-in documents never reach WordPress. Claude and most other clients should still connect through this plugin\'s workaround at the site root; ChatGPT and Codex look for the documents only at addresses your host refuses.', 'wordpress-code-ai' ),
+            __( 'Ask your host to let /.well-known/ reach WordPress. A rule that refuses every path containing /. (common in nginx configurations) blocks it too. Full instructions: https://easymcpai.com/well-known', 'wordpress-code-ai' ),
             $evidence
         );
     }
@@ -204,9 +204,9 @@ class Check_Discovery {
 
     public static function mcp_path_urls() {
         return array(
-            'oauth-protected-resource'   => \rest_url( 'easy-mcp-ai/v1/mcp/.well-known/oauth-protected-resource' ),
-            'oauth-authorization-server' => \rest_url( 'easy-mcp-ai/v1/mcp/.well-known/oauth-authorization-server' ),
-            'openid-configuration'       => \rest_url( 'easy-mcp-ai/v1/mcp/.well-known/openid-configuration' ),
+            'oauth-protected-resource'   => \rest_url( 'wordpress-code-ai/v1/mcp/.well-known/oauth-protected-resource' ),
+            'oauth-authorization-server' => \rest_url( 'wordpress-code-ai/v1/mcp/.well-known/oauth-authorization-server' ),
+            'openid-configuration'       => \rest_url( 'wordpress-code-ai/v1/mcp/.well-known/openid-configuration' ),
         );
     }
 
@@ -284,10 +284,10 @@ class Check_Discovery {
 
     private static function record( Diagnostic_Result $result, $mcp_path = null ): void {
         $blocked = self::root_blocked_verdict( $result );
-        if ( null === $blocked || ! defined( 'EASY_MCP_AI_PLUGIN_DIR' ) ) {
+        if ( null === $blocked || ! defined( 'WORDPRESS_CODE_AI_PLUGIN_DIR' ) ) {
             return;
         }
-        \Easy_MCP_AI\OAuth\Root_Fallback::record_root_discovery( $blocked, $mcp_path );
+        \wordpress_code_ai\OAuth\Root_Fallback::record_root_discovery( $blocked, $mcp_path );
     }
 
     
@@ -351,8 +351,8 @@ class Check_Discovery {
         
         
         return array(
-            'oauth-protected-resource'   => \rest_url( 'easy-mcp-ai/v1/discovery/oauth-protected-resource' ),
-            'oauth-authorization-server' => \rest_url( 'easy-mcp-ai/v1/discovery/oauth-authorization-server' ),
+            'oauth-protected-resource'   => \rest_url( 'wordpress-code-ai/v1/discovery/oauth-protected-resource' ),
+            'oauth-authorization-server' => \rest_url( 'wordpress-code-ai/v1/discovery/oauth-authorization-server' ),
         );
     }
 
@@ -556,13 +556,13 @@ class Check_Discovery {
 
             if ( $redirected ) {
                 return self::unknown(
-                    __( 'This site\'s own address redirects somewhere else, so nothing could be checked. Every test request was sent away rather than answered. The usual cause is the address in Settings → General not matching the one the server actually serves — http:// where the server forces https://, or the bare domain where it adds www. Correct it there, or ask your host which address is the real one, then run these checks again.', 'easy-mcp-ai' ),
+                    __( 'This site\'s own address redirects somewhere else, so nothing could be checked. Every test request was sent away rather than answered. The usual cause is the address in Settings → General not matching the one the server actually serves — http:// where the server forces https://, or the bare domain where it adds www. Correct it there, or ask your host which address is the real one, then run these checks again.', 'wordpress-code-ai' ),
                     $evidence
                 );
             }
 
             return self::unknown(
-                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'easy-mcp-ai' ),
+                __( 'The test request did not reach this site\'s own code, so the result would not mean anything. Some hosts stop a site from calling its own address; on its own that is not a fault.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -583,7 +583,7 @@ class Check_Discovery {
             }
             $partial = ' ' . sprintf(
                 /* translators: %s: comma-separated document name(s) not checked. */
-                __( 'Note that %s could not be checked at all, because this site could not fetch its own copy of it — nothing is known about that one either way.', 'easy-mcp-ai' ),
+                __( 'Note that %s could not be checked at all, because this site could not fetch its own copy of it — nothing is known about that one either way.', 'wordpress-code-ai' ),
                 implode( ', ', $unmeasured )
             );
         }
@@ -620,7 +620,7 @@ class Check_Discovery {
                 Diagnostic_Result::TIER_BLOCKER,
                 $label,
                 self::blocked_detail( $blocked, $roots ) . $partial,
-                __( 'Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. This is a rule on their side; the plugin cannot move these addresses, because the standards AI clients follow define them as sitting at your domain root. If your host will not change it, they can instead place the two documents in the .well-known folder of your site as ordinary files — copy each one from the /wp-json/ address that still works. Full instructions: https://easymcpai.com/well-known', 'easy-mcp-ai' ),
+                __( 'Ask your host to let /.well-known/ reach WordPress, or at least the two addresses starting /.well-known/oauth-. This is a rule on their side; the plugin cannot move these addresses, because the standards AI clients follow define them as sitting at your domain root. If your host will not change it, they can instead place the two documents in the .well-known folder of your site as ordinary files — copy each one from the /wp-json/ address that still works. Full instructions: https://easymcpai.com/well-known', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -628,7 +628,7 @@ class Check_Discovery {
         if ( ! empty( $stale ) ) {
             $critical = array_filter( $stale );
             $names    = implode( ', ', array_keys( $stale ) );
-            $fix      = __( 'Replace the out-of-date copy. Open the matching /wp-json/easy-mcp-ai/v1/discovery/ address on this site, which always shows the current version, and save it over the file in your .well-known folder.', 'easy-mcp-ai' );
+            $fix      = __( 'Replace the out-of-date copy. Open the matching /wp-json/wordpress-code-ai/v1/discovery/ address on this site, which always shows the current version, and save it over the file in your .well-known folder.', 'wordpress-code-ai' );
 
             if ( ! empty( $critical ) ) {
                 $evidence['reason'] = 'stale';
@@ -638,7 +638,7 @@ class Check_Discovery {
                     $label,
                     sprintf(
                         /* translators: 1: document name(s), 2: comma-separated field names. */
-                        __( 'The sign-in details published at this site\'s address are out of date, and the parts that differ are the ones a client needs to sign in: %2$s (in %1$s). These addresses are being served from a saved copy rather than by WordPress, and the copy no longer matches this site.', 'easy-mcp-ai' ),
+                        __( 'The sign-in details published at this site\'s address are out of date, and the parts that differ are the ones a client needs to sign in: %2$s (in %1$s). These addresses are being served from a saved copy rather than by WordPress, and the copy no longer matches this site.', 'wordpress-code-ai' ),
                         
                         
                         
@@ -658,7 +658,7 @@ class Check_Discovery {
                 $label,
                 sprintf(
                     /* translators: %s: document name(s). */
-                    __( 'The sign-in details published at this site\'s address can be read, but they no longer match what this site would produce (%s). Signing in should still work; the list of permissions an AI client is offered may be out of date. These addresses are being served from a saved copy rather than by WordPress.', 'easy-mcp-ai' ),
+                    __( 'The sign-in details published at this site\'s address can be read, but they no longer match what this site would produce (%s). Signing in should still work; the list of permissions an AI client is offered may be out of date. These addresses are being served from a saved copy rather than by WordPress.', 'wordpress-code-ai' ),
                     $names
                 ),
                 $fix,
@@ -688,7 +688,7 @@ class Check_Discovery {
             return self::unknown(
                 sprintf(
                     /* translators: %s: comma-separated document name(s) that could not be checked. */
-                    __( 'Only part of the sign-in details could be checked. What was checked is being served correctly, but this site could not fetch its own copy of %s, so nothing is known about that one either way. Some hosts stop a site from calling its own address; on its own that is not a fault. Run the checks again, and if it keeps happening ask your host whether the site can reach itself.', 'easy-mcp-ai' ),
+                    __( 'Only part of the sign-in details could be checked. What was checked is being served correctly, but this site could not fetch its own copy of %s, so nothing is known about that one either way. Some hosts stop a site from calling its own address; on its own that is not a fault. Run the checks again, and if it keeps happening ask your host whether the site can reach itself.', 'wordpress-code-ai' ),
                     implode( ', ', $unmeasured )
                 ),
                 $evidence
@@ -699,7 +699,7 @@ class Check_Discovery {
             'a10',
             Diagnostic_Result::TIER_BLOCKER,
             $label,
-            __( 'Both sign-in documents are readable at this site\'s address and match what this site publishes, as AI clients require.', 'easy-mcp-ai' ),
+            __( 'Both sign-in documents are readable at this site\'s address and match what this site publishes, as AI clients require.', 'wordpress-code-ai' ),
             $evidence
         );
     }
@@ -810,12 +810,12 @@ class Check_Discovery {
 
     
     private static function slash_detail(): string {
-        return __( 'Before an AI client can sign in, it has to read two small documents from this site\'s address. Your server redirects those addresses to the same address with a slash added. This site answers there, so a client that follows the redirect connects, but a client that does not follow redirects cannot begin.', 'easy-mcp-ai' );
+        return __( 'Before an AI client can sign in, it has to read two small documents from this site\'s address. Your server redirects those addresses to the same address with a slash added. This site answers there, so a client that follows the redirect connects, but a client that does not follow redirects cannot begin.', 'wordpress-code-ai' );
     }
 
     
     private static function slash_fix(): string {
-        return __( 'Exclude /.well-known/ from the rule that adds a trailing slash to addresses. The rule is in your server configuration, in .htaccess, or in a redirect or SEO plugin; your host can tell you which. Nothing else is needed.', 'easy-mcp-ai' );
+        return __( 'Exclude /.well-known/ from the rule that adds a trailing slash to addresses. The rule is in your server configuration, in .htaccess, or in a redirect or SEO plugin; your host can tell you which. Nothing else is needed.', 'wordpress-code-ai' );
     }
 
     
@@ -842,16 +842,16 @@ class Check_Discovery {
         }
 
         $intro = $answered
-            ? __( 'Before an AI client can sign in, it has to read two small documents from this site\'s address. Something in front of WordPress is answering for them instead, so the request never reaches this site\'s own code. The same documents are served correctly on a different address, which is how this was measured — so nothing is wrong with the plugin or with WordPress.', 'easy-mcp-ai' )
-            : __( 'Before an AI client can sign in, it has to read two small documents from this site\'s address. Those requests got no reply at all, so a client cannot begin. The same documents are served correctly on a different address, which is how this was measured — so nothing is wrong with the plugin or with WordPress. A firewall rule, a timeout or a DNS problem on that address are the usual causes.', 'easy-mcp-ai' );
+            ? __( 'Before an AI client can sign in, it has to read two small documents from this site\'s address. Something in front of WordPress is answering for them instead, so the request never reaches this site\'s own code. The same documents are served correctly on a different address, which is how this was measured — so nothing is wrong with the plugin or with WordPress.', 'wordpress-code-ai' )
+            : __( 'Before an AI client can sign in, it has to read two small documents from this site\'s address. Those requests got no reply at all, so a client cannot begin. The same documents are served correctly on a different address, which is how this was measured — so nothing is wrong with the plugin or with WordPress. A firewall rule, a timeout or a DNS problem on that address are the usual causes.', 'wordpress-code-ai' );
 
         if ( count( $blocked ) > 1 ) {
-            return $intro . ' ' . __( 'Both documents are affected, so connecting will fail at the first step.', 'easy-mcp-ai' );
+            return $intro . ' ' . __( 'Both documents are affected, so connecting will fail at the first step.', 'wordpress-code-ai' );
         }
 
         return $intro . ' ' . sprintf(
             /* translators: %s: the name of the blocked discovery document, e.g. oauth-authorization-server. */
-            __( 'One document is affected: %s.', 'easy-mcp-ai' ),
+            __( 'One document is affected: %s.', 'wordpress-code-ai' ),
             $blocked[0]
         );
     }
@@ -903,7 +903,7 @@ class Check_Discovery {
     }
 
     private static function label() {
-        return __( 'AI clients can read this site\'s sign-in details', 'easy-mcp-ai' );
+        return __( 'AI clients can read this site\'s sign-in details', 'wordpress-code-ai' );
     }
 
     private static function unknown( $reason, array $evidence = array() ) {

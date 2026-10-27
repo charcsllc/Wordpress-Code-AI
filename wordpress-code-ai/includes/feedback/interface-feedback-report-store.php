@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Feedback;
+namespace wordpress_code_ai\Feedback;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Users;
+namespace wordpress_code_ai\Tools\Users;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -16,7 +16,7 @@ class Get_User_Meta extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Reads user meta for a given user. Required: `user_id`. Optional: `key` (single key — omit to fetch all meta), `single` (boolean, default true — when true returns a single value; when false returns an array of values for the key). Returns { user_id, key, value } for one key, or { user_id, meta, withheld_keys } for all meta, where `withheld_keys` (sorted) names every key the policy left out of `meta`, so an omission is never silent. Users can read their own meta without edit_users. Auth-sensitive keys (session_tokens, _password_reset_key, _application_passwords, etc.) and the role keys ({prefix}capabilities, {prefix}user_level) are blocked for all callers including administrators; in the all-meta read, `_`-prefixed keys are also withheld from callers without manage_options unless the `easy_mcp_ai_user_meta_readable_protected_keys` filter lists them.';
+        return 'Reads user meta for a given user. Required: `user_id`. Optional: `key` (single key — omit to fetch all meta), `single` (boolean, default true — when true returns a single value; when false returns an array of values for the key). Returns { user_id, key, value } for one key, or { user_id, meta, withheld_keys } for all meta, where `withheld_keys` (sorted) names every key the policy left out of `meta`, so an omission is never silent. Users can read their own meta without edit_users. Auth-sensitive keys (session_tokens, _password_reset_key, _application_passwords, etc.) and the role keys ({prefix}capabilities, {prefix}user_level) are blocked for all callers including administrators; in the all-meta read, `_`-prefixed keys are also withheld from callers without manage_options unless the `wordpress_code_ai_user_meta_readable_protected_keys` filter lists them.';
     }
 
     public function get_category() {
@@ -145,7 +145,7 @@ class Get_User_Meta extends Base_Tool {
             return false;
         }
         if ( '_' === $key[0] && ! current_user_can( 'manage_options' ) ) {
-            $readable_protected = apply_filters( 'easy_mcp_ai_user_meta_readable_protected_keys', array( 'wp_user-settings', 'wp_user-settings-time' ) );
+            $readable_protected = apply_filters( 'wordpress_code_ai_user_meta_readable_protected_keys', array( 'wp_user-settings', 'wp_user-settings-time' ) );
             return in_array( $key, (array) $readable_protected, true );
         }
         return true;

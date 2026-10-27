@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Media;
+namespace wordpress_code_ai\Tools\Media;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

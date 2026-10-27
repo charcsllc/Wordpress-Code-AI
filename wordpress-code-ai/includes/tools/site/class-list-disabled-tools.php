@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site;
+namespace wordpress_code_ai\Tools\Site;
 
-use Easy_MCP_AI\Feedback\Feedback_Availability;
-use Easy_MCP_AI\Tools\Switched_Off_Inventory;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Feedback\Feedback_Availability;
+use wordpress_code_ai\Tools\Switched_Off_Inventory;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -398,7 +398,7 @@ class List_Disabled_Tools extends Base_Tool {
     }
 
     
-    protected function registry(): ?\Easy_MCP_AI\Tools\Tool_Registry {
-        return class_exists( '\\Easy_MCP_AI\\Plugin' ) ? \Easy_MCP_AI\Plugin::instance()->get_tool_registry() : null;
+    protected function registry(): ?\wordpress_code_ai\Tools\Tool_Registry {
+        return class_exists( '\\wordpress_code_ai\\Plugin' ) ? \wordpress_code_ai\Plugin::instance()->get_tool_registry() : null;
     }
 }

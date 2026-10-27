@@ -46,7 +46,7 @@ $emai_meta = static function ( string $method, bool $write, array $params ): arr
     $route['preflight'] = 'preflight';
     if ( $write ) {
         $route['describe']     = 'describe';
-        $route['not_captured'] = array( 'comment meta: change history\'s meta capture (easy_mcp_ai_change_log_capture_meta) is off' );
+        $route['not_captured'] = array( 'comment meta: change history\'s meta capture (wordpress_code_ai_change_log_capture_meta) is off' );
     }
     return $route;
 };

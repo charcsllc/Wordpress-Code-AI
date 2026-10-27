@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Rest;
+namespace wordpress_code_ai\Tools\Rest;
 
-use Easy_MCP_AI\Tools\Rest_Route_Tool;
+use wordpress_code_ai\Tools\Rest_Route_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -80,7 +80,7 @@ class Rest_Write extends Rest_Route_Tool {
 
 
     protected function around_dispatch( callable $dispatch, array &$notes ): \WP_REST_Response {
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_force_draft_on_create', false ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_force_draft_on_create', false ) ) {
             return $dispatch();
         }
         $drafted = 0;

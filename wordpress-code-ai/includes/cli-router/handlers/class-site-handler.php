@@ -1,15 +1,15 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Capability_Grants;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Confirm;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Formatter;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Self_Protection;
+use wordpress_code_ai\Cli_Router\Capability_Grants;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Confirm;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Formatter;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Self_Protection;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -695,7 +695,7 @@ class Site_Handler extends Command_Handler {
                 'path'       => $path,
                 'user_id'    => (int) $this->email_exists( $email ),
             );
-        } catch ( \Easy_MCP_AI\Cli_Router\Cli_Exit $e ) {
+        } catch ( \wordpress_code_ai\Cli_Router\Cli_Exit $e ) {
             if ( $strict ) {
                 throw $e;
             }
@@ -814,7 +814,7 @@ class Site_Handler extends Command_Handler {
         $ctx = self::silent_context();
         try {
             $blog = $this->resolve_delete( $inv, $ctx );
-        } catch ( \Easy_MCP_AI\Cli_Router\Cli_Exit $e ) {
+        } catch ( \wordpress_code_ai\Cli_Router\Cli_Exit $e ) {
             $errors = $ctx->out->errors();
             return array( 'Site delete: refused → ' . ( $errors ? (string) $errors[0] : 'nothing changes' ) );
         }
@@ -998,7 +998,7 @@ class Site_Handler extends Command_Handler {
     
     private static function silent_context(): Context {
         return new Context(
-            new \Easy_MCP_AI\Cli_Router\Output(),
+            new \wordpress_code_ai\Cli_Router\Output(),
             static function () {
                 return null;
             },

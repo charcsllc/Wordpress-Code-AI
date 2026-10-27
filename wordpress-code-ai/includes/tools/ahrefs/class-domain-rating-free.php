@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Ahrefs;
+namespace wordpress_code_ai\Tools\Ahrefs;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -27,15 +27,15 @@ class Domain_Rating_Free extends Base_Tool {
 	
 	
 	
-	const ENDPOINT     = \Easy_MCP_AI\Ahrefs\Ahrefs_Client::ENDPOINT;
-	const ALLOWED_HOST = \Easy_MCP_AI\Ahrefs\Ahrefs_Client::ALLOWED_HOST;
+	const ENDPOINT     = \wordpress_code_ai\Ahrefs\Ahrefs_Client::ENDPOINT;
+	const ALLOWED_HOST = \wordpress_code_ai\Ahrefs\Ahrefs_Client::ALLOWED_HOST;
 
 	public function get_name() {
 		return 'wp_ahrefs_domain_rating_free';
 	}
 
 	public function get_description() {
-		return 'Ahrefs Domain Rating — returns the target\'s Domain Rating on a 100-point logarithmic scale, reflecting the strength of its backlink profile. target accepts a bare domain (example.com), a subdomain, or a full URL. Returns domain_rating plus the Ahrefs license URL; attribution "Domain Rating by Ahrefs" is required when displaying the value. Requires a free Ahrefs APIv3 key saved at Easy MCP AI → Tools → External data → Ahrefs — calls to this endpoint are free and consume NO API units, but Ahrefs stopped serving it unauthenticated. (meter: free, key required)';
+		return 'Ahrefs Domain Rating — returns the target\'s Domain Rating on a 100-point logarithmic scale, reflecting the strength of its backlink profile. target accepts a bare domain (example.com), a subdomain, or a full URL. Returns domain_rating plus the Ahrefs license URL; attribution "Domain Rating by Ahrefs" is required when displaying the value. Requires a free Ahrefs APIv3 key saved at wordpress-code-ai → Tools → External data → Ahrefs — calls to this endpoint are free and consume NO API units, but Ahrefs stopped serving it unauthenticated. (meter: free, key required)';
 	}
 
 	public function get_category() {
@@ -106,7 +106,7 @@ class Domain_Rating_Free extends Base_Tool {
 			
 			
 			
-			$api_key = ( new \Easy_MCP_AI\Ahrefs\Ahrefs_Client() )->get_api_key();
+			$api_key = ( new \wordpress_code_ai\Ahrefs\Ahrefs_Client() )->get_api_key();
 
 			$response = \wp_remote_get( $url, array(
 				
@@ -117,7 +117,7 @@ class Domain_Rating_Free extends Base_Tool {
 				
 				
 				'redirection'         => 0,
-				'user-agent'          => 'EasyMCPAI/' . ( defined( 'EASY_MCP_AI_VERSION' ) ? EASY_MCP_AI_VERSION : '0' ),
+				'user-agent'          => 'wordpress-code-ai/' . ( defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '0' ),
 				'headers'             => array(
 					'Accept'        => 'application/json',
 					'Authorization' => 'Bearer ' . $api_key,
@@ -148,7 +148,7 @@ class Domain_Rating_Free extends Base_Tool {
 				
 				
 				if ( 401 === $code || 403 === $code ) {
-					throw new \RuntimeException( "Ahrefs rejected the API key (HTTP {$code}).{$detail} Check the key at Easy MCP AI → Tools → External data → Ahrefs; it must be an APIv3 key from your Ahrefs account under Account settings → API keys." ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+					throw new \RuntimeException( "Ahrefs rejected the API key (HTTP {$code}).{$detail} Check the key at wordpress-code-ai → Tools → External data → Ahrefs; it must be an APIv3 key from your Ahrefs account under Account settings → API keys." ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 				}
 				throw new \RuntimeException( "Ahrefs HTTP error: status {$code}.{$detail}" ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 			}

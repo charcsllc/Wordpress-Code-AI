@@ -40,7 +40,7 @@
 
 
 
-namespace Easy_MCP_AI\MCP;
+namespace wordpress_code_ai\MCP;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -49,10 +49,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Rest_Auth_Override {
 
     
-    const ROUTE_PREFIX = '/easy-mcp-ai/v1/';
+    const ROUTE_PREFIX = '/wordpress-code-ai/v1/';
 
     
-    const ENABLED_FILTER = 'easy_mcp_ai_rest_auth_override';
+    const ENABLED_FILTER = 'wordpress_code_ai_rest_auth_override';
 
     
 
@@ -71,7 +71,7 @@ class Rest_Auth_Override {
     const CLEARED_STATUS = 401;
 
     
-    const OBSERVED_GLOBAL = 'easy_mcp_ai_rest_auth_seen';
+    const OBSERVED_GLOBAL = 'wordpress_code_ai_rest_auth_seen';
 
     
 
