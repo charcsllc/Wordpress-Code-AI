@@ -13,8 +13,8 @@ names the same version. Without --check it then writes three files to dist/:
   (see wordpress-code-ai/fork/class-updater.php);
 - notes.md: the release notes.
 
-.github/workflows/release.yml runs this when a tag starting with v is pushed and
-attaches the files to the release.
+.github/workflows/release.yml runs this when it is started from the Actions tab or
+a tag starting with v is pushed, and attaches the files to the release.
 """
 import argparse
 import datetime

@@ -1,10 +1,15 @@
 name: Release
 
-# Push a tag such as v2.3.0.2 to publish that version. Sites with the plugin are
-# offered it on their Plugins screen within about 12 hours.
+# Publishes the version in wordpress-code-ai.php as a release with the ZIP and
+# update.json. Start it in either of two ways:
+# - Actions → Release → Run workflow, on main: the tag (v plus the version) is
+#   created on the commit it runs on;
+# - push a tag such as v2.3.0.2.
+# Sites with the plugin are offered the new version within about 12 hours.
 on:
   push:
     tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,6 +20,7 @@ jobs:
 
   release:
     needs: ci
+    if: github.event_name == 'push' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,15 +28,24 @@ jobs:
         with:
           python-version: '3.12'
       - name: Build the release files
-        run: python3 tools/build-release.py --tag "$GITHUB_REF_NAME"
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = push ]; then
+            python3 tools/build-release.py --tag "$GITHUB_REF_NAME"
+          else
+            python3 tools/build-release.py
+          fi
       - name: Publish the release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG: ${{ github.ref_name }}
         run: |
-          if gh release view "$TAG" > /dev/null 2>&1; then
-            gh release upload "$TAG" dist/wordpress-code-ai.zip dist/update.json --clobber
+          tag="v$(python3 -c "import json; print(json.load(open('dist/update.json'))['version'])")"
+          if gh release view "$tag" > /dev/null 2>&1; then
+            if [ "$GITHUB_EVENT_NAME" != push ]; then
+              echo "::error::Release $tag already exists. Add a CHANGELOG entry with a new version in tools/rename-upstream.py and run tools/rebuild-plugin.py first."
+              exit 1
+            fi
+            gh release upload "$tag" dist/wordpress-code-ai.zip dist/update.json --clobber
           else
-            gh release create "$TAG" dist/wordpress-code-ai.zip dist/update.json \
-              --verify-tag --title "wordpress-code-ai ${TAG#v}" --notes-file dist/notes.md
+            gh release create "$tag" dist/wordpress-code-ai.zip dist/update.json \
+              --target "$GITHUB_SHA" --title "wordpress-code-ai ${tag#v}" --notes-file dist/notes.md
           fi

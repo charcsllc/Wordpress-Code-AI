@@ -684,9 +684,9 @@ The `skills/wordpress-site-manager.md` file contains a ready-to-use Claude skill
 1. Add an entry at the top of `CHANGELOG` in `tools/rename-upstream.py`, with the next version (for example `2.3.0.2`), the date and what changed.
 2. Run `python3 tools/rebuild-plugin.py`. It writes the version to the plugin header, the version constant and `readme.txt`, and adds the entry to the changelog.
 3. Commit, push to `main`, and wait for CI to pass.
-4. Tag that commit with `v` and the version, and push the tag: `git tag v2.3.0.2 && git push origin v2.3.0.2`.
+4. On GitHub, open **Actions → Release**, click **Run workflow**, keep the `main` branch selected and click **Run workflow** again. Instead, you can tag the commit with `v` and the version and push the tag: `git tag v2.3.0.2 && git push origin v2.3.0.2`.
 
-The **Release** workflow checks that the tag matches the version, builds `wordpress-code-ai.zip` and `update.json` with [`tools/build-release.py`](tools/build-release.py), and publishes the release with both files. Sites see the update within about 12 hours, or at once under **Dashboard → Updates → Check again**.
+The **Release** workflow runs CI again, builds `wordpress-code-ai.zip` and `update.json` with [`tools/build-release.py`](tools/build-release.py), creates the `v2.3.0.2` tag if it does not exist yet, and publishes the release with both files. It refuses to publish a version that already has a release. Sites see the update within about 12 hours, or at once under **Dashboard → Updates → Check again**.
 
 ### Updating from Easy MCP AI
 
