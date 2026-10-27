@@ -13,15 +13,15 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Admin\Admin_Page;
-use Easy_MCP_AI\Admin\History_Settings_Page;
-use Easy_MCP_AI\Admin\Settings_Validator;
-use Easy_MCP_AI\Admin\Tool_Catalogue;
-use Easy_MCP_AI\Auth\Connect_Policy;
-use Easy_MCP_AI\Config;
-use Easy_MCP_AI\Tools\Tool_State;
+use wordpress_code_ai\Admin\Admin_Page;
+use wordpress_code_ai\Admin\History_Settings_Page;
+use wordpress_code_ai\Admin\Settings_Validator;
+use wordpress_code_ai\Admin\Tool_Catalogue;
+use wordpress_code_ai\Auth\Connect_Policy;
+use wordpress_code_ai\Config;
+use wordpress_code_ai\Tools\Tool_State;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -32,10 +32,10 @@ class Settings_Controller extends Admin_Rest_Controller {
     const SECTIONS = array( 'access', 'logging', 'usage', 'advanced', 'capture' );
 
     
-    const LOGGER_FLAG_OPTION = 'easy_mcp_ai_logger_flag';
+    const LOGGER_FLAG_OPTION = 'wordpress_code_ai_logger_flag';
 
     
-    const ASKED_OPTION = 'easy_mcp_ai_usage_consent_asked';
+    const ASKED_OPTION = 'wordpress_code_ai_usage_consent_asked';
 
     
 
@@ -129,19 +129,19 @@ class Settings_Controller extends Admin_Rest_Controller {
         $raw = $request->get_param( 'paused' );
         if ( ! is_bool( $raw ) && ! in_array( $raw, array( 0, 1, '0', '1', 'true', 'false' ), true ) ) {
             return $this->fail(
-                'easy_mcp_ai_invalid_param',
-                \__( 'Expected true or false.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_invalid_param',
+                \__( 'Expected true or false.', 'wordpress-code-ai' ),
                 400
             );
         }
         if ( Config::is_locked( 'paused' ) ) {
             return $this->fail(
-                'easy_mcp_ai_setting_locked',
-                \__( 'This setting is set in wp-config.php or the environment and cannot be changed here.', 'easy-mcp-ai' ),
+                'wordpress_code_ai_setting_locked',
+                \__( 'This setting is set in wp-config.php or the environment and cannot be changed here.', 'wordpress-code-ai' ),
                 409
             );
         }
-        Config::update( 'easy_mcp_ai_paused', \rest_sanitize_boolean( $raw ) );
+        Config::update( 'wordpress_code_ai_paused', \rest_sanitize_boolean( $raw ) );
         return $this->ok( array( 'paused' => true === Config::get( 'paused' ) ) );
     }
 
@@ -165,7 +165,7 @@ class Settings_Controller extends Admin_Rest_Controller {
 
 
     public function payload() {
-        $patterns = (array) Config::get( 'easy_mcp_ai_allowed_tool_patterns', array() );
+        $patterns = (array) Config::get( 'wordpress_code_ai_allowed_tool_patterns', array() );
         $grid     = $this->grid();
         $defaults = Tool_Catalogue::defaults_of( $this->tool_registry, $grid );
 
@@ -174,7 +174,7 @@ class Settings_Controller extends Admin_Rest_Controller {
                 'oauthMinCapability'  => Connect_Policy::stored_floor(),
                 
                 'connectRoles'        => Connect_Policy::ticked_roles(),
-                'forceDraftOnCreate'  => (bool) Config::get( 'easy_mcp_ai_force_draft_on_create', false ),
+                'forceDraftOnCreate'  => (bool) Config::get( 'wordpress_code_ai_force_draft_on_create', false ),
                 'selfServiceKeys'     => true === Config::get( 'self_service_keys' ),
                 
                 
@@ -183,18 +183,18 @@ class Settings_Controller extends Admin_Rest_Controller {
                 'approvalNever'       => array_values( (array) Config::get( 'approval_never' ) ),
             ),
             'logging'  => array(
-                'auditLogEnabled'    => (bool) Config::get( 'easy_mcp_ai_audit_log_enabled', true ),
+                'auditLogEnabled'    => (bool) Config::get( 'wordpress_code_ai_audit_log_enabled', true ),
                 'auditLogRetention'  => self::audit_retention(),
-                'changeLogEnabled'   => (bool) Config::get( 'easy_mcp_ai_change_log_enabled', true ),
-                'changeLogRetention' => \Easy_MCP_AI\Plugin::change_log_retention_days(),
+                'changeLogEnabled'   => (bool) Config::get( 'wordpress_code_ai_change_log_enabled', true ),
+                'changeLogRetention' => \wordpress_code_ai\Plugin::change_log_retention_days(),
             ),
             'usage'    => array(
                 'shareUsageData' => 'yes' === \get_option( self::LOGGER_FLAG_OPTION, 'no' ),
             ),
             'advanced' => array(
                 'rateLimitPerMinute'        => self::rate_limit(),
-                'externalDataMinCapability' => Admin_Page::sanitize_external_data_min_capability( Config::get( 'easy_mcp_ai_external_data_min_capability', 'manage_options' ) ),
-                'maxTitleLength'            => max( 0, (int) Config::get( 'easy_mcp_ai_max_title_length', 0 ) ),
+                'externalDataMinCapability' => Admin_Page::sanitize_external_data_min_capability( Config::get( 'wordpress_code_ai_external_data_min_capability', 'manage_options' ) ),
+                'maxTitleLength'            => max( 0, (int) Config::get( 'wordpress_code_ai_max_title_length', 0 ) ),
                 
                 
                 
@@ -202,14 +202,14 @@ class Settings_Controller extends Admin_Rest_Controller {
                     return Tool_State::stored_off( $name, $defaults[ $name ] );
                 } ) ),
                 'allowedToolPatterns'       => array_values( array_filter( $patterns, 'is_string' ) ),
-                'ipWhitelist'               => (string) Config::get( 'easy_mcp_ai_ip_whitelist', '' ),
+                'ipWhitelist'               => (string) Config::get( 'wordpress_code_ai_ip_whitelist', '' ),
             ),
             'capture'  => array(
-                'optionMode'     => History_Settings_Page::sanitize_mode( Config::get( 'easy_mcp_ai_change_log_option_mode', 'all_except_denylist' ) ),
-                'captureMeta'    => (bool) Config::get( 'easy_mcp_ai_change_log_capture_meta', true ),
-                'captureDb'      => (bool) Config::get( 'easy_mcp_ai_change_log_capture_db', false ),
-                'dbRetention'    => History_Settings_Page::sanitize_db_retention( Config::get( 'easy_mcp_ai_change_log_db_retention', 7 ) ),
-                'externalIntent' => (bool) Config::get( 'easy_mcp_ai_change_log_external_intent', true ),
+                'optionMode'     => History_Settings_Page::sanitize_mode( Config::get( 'wordpress_code_ai_change_log_option_mode', 'all_except_denylist' ) ),
+                'captureMeta'    => (bool) Config::get( 'wordpress_code_ai_change_log_capture_meta', true ),
+                'captureDb'      => (bool) Config::get( 'wordpress_code_ai_change_log_capture_db', false ),
+                'dbRetention'    => History_Settings_Page::sanitize_db_retention( Config::get( 'wordpress_code_ai_change_log_db_retention', 7 ) ),
+                'externalIntent' => (bool) Config::get( 'wordpress_code_ai_change_log_external_intent', true ),
             ),
         );
 
@@ -237,8 +237,8 @@ class Settings_Controller extends Admin_Rest_Controller {
                 'connectRolesFiltered'     => Connect_Policy::is_filtered_for( Connect_Policy::CHANNEL_OAUTH ),
                 'externalDataCapabilities' => self::capability_choices( Admin_Page::external_data_min_capability_choices() ),
                 'optionModes'              => array(
-                    array( 'value' => 'all_except_denylist', 'label' => \__( 'All options except churn (recommended)', 'easy-mcp-ai' ) ),
-                    array( 'value' => 'allowlist', 'label' => \__( 'Allowlist only (legacy)', 'easy-mcp-ai' ) ),
+                    array( 'value' => 'all_except_denylist', 'label' => \__( 'All options except churn (recommended)', 'wordpress-code-ai' ) ),
+                    array( 'value' => 'allowlist', 'label' => \__( 'Allowlist only (legacy)', 'wordpress-code-ai' ) ),
                 ),
                 
                 
@@ -267,7 +267,7 @@ class Settings_Controller extends Admin_Rest_Controller {
 
 
     private static function controlled() {
-        $invalid = \Easy_MCP_AI\Config_Admin::invalid_settings();
+        $invalid = \wordpress_code_ai\Config_Admin::invalid_settings();
         $list    = array();
         foreach ( Config::controlled() as $constant => $source ) {
             $list[] = array(
@@ -286,24 +286,24 @@ class Settings_Controller extends Admin_Rest_Controller {
 
     private function approval_default_tools() {
         
-        if ( ! $this->tool_registry instanceof \Easy_MCP_AI\Tools\Tool_Registry ) {
+        if ( ! $this->tool_registry instanceof \wordpress_code_ai\Tools\Tool_Registry ) {
             return array();
         }
-        return \Easy_MCP_AI\Approvals\Approval_Gate::default_pause_names(
+        return \wordpress_code_ai\Approvals\Approval_Gate::default_pause_names(
             $this->tool_registry,
-            \Easy_MCP_AI\MCP\Server::available_tools( $this->tool_registry )
+            \wordpress_code_ai\MCP\Server::available_tools( $this->tool_registry )
         );
     }
 
     
     private static function audit_retention() {
-        $stored = Config::get( 'easy_mcp_ai_audit_log_retention', 30 );
+        $stored = Config::get( 'wordpress_code_ai_audit_log_retention', 30 );
         return is_numeric( $stored ) ? max( 1, (int) $stored ) : 30;
     }
 
     
     private static function rate_limit() {
-        $stored = (int) Config::get( 'easy_mcp_ai_rate_limit_per_minute', 60 );
+        $stored = (int) Config::get( 'wordpress_code_ai_rate_limit_per_minute', 60 );
         return $stored < 1 ? 60 : $stored;
     }
 
@@ -344,7 +344,7 @@ class Settings_Controller extends Admin_Rest_Controller {
 
     public static function matching_tools( array $names, array $patterns ) {
         return array_values( array_filter( $names, static function ( $name ) use ( $patterns ) {
-            return \Easy_MCP_AI\MCP\Server::matches_tool_patterns( $name, $patterns );
+            return \wordpress_code_ai\MCP\Server::matches_tool_patterns( $name, $patterns );
         } ) );
     }
 
@@ -361,7 +361,7 @@ class Settings_Controller extends Admin_Rest_Controller {
     public function patch_section( $request ) {
         $section = (string) $request->get_param( 'section' );
         if ( ! isset( self::FIELDS[ $section ] ) ) {
-            return $this->fail( 'easy_mcp_ai_invalid_param', \__( 'Unknown settings section.', 'easy-mcp-ai' ), 400, array( 'field' => 'section' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_param', \__( 'Unknown settings section.', 'wordpress-code-ai' ), 400, array( 'field' => 'section' ) );
         }
         $body = $request->get_json_params();
         if ( ! is_array( $body ) || empty( $body ) ) {
@@ -397,9 +397,9 @@ class Settings_Controller extends Admin_Rest_Controller {
                 
                 
                 Config::update( Connect_Policy::FLOOR_OPTION, $value[0] );
-                Config::update( 'easy_mcp_ai_connect_roles', $value[1] );
+                Config::update( 'wordpress_code_ai_connect_roles', $value[1] );
             } else {
-                Config::update( 'easy_mcp_ai_' . $suffix, $value );
+                Config::update( 'wordpress_code_ai_' . $suffix, $value );
             }
         }
         return $this->ok( $this->payload() );
@@ -416,9 +416,8 @@ class Settings_Controller extends Admin_Rest_Controller {
 
 
     public static function usage_ask(): bool {
-        return 'yes' !== \get_option( self::LOGGER_FLAG_OPTION, 'no' )
-            && ! \get_option( self::ASKED_OPTION, false )
-            && ! Config::is_white_labelled();
+        // Usage data was sent by the Themeisle SDK, which is no longer bundled.
+        return false;
     }
 
     
@@ -446,11 +445,11 @@ class Settings_Controller extends Admin_Rest_Controller {
         if ( ! is_array( $raw ) || array_filter( $raw, static function ( $role ) use ( $known ) {
             return ! is_string( $role ) || ! in_array( $role, $known, true );
         } ) ) {
-            return $this->invalid( $field, \__( 'Pick roles from the list.', 'easy-mcp-ai' ) );
+            return $this->invalid( $field, \__( 'Pick roles from the list.', 'wordpress-code-ai' ) );
         }
         foreach ( $choices as $choice ) {
             if ( $choice['always'] && ! in_array( $choice['value'], $raw, true ) ) {
-                return $this->invalid( $field, \__( 'Administrators can always connect.', 'easy-mcp-ai' ) );
+                return $this->invalid( $field, \__( 'Administrators can always connect.', 'wordpress-code-ai' ) );
             }
         }
         $split = Connect_Policy::split_ticks( array_values( array_unique( $raw ) ) );
@@ -470,7 +469,7 @@ class Settings_Controller extends Admin_Rest_Controller {
 
 
     private function locked( string $field, string $message ): \WP_Error {
-        return $this->fail( 'easy_mcp_ai_setting_locked', $message, 409, array( 'field' => $field ) );
+        return $this->fail( 'wordpress_code_ai_setting_locked', $message, 409, array( 'field' => $field ) );
     }
 
     
@@ -485,7 +484,7 @@ class Settings_Controller extends Admin_Rest_Controller {
             $field,
             sprintf(
                 /* translators: %s: the wp-config constant name */
-                \__( 'This setting is set by %s in wp-config.php or the environment and cannot be changed here.', 'easy-mcp-ai' ),
+                \__( 'This setting is set by %s in wp-config.php or the environment and cannot be changed here.', 'wordpress-code-ai' ),
                 Config::constant_name( $suffix )
             )
         );
@@ -493,7 +492,7 @@ class Settings_Controller extends Admin_Rest_Controller {
 
     
     private static function filter_decides(): string {
-        return \__( 'Who can connect is set in code by the easy_mcp_ai_oauth_min_capability filter and cannot be changed here.', 'easy-mcp-ai' );
+        return \__( 'Who can connect is set in code by the wordpress_code_ai_oauth_min_capability filter and cannot be changed here.', 'wordpress-code-ai' );
     }
 
     
@@ -519,13 +518,13 @@ class Settings_Controller extends Admin_Rest_Controller {
             case 'captureDb':
             case 'externalIntent':
                 if ( ! is_bool( $raw ) && ! in_array( $raw, array( 0, 1, '0', '1', 'true', 'false' ), true ) ) {
-                    return $this->invalid( $field, \__( 'Must be on or off.', 'easy-mcp-ai' ) );
+                    return $this->invalid( $field, \__( 'Must be on or off.', 'wordpress-code-ai' ) );
                 }
                 return \rest_sanitize_boolean( $raw );
 
             case 'oauthMinCapability':
                 if ( ! is_string( $raw ) || ! array_key_exists( $raw, Admin_Page::oauth_min_capability_choices() ) ) {
-                    return $this->invalid( $field, \__( 'Pick one of the listed capabilities. The floor is Author.', 'easy-mcp-ai' ) );
+                    return $this->invalid( $field, \__( 'Pick one of the listed capabilities. The floor is Author.', 'wordpress-code-ai' ) );
                 }
                 return $raw;
 
@@ -534,7 +533,7 @@ class Settings_Controller extends Admin_Rest_Controller {
 
             case 'externalDataMinCapability':
                 if ( ! is_string( $raw ) || ! array_key_exists( $raw, Admin_Page::external_data_min_capability_choices() ) ) {
-                    return $this->invalid( $field, \__( 'Pick one of the listed capabilities.', 'easy-mcp-ai' ) );
+                    return $this->invalid( $field, \__( 'Pick one of the listed capabilities.', 'wordpress-code-ai' ) );
                 }
                 return $raw;
 
@@ -551,13 +550,13 @@ class Settings_Controller extends Admin_Rest_Controller {
 
             case 'optionMode':
                 if ( ! is_string( $raw ) || ! in_array( $raw, History_Settings_Page::VALID_MODES, true ) ) {
-                    return $this->invalid( $field, \__( 'Pick one of the recording modes.', 'easy-mcp-ai' ) );
+                    return $this->invalid( $field, \__( 'Pick one of the recording modes.', 'wordpress-code-ai' ) );
                 }
                 return $raw;
 
             case 'disabledTools':
                 if ( ! is_array( $raw ) ) {
-                    return $this->invalid( $field, \__( 'Expected a list of tool names.', 'easy-mcp-ai' ) );
+                    return $this->invalid( $field, \__( 'Expected a list of tool names.', 'wordpress-code-ai' ) );
                 }
                 $grid = $this->grid();
                 foreach ( $raw as $name ) {
@@ -566,7 +565,7 @@ class Settings_Controller extends Admin_Rest_Controller {
                             $field,
                             sprintf(
                                 /* translators: %s: tool name */
-                                \__( '%s is not one of the tools this list can disable.', 'easy-mcp-ai' ),
+                                \__( '%s is not one of the tools this list can disable.', 'wordpress-code-ai' ),
                                 is_string( $name ) ? $name : \wp_json_encode( $name )
                             )
                         );
@@ -578,7 +577,7 @@ class Settings_Controller extends Admin_Rest_Controller {
             case 'approvalAlways':
             case 'approvalNever':
                 if ( ! is_string( $raw ) && ! is_array( $raw ) ) {
-                    return $this->invalid( $field, \__( 'Expected comma-separated glob patterns.', 'easy-mcp-ai' ) );
+                    return $this->invalid( $field, \__( 'Expected comma-separated glob patterns.', 'wordpress-code-ai' ) );
                 }
                 $patterns = Settings_Validator::parse_patterns( $raw );
                 foreach ( $patterns as $pattern ) {
@@ -587,7 +586,7 @@ class Settings_Controller extends Admin_Rest_Controller {
                             $field,
                             sprintf(
                                 /* translators: %s: the rejected pattern */
-                                \__( '%s is not a tool-name pattern. Use letters, digits, _ and the wildcards * and ?.', 'easy-mcp-ai' ),
+                                \__( '%s is not a tool-name pattern. Use letters, digits, _ and the wildcards * and ?.', 'wordpress-code-ai' ),
                                 $pattern
                             )
                         );
@@ -598,7 +597,7 @@ class Settings_Controller extends Admin_Rest_Controller {
                             $field,
                             sprintf(
                                 /* translators: %s: the rejected entry */
-                                \__( '%s is not a tool-name pattern, or one followed by a REST route such as "wp_rest_write /redirection/v1/*". Use letters, digits, _ and the wildcards * and ?.', 'easy-mcp-ai' ),
+                                \__( '%s is not a tool-name pattern, or one followed by a REST route such as "wp_rest_write /redirection/v1/*". Use letters, digits, _ and the wildcards * and ?.', 'wordpress-code-ai' ),
                                 $pattern
                             )
                         );
@@ -610,7 +609,7 @@ class Settings_Controller extends Admin_Rest_Controller {
 
             case 'ipWhitelist':
                 if ( ! is_string( $raw ) ) {
-                    return $this->invalid( $field, \__( 'Expected one IP address or CIDR range per line.', 'easy-mcp-ai' ) );
+                    return $this->invalid( $field, \__( 'Expected one IP address or CIDR range per line.', 'wordpress-code-ai' ) );
                 }
                 $parsed = Settings_Validator::sanitize_ip_whitelist( \sanitize_textarea_field( $raw ) );
                 if ( ! empty( $parsed['invalid'] ) ) {
@@ -618,14 +617,14 @@ class Settings_Controller extends Admin_Rest_Controller {
                         $field,
                         sprintf(
                             /* translators: %s: the rejected lines, comma-separated */
-                            \__( 'Not an IP address or CIDR range: %s', 'easy-mcp-ai' ),
+                            \__( 'Not an IP address or CIDR range: %s', 'wordpress-code-ai' ),
                             implode( ', ', array_map( 'trim', $parsed['invalid'] ) )
                         )
                     );
                 }
                 return $parsed['value'];
         }
-        return $this->invalid( $field, \__( 'Unknown field.', 'easy-mcp-ai' ) );
+        return $this->invalid( $field, \__( 'Unknown field.', 'wordpress-code-ai' ) );
     }
 
     
@@ -642,7 +641,7 @@ class Settings_Controller extends Admin_Rest_Controller {
                 $field,
                 sprintf(
                     /* translators: 1: minimum, 2: maximum */
-                    \__( 'Enter a whole number from %1$d to %2$d.', 'easy-mcp-ai' ),
+                    \__( 'Enter a whole number from %1$d to %2$d.', 'wordpress-code-ai' ),
                     $min,
                     $max
                 )
@@ -652,7 +651,7 @@ class Settings_Controller extends Admin_Rest_Controller {
     }
 
     private function invalid( $field, $message ) {
-        return $this->fail( 'easy_mcp_ai_invalid_setting', $message, 400, array( 'field' => $field ) );
+        return $this->fail( 'wordpress_code_ai_invalid_setting', $message, 400, array( 'field' => $field ) );
     }
 
     
@@ -688,7 +687,7 @@ class Settings_Controller extends Admin_Rest_Controller {
         $default_off = array();
         foreach ( (array) $this->tool_registry->get_all_tool_names() as $name ) {
             $tool = $this->tool_registry->get_tool( $name );
-            if ( $tool instanceof \Easy_MCP_AI\Tools\Base_Tool && $tool->is_disabled_by_default() ) {
+            if ( $tool instanceof \wordpress_code_ai\Tools\Base_Tool && $tool->is_disabled_by_default() ) {
                 $default_off[] = (string) $name;
             }
         }

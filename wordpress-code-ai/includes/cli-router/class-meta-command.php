@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router;
+namespace wordpress_code_ai\Cli_Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -1162,8 +1162,8 @@ abstract class Meta_Command extends Command_Handler {
         }
         $value = $this->mask_secret_keys( $value, 0 );
         $text  = is_string( $value ) ? "'" . $value . "'" : (string) json_encode( $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR );
-        if ( class_exists( '\\Easy_MCP_AI\\Text_Redactor' ) ) {
-            $text = \Easy_MCP_AI\Text_Redactor::redact( $text );
+        if ( class_exists( '\\wordpress_code_ai\\Text_Redactor' ) ) {
+            $text = \wordpress_code_ai\Text_Redactor::redact( $text );
         }
         return strlen( $text ) > 120 ? Envelope::cut( $text, 117 ) . '...' : $text;
     }

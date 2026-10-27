@@ -37,7 +37,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -51,7 +51,7 @@ class Diagnostics {
 
 
 
-    const CACHE_OPTION = 'easy_mcp_ai_diagnostics_last_run';
+    const CACHE_OPTION = 'wordpress_code_ai_diagnostics_last_run';
 
     
     const STALE_AFTER = DAY_IN_SECONDS;
@@ -198,7 +198,7 @@ class Diagnostics {
                 $failed = Diagnostic_Result::unknown(
                     $group,
                     Diagnostic_Result::TIER_INFO,
-                    __( 'Check could not run', 'easy-mcp-ai' ),
+                    __( 'Check could not run', 'wordpress-code-ai' ),
                     self::redact_message( $e->getMessage() )
                 );
                 $results[] = self::stamp( $failed, $deep_only, $group, $now );
@@ -287,7 +287,7 @@ class Diagnostics {
         return Diagnostic_Result::unknown(
             $group,
             Diagnostic_Result::TIER_INFO,
-            __( 'Detailed check', 'easy-mcp-ai' ),
+            __( 'Detailed check', 'wordpress-code-ai' ),
             $detail,
             array( 'deferred' => true ) + $evidence
         )->with_measurement( $group, $measured_at );
@@ -328,7 +328,7 @@ class Diagnostics {
             return array(
                 self::deferred_placeholder(
                     $group,
-                    __( 'Not run — press Re-run checks to include the slower checks.', 'easy-mcp-ai' ),
+                    __( 'Not run — press Re-run checks to include the slower checks.', 'wordpress-code-ai' ),
                     array(),
                     null
                 ),
@@ -346,7 +346,7 @@ class Diagnostics {
             return array(
                 self::deferred_placeholder(
                     $group,
-                    __( 'Out of date — the site address or permalinks changed after this was last checked. Press Re-run checks to check it again.', 'easy-mcp-ai' ),
+                    __( 'Out of date — the site address or permalinks changed after this was last checked. Press Re-run checks to check it again.', 'wordpress-code-ai' ),
                     array( 'expired' => true ),
                     $measured_at
                 ),
@@ -575,8 +575,8 @@ class Diagnostics {
                 : Diagnostic_Result::unknown(
                     'i1',
                     Diagnostic_Result::TIER_WARNING,
-                    __( 'Every site on the network is set up', 'easy-mcp-ai' ),
-                    __( 'Only a network administrator can check the other sites on this network.', 'easy-mcp-ai' ),
+                    __( 'Every site on the network is set up', 'wordpress-code-ai' ),
+                    __( 'Only a network administrator can check the other sites on this network.', 'wordpress-code-ai' ),
                     array( 'not_permitted' => true )
                 );
         }

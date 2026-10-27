@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -30,13 +30,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Row_Extension {
 
     
-    const USER = 'easy_mcp_ai_user_row';
+    const USER = 'wordpress_code_ai_user_row';
 
     
-    const WC_CUSTOMER = 'easy_mcp_ai_wc_customer_row';
+    const WC_CUSTOMER = 'wordpress_code_ai_wc_customer_row';
 
     
-    const WC_ORDER = 'easy_mcp_ai_wc_order_row';
+    const WC_ORDER = 'wordpress_code_ai_wc_order_row';
 
     
 

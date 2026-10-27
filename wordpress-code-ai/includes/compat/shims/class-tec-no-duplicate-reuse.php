@@ -6,9 +6,9 @@
 
 
 
-namespace Easy_MCP_AI\Compat\Shims;
+namespace wordpress_code_ai\Compat\Shims;
 
-use Easy_MCP_AI\Compat\Compat_Shim;
+use wordpress_code_ai\Compat\Compat_Shim;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\History;
+namespace wordpress_code_ai\Tools\History;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\History\Change_Log_Repository;
-use Easy_MCP_AI\History\Rebuild_Planner;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\History\Change_Log_Repository;
+use wordpress_code_ai\History\Rebuild_Planner;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -142,20 +142,20 @@ class History_Apply extends Base_Tool {
             if ( isset( $entry['drift'] ) ) {
                 $line .= is_array( $entry['drift'] )
                     /* translators: %s: field names */
-                    ? sprintf( __( ' — overwrites a later change to %s', 'easy-mcp-ai' ), implode( ', ', $entry['drift'] ) )
+                    ? sprintf( __( ' — overwrites a later change to %s', 'wordpress-code-ai' ), implode( ', ', $entry['drift'] ) )
                     : ' — ' . $entry['drift'];
             }
             if ( ! empty( $entry['not_restored'] ) ) {
                 /* translators: %s: field names */
-                $line .= sprintf( __( ' (not put back: %s)', 'easy-mcp-ai' ), implode( ', ', array_keys( $entry['not_restored'] ) ) );
+                $line .= sprintf( __( ' (not put back: %s)', 'wordpress-code-ai' ), implode( ', ', array_keys( $entry['not_restored'] ) ) );
             }
             $lines[] = $line;
         }
         $text = sprintf(
             /* translators: 1: number of entries, 2: one line per write */
-            _n( 'Put back %1$d change-history entry: %2$s.', 'Put back %1$d change-history entries: %2$s.', count( $out['entries'] ), 'easy-mcp-ai' ),
+            _n( 'Put back %1$d change-history entry: %2$s.', 'Put back %1$d change-history entries: %2$s.', count( $out['entries'] ), 'wordpress-code-ai' ),
             count( $out['entries'] ),
-            $lines ? implode( '; ', $lines ) : __( 'nothing is written', 'easy-mcp-ai' )
+            $lines ? implode( '; ', $lines ) : __( 'nothing is written', 'wordpress-code-ai' )
         );
         if ( $others ) {
             $parts = array();
@@ -163,7 +163,7 @@ class History_Apply extends Base_Tool {
                 $parts[] = $n . ' ' . $status;
             }
             /* translators: %s: counts by status, e.g. "2 incidental, 1 refused" */
-            $text .= ' ' . sprintf( __( 'Not written: %s — a dry run says why.', 'easy-mcp-ai' ), implode( ', ', $parts ) );
+            $text .= ' ' . sprintf( __( 'Not written: %s — a dry run says why.', 'wordpress-code-ai' ), implode( ', ', $parts ) );
         }
         return $text;
     }
@@ -179,14 +179,14 @@ class History_Apply extends Base_Tool {
 
 
     public function approval_refusal( array $arguments ): ?string {
-        $length = \Easy_MCP_AI\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
+        $length = \wordpress_code_ai\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
         if ( null === $length ) {
             return null;
         }
         return sprintf(
             'This plan is %1$d characters long and the approval page shows %2$d, so it was not sent for approval: a person must see every write they approve. Apply fewer entries: one entry_id at a time, newest first. A single entry this long cannot be approved here; read it with wp_history_get and make its calls one at a time.',
             $length,
-            \Easy_MCP_AI\Approvals\Approval_Gate::PREVIEW_MAX
+            \wordpress_code_ai\Approvals\Approval_Gate::PREVIEW_MAX
         );
     }
 
@@ -267,10 +267,10 @@ class History_Apply extends Base_Tool {
         if ( 'content' === $key && is_string( $value ) ) {
             $length = function_exists( 'mb_strlen' ) ? mb_strlen( $value ) : strlen( $value );
             /* translators: %d: number of characters */
-            return sprintf( __( '[the earlier body, %d characters]', 'easy-mcp-ai' ), $length );
+            return sprintf( __( '[the earlier body, %d characters]', 'wordpress-code-ai' ), $length );
         }
         if ( Rebuild_Planner::NEW_ID === $value ) {
-            return __( '[the new id]', 'easy-mcp-ai' );
+            return __( '[the new id]', 'wordpress-code-ai' );
         }
         if ( is_bool( $value ) ) {
             return $value ? 'true' : 'false';
@@ -311,7 +311,7 @@ class History_Apply extends Base_Tool {
 
     private function run( array $arguments, $dry_run, $with_calls = false ) {
         $force        = isset( $arguments['force'] ) && \rest_sanitize_boolean( $arguments['force'] );
-        $can_view_all = \current_user_can( 'easy_mcp_ai_view_all_history' );
+        $can_view_all = \current_user_can( 'wordpress_code_ai_view_all_history' );
         $rows         = $this->load_rows( $arguments, $can_view_all );
         $planner      = new Rebuild_Planner( $rows );
 
@@ -333,7 +333,7 @@ class History_Apply extends Base_Tool {
         
         
         
-        $approval = ( ! $dry_run && 'redeem' === \Easy_MCP_AI\MCP\Server::current_call_approval_kind() ) ? 'skip' : null;
+        $approval = ( ! $dry_run && 'redeem' === \wordpress_code_ai\MCP\Server::current_call_approval_kind() ) ? 'skip' : null;
 
         $entries = array();
         $touched = array(); 
@@ -372,19 +372,19 @@ class History_Apply extends Base_Tool {
             
             $keys = self::object_keys( $row );
             if ( $dry_run && array_intersect( $keys, array_keys( $touched ) ) ) {
-                $entry['drift'] = __( 'checked when the call runs, after the newer entry for this object', 'easy-mcp-ai' );
+                $entry['drift'] = __( 'checked when the call runs, after the newer entry for this object', 'wordpress-code-ai' );
             } else {
                 $drift = $planner->drift( $row, $plan, $can_view_all );
                 if ( ! $drift['readable'] ) {
-                    $entry['drift'] = __( 'the current state could not be read, so a later change cannot be ruled out', 'easy-mcp-ai' );
+                    $entry['drift'] = __( 'the current state could not be read, so a later change cannot be ruled out', 'wordpress-code-ai' );
                 } elseif ( $drift['moved'] ) {
                     $entry['drift'] = $drift['moved'];
                 }
                 if ( isset( $entry['drift'] ) && ! $force ) {
                     $entry['status'] = 'refused';
                     $entry['reason'] = $drift['readable']
-                        ? __( 'the object has changed since this entry was recorded; pass force: true to overwrite that change', 'easy-mcp-ai' )
-                        : __( 'the current state could not be read; pass force: true to write anyway', 'easy-mcp-ai' );
+                        ? __( 'the object has changed since this entry was recorded; pass force: true to overwrite that change', 'wordpress-code-ai' )
+                        : __( 'the current state could not be read; pass force: true to write anyway', 'wordpress-code-ai' );
                     $entries[] = $entry;
                     continue;
                 }
@@ -444,7 +444,7 @@ class History_Apply extends Base_Tool {
             if ( 'paused' === ( $out['approval']['kind'] ?? '' ) ) {
                 $entry['status'] = 'needs_approval';
                 /* translators: %s: tool name */
-                $entry['reason'] = sprintf( __( '%s needs a person\'s approval on this site; approve it, then apply this entry again', 'easy-mcp-ai' ), $call['tool'] );
+                $entry['reason'] = sprintf( __( '%s needs a person\'s approval on this site; approve it, then apply this entry again', 'wordpress-code-ai' ), $call['tool'] );
                 break;
             }
             $error = self::error_of( $out['response'] ?? array() );
@@ -459,14 +459,14 @@ class History_Apply extends Base_Tool {
                 if ( $new_id <= 0 ) {
                     $entry['status'] = 'failed';
                     /* translators: %s: tool name */
-                    $entry['reason'] = sprintf( __( '%s did not return the new id', 'easy-mcp-ai' ), $call['tool'] );
+                    $entry['reason'] = sprintf( __( '%s did not return the new id', 'wordpress-code-ai' ), $call['tool'] );
                     break;
                 }
                 $planner->remember_new_id( $plan['new_id_kind'], (int) $row['object_id'], $new_id );
                 $entry['new_id'] = $new_id;
             }
             if ( isset( $call['ignored_key'] ) && in_array( $call['ignored_key'], (array) ( $payload['ignored_keys'] ?? array() ), true ) ) {
-                $entry['not_restored'][ $call['ignored_key'] ] = __( 'not registered for the REST API, so wp_update_post_meta could not write it', 'easy-mcp-ai' );
+                $entry['not_restored'][ $call['ignored_key'] ] = __( 'not registered for the REST API, so wp_update_post_meta could not write it', 'wordpress-code-ai' );
                 $entry['partial'] = true;
             }
         }
@@ -493,7 +493,7 @@ class History_Apply extends Base_Tool {
         if ( null !== $this->dispatcher ) {
             return call_user_func( $this->dispatcher, $tool, $arguments, $approval );
         }
-        return \Easy_MCP_AI\MCP\Server::call_as_current_caller( $tool, $arguments, $approval );
+        return \wordpress_code_ai\MCP\Server::call_as_current_caller( $tool, $arguments, $approval );
     }
 
     

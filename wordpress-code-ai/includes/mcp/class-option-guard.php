@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\MCP;
+namespace wordpress_code_ai\MCP;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -34,14 +34,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Option_Guard {
 
     
-    const PREFIX = 'easy_mcp_ai_';
+    const PREFIX = 'wordpress_code_ai_';
 
     
     const SWITCHES = array(
-        'easy_mcp_ai_enabled_tools',
-        'easy_mcp_ai_enabled_abilities',
-        'easy_mcp_ai_enabled_plugin_groups',
-        'easy_mcp_ai_rest_disabled_namespaces',
+        'wordpress_code_ai_enabled_tools',
+        'wordpress_code_ai_enabled_abilities',
+        'wordpress_code_ai_enabled_plugin_groups',
+        'wordpress_code_ai_rest_disabled_namespaces',
     );
 
     
@@ -113,7 +113,7 @@ final class Option_Guard {
             return;
         }
         if ( self::is_protected( $option ) || self::is_database_alias( $option ) ) {
-            throw new \RuntimeException( sprintf( 'This call tried to change %s, an Easy MCP AI setting; tool calls cannot change it, so the call was stopped at that write. An administrator can change it in the plugin\'s settings.', $option ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+            throw new \RuntimeException( sprintf( 'This call tried to change %s, an wordpress-code-ai setting; tool calls cannot change it, so the call was stopped at that write. An administrator can change it in the plugin\'s settings.', $option ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
         }
     }
 
@@ -167,13 +167,13 @@ final class Option_Guard {
 
     private static function option_name_collation( object $wpdb, string $table ): string {
         $key       = 'option_guard_collation_' . $table;
-        $cached    = \wp_cache_get( $key, 'easy_mcp_ai' );
+        $cached    = \wp_cache_get( $key, 'wordpress_code_ai' );
         $collation = false !== $cached ? $cached : $wpdb->get_var( "SELECT COLLATION( option_name ) FROM {$table} LIMIT 1" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- core's own options table; its collation is the point.
         if ( ! is_string( $collation ) || 1 !== preg_match( '/^[a-z0-9]+_[a-z0-9_]+$/i', $collation ) ) {
             return '';
         }
         if ( false === $cached ) {
-            \wp_cache_set( $key, $collation, 'easy_mcp_ai', HOUR_IN_SECONDS );
+            \wp_cache_set( $key, $collation, 'wordpress_code_ai', HOUR_IN_SECONDS );
         }
         return $collation;
     }
@@ -187,10 +187,10 @@ final class Option_Guard {
 
     public static function protected_names(): array {
         $names = self::SWITCHES;
-        foreach ( array_keys( \Easy_MCP_AI\Config::settings() ) as $key ) {
+        foreach ( array_keys( \wordpress_code_ai\Config::settings() ) as $key ) {
             $names[] = self::PREFIX . $key;
         }
-        if ( 1 === preg_match( '/\(([a-z|]+)\)/', \Easy_MCP_AI\Config::BUCKET_PATTERN, $buckets ) ) {
+        if ( 1 === preg_match( '/\(([a-z|]+)\)/', \wordpress_code_ai\Config::BUCKET_PATTERN, $buckets ) ) {
             foreach ( explode( '|', $buckets[1] ) as $bucket ) {
                 $names[] = self::PREFIX . 'disabled_' . $bucket . '_tools';
                 $names[] = self::PREFIX . self::PREFIX . 'disabled_' . $bucket . '_tools';
@@ -217,6 +217,6 @@ final class Option_Guard {
             return true;
         }
         $suffix = substr( $option, strlen( self::PREFIX ) );
-        return isset( \Easy_MCP_AI\Config::settings()[ $suffix ] ) || 1 === preg_match( \Easy_MCP_AI\Config::BUCKET_PATTERN, $suffix );
+        return isset( \wordpress_code_ai\Config::settings()[ $suffix ] ) || 1 === preg_match( \wordpress_code_ai\Config::BUCKET_PATTERN, $suffix );
     }
 }

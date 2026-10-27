@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Privileged\Files_Read;
+namespace wordpress_code_ai\Privileged\Files_Read;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

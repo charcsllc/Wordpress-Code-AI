@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Appearance;
+namespace wordpress_code_ai\Tools\Appearance;
 
 
 if ( ! defined( 'ABSPATH' ) ) {

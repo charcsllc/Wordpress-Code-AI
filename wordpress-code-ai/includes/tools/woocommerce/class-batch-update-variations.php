@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -14,7 +14,7 @@ class Batch_Update_Variations extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Create, update, and/or delete up to 100 WooCommerce product variations under a parent product in one REST batch call. Required: `product_id` (parent product ID). Plus any combination of `create`, `update`, `delete`. Default soft cap is 25 items per branch (raise via `easy_mcp_ai_wc_batch_soft_cap` filter). WooCommerce caps the combined total of create+update+delete at 100 items per request (not per branch) via `woocommerce_rest_batch_items_limit` filter. Returns WC\'s response { create, update, delete } with each item\'s `_links` omitted. If **Easy MCP AI → Settings → Force draft on create** is enabled, every `create` item has its status silently overridden to `draft` regardless of the value supplied; `update` items are unaffected.';
+        return 'Create, update, and/or delete up to 100 WooCommerce product variations under a parent product in one REST batch call. Required: `product_id` (parent product ID). Plus any combination of `create`, `update`, `delete`. Default soft cap is 25 items per branch (raise via `wordpress_code_ai_wc_batch_soft_cap` filter). WooCommerce caps the combined total of create+update+delete at 100 items per request (not per branch) via `woocommerce_rest_batch_items_limit` filter. Returns WC\'s response { create, update, delete } with each item\'s `_links` omitted. If **wordpress-code-ai → Settings → Force draft on create** is enabled, every `create` item has its status silently overridden to `draft` regardless of the value supplied; `update` items are unaffected.';
     }
 
     public function get_category() {
@@ -74,12 +74,12 @@ class Batch_Update_Variations extends Base_Tool {
         $this->validate_required( $arguments, array( 'product_id' ) );
         $product_id = $this->parse_required_id( $arguments['product_id'], 'product_id' );
 
-        $soft_cap = (int) apply_filters( 'easy_mcp_ai_wc_batch_soft_cap', 25 );
+        $soft_cap = (int) apply_filters( 'wordpress_code_ai_wc_batch_soft_cap', 25 );
 
         $body = array();
         if ( ! empty( $arguments['create'] ) ) {
             if ( count( $arguments['create'] ) > $soft_cap ) {
-                throw new \InvalidArgumentException( sprintf( 'create exceeds the %d-item soft cap. Use the easy_mcp_ai_wc_batch_soft_cap filter to raise the limit.', $soft_cap ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+                throw new \InvalidArgumentException( sprintf( 'create exceeds the %d-item soft cap. Use the wordpress_code_ai_wc_batch_soft_cap filter to raise the limit.', $soft_cap ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             }
             
             
@@ -94,13 +94,13 @@ class Batch_Update_Variations extends Base_Tool {
         }
         if ( ! empty( $arguments['update'] ) ) {
             if ( count( $arguments['update'] ) > $soft_cap ) {
-                throw new \InvalidArgumentException( sprintf( 'update exceeds the %d-item soft cap. Use the easy_mcp_ai_wc_batch_soft_cap filter to raise the limit.', $soft_cap ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+                throw new \InvalidArgumentException( sprintf( 'update exceeds the %d-item soft cap. Use the wordpress_code_ai_wc_batch_soft_cap filter to raise the limit.', $soft_cap ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             }
             $body['update'] = $arguments['update'];
         }
         if ( ! empty( $arguments['delete'] ) ) {
             if ( count( $arguments['delete'] ) > $soft_cap ) {
-                throw new \InvalidArgumentException( sprintf( 'delete exceeds the %d-item soft cap. Use the easy_mcp_ai_wc_batch_soft_cap filter to raise the limit.', $soft_cap ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+                throw new \InvalidArgumentException( sprintf( 'delete exceeds the %d-item soft cap. Use the wordpress_code_ai_wc_batch_soft_cap filter to raise the limit.', $soft_cap ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             }
             $body['delete'] = array_map( 'absint', $arguments['delete'] );
         }

@@ -39,7 +39,7 @@
 
 
 
-namespace Easy_MCP_AI\Auth;
+namespace wordpress_code_ai\Auth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -53,7 +53,7 @@ final class Connect_Policy {
     const CHANNEL_ADMIN_KEY = 'admin_key';
 
     
-    const FLOOR_OPTION = 'easy_mcp_ai_oauth_min_capability';
+    const FLOOR_OPTION = 'wordpress_code_ai_oauth_min_capability';
 
     const DEFAULT_FLOOR = 'publish_posts';
 
@@ -140,7 +140,7 @@ final class Connect_Policy {
 
 
 
-        return (bool) \apply_filters( 'easy_mcp_ai_user_can_connect', $allowed, $user, $channel );
+        return (bool) \apply_filters( 'wordpress_code_ai_user_can_connect', $allowed, $user, $channel );
     }
 
     
@@ -154,7 +154,7 @@ final class Connect_Policy {
 
 
     public static function stored_floor(): string {
-        $stored = \Easy_MCP_AI\Config::get( self::FLOOR_OPTION, self::DEFAULT_FLOOR );
+        $stored = \wordpress_code_ai\Config::get( self::FLOOR_OPTION, self::DEFAULT_FLOOR );
         return is_string( $stored ) && in_array( $stored, self::FLOOR_CAPABILITIES, true ) ? $stored : self::DEFAULT_FLOOR;
     }
 
@@ -210,10 +210,10 @@ final class Connect_Policy {
 
 
     public static function extra_roles(): array {
-        if ( \Easy_MCP_AI\Config::is_locked( 'oauth_min_capability' ) && ! \Easy_MCP_AI\Config::is_locked( 'connect_roles' ) ) {
+        if ( \wordpress_code_ai\Config::is_locked( 'oauth_min_capability' ) && ! \wordpress_code_ai\Config::is_locked( 'connect_roles' ) ) {
             return array();
         }
-        $stored = \Easy_MCP_AI\Config::get( 'connect_roles' );
+        $stored = \wordpress_code_ai\Config::get( 'connect_roles' );
         if ( ! is_array( $stored ) ) {
             return array();
         }

@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Privileged\Search_Replace;
+namespace wordpress_code_ai\Privileged\Search_Replace;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

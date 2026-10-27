@@ -37,11 +37,11 @@
 </head>
 <body>
 <div id="root" class="card"><p class="meta">Connecting to the chat host…</p></div>
-<!-- easy-mcp-ai:i18n -->
+<!-- wordpress-code-ai:i18n -->
 <script>
 (function () {
   'use strict';
-  var META_KEY = 'easy-mcp-ai/approval';
+  var META_KEY = 'wordpress-code-ai/approval';
   var APPROVE_TOOL = 'wp_approve_operation';
   var DENY_TOOL = 'wp_deny_operation';
   var nextId = 1;
@@ -72,7 +72,7 @@
     needed: 'Approval needed',
     noHandshake: 'This chat host did not complete the card handshake. Use the approval link in the message above, then ask the assistant to run the operation again.'
   };
-  var injected = window.EASY_MCP_AI_CARD_I18N || {};
+  var injected = window.WORDPRESS_CODE_AI_CARD_I18N || {};
   function t(key) {
     return typeof injected[key] === 'string' && injected[key] !== '' ? injected[key] : I18N[key];
   }
@@ -277,7 +277,7 @@
     sized();
   }
   send('ui/initialize', {
-    appInfo: { name: 'easy-mcp-ai-approval-card', version: '1.1' },
+    appInfo: { name: 'wordpress-code-ai-approval-card', version: '1.1' },
     appCapabilities: {},
     protocolVersion: APPS_PROTOCOL
   }).then(boot).catch(function () { boot(null); });

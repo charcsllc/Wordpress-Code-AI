@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Cache;
+namespace wordpress_code_ai\Cache;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -35,7 +35,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Page_Cache_Opt_Out {
 
     
-    const REST_NAMESPACE = '/easy-mcp-ai/v1';
+    const REST_NAMESPACE = '/wordpress-code-ai/v1';
 
     
     const LITESPEED_HEADER = 'X-LiteSpeed-Cache-Control';
@@ -101,6 +101,6 @@ final class Page_Cache_Opt_Out {
         if ( ! defined( 'DONOTCACHEPAGE' ) ) {
             define( 'DONOTCACHEPAGE', true );
         }
-        \do_action( 'litespeed_control_set_nocache', 'easy-mcp-ai: MCP and OAuth responses are never stored' );
+        \do_action( 'litespeed_control_set_nocache', 'wordpress-code-ai: MCP and OAuth responses are never stored' );
     }
 }

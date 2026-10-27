@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\SeRanking;
+namespace wordpress_code_ai\Tools\SeRanking;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\SeRanking\SeRanking_Client;
-use Easy_MCP_AI\SeRanking\SeRanking_Validators;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\SeRanking\SeRanking_Client;
+use wordpress_code_ai\SeRanking\SeRanking_Validators;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

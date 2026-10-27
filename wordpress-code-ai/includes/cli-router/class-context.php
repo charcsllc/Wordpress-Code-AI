@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router;
+namespace wordpress_code_ai\Cli_Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -112,9 +112,9 @@ final class Context {
     public function __construct( Output $out, ?callable $dispatcher = null, ?callable $may_use = null, bool $skip_inner_approval = false, ?callable $tool_status = null ) {
         $this->out                 = $out;
         $this->dispatcher          = $dispatcher ? $dispatcher : array( self::class, 'call_uncounted' );
-        $this->may_use             = $may_use ? $may_use : array( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' );
+        $this->may_use             = $may_use ? $may_use : array( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' );
         $this->skip_inner_approval = $skip_inner_approval;
-        $this->tool_status         = $tool_status ? $tool_status : array( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_tool_status' );
+        $this->tool_status         = $tool_status ? $tool_status : array( '\\wordpress_code_ai\\MCP\\Server', 'current_call_tool_status' );
     }
 
     
@@ -125,7 +125,7 @@ final class Context {
 
 
     public static function call_uncounted( string $tool, array $arguments, ?string $approval = null ): ?array {
-        return \Easy_MCP_AI\MCP\Server::call_as_current_caller( $tool, $arguments, $approval, false );
+        return \wordpress_code_ai\MCP\Server::call_as_current_caller( $tool, $arguments, $approval, false );
     }
 
     
@@ -176,7 +176,7 @@ final class Context {
         $this->pending_approval = array(
             'tool'        => $tool,
             'approval_id' => $approval_id,
-            'approve_url' => ( null !== $approval_id && class_exists( '\\Easy_MCP_AI\\Approvals\\Approval_Gate' ) ) ? \Easy_MCP_AI\Approvals\Approval_Gate::approve_url( $approval_id ) : null,
+            'approve_url' => ( null !== $approval_id && class_exists( '\\wordpress_code_ai\\Approvals\\Approval_Gate' ) ) ? \wordpress_code_ai\Approvals\Approval_Gate::approve_url( $approval_id ) : null,
         );
         $this->out->error( $tool . " needs a person's approval on this site. Approve it, then run the same command again." );
     }

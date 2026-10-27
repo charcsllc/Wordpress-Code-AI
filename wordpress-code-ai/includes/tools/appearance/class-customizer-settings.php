@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Appearance;
+namespace wordpress_code_ai\Tools\Appearance;
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -357,7 +357,7 @@ final class Customizer_Settings {
 
     private static function refuse_second_manager(): void {
         if ( self::$manager_built ) {
-            throw new \Easy_MCP_AI\MCP\Detailed_Tool_Error(
+            throw new \wordpress_code_ai\MCP\Detailed_Tool_Error(
                 'Only one Customizer tool call can run per request, and this request already ran one.' . self::REFUSAL_TAILS[0],
                 'Themes load their Customizer code once per request, as on the Customizer screen; a second Customizer in the same JSON-RPC batch can end the whole response with a fatal error.'
             );
@@ -506,7 +506,7 @@ final class Customizer_Settings {
 
 
 
-    private static function wp_die_refusal( $message, array $trace, string $while = self::WHILE_LOADING ): \Easy_MCP_AI\MCP\Detailed_Tool_Error {
+    private static function wp_die_refusal( $message, array $trace, string $while = self::WHILE_LOADING ): \wordpress_code_ai\MCP\Detailed_Tool_Error {
         $text = '';
         if ( is_object( $message ) && method_exists( $message, 'get_error_message' ) ) {
             $text = (string) $message->get_error_message();
@@ -522,7 +522,7 @@ final class Customizer_Settings {
         $format = self::WHILE_PUBLISHING === $while
             ? '%s stopped the Customizer while it published the change.'
             : '%s stopped the Customizer from loading' . self::REFUSAL_TAILS[1];
-        return new \Easy_MCP_AI\MCP\Detailed_Tool_Error(
+        return new \wordpress_code_ai\MCP\Detailed_Tool_Error(
             sprintf( $format, '' === $caller ? 'Code on this site' : $caller ),
             ( '' === $text ? 'It gave no message.' : 'Its message: "' . $text . '".' ) . ' The conflict is in that code, not in the request: retrying fails the same way until it changes.'
         );
@@ -544,7 +544,7 @@ final class Customizer_Settings {
                 break;
             }
         }
-        $details = $e instanceof \Easy_MCP_AI\MCP\Detailed_Tool_Error ? trim( $e->get_details() ) : '';
+        $details = $e instanceof \wordpress_code_ai\MCP\Detailed_Tool_Error ? trim( $e->get_details() ) : '';
         return '' === $details ? $message : $message . ' ' . $details;
     }
 
@@ -845,7 +845,7 @@ final class Customizer_Settings {
 
 
 
-    public static function unknown_key_refusal( object $manager, string $key ): \Easy_MCP_AI\MCP\Detailed_Tool_Error {
+    public static function unknown_key_refusal( object $manager, string $key ): \wordpress_code_ai\MCP\Detailed_Tool_Error {
         $ids      = array_keys( self::editable_settings( $manager ) );
         $total    = count( $ids );
         $guidance = Theme_Ability_Guidance::assess();
@@ -862,7 +862,7 @@ final class Customizer_Settings {
                 $format = '"%1$s" is not a theme mod this tool can change. %2$s provides its own tools for its settings, but they are not available to this API key or grant.';
                 break;
             case Theme_Ability_Guidance::NOT_ENABLED:
-                $format = '"%1$s" is not a theme mod this tool can change. %2$s provides abilities for its settings; an administrator can enable them in Easy MCP AI → Abilities.';
+                $format = '"%1$s" is not a theme mod this tool can change. %2$s provides abilities for its settings; an administrator can enable them in wordpress-code-ai → Abilities.';
                 break;
             default:
                 $format = 0 === $total
@@ -882,7 +882,7 @@ final class Customizer_Settings {
         }
         $details[] = self::REGISTERED_ONLY_IN_SCREEN_HINT;
 
-        return new \Easy_MCP_AI\MCP\Detailed_Tool_Error(
+        return new \wordpress_code_ai\MCP\Detailed_Tool_Error(
             self::fit_message( $format, $key, $guidance['theme'] ),
             implode( "\n", $details )
         );
@@ -899,11 +899,11 @@ final class Customizer_Settings {
 
     private static function fit_message( string $format, string $key, string $theme ): string {
         $measure = static function ( $text ) {
-            return strlen( class_exists( '\Easy_MCP_AI\Config' ) ? \Easy_MCP_AI\Config::brand( $text ) : $text );
+            return strlen( class_exists( '\wordpress_code_ai\Config' ) ? \wordpress_code_ai\Config::brand( $text ) : $text );
         };
         $message = sprintf( $format, $key, $theme );
         $cut     = mb_strlen( $key );
-        while ( $measure( $message ) > \Easy_MCP_AI\MCP\Detailed_Tool_Error::MAX_MESSAGE && $cut > 1 ) {
+        while ( $measure( $message ) > \wordpress_code_ai\MCP\Detailed_Tool_Error::MAX_MESSAGE && $cut > 1 ) {
             $cut     = max( 1, $cut - 8 );
             $message = sprintf( $format, mb_substr( $key, 0, $cut ) . '…', $theme );
         }

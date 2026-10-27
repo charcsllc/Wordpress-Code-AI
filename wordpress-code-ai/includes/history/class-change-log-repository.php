@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\History;
+namespace wordpress_code_ai\History;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -31,7 +31,7 @@ class Change_Log_Repository {
 
     public function table() {
         global $wpdb;
-        return $wpdb->prefix . 'easy_mcp_ai_change_log';
+        return $wpdb->prefix . 'wordpress_code_ai_change_log';
     }
 
     public function insert( array $row ) {

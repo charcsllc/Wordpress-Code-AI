@@ -5,11 +5,11 @@
 
 
 
-namespace Easy_MCP_AI\Cache\Adapters;
+namespace wordpress_code_ai\Cache\Adapters;
 
-use Easy_MCP_AI\Cache\Cache_Adapter;
-use Easy_MCP_AI\Cache\Layer_Result;
-use Easy_MCP_AI\Cache\Purge_Request;
+use wordpress_code_ai\Cache\Cache_Adapter;
+use wordpress_code_ai\Cache\Layer_Result;
+use wordpress_code_ai\Cache\Purge_Request;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -44,7 +44,7 @@ final class Wp_Engine extends Cache_Adapter {
     const COMMON = 'WpeCommon';
 
     
-    const IDENTIFIER = 'easy-mcp-ai:urls';
+    const IDENTIFIER = 'wordpress-code-ai:urls';
 
     const PATHS_FILTER = 'wpe_purge_varnish_cache_paths';
 

@@ -27,7 +27,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -156,8 +156,8 @@ class Access_Presets {
             return $this->lists;
         }
         $lists = array(
-            self::READ  => self::normalize( \Easy_MCP_AI\OAuth\Scope_Map::resolve_allowed_tools( implode( ' ', \Easy_MCP_AI\OAuth\Scope_Map::get_read_scopes() ) ) ),
-            self::WRITE => self::normalize( \Easy_MCP_AI\OAuth\Scope_Map::resolve_allowed_tools( \Easy_MCP_AI\OAuth\Scope_Map::get_default_scope() ) ),
+            self::READ  => self::normalize( \wordpress_code_ai\OAuth\Scope_Map::resolve_allowed_tools( implode( ' ', \wordpress_code_ai\OAuth\Scope_Map::get_read_scopes() ) ) ),
+            self::WRITE => self::normalize( \wordpress_code_ai\OAuth\Scope_Map::resolve_allowed_tools( \wordpress_code_ai\OAuth\Scope_Map::get_default_scope() ) ),
             self::FULL  => array( '*' ),
         );
         foreach ( self::ROLES as $role ) {
@@ -189,12 +189,12 @@ class Access_Presets {
             
             
             
-            if ( $tool instanceof \Easy_MCP_AI\Tools\Privileged_Tool ) {
+            if ( $tool instanceof \wordpress_code_ai\Tools\Privileged_Tool ) {
                 continue;
             }
             $cap = (string) $tool->get_required_capability();
-            if ( class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) ) {
-                $cap = (string) \Easy_MCP_AI\MCP\Server::effective_required_capability( $tool->get_category(), $cap );
+            if ( class_exists( '\\wordpress_code_ai\\MCP\\Server' ) ) {
+                $cap = (string) \wordpress_code_ai\MCP\Server::effective_required_capability( $tool->get_category(), $cap );
             }
             if ( '' === $cap || $wp_role->has_cap( $cap ) ) {
                 $tools[] = (string) $name;
@@ -210,8 +210,8 @@ class Access_Presets {
         }
         
         
-        if ( class_exists( '\\Easy_MCP_AI\\Plugin' ) && method_exists( '\\Easy_MCP_AI\\Plugin', 'instance' ) ) {
-            $registry = \Easy_MCP_AI\Plugin::instance()->get_tool_registry();
+        if ( class_exists( '\\wordpress_code_ai\\Plugin' ) && method_exists( '\\wordpress_code_ai\\Plugin', 'instance' ) ) {
+            $registry = \wordpress_code_ai\Plugin::instance()->get_tool_registry();
             if ( $registry ) {
                 $this->tool_registry = $registry;
             }

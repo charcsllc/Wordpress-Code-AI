@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\History;
+namespace wordpress_code_ai\History;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -21,18 +21,18 @@ class Change_Log_Schema {
 
 
     const DB_VERSION  = '1.2.0';
-    const OPTION_NAME = 'easy_mcp_ai_change_log_db_version';
+    const OPTION_NAME = 'wordpress_code_ai_change_log_db_version';
 
     public static function maybe_upgrade() {
         $installed = (string) \get_option( self::OPTION_NAME, '0' );
         if ( \version_compare( $installed, self::DB_VERSION, '>=' ) ) {
             return;
         }
-        if ( ! \Easy_MCP_AI\Schema_Guard::may_retry( self::OPTION_NAME, self::DB_VERSION ) ) {
+        if ( ! \wordpress_code_ai\Schema_Guard::may_retry( self::OPTION_NAME, self::DB_VERSION ) ) {
             return;
         }
         self::create_tables();
-        \Easy_MCP_AI\Schema_Guard::settle(
+        \wordpress_code_ai\Schema_Guard::settle(
             self::OPTION_NAME,
             self::DB_VERSION,
             \version_compare( (string) \get_option( self::OPTION_NAME, '0' ), self::DB_VERSION, '>=' )
@@ -61,7 +61,7 @@ class Change_Log_Schema {
         if ( ! is_object( $wpdb ) || ! method_exists( $wpdb, 'query' ) ) {
             return 0;
         }
-        $table = $wpdb->prefix . 'easy_mcp_ai_change_log';
+        $table = $wpdb->prefix . 'wordpress_code_ai_change_log';
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table; no user input in the statement.
         return (int) $wpdb->query(
             
@@ -74,7 +74,7 @@ class Change_Log_Schema {
 
     public static function create_tables() {
         global $wpdb;
-        $table           = $wpdb->prefix . 'easy_mcp_ai_change_log';
+        $table           = $wpdb->prefix . 'wordpress_code_ai_change_log';
         $charset_collate = method_exists( $wpdb, 'get_charset_collate' ) ? $wpdb->get_charset_collate() : '';
         
         
@@ -125,7 +125,7 @@ class Change_Log_Schema {
         
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Plugin-owned table existence check.
         $exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
-        if ( ! \Easy_MCP_AI\Schema_Guard::table_found( $exists, $table ) ) {
+        if ( ! \wordpress_code_ai\Schema_Guard::table_found( $exists, $table ) ) {
             return;
         }
         \update_option( self::OPTION_NAME, self::DB_VERSION );

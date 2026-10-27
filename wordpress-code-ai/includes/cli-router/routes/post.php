@@ -34,7 +34,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$easy_mcp_ai_post_fields_refused = array(
+$wordpress_code_ai_post_fields_refused = array(
     'post_content_filtered' => 'the REST API the tools use does not write post_content_filtered',
     'to_ping'               => 'the REST API the tools use does not write to_ping, and WordPress would ping each URL in it',
     'pinged'                => 'the REST API the tools use does not write pinged',
@@ -55,7 +55,7 @@ return array(
         'generic'        => true,
         'params'         => array( 'post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_title', 'post_excerpt', 'post_status', 'post_type', 'comment_status', 'ping_status', 'post_password', 'post_name', 'post_parent', 'menu_order', 'post_category', 'tags_input', 'meta_input', 'porcelain' ),
         'refused_params' => array_merge(
-            $easy_mcp_ai_post_fields_refused,
+            $wordpress_code_ai_post_fields_refused,
             array(
                 'file'      => 'it reads the post content from a file on the server (plan §4.1); pass it with --post_content',
                 'from-post' => 'it copies the other post\'s status, only its last value of each meta key and only its categories and tags; use the wp_duplicate_post tool',
@@ -243,7 +243,7 @@ return array(
         
         
         'params'         => array( 'id', 'file', 'post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_title', 'post_excerpt', 'post_status', 'post_type', 'comment_status', 'ping_status', 'post_password', 'post_name', 'post_parent', 'menu_order', 'post_category', 'tags_input', 'meta_input', 'defer-term-counting' ),
-        'refused_params' => $easy_mcp_ai_post_fields_refused,
+        'refused_params' => $wordpress_code_ai_post_fields_refused,
         'plan'           => 'plan_update',
         'bulk'           => 50,
         'preflight'      => 'preflight_update',

@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Themes;
+namespace wordpress_code_ai\Tools\Themes;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
-use Easy_MCP_AI\Tools\Package_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Package_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -84,7 +84,7 @@ class Delete_Theme extends Base_Tool {
         $version = $theme->exists() ? (string) $theme->get( 'Version' ) : '';
         return sprintf(
             /* translators: 1: theme name and version, 2: theme folder */
-            __( 'Delete the theme %1$s (wp-content/themes/%2$s). The files cannot be restored.', 'easy-mcp-ai' ),
+            __( 'Delete the theme %1$s (wp-content/themes/%2$s). The files cannot be restored.', 'wordpress-code-ai' ),
             '' !== $name ? '"' . $name . '"' . ( '' !== $version ? ' ' . $version : '' ) : '"' . $stylesheet . '"',
             $stylesheet
         );

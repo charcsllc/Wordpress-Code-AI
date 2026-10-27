@@ -1,10 +1,10 @@
 <?php
-namespace Easy_MCP_AI\Tools\Mail;
+namespace wordpress_code_ai\Tools\Mail;
 
-use Easy_MCP_AI\Approvals\Approval_Gate;
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
-use Easy_MCP_AI\MCP\Server;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Approvals\Approval_Gate;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\MCP\Server;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -155,7 +155,7 @@ class Send_Email extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: subject, 2: number of recipients, 3: the recipients, 4: the message */
-            __( 'Send the email "%1$s" to %2$d recipient(s): %3$s. Message: %4$s', 'easy-mcp-ai' ),
+            __( 'Send the email "%1$s" to %2$d recipient(s): %3$s. Message: %4$s', 'wordpress-code-ai' ),
             $subject,
             count( $resolution['recipients'] ),
             implode( '; ', $resolution['summary'] ),
@@ -177,7 +177,7 @@ class Send_Email extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: preview length, 2: the most the approval page shows */
-            __( 'This email\'s approval preview (its subject, recipients and message) is %1$d characters long and the approval page shows %2$d, so it was not sent for approval: a person must read every word they approve. Shorten the message or send to fewer explicit addresses per call.', 'easy-mcp-ai' ),
+            __( 'This email\'s approval preview (its subject, recipients and message) is %1$d characters long and the approval page shows %2$d, so it was not sent for approval: a person must read every word they approve. Shorten the message or send to fewer explicit addresses per call.', 'wordpress-code-ai' ),
             $length,
             Approval_Gate::PREVIEW_MAX
         );
@@ -309,11 +309,11 @@ class Send_Email extends Base_Tool {
         } elseif ( ! Approval_Gate::requires_approval( $this, $arguments ) ) {
             
             
-            $never = Approval_Gate::matches_any( self::NAME, (array) \Easy_MCP_AI\Config::get( 'approval_never' ) )
-                && ! Approval_Gate::matches_any( self::NAME, (array) \Easy_MCP_AI\Config::get( 'approval_always' ) );
+            $never = Approval_Gate::matches_any( self::NAME, (array) \wordpress_code_ai\Config::get( 'approval_never' ) )
+                && ! Approval_Gate::matches_any( self::NAME, (array) \wordpress_code_ai\Config::get( 'approval_always' ) );
             $why   = $never
                 ? 'the approval settings list this tool under "Never ask for"'
-                : 'site code (the easy_mcp_ai_requires_approval filter) exempts this call from approval';
+                : 'site code (the wordpress_code_ai_requires_approval filter) exempts this call from approval';
         } elseif ( $this->is_unattended_key() ) {
             $why = 'this API key is set to never pause for approval';
         } else {
@@ -338,10 +338,10 @@ class Send_Email extends Base_Tool {
 
     
     protected function token_is_unattended( int $token_id ): bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\Plugin' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\Plugin' ) ) {
             return false;
         }
-        $manager = \Easy_MCP_AI\Plugin::instance()->get_token_manager();
+        $manager = \wordpress_code_ai\Plugin::instance()->get_token_manager();
         $row     = $manager ? $manager->get_token_by_id( $token_id ) : null;
         return is_array( $row ) && ! empty( $row['unattended'] );
     }

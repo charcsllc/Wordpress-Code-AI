@@ -29,7 +29,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -61,7 +61,7 @@ class Check_Session {
         
         
         
-        return 'easy_mcp_ai_diagnostics_probe_' . str_replace( '.', '', uniqid( '', true ) );
+        return 'wordpress_code_ai_diagnostics_probe_' . str_replace( '.', '', uniqid( '', true ) );
     }
 
     
@@ -74,21 +74,21 @@ class Check_Session {
 
 
     public static function evaluate_transient_roundtrip( $written, $sent, $read_back ) {
-        $label = __( 'AI sessions can be stored', 'easy-mcp-ai' );
+        $label = __( 'AI sessions can be stored', 'wordpress-code-ai' );
 
         if ( null === $written ) {
             return Diagnostic_Result::unknown(
                 'b1',
                 Diagnostic_Result::TIER_BLOCKER,
                 $label,
-                __( 'Could not test session storage on this request.', 'easy-mcp-ai' )
+                __( 'Could not test session storage on this request.', 'wordpress-code-ai' )
             );
         }
 
         if ( ! $written ) {
             return self::session_failure(
                 $label,
-                __( 'WordPress refused to store a test value. MCP sessions are kept in the same storage, so an AI client cannot stay connected: every session is rejected the moment it is created.', 'easy-mcp-ai' ),
+                __( 'WordPress refused to store a test value. MCP sessions are kept in the same storage, so an AI client cannot stay connected: every session is rejected the moment it is created.', 'wordpress-code-ai' ),
                 array( 'write_succeeded' => false )
             );
         }
@@ -96,7 +96,7 @@ class Check_Session {
         if ( false === $read_back || null === $read_back ) {
             return self::session_failure(
                 $label,
-                __( 'A test value was stored and had already vanished when read back immediately afterwards. MCP sessions are kept the same way, so an AI client connects and is then told its session has expired straight away.', 'easy-mcp-ai' ),
+                __( 'A test value was stored and had already vanished when read back immediately afterwards. MCP sessions are kept the same way, so an AI client connects and is then told its session has expired straight away.', 'wordpress-code-ai' ),
                 array( 'write_succeeded' => true, 'read_back' => false )
             );
         }
@@ -137,7 +137,7 @@ class Check_Session {
         if ( ! $matches ) {
             return self::session_failure(
                 $label,
-                __( 'A test value came back changed from how it was stored. Session data is stored the same way, so sessions will be corrupted and connections will drop unpredictably.', 'easy-mcp-ai' ),
+                __( 'A test value came back changed from how it was stored. Session data is stored the same way, so sessions will be corrupted and connections will drop unpredictably.', 'wordpress-code-ai' ),
                 array( 'write_succeeded' => true, 'read_back' => 'altered' )
             );
         }
@@ -153,7 +153,7 @@ class Check_Session {
 
 
     public static function evaluate_object_cache( $dropin_present, $external_in_use, $probe_ok ) {
-        $label    = __( 'Object cache is healthy', 'easy-mcp-ai' );
+        $label    = __( 'Object cache is healthy', 'wordpress-code-ai' );
         $evidence = array(
             'dropin_present'  => (bool) $dropin_present,
             'external_in_use' => (bool) $external_in_use,
@@ -168,7 +168,7 @@ class Check_Session {
                 'b2',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'No persistent object cache is installed; WordPress stores sessions in the database.', 'easy-mcp-ai' ),
+                __( 'No persistent object cache is installed; WordPress stores sessions in the database.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -178,8 +178,8 @@ class Check_Session {
                 'b2',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'An object-cache.php drop-in is installed, but WordPress is not using it. That usually means its backend — Redis or Memcached — is unreachable.', 'easy-mcp-ai' ),
-                __( 'Check that the caching service is running, or remove wp-content/object-cache.php to fall back to database storage.', 'easy-mcp-ai' ),
+                __( 'An object-cache.php drop-in is installed, but WordPress is not using it. That usually means its backend — Redis or Memcached — is unreachable.', 'wordpress-code-ai' ),
+                __( 'Check that the caching service is running, or remove wp-content/object-cache.php to fall back to database storage.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -197,7 +197,7 @@ class Check_Session {
                 'b2',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'An object cache is in use, but testing it raised an error, so its health could not be established.', 'easy-mcp-ai' ),
+                __( 'An object cache is in use, but testing it raised an error, so its health could not be established.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -207,13 +207,13 @@ class Check_Session {
                 'b2',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'The persistent object cache accepted a value but did not return it. Anything WordPress stores there — including AI sessions — is being silently discarded.', 'easy-mcp-ai' ),
-                __( 'Check the Redis or Memcached service this site uses, or remove wp-content/object-cache.php to fall back to database storage.', 'easy-mcp-ai' ),
+                __( 'The persistent object cache accepted a value but did not return it. Anything WordPress stores there — including AI sessions — is being silently discarded.', 'wordpress-code-ai' ),
+                __( 'Check the Redis or Memcached service this site uses, or remove wp-content/object-cache.php to fall back to database storage.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
 
-        return Diagnostic_Result::pass( 'b2', Diagnostic_Result::TIER_WARNING, $label, __( 'In use and holding values.', 'easy-mcp-ai' ), $evidence );
+        return Diagnostic_Result::pass( 'b2', Diagnostic_Result::TIER_WARNING, $label, __( 'In use and holding values.', 'wordpress-code-ai' ), $evidence );
     }
 
     
@@ -292,8 +292,8 @@ class Check_Session {
                 return Diagnostic_Result::unknown(
                     'b1',
                     Diagnostic_Result::TIER_BLOCKER,
-                    __( 'AI sessions can be stored', 'easy-mcp-ai' ),
-                    __( 'This site\'s object cache does not support clearing its per-request memory, so a stored value cannot be re-read independently and session storage could not be proven either way.', 'easy-mcp-ai' ),
+                    __( 'AI sessions can be stored', 'wordpress-code-ai' ),
+                    __( 'This site\'s object cache does not support clearing its per-request memory, so a stored value cannot be re-read independently and session storage could not be proven either way.', 'wordpress-code-ai' ),
                     array( 'flush_runtime_supported' => false )
                 );
             }
@@ -319,17 +319,17 @@ class Check_Session {
             $key      = self::probe_key();
             $expected = \wp_generate_password( 8, false, false );
             try {
-                \wp_cache_set( $key, $expected, 'easy_mcp_ai', self::PROBE_TTL );
+                \wp_cache_set( $key, $expected, 'wordpress_code_ai', self::PROBE_TTL );
                 
                 
                 
                 
-                $probe = ( \wp_cache_get( $key, 'easy_mcp_ai', true ) === $expected );
+                $probe = ( \wp_cache_get( $key, 'wordpress_code_ai', true ) === $expected );
             } catch ( \Throwable $e ) {
                 $probe = null;
             } finally {
                 if ( function_exists( 'wp_cache_delete' ) ) {
-                    @\wp_cache_delete( $key, 'easy_mcp_ai' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- See probe_transient_roundtrip().
+                    @\wp_cache_delete( $key, 'wordpress_code_ai' ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged -- See probe_transient_roundtrip().
                 }
             }
         }
@@ -343,7 +343,7 @@ class Check_Session {
             Diagnostic_Result::TIER_BLOCKER,
             $label,
             $detail,
-            __( 'If this site uses Redis or Memcached, check that the service is running. Otherwise remove wp-content/object-cache.php so WordPress falls back to storing sessions in the database.', 'easy-mcp-ai' ),
+            __( 'If this site uses Redis or Memcached, check that the service is running. Otherwise remove wp-content/object-cache.php so WordPress falls back to storing sessions in the database.', 'wordpress-code-ai' ),
             $evidence
         );
     }

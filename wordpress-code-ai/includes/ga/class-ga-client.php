@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\GA;
+namespace wordpress_code_ai\GA;
 
-use Easy_MCP_AI\Abstract_Google_Client;
+use wordpress_code_ai\Abstract_Google_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -9,10 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GA_Client extends Abstract_Google_Client {
 
-    const OPTION_JSON        = 'easy_mcp_ai_ga_service_account_json';
+    const OPTION_JSON        = 'wordpress_code_ai_ga_service_account_json';
     const PROVIDER           = 'ga';
-    const OPTION_PROPERTY_ID = 'easy_mcp_ai_ga_default_property_id';
-    const TRANSIENT_TOKEN    = 'easy_mcp_ai_ga_token';
+    const OPTION_PROPERTY_ID = 'wordpress_code_ai_ga_default_property_id';
+    const TRANSIENT_TOKEN    = 'wordpress_code_ai_ga_token';
     const SCOPE              = 'https://www.googleapis.com/auth/analytics.readonly';
     
 
@@ -20,7 +20,7 @@ class GA_Client extends Abstract_Google_Client {
 
 
     const SCOPE_EDIT         = 'https://www.googleapis.com/auth/analytics.edit';
-    const HKDF_INFO          = 'easy_mcp_ai_ga_creds_v1';
+    const HKDF_INFO          = 'wordpress_code_ai_ga_creds_v1';
 
     protected static function product_name(): string {
         return 'Google Analytics';
@@ -88,7 +88,7 @@ class GA_Client extends Abstract_Google_Client {
                 );
             }
             throw new \RuntimeException(
-                'Access denied by Google Analytics. The configured service account does not have access to this property. A site administrator can grant access in Easy MCP AI → Tools → External data → Test connection.'
+                'Access denied by Google Analytics. The configured service account does not have access to this property. A site administrator can grant access in wordpress-code-ai → Tools → External data → Test connection.'
             );
         }
         if ( 404 === $code ) {
@@ -197,16 +197,16 @@ class GA_Client extends Abstract_Google_Client {
 
 
     public static function default_property_id(): string {
-        $id = \Easy_MCP_AI\Config::get( self::OPTION_PROPERTY_ID, '' );
-        if ( empty( $id ) && in_array( \Easy_MCP_AI\Config::constant_name( self::OPTION_PROPERTY_ID ), \Easy_MCP_AI\Config_Admin::invalid_settings(), true ) ) {
+        $id = \wordpress_code_ai\Config::get( self::OPTION_PROPERTY_ID, '' );
+        if ( empty( $id ) && in_array( \wordpress_code_ai\Config::constant_name( self::OPTION_PROPERTY_ID ), \wordpress_code_ai\Config_Admin::invalid_settings(), true ) ) {
             
             throw new \RuntimeException(
-                'No property_id provided, and EASY_MCP_AI_GA_DEFAULT_PROPERTY_ID is not a valid GA4 property ID. Set it to the numeric property ID (for example 123456789 or properties/123456789), or pass property_id.'
+                'No property_id provided, and WORDPRESS_CODE_AI_GA_DEFAULT_PROPERTY_ID is not a valid GA4 property ID. Set it to the numeric property ID (for example 123456789 or properties/123456789), or pass property_id.'
             );
         }
         if ( empty( $id ) ) {
             throw new \RuntimeException(
-                'No property_id provided and no default property configured. Set one in Easy MCP AI → Tools → External data, or define EASY_MCP_AI_GA_DEFAULT_PROPERTY_ID in wp-config.php.'
+                'No property_id provided and no default property configured. Set one in wordpress-code-ai → Tools → External data, or define WORDPRESS_CODE_AI_GA_DEFAULT_PROPERTY_ID in wp-config.php.'
             );
         }
         return self::normalize_property( (string) $id );
@@ -229,7 +229,7 @@ class GA_Client extends Abstract_Google_Client {
             
             $default = self::default_property_id();
             if ( 1 === preg_match( '#^properties/0+\z#', $default ) ) {
-                throw new \RuntimeException( 'The default Google Analytics property is not a GA4 property; set a numeric property ID in Easy MCP AI → Tools → External data, or pass property_id. Nothing was changed.' );
+                throw new \RuntimeException( 'The default Google Analytics property is not a GA4 property; set a numeric property ID in wordpress-code-ai → Tools → External data, or pass property_id. Nothing was changed.' );
             }
             return $default;
         }

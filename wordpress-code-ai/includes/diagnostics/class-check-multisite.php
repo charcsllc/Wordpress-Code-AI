@@ -21,7 +21,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -101,7 +101,7 @@ class Check_Multisite {
 
 
     public static function evaluate_per_site_tables( $is_multisite, $missing, $examined, $total, $reason = self::REASON_UNREADABLE ) {
-        $label = __( 'Every site on the network is set up', 'easy-mcp-ai' );
+        $label = __( 'Every site on the network is set up', 'wordpress-code-ai' );
 
         if ( $is_multisite && ! is_array( $missing ) ) {
             
@@ -111,8 +111,8 @@ class Check_Multisite {
             $permitted = ( self::REASON_NOT_PERMITTED === $reason );
 
             $detail = $permitted
-                ? __( 'Only a network administrator can check the other sites on this network. Everything else on this page applies to this site alone.', 'easy-mcp-ai' )
-                : __( 'Could not examine the sites on this network.', 'easy-mcp-ai' );
+                ? __( 'Only a network administrator can check the other sites on this network. Everything else on this page applies to this site alone.', 'wordpress-code-ai' )
+                : __( 'Could not examine the sites on this network.', 'wordpress-code-ai' );
 
             
             
@@ -127,7 +127,7 @@ class Check_Multisite {
         $missing = (array) $missing;
 
         if ( ! $is_multisite ) {
-            return Diagnostic_Result::pass( 'i1', Diagnostic_Result::TIER_WARNING, $label, __( 'Not a multisite network.', 'easy-mcp-ai' ), array( 'multisite' => false ) );
+            return Diagnostic_Result::pass( 'i1', Diagnostic_Result::TIER_WARNING, $label, __( 'Not a multisite network.', 'wordpress-code-ai' ), array( 'multisite' => false ) );
         }
 
         
@@ -142,14 +142,14 @@ class Check_Multisite {
         if ( $examined < $total ) {
             $scope = sprintf(
                 /* translators: 1: number of sites examined, 2: total sites on the network. */
-                __( ' Checked the first %1$d of %2$d sites.', 'easy-mcp-ai' ),
+                __( ' Checked the first %1$d of %2$d sites.', 'wordpress-code-ai' ),
                 $examined,
                 $total
             );
         } elseif ( $examined > $total ) {
             $scope = sprintf(
                 /* translators: 1: number of sites examined, 2: the network's own site count. */
-                __( ' Checked %1$d sites; the network reports %2$d, so this may not be all of them.', 'easy-mcp-ai' ),
+                __( ' Checked %1$d sites; the network reports %2$d, so this may not be all of them.', 'wordpress-code-ai' ),
                 $examined,
                 $total
             );
@@ -170,10 +170,10 @@ class Check_Multisite {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated site names. */
-                    __( 'These sites are missing their plugin tables, so AI clients cannot use them: %s.', 'easy-mcp-ai' ),
+                    __( 'These sites are missing their plugin tables, so AI clients cannot use them: %s.', 'wordpress-code-ai' ),
                     implode( ', ', $missing )
                 ) . $scope,
-                __( 'Visit each listed site\'s dashboard once, or deactivate and reactivate the plugin across the network, to create the missing tables.', 'easy-mcp-ai' ),
+                __( 'Visit each listed site\'s dashboard once, or deactivate and reactivate the plugin across the network, to create the missing tables.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -193,7 +193,7 @@ class Check_Multisite {
 
 
     public static function evaluate_discovery_origin( $is_multisite, $site_home, $network_home ) {
-        $label = __( 'AI clients can find this site\'s settings', 'easy-mcp-ai' );
+        $label = __( 'AI clients can find this site\'s settings', 'wordpress-code-ai' );
 
         if ( ! $is_multisite ) {
             return Diagnostic_Result::pass( 'i2', Diagnostic_Result::TIER_WARNING, $label, '', array( 'multisite' => false ) );
@@ -208,10 +208,10 @@ class Check_Multisite {
                 $label,
                 sprintf(
                     /* translators: %s: this site's home URL. */
-                    __( 'This site sits under a sub-path of the network (%s), so its discovery addresses live there rather than at the network root. An AI client given only the domain will not find them.', 'easy-mcp-ai' ),
+                    __( 'This site sits under a sub-path of the network (%s), so its discovery addresses live there rather than at the network root. An AI client given only the domain will not find them.', 'wordpress-code-ai' ),
                     (string) $site_home
                 ),
-                __( 'Use the full connection URL shown on this dashboard when connecting an AI client — not just the domain name.', 'easy-mcp-ai' ),
+                __( 'Use the full connection URL shown on this dashboard when connecting an AI client — not just the domain name.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -292,7 +292,7 @@ class Check_Multisite {
         foreach ( $sites as $site_id ) {
             $examined++;
             $prefix = $wpdb->get_blog_prefix( (int) $site_id );
-            $table  = $prefix . 'easy_mcp_ai_tokens';
+            $table  = $prefix . 'wordpress_code_ai_tokens';
 
             if ( property_exists( $wpdb, 'last_error' ) ) {
                 $wpdb->last_error = '';

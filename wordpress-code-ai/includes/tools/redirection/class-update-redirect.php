@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Redirection;
+namespace wordpress_code_ai\Tools\Redirection;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -80,7 +80,7 @@ class Update_Redirect extends Base_Tool {
         $sent    = array_intersect_key( $arguments, array_flip( array_merge( self::CONTENT_FIELDS, array( 'enabled' ) ) ) );
         return sprintf(
             /* translators: 1: redirect id, 2: source path, 3: target, 4: JSON of the fields being set */
-            __( 'Update redirect #%1$d (%2$s → %3$s): set %4$s', 'easy-mcp-ai' ),
+            __( 'Update redirect #%1$d (%2$s → %3$s): set %4$s', 'wordpress-code-ai' ),
             $id,
             $current['source'],
             null !== $current['target'] ? $current['target'] : $current['action_type'],

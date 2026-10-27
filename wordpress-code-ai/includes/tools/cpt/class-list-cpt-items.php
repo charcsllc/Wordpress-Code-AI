@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\CPT;
+namespace wordpress_code_ai\Tools\CPT;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Post_Type_Rest_Base;
-use Easy_MCP_AI\Tools\Post_Type_Tool_Hint;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Post_Type_Rest_Base;
+use wordpress_code_ai\Tools\Post_Type_Tool_Hint;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -35,7 +35,7 @@ class List_CPT_Items extends Base_Tool {
     const QUERY_FILTER_PRIORITY = 999;
 
     
-    const TIEBREAK_VAR = 'easy_mcp_ai_id_tiebreak';
+    const TIEBREAK_VAR = 'wordpress_code_ai_id_tiebreak';
 
     
     const DATE_UNIT_KEYS = array( 'year', 'month', 'monthnum', 'week', 'w', 'dayofyear', 'day', 'dayofweek', 'dayofweek_iso', 'hour', 'minute', 'second' );
@@ -896,7 +896,7 @@ class List_CPT_Items extends Base_Tool {
 
 
     public static function filterable_meta_keys( string $post_type ): array {
-        $exposure = '\\Easy_MCP_AI\\Meta\\Meta_Exposure';
+        $exposure = '\\wordpress_code_ai\\Meta\\Meta_Exposure';
         
         if ( ! function_exists( 'get_registered_meta_keys' ) || ! class_exists( $exposure ) ) {
             return array();

@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Approvals;
+namespace wordpress_code_ai\Tools\Approvals;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -83,7 +83,7 @@ class Approve_Operation extends Base_Tool {
         if ( ! is_array( $this->identity ) ) {
             throw new \RuntimeException( 'No request identity.' );
         }
-        $gate    = new \Easy_MCP_AI\Approvals\Approval_Gate( new \Easy_MCP_AI\Approvals\Wpdb_Approval_Store() );
+        $gate    = new \wordpress_code_ai\Approvals\Approval_Gate( new \wordpress_code_ai\Approvals\Wpdb_Approval_Store() );
         $outcome = $gate->decide_from_card( (string) $arguments['id'], (string) $arguments['secret'], $this->identity, $this->approves() );
         if ( ! $outcome['ok'] ) {
             throw new \RuntimeException( $outcome['message'] );

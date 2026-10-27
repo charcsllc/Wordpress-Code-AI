@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Ability_Seed {
 
     
-    const PENDING_OPTION = 'easy_mcp_ai_abilities_seed_pending';
+    const PENDING_OPTION = 'wordpress_code_ai_abilities_seed_pending';
 
     
 
@@ -66,7 +66,7 @@ class Ability_Seed {
         }
         
         
-        $current = \get_option( 'easy_mcp_ai_enabled_abilities', array() );
+        $current = \get_option( 'wordpress_code_ai_enabled_abilities', array() );
         if ( ! empty( $current ) ) {
             return;
         }
@@ -75,13 +75,13 @@ class Ability_Seed {
             return;
         }
         $write = static function () use ( $seed ) {
-            \update_option( 'easy_mcp_ai_enabled_abilities', $seed );
+            \update_option( 'wordpress_code_ai_enabled_abilities', $seed );
         };
         
         
         
-        if ( \class_exists( '\\Easy_MCP_AI\\MCP\\Option_Guard' ) ) {
-            \Easy_MCP_AI\MCP\Option_Guard::while_suspended( $write );
+        if ( \class_exists( '\\wordpress_code_ai\\MCP\\Option_Guard' ) ) {
+            \wordpress_code_ai\MCP\Option_Guard::while_suspended( $write );
             return;
         }
         $write();

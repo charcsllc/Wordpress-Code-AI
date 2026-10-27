@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Themes;
+namespace wordpress_code_ai\Tools\Themes;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
-use Easy_MCP_AI\Tools\Package_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Package_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -89,10 +89,10 @@ class Install_Theme extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: theme slug, 2: "the latest version" or "version 1.2", 3: optional replacement note */
-            __( 'Install the theme "%1$s" from wordpress.org (%2$s) into wp-content/themes/%1$s%3$s. It is not activated.', 'easy-mcp-ai' ),
+            __( 'Install the theme "%1$s" from wordpress.org (%2$s) into wp-content/themes/%1$s%3$s. It is not activated.', 'wordpress-code-ai' ),
             $slug,
-            null === $version ? __( 'the latest version', 'easy-mcp-ai' ) : sprintf( /* translators: %s: version */ __( 'version %s', 'easy-mcp-ai' ), $version ),
-            $this->parse_force( $arguments ) ? __( ', replacing any theme already installed there', 'easy-mcp-ai' ) : ''
+            null === $version ? __( 'the latest version', 'wordpress-code-ai' ) : sprintf( /* translators: %s: version */ __( 'version %s', 'wordpress-code-ai' ), $version ),
+            $this->parse_force( $arguments ) ? __( ', replacing any theme already installed there', 'wordpress-code-ai' ) : ''
         );
     }
 

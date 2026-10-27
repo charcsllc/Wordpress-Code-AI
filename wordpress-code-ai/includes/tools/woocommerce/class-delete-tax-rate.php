@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -62,10 +62,10 @@ class Delete_Tax_Rate extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: rate name, 2: percentage, 3: country or "every country", 4: tax class, 5: rate id */
-            __( "Permanently delete tax rate '%1\$s' (%2\$s%% in %3\$s, class %4\$s, ID %5\$d).", 'easy-mcp-ai' ),
+            __( "Permanently delete tax rate '%1\$s' (%2\$s%% in %3\$s, class %4\$s, ID %5\$d).", 'wordpress-code-ai' ),
             (string) ( $rate['name'] ?? '' ),
             (string) ( $rate['rate'] ?? '' ),
-            '' === (string) ( $rate['country'] ?? '' ) ? __( 'every country', 'easy-mcp-ai' ) : trim( $rate['country'] . ' ' . ( $rate['state'] ?? '' ) ),
+            '' === (string) ( $rate['country'] ?? '' ) ? __( 'every country', 'wordpress-code-ai' ) : trim( $rate['country'] . ' ' . ( $rate['state'] ?? '' ) ),
             (string) ( $rate['class'] ?? 'standard' ),
             $id
         );

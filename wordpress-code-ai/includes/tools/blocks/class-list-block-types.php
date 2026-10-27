@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Blocks;
+namespace wordpress_code_ai\Tools\Blocks;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -16,7 +16,7 @@ class List_Block_Types extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Lists the block types registered on the server (core, theme and plugin blocks) so an agent knows which block names and attributes `wp_update_post_blocks` will accept. Optional: `search` (case-insensitive match on name or title), `name` (exact block name such as `core/paragraph` — returns that type with its full `attributes` schema and `supports`), `category`, `per_page` (default 50, max 200), `page`. Without `name` the list omits `attributes` and `supports` to stay small. Returns { block_types: [{ name, title, description, category, parent, ancestor, attributes?, supports? }], total, total_pages, page, per_page }. Blocks registered only in the editor JavaScript are not listed; the `easy_mcp_ai_block_attribute_schema` filter lets a plugin add their attributes. Synced patterns (wp_block posts) are content, not block types — see `wp_list_blocks`.';
+        return 'Lists the block types registered on the server (core, theme and plugin blocks) so an agent knows which block names and attributes `wp_update_post_blocks` will accept. Optional: `search` (case-insensitive match on name or title), `name` (exact block name such as `core/paragraph` — returns that type with its full `attributes` schema and `supports`), `category`, `per_page` (default 50, max 200), `page`. Without `name` the list omits `attributes` and `supports` to stay small. Returns { block_types: [{ name, title, description, category, parent, ancestor, attributes?, supports? }], total, total_pages, page, per_page }. Blocks registered only in the editor JavaScript are not listed; the `wordpress_code_ai_block_attribute_schema` filter lets a plugin add their attributes. Synced patterns (wp_block posts) are content, not block types — see `wp_list_blocks`.';
     }
 
     public function get_category() {

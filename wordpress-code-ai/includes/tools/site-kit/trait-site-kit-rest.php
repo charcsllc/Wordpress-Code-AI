@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Kit;
+namespace wordpress_code_ai\Tools\Site_Kit;
 
-use Easy_MCP_AI\Compat\Shims\Sitekit_User_Binding;
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\Compat\Shims\Sitekit_User_Binding;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -63,13 +63,13 @@ trait Site_Kit_Rest {
         if ( null === $bound ) {
             throw new Detailed_Tool_Error(
                 'Site Kit cannot be used from here: this version does not show which WordPress user it acts for.',
-                sprintf( 'Site Kit %s no longer exposes its per-user storage the way Easy MCP AI finds it, so its Google connection cannot be used safely and nothing was sent to Google. Please report this to the site administrator.', GOOGLESITEKIT_VERSION ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+                sprintf( 'Site Kit %s no longer exposes its per-user storage the way wordpress-code-ai finds it, so its Google connection cannot be used safely and nothing was sent to Google. Please report this to the site administrator.', GOOGLESITEKIT_VERSION ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             );
         }
         if ( (int) get_current_user_id() !== $bound ) {
             throw new Detailed_Tool_Error(
                 'Site Kit is still acting for another WordPress user in this request, so nothing was sent to Google.',
-                'Site Kit records the user before the key is checked, and the compatibility fix that switches it (sitekit-user-binding) did not run: it may be switched off with the easy_mcp_ai_compat_shim_enabled filter. Please report this to the site administrator.'
+                'Site Kit records the user before the key is checked, and the compatibility fix that switches it (sitekit-user-binding) did not run: it may be switched off with the wordpress_code_ai_compat_shim_enabled filter. Please report this to the site administrator.'
             );
         }
     }

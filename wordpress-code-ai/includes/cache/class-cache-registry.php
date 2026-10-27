@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Cache;
+namespace wordpress_code_ai\Cache;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -20,57 +20,57 @@ final class Cache_Registry {
 
     const ADAPTERS = array(
         
-        'rank-math-sitemap'    => 'Easy_MCP_AI\\Cache\\Adapters\\Rank_Math_Sitemap',
-        'seo-sitemaps'         => 'Easy_MCP_AI\\Cache\\Adapters\\Seo_Sitemaps',
-        'woocommerce'          => 'Easy_MCP_AI\\Cache\\Adapters\\Woocommerce',
-        'the-events-calendar'  => 'Easy_MCP_AI\\Cache\\Adapters\\Events_Calendar',
-        'smart-slider-3'       => 'Easy_MCP_AI\\Cache\\Adapters\\Smart_Slider',
-        'tablepress'           => 'Easy_MCP_AI\\Cache\\Adapters\\Tablepress',
-        'popup-maker'          => 'Easy_MCP_AI\\Cache\\Adapters\\Popup_Maker',
-        'smash-balloon'        => 'Easy_MCP_AI\\Cache\\Adapters\\Smash_Balloon',
-        'facetwp'              => 'Easy_MCP_AI\\Cache\\Adapters\\Facetwp',
+        'rank-math-sitemap'    => 'wordpress_code_ai\\Cache\\Adapters\\Rank_Math_Sitemap',
+        'seo-sitemaps'         => 'wordpress_code_ai\\Cache\\Adapters\\Seo_Sitemaps',
+        'woocommerce'          => 'wordpress_code_ai\\Cache\\Adapters\\Woocommerce',
+        'the-events-calendar'  => 'wordpress_code_ai\\Cache\\Adapters\\Events_Calendar',
+        'smart-slider-3'       => 'wordpress_code_ai\\Cache\\Adapters\\Smart_Slider',
+        'tablepress'           => 'wordpress_code_ai\\Cache\\Adapters\\Tablepress',
+        'popup-maker'          => 'wordpress_code_ai\\Cache\\Adapters\\Popup_Maker',
+        'smash-balloon'        => 'wordpress_code_ai\\Cache\\Adapters\\Smash_Balloon',
+        'facetwp'              => 'wordpress_code_ai\\Cache\\Adapters\\Facetwp',
         
-        'optimole'             => 'Easy_MCP_AI\\Cache\\Adapters\\Optimole',
-        'elementor'            => 'Easy_MCP_AI\\Cache\\Adapters\\Elementor',
-        'autoptimize'          => 'Easy_MCP_AI\\Cache\\Adapters\\Autoptimize',
+        'optimole'             => 'wordpress_code_ai\\Cache\\Adapters\\Optimole',
+        'elementor'            => 'wordpress_code_ai\\Cache\\Adapters\\Elementor',
+        'autoptimize'          => 'wordpress_code_ai\\Cache\\Adapters\\Autoptimize',
         
-        'litespeed-cache'      => 'Easy_MCP_AI\\Cache\\Adapters\\Litespeed_Cache',
-        'wp-rocket'            => 'Easy_MCP_AI\\Cache\\Adapters\\Wp_Rocket',
-        'wp-super-cache'       => 'Easy_MCP_AI\\Cache\\Adapters\\Wp_Super_Cache',
-        'wp-fastest-cache'     => 'Easy_MCP_AI\\Cache\\Adapters\\Wp_Fastest_Cache',
-        'wp-optimize'          => 'Easy_MCP_AI\\Cache\\Adapters\\Wp_Optimize',
-        'w3-total-cache'       => 'Easy_MCP_AI\\Cache\\Adapters\\W3_Total_Cache',
-        'jetpack-boost'        => 'Easy_MCP_AI\\Cache\\Adapters\\Jetpack_Boost',
-        'breeze'               => 'Easy_MCP_AI\\Cache\\Adapters\\Breeze',
-        'sg-cachepress'        => 'Easy_MCP_AI\\Cache\\Adapters\\Sg_Cachepress',
-        'cache-enabler'        => 'Easy_MCP_AI\\Cache\\Adapters\\Cache_Enabler',
-        'speedycache'          => 'Easy_MCP_AI\\Cache\\Adapters\\Speedycache',
-        'hummingbird'          => 'Easy_MCP_AI\\Cache\\Adapters\\Hummingbird',
-        'nitropack'            => 'Easy_MCP_AI\\Cache\\Adapters\\Nitropack',
-        'clearfy'              => 'Easy_MCP_AI\\Cache\\Adapters\\Clearfy',
-        'xspeed'               => 'Easy_MCP_AI\\Cache\\Adapters\\Xspeed',
-        'spinupwp'             => 'Easy_MCP_AI\\Cache\\Adapters\\Spinupwp',
+        'litespeed-cache'      => 'wordpress_code_ai\\Cache\\Adapters\\Litespeed_Cache',
+        'wp-rocket'            => 'wordpress_code_ai\\Cache\\Adapters\\Wp_Rocket',
+        'wp-super-cache'       => 'wordpress_code_ai\\Cache\\Adapters\\Wp_Super_Cache',
+        'wp-fastest-cache'     => 'wordpress_code_ai\\Cache\\Adapters\\Wp_Fastest_Cache',
+        'wp-optimize'          => 'wordpress_code_ai\\Cache\\Adapters\\Wp_Optimize',
+        'w3-total-cache'       => 'wordpress_code_ai\\Cache\\Adapters\\W3_Total_Cache',
+        'jetpack-boost'        => 'wordpress_code_ai\\Cache\\Adapters\\Jetpack_Boost',
+        'breeze'               => 'wordpress_code_ai\\Cache\\Adapters\\Breeze',
+        'sg-cachepress'        => 'wordpress_code_ai\\Cache\\Adapters\\Sg_Cachepress',
+        'cache-enabler'        => 'wordpress_code_ai\\Cache\\Adapters\\Cache_Enabler',
+        'speedycache'          => 'wordpress_code_ai\\Cache\\Adapters\\Speedycache',
+        'hummingbird'          => 'wordpress_code_ai\\Cache\\Adapters\\Hummingbird',
+        'nitropack'            => 'wordpress_code_ai\\Cache\\Adapters\\Nitropack',
+        'clearfy'              => 'wordpress_code_ai\\Cache\\Adapters\\Clearfy',
+        'xspeed'               => 'wordpress_code_ai\\Cache\\Adapters\\Xspeed',
+        'spinupwp'             => 'wordpress_code_ai\\Cache\\Adapters\\Spinupwp',
         
-        'nginx-helper'         => 'Easy_MCP_AI\\Cache\\Adapters\\Nginx_Helper',
-        'proxy-cache-purge'    => 'Easy_MCP_AI\\Cache\\Adapters\\Proxy_Cache_Purge',
-        'kinsta'               => 'Easy_MCP_AI\\Cache\\Adapters\\Kinsta',
-        'wp-engine'            => 'Easy_MCP_AI\\Cache\\Adapters\\Wp_Engine',
-        'godaddy'              => 'Easy_MCP_AI\\Cache\\Adapters\\Godaddy',
-        'pressable'            => 'Easy_MCP_AI\\Cache\\Adapters\\Pressable',
-        'pressidium'           => 'Easy_MCP_AI\\Cache\\Adapters\\Pressidium',
-        'flywp'                => 'Easy_MCP_AI\\Cache\\Adapters\\Flywp',
-        'pantheon'             => 'Easy_MCP_AI\\Cache\\Adapters\\Pantheon',
-        'wordpress-vip'        => 'Easy_MCP_AI\\Cache\\Adapters\\Wordpress_Vip',
-        'bigscoots'            => 'Easy_MCP_AI\\Cache\\Adapters\\Bigscoots',
+        'nginx-helper'         => 'wordpress_code_ai\\Cache\\Adapters\\Nginx_Helper',
+        'proxy-cache-purge'    => 'wordpress_code_ai\\Cache\\Adapters\\Proxy_Cache_Purge',
+        'kinsta'               => 'wordpress_code_ai\\Cache\\Adapters\\Kinsta',
+        'wp-engine'            => 'wordpress_code_ai\\Cache\\Adapters\\Wp_Engine',
+        'godaddy'              => 'wordpress_code_ai\\Cache\\Adapters\\Godaddy',
+        'pressable'            => 'wordpress_code_ai\\Cache\\Adapters\\Pressable',
+        'pressidium'           => 'wordpress_code_ai\\Cache\\Adapters\\Pressidium',
+        'flywp'                => 'wordpress_code_ai\\Cache\\Adapters\\Flywp',
+        'pantheon'             => 'wordpress_code_ai\\Cache\\Adapters\\Pantheon',
+        'wordpress-vip'        => 'wordpress_code_ai\\Cache\\Adapters\\Wordpress_Vip',
+        'bigscoots'            => 'wordpress_code_ai\\Cache\\Adapters\\Bigscoots',
         
-        'super-page-cache'     => 'Easy_MCP_AI\\Cache\\Adapters\\Super_Page_Cache',
-        'cloudflare'           => 'Easy_MCP_AI\\Cache\\Adapters\\Cloudflare',
+        'super-page-cache'     => 'wordpress_code_ai\\Cache\\Adapters\\Super_Page_Cache',
+        'cloudflare'           => 'wordpress_code_ai\\Cache\\Adapters\\Cloudflare',
         
-        'object-cache'         => 'Easy_MCP_AI\\Cache\\Adapters\\Object_Cache',
+        'object-cache'         => 'wordpress_code_ai\\Cache\\Adapters\\Object_Cache',
     );
 
     
-    const FILTER = 'easy_mcp_ai_cache_adapter_enabled';
+    const FILTER = 'wordpress_code_ai_cache_adapter_enabled';
 
     
     private static $adapters = null;
@@ -82,7 +82,7 @@ final class Cache_Registry {
 
     public static function all(): array {
         if ( null === self::$adapters ) {
-            $loaded = \Easy_MCP_AI\Class_Map_Loader::load( self::ADAPTERS, Cache_Adapter::class );
+            $loaded = \wordpress_code_ai\Class_Map_Loader::load( self::ADAPTERS, Cache_Adapter::class );
             uasort(
                 $loaded,
                 static function ( Cache_Adapter $a, Cache_Adapter $b ): int {

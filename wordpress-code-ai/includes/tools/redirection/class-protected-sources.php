@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Redirection;
+namespace wordpress_code_ai\Tools\Redirection;
 
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -41,7 +41,7 @@ final class Protected_Sources {
 
 
 
-    const MCP_ROUTE = 'easy-mcp-ai/v1/mcp';
+    const MCP_ROUTE = 'wordpress-code-ai/v1/mcp';
 
     
 

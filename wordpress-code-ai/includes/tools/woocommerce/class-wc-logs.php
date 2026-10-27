@@ -1,12 +1,12 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-use Easy_MCP_AI\Text_Redactor;
-use Easy_MCP_AI\Tools\Site_Health\Site_Health_Guard;
+use wordpress_code_ai\Text_Redactor;
+use wordpress_code_ai\Tools\Site_Health\Site_Health_Guard;
 
 
 

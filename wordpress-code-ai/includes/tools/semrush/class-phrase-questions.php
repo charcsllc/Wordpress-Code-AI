@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Semrush;
+namespace wordpress_code_ai\Tools\Semrush;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Semrush\Semrush_Client;
-use Easy_MCP_AI\Semrush\Semrush_Validators;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Semrush\Semrush_Client;
+use wordpress_code_ai\Semrush\Semrush_Validators;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -99,13 +99,13 @@ abstract class Abstract_Google_Client {
         $stored = \get_option( static::OPTION_JSON, '' );
         if ( empty( $stored ) ) {
             throw new \RuntimeException(
-                static::product_name() . ' credentials not configured. Go to Easy MCP AI → Tools → External data.' // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+                static::product_name() . ' credentials not configured. Go to wordpress-code-ai → Tools → External data.' // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             );
         }
         $json = static::decrypt( $stored );
         if ( false === $json ) {
             throw new \RuntimeException(
-                'Failed to decrypt ' . static::product_name() . ' credentials. This usually means your WordPress security salts (SECURE_AUTH_KEY/SECURE_AUTH_SALT) have been rotated since the key was saved. Re-save the service account JSON in Easy MCP AI → Tools → External data.' // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+                'Failed to decrypt ' . static::product_name() . ' credentials. This usually means your WordPress security salts (SECURE_AUTH_KEY/SECURE_AUTH_SALT) have been rotated since the key was saved. Re-save the service account JSON in wordpress-code-ai → Tools → External data.' // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             );
         }
         $creds = json_decode( $json, true );

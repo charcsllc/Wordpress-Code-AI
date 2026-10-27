@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Health;
+namespace wordpress_code_ai\Tools\Site_Health;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
-use Easy_MCP_AI\Tools\Package_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Package_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -101,18 +101,18 @@ class Update_Core extends Base_Tool {
             return parent::describe( $arguments );
         }
         if ( $request['minor'] ) {
-            $target = __( 'the newest patch release of its branch', 'easy-mcp-ai' );
+            $target = __( 'the newest patch release of its branch', 'wordpress-code-ai' );
         } elseif ( 'latest' === $request['version'] ) {
-            $target = __( 'the latest release wordpress.org offers', 'easy-mcp-ai' );
+            $target = __( 'the latest release wordpress.org offers', 'wordpress-code-ai' );
         } elseif ( 'nightly' === $request['version'] ) {
-            $target = __( 'the nightly development build', 'easy-mcp-ai' );
+            $target = __( 'the nightly development build', 'wordpress-code-ai' );
         } else {
             /* translators: %s: WordPress version */
-            $target = sprintf( __( 'version %s', 'easy-mcp-ai' ), $request['version'] );
+            $target = sprintf( __( 'version %s', 'wordpress-code-ai' ), $request['version'] );
         }
         return sprintf(
             /* translators: 1: installed version, 2: target, 3: locale */
-            __( 'Update WordPress core from %1$s to %2$s (package language %3$s). Core files are replaced in place and the site is in maintenance mode while they are copied. It cannot be undone from here.', 'easy-mcp-ai' ),
+            __( 'Update WordPress core from %1$s to %2$s (package language %3$s). Core files are replaced in place and the site is in maintenance mode while they are copied. It cannot be undone from here.', 'wordpress-code-ai' ),
             $installed,
             $target,
             null === $request['locale'] ? get_locale() : $request['locale']

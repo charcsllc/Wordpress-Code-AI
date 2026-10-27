@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Terms_Command;
+use wordpress_code_ai\Cli_Router\Terms_Command;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Approvals;
+namespace wordpress_code_ai\Approvals;
 
-use Easy_MCP_AI\Auth\Token_Keys;
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Tool_Registry;
+use wordpress_code_ai\Auth\Token_Keys;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Tool_Registry;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -46,7 +46,7 @@ class Approval_Gate {
 
     const FORM_PROTOCOL = '2026-07-28';
     
-    const META_KEY = 'easy-mcp-ai/approval';
+    const META_KEY = 'wordpress-code-ai/approval';
     
 
 
@@ -83,7 +83,7 @@ class Approval_Gate {
 
     
     public static function enabled() {
-        return (bool) \Easy_MCP_AI\Config::get( 'approval_required' );
+        return (bool) \wordpress_code_ai\Config::get( 'approval_required' );
     }
 
     
@@ -301,10 +301,10 @@ class Approval_Gate {
             return false;
         }
         $route = method_exists( $tool, 'approval_route' ) ? $tool->approval_route( $arguments ) : null;
-        if ( self::matches_any( $tool_name, (array) \Easy_MCP_AI\Config::get( 'approval_always' ), $route ) ) {
+        if ( self::matches_any( $tool_name, (array) \wordpress_code_ai\Config::get( 'approval_always' ), $route ) ) {
             $required = true;
             $reason   = 'always';
-        } elseif ( self::matches_any( $tool_name, (array) \Easy_MCP_AI\Config::get( 'approval_never' ), $route ) ) {
+        } elseif ( self::matches_any( $tool_name, (array) \wordpress_code_ai\Config::get( 'approval_never' ), $route ) ) {
             $required = false;
             $reason   = 'never';
         } else {
@@ -326,7 +326,7 @@ class Approval_Gate {
 
 
 
-        return (bool) \apply_filters( 'easy_mcp_ai_requires_approval', $required, $tool_name, $arguments, $reason );
+        return (bool) \apply_filters( 'wordpress_code_ai_requires_approval', $required, $tool_name, $arguments, $reason );
     }
 
     
@@ -564,7 +564,7 @@ class Approval_Gate {
             'h'   => $row['args_hash'],
             'exp' => $this->timestamp( $row['expires_at'] ),
         ) );
-        return \Easy_MCP_AI\MCP\JSON_RPC::success_response( $id, array(
+        return \wordpress_code_ai\MCP\JSON_RPC::success_response( $id, array(
             'resultType'    => 'input_required',
             'inputRequests' => array(
                 self::REQUEST_KEY => array(
@@ -676,7 +676,7 @@ class Approval_Gate {
 
     public static function approve_url( $approval_id ) {
         $base = (string) \home_url( '/' );
-        return $base . ( false === strpos( $base, '?' ) ? '?' : '&' ) . 'easy_mcp_ai_approve=' . rawurlencode( (string) $approval_id );
+        return $base . ( false === strpos( $base, '?' ) ? '?' : '&' ) . 'wordpress_code_ai_approve=' . rawurlencode( (string) $approval_id );
     }
 
     
@@ -739,9 +739,9 @@ class Approval_Gate {
         $elicit = array_key_exists( 'elicitation', $caps );
         $form   = $elicit && ( empty( $caps['elicitation'] ) || ( is_array( $caps['elicitation'] ) && array_key_exists( 'form', $caps['elicitation'] ) ) );
         if ( $form ) {
-            return __( 'Your AI client offered an in-chat prompt for this first; this page is the fallback.', 'easy-mcp-ai' );
+            return __( 'Your AI client offered an in-chat prompt for this first; this page is the fallback.', 'wordpress-code-ai' );
         }
-        return __( 'Your AI client does not support in-chat approval prompts yet, so this page is used instead.', 'easy-mcp-ai' );
+        return __( 'Your AI client does not support in-chat approval prompts yet, so this page is used instead.', 'wordpress-code-ai' );
     }
 
     

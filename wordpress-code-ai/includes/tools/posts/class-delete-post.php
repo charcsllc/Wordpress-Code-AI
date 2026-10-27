@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Posts;
+namespace wordpress_code_ai\Tools\Posts;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -62,9 +62,9 @@ class Delete_Post extends Base_Tool {
         $force = ! empty( $arguments['force'] ) && \rest_sanitize_boolean( $arguments['force'] );
         return sprintf(
             /* translators: 1: post title, 2: post id, 3: post status, 4: what happens */
-            __( "Delete post '%1\$s' (ID %2\$d, %3\$s) — %4\$s.", 'easy-mcp-ai' ),
+            __( "Delete post '%1\$s' (ID %2\$d, %3\$s) — %4\$s.", 'wordpress-code-ai' ),
             self::rest_title( $post ), $id, isset( $post['status'] ) ? $post['status'] : 'unknown',
-            $force ? __( 'permanently, bypassing the trash', 'easy-mcp-ai' ) : __( 'moves it to the trash', 'easy-mcp-ai' )
+            $force ? __( 'permanently, bypassing the trash', 'wordpress-code-ai' ) : __( 'moves it to the trash', 'wordpress-code-ai' )
         );
     }
 

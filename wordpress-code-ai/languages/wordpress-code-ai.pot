@@ -1,10 +1,10 @@
-# Copyright (C) 2026 Easy MCP AI
-# This file is distributed under the same license as the EasyMCP Dev Toolkit plugin.
+# Copyright (C) 2026 wordpress-code-ai
+# This file is distributed under the same license as the wordpress-code-ai plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Easy MCP AI\n"
-"Report-Msgid-Bugs-To: https://github.com/Codeinwp/wp-plugin-easy-mcp/issues\n"
-"Last-Translator: friends@themeisle.com\n"
+"Project-Id-Version: wordpress-code-ai\n"
+"Report-Msgid-Bugs-To: https://github.com/charcsllc/wordpress-code-ai/issues\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -12,50 +12,36 @@ msgstr ""
 "POT-Creation-Date: 2026-10-26T10:28:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: easy-mcp-ai\n"
+"X-Domain: wordpress-code-ai\n"
 
 #. Plugin Name of the plugin
-#: dev-tools.php
-msgid "EasyMCP Dev Toolkit"
-msgstr ""
-
-#. Description of the plugin
-#: dev-tools.php
-msgid "Development-only helpers for Easy MCP AI. Fakes a connected state for every External Data provider and force-shows the usage-sharing opt-ins so the admin UI can be exercised without real vendor credentials. Never shipped (excluded by .distignore)."
-msgstr ""
-
 #. Author of the plugin
-#: dev-tools.php
 #: includes/admin/class-app-page.php:268
 #: includes/admin/class-app-page.php:269
 #: includes/admin/class-app-page.php:531
 #: includes/diagnostics/class-diagnostics-site-health.php:182
-msgid "Easy MCP AI"
+msgid "wordpress-code-ai"
 msgstr ""
 
-#: easy-mcp-ai.php:314
+#: wordpress-code-ai.php:314
 msgid "Getting Started"
 msgstr ""
 
-#: easy-mcp-ai.php:315
+#: wordpress-code-ai.php:315
 #: assets/build/page-tools.js:1
 msgid "Abilities"
 msgstr ""
 
-#: easy-mcp-ai.php:316
+#: wordpress-code-ai.php:316
 msgid "External Data"
 msgstr ""
 
-#: easy-mcp-ai.php:319
+#: wordpress-code-ai.php:319
 #: includes/admin/class-app-page.php:212
 #: includes/oauth/class-scope-map.php:943
 #: assets/build/index.js:24
 #: assets/build/index.js:36
 msgid "Settings"
-msgstr ""
-
-#: easy-mcp-ai.php:331
-msgid "Rate Plugin"
 msgstr ""
 
 #: includes/admin/class-admin-page.php:209
@@ -276,7 +262,7 @@ msgid "The security token for this request is invalid or has expired."
 msgstr ""
 
 #: includes/admin/class-support-text.php:62
-msgid "Easy MCP AI — support request"
+msgid "wordpress-code-ai — support request"
 msgstr ""
 
 #. translators: %s: the site's URL.
@@ -321,7 +307,7 @@ msgid "(Press \"Test from the internet\", then copy the result and paste here.)"
 msgstr ""
 
 #: includes/admin/class-support-text.php:103
-msgid "You are helping me diagnose a WordPress plugin called \"Easy MCP AI\", which exposes WordPress to AI assistants over the Model Context Protocol (MCP)."
+msgid "You are helping me diagnose a WordPress plugin called \"wordpress-code-ai\", which exposes WordPress to AI assistants over the Model Context Protocol (MCP)."
 msgstr ""
 
 #: includes/admin/class-support-text.php:105
@@ -351,7 +337,7 @@ msgid "WHERE TO READ THE PLUGIN SOURCE"
 msgstr ""
 
 #: includes/admin/class-support-text.php:116
-msgid "The plugin is open source. Its released code is readable at https://plugins.svn.wordpress.org/easy-mcp-ai/ — trunk/ is the current release, and tags/ holds each published version. If you need to confirm how a specific check or endpoint actually behaves, read it there rather than assuming."
+msgid "The plugin is open source. Its released code is readable at https://github.com/charcsllc/wordpress-code-ai — the wordpress-code-ai/ folder holds the current release. If you need to confirm how a specific check or endpoint actually behaves, read it there rather than assuming."
 msgstr ""
 
 #: includes/admin/class-support-text.php:117
@@ -727,7 +713,7 @@ msgid "This setting is set by %s in wp-config.php or the environment and cannot 
 msgstr ""
 
 #: includes/admin/rest/class-settings-controller.php:496
-msgid "Who can connect is set in code by the easy_mcp_ai_oauth_min_capability filter and cannot be changed here."
+msgid "Who can connect is set in code by the wordpress_code_ai_oauth_min_capability filter and cannot be changed here."
 msgstr ""
 
 #: includes/admin/rest/class-settings-controller.php:522
@@ -1186,7 +1172,7 @@ msgstr ""
 #: includes/oauth/class-authorization-endpoint.php:1010
 #: includes/oauth/views/consent.php:331
 #: includes/oauth/views/device.php:161
-msgid "Powered by Easy MCP AI"
+msgid "Powered by wordpress-code-ai"
 msgstr ""
 
 #: includes/approvals/class-approval-page.php:305
@@ -1342,7 +1328,7 @@ msgstr ""
 #. translators: %s: deployment setting names, never values.
 #: includes/class-config-admin.php:158
 #, php-format
-msgid "Easy MCP AI: Invalid deployment settings use safe fallback values: %s"
+msgid "wordpress-code-ai: Invalid deployment settings use safe fallback values: %s"
 msgstr ""
 
 #: includes/class-plugin.php:931
@@ -1462,7 +1448,7 @@ msgstr ""
 
 #: includes/diagnostics/class-blocker-copy.php:113
 #: includes/diagnostics/class-check-edge-block.php:385
-msgid "Ask your host, CDN or security plugin to allow POST requests carrying JSON to /wp-json/easy-mcp-ai/. A rule that only permits GET, or that rejects JSON bodies, is the usual cause."
+msgid "Ask your host, CDN or security plugin to allow POST requests carrying JSON to /wp-json/wordpress-code-ai/. A rule that only permits GET, or that rejects JSON bodies, is the usual cause."
 msgstr ""
 
 #: includes/diagnostics/class-blocker-copy.php:118
@@ -1656,7 +1642,7 @@ msgid "The first entry is the one rejected, so no current key is usable and new 
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:140
-msgid "Correct the EASY_MCP_AI_TOKEN_KEYS value (wp-config.php, environment or the easy_mcp_ai_token_keys filter): every secret needs at least 32 bytes, and a duplicate means the same secret is listed twice or a new secret has to be generated again."
+msgid "Correct the WORDPRESS_CODE_AI_TOKEN_KEYS value (wp-config.php, environment or the wordpress_code_ai_token_keys filter): every secret needs at least 32 bytes, and a duplicate means the same secret is listed twice or a new secret has to be generated again."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:145
@@ -1713,7 +1699,7 @@ msgid "The maximum number of OAuth clients is set to 0, so every new client regi
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:229
-msgid "Set easy_mcp_ai_oauth_max_clients to a positive number — the default is 5000."
+msgid "Set wordpress_code_ai_oauth_max_clients to a positive number — the default is 5000."
 msgstr ""
 
 #. translators: 1: active client count, 2: configured maximum.
@@ -1723,7 +1709,7 @@ msgid "%1$d of %2$d registered clients in use. New client registrations are bein
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:245
-msgid "Raise the client cap, or revoke clients you no longer use under Easy MCP AI → Connections → OAuth → Registered clients."
+msgid "Raise the client cap, or revoke clients you no longer use under wordpress-code-ai → Connections → OAuth → Registered clients."
 msgstr ""
 
 #. translators: %s: WordPress capability name.
@@ -1751,7 +1737,7 @@ msgid "The rate limit is set to 0 calls per minute, which refuses every call an 
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:333
-msgid "Set the rate limit under Easy MCP AI → Settings → Access & safety to a positive number — the default of 60 suits most sites."
+msgid "Set the rate limit under wordpress-code-ai → Settings → Access & safety to a positive number — the default of 60 suits most sites."
 msgstr ""
 
 #. translators: %d: configured calls per minute.
@@ -1761,7 +1747,7 @@ msgid "Set to %d calls per minute. AI clients send bursts of calls, so a limit t
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:348
-msgid "Raise the rate limit under Easy MCP AI → Settings → Access & safety — the default of 60 suits most sites."
+msgid "Raise the rate limit under wordpress-code-ai → Settings → Access & safety — the default of 60 suits most sites."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:358
@@ -1801,7 +1787,7 @@ msgid "Expiring soon: %s."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:419
-msgid "Issue a replacement token under Easy MCP AI → Connections → API tokens and update it in your AI client."
+msgid "Issue a replacement token under wordpress-code-ai → Connections → API tokens and update it in your AI client."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:437
@@ -1827,7 +1813,7 @@ msgid "Every API token and OAuth grant on this site has expired or been revoked,
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:481
-msgid "Create a new API token under Easy MCP AI → Connections → API tokens, or reconnect your AI client to issue a fresh OAuth grant."
+msgid "Create a new API token under wordpress-code-ai → Connections → API tokens, or reconnect your AI client to issue a fresh OAuth grant."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:491
@@ -1835,11 +1821,11 @@ msgid "OAuth HTTPS requirement"
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:502
-msgid "EASY_MCP_AI_OAUTH_ALLOW_HTTP is defined on a public host, so OAuth requests are accepted over unencrypted HTTP. Access tokens can be read in transit."
+msgid "WORDPRESS_CODE_AI_OAUTH_ALLOW_HTTP is defined on a public host, so OAuth requests are accepted over unencrypted HTTP. Access tokens can be read in transit."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:503
-msgid "Remove the EASY_MCP_AI_OAUTH_ALLOW_HTTP line from wp-config.php. It is intended for local development only."
+msgid "Remove the WORDPRESS_CODE_AI_OAUTH_ALLOW_HTTP line from wp-config.php. It is intended for local development only."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:517
@@ -1847,11 +1833,11 @@ msgid "OAuth layer active"
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:524
-msgid "The whole OAuth layer is switched off by code on this site: an easy_mcp_ai_oauth_enabled filter is returning false. Every OAuth endpoint — registration, authorization, discovery — returns 404, which looks identical to the plugin being broken."
+msgid "The whole OAuth layer is switched off by code on this site: an wordpress_code_ai_oauth_enabled filter is returning false. Every OAuth endpoint — registration, authorization, discovery — returns 404, which looks identical to the plugin being broken."
 msgstr ""
 
 #: includes/diagnostics/class-check-config.php:525
-msgid "Find and remove the add_filter( 'easy_mcp_ai_oauth_enabled', ... ) call, usually in the active theme's functions.php or an mu-plugin. API tokens are unaffected and keep working."
+msgid "Find and remove the add_filter( 'wordpress_code_ai_oauth_enabled', ... ) call, usually in the active theme's functions.php or an mu-plugin. API tokens are unaffected and keep working."
 msgstr ""
 
 #: includes/diagnostics/class-check-conflicts.php:152
@@ -1892,13 +1878,13 @@ msgstr ""
 #. translators: %s: comma-separated plugin names.
 #: includes/diagnostics/class-check-conflicts.php:233
 #, php-format
-msgid "Detected: %s. These plugins work normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/easy-mcp-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/easy-mcp-ai/ form of the same address too: a rule written only against the path silently misses it."
+msgid "Detected: %s. These plugins work normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/wordpress-code-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/wordpress-code-ai/ form of the same address too: a rule written only against the path silently misses it."
 msgstr ""
 
 #. translators: %s: a plugin name.
 #: includes/diagnostics/class-check-conflicts.php:235
 #, php-format
-msgid "Detected: %s. This plugin works normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/easy-mcp-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/easy-mcp-ai/ form of the same address too: a rule written only against the path silently misses it."
+msgid "Detected: %s. This plugin works normally on most sites and nothing here indicates a problem. If an AI client cannot connect, a firewall rule refusing requests before WordPress sees them is worth ruling out: allow /wp-json/wordpress-code-ai/ and /.well-known/oauth-*, and check it is not filtering by user agent. Cover the ?rest_route=/wordpress-code-ai/ form of the same address too: a rule written only against the path silently misses it."
 msgstr ""
 
 #: includes/diagnostics/class-check-conflicts.php:251
@@ -1910,7 +1896,7 @@ msgid "REST API authentication unmodified"
 msgstr ""
 
 #: includes/diagnostics/class-check-conflicts.php:320
-msgid "Identify the plugin the callback above belongs to and allow the easy-mcp-ai/v1 endpoints in its own REST settings. Then press Re-run checks."
+msgid "Identify the plugin the callback above belongs to and allow the wordpress-code-ai/v1 endpoints in its own REST settings. Then press Re-run checks."
 msgstr ""
 
 #. translators: 1: date, 2: a WP_Error code such as rest_cannot_access.
@@ -1964,7 +1950,7 @@ msgid "Another plugin or theme filters REST API authentication on this site, and
 msgstr ""
 
 #: includes/diagnostics/class-check-conflicts.php:403
-msgid "Identify the plugin the callback above belongs to. If it offers a \"disable REST API\" or \"restrict REST API\" setting, exempt the easy-mcp-ai/v1 namespace so AI clients can authenticate."
+msgid "Identify the plugin the callback above belongs to. If it offers a \"disable REST API\" or \"restrict REST API\" setting, exempt the wordpress-code-ai/v1 namespace so AI clients can authenticate."
 msgstr ""
 
 #: includes/diagnostics/class-check-conflicts.php:424
@@ -1986,7 +1972,7 @@ msgstr ""
 #. translators: 1: number of recorded reassertion events, 2: number of days in the reporting window.
 #: includes/diagnostics/class-check-conflicts.php:489
 #, php-format
-msgid "On %1$d occasion(s) in the last %2$d days, another plugin removed this plugin's tracking hooks during an AI request. They were re-registered automatically and the change was still recorded, so nothing was lost and no action is needed. If you are investigating missing history entries, Easy MCP AI → Activity → Change history lists the affected requests."
+msgid "On %1$d occasion(s) in the last %2$d days, another plugin removed this plugin's tracking hooks during an AI request. They were re-registered automatically and the change was still recorded, so nothing was lost and no action is needed. If you are investigating missing history entries, wordpress-code-ai → Activity → Change history lists the affected requests."
 msgstr ""
 
 #. translators: %d: number of days in the reporting window.
@@ -2010,7 +1996,7 @@ msgstr ""
 #. translators: %s: the plugin name, or a comma-separated list of plugin names when more than one is active.
 #: includes/diagnostics/class-check-conflicts.php:574
 #, php-format
-msgid "Detected: %s. Nothing here indicates a problem — putting a site behind a holding page is a deliberate choice. Worth knowing, though: the screen where you approve an AI client is a normal page on the front of your site, not part of the admin area, so a holding page can hide it. If approving a connection never loads, allow the address ?easy_mcp_ai_oauth=authorize through, or switch the holding page off while you connect."
+msgid "Detected: %s. Nothing here indicates a problem — putting a site behind a holding page is a deliberate choice. Worth knowing, though: the screen where you approve an AI client is a normal page on the front of your site, not part of the admin area, so a holding page can hide it. If approving a connection never loads, allow the address ?wordpress_code_ai_oauth=authorize through, or switch the holding page off while you connect."
 msgstr ""
 
 #: includes/diagnostics/class-check-conflicts.php:601
@@ -2098,7 +2084,7 @@ msgid "The discovery test could not run on this site."
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:154
-msgid "This plugin's workaround for blocked hosts is switched off on this site (EASY_MCP_AI_OAUTH_ROOT_FALLBACK)."
+msgid "This plugin's workaround for blocked hosts is switched off on this site (WORDPRESS_CODE_AI_OAUTH_ROOT_FALLBACK)."
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:170
@@ -2141,7 +2127,7 @@ msgid "Ask your host to let /.well-known/ reach WordPress, or at least the two a
 msgstr ""
 
 #: includes/diagnostics/class-check-discovery.php:631
-msgid "Replace the out-of-date copy. Open the matching /wp-json/easy-mcp-ai/v1/discovery/ address on this site, which always shows the current version, and save it over the file in your .well-known folder."
+msgid "Replace the out-of-date copy. Open the matching /wp-json/wordpress-code-ai/v1/discovery/ address on this site, which always shows the current version, and save it over the file in your .well-known folder."
 msgstr ""
 
 #. translators: 1: document name(s), 2: comma-separated field names.
@@ -2358,7 +2344,7 @@ msgid "Saved credentials for %s can no longer be read. This happens when the Wor
 msgstr ""
 
 #: includes/diagnostics/class-check-environment.php:353
-msgid "Open Easy MCP AI → Tools → External data and re-enter the credentials for the services listed above."
+msgid "Open wordpress-code-ai → Tools → External data and re-enter the credentials for the services listed above."
 msgstr ""
 
 #: includes/diagnostics/class-check-header-probe.php:110
@@ -2570,7 +2556,7 @@ msgstr ""
 #. translators: 1: number of rejected requests, 2: number of hours in the window.
 #: includes/diagnostics/class-check-observability.php:116
 #, php-format
-msgid "%1$d sign-in refusal(s) were recorded in the last %2$d hours: a token that was missing, expired or not recognised; a real credential refused by a site rule (issued for another site address, sent from an address outside the IP whitelist, or an API key sent outside the Authorization header on a header-only site); or a failed step of an OAuth authorization or device sign-in, including too many device-code attempts. This counts sign-in refusals only. Tool calls refused after sign-in for insufficient permission are recorded separately, under Easy MCP AI → Activity → Audit log, and are not counted here; MCP requests refused for exceeding the rate limit are not recorded at all."
+msgid "%1$d sign-in refusal(s) were recorded in the last %2$d hours: a token that was missing, expired or not recognised; a real credential refused by a site rule (issued for another site address, sent from an address outside the IP whitelist, or an API key sent outside the Authorization header on a header-only site); or a failed step of an OAuth authorization or device sign-in, including too many device-code attempts. This counts sign-in refusals only. Tool calls refused after sign-in for insufficient permission are recorded separately, under wordpress-code-ai → Activity → Audit log, and are not counted here; MCP requests refused for exceeding the rate limit are not recorded at all."
 msgstr ""
 
 #: includes/diagnostics/class-check-observability.php:130
@@ -2848,7 +2834,7 @@ msgid "These tokens reach only a small part of the tool set because of their Wor
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:416
-msgid "Assign the token to a user with a higher role, or lower the minimum capability for External Data tools under Easy MCP AI → Settings → Advanced."
+msgid "Assign the token to a user with a higher role, or lower the minimum capability for External Data tools under wordpress-code-ai → Settings → Advanced."
 msgstr ""
 
 #. translators: %s: comma-separated glob patterns.
@@ -2858,11 +2844,11 @@ msgid "These tool filter patterns match no tool at all: %s. A pattern that match
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:444
-msgid "Correct or remove the pattern under Easy MCP AI → Settings → Advanced → Whitelist tools."
+msgid "Correct or remove the pattern under wordpress-code-ai → Settings → Advanced → Whitelist tools."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:470
-msgid "Every tool EASY_MCP_AI_TOOLS names exists"
+msgid "Every tool WORDPRESS_CODE_AI_TOOLS names exists"
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:473
@@ -2870,19 +2856,19 @@ msgid "Could not read the list of tools this plugin ships."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:476
-msgid "EASY_MCP_AI_TOOLS is not set."
+msgid "WORDPRESS_CODE_AI_TOOLS is not set."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:479
-msgid "EASY_MCP_AI_TOOLS names no tool."
+msgid "WORDPRESS_CODE_AI_TOOLS names no tool."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:483
-msgid "the EASY_MCP_AI_TOOLS environment variable"
+msgid "the WORDPRESS_CODE_AI_TOOLS environment variable"
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:484
-msgid "the EASY_MCP_AI_TOOLS constant in wp-config.php"
+msgid "the WORDPRESS_CODE_AI_TOOLS constant in wp-config.php"
 msgstr ""
 
 #. translators: %s: comma-separated ability tool names.
@@ -2891,25 +2877,25 @@ msgstr ""
 msgid "These ability tools are not registered on this site now: %s. That is expected while the plugin that provides the ability is inactive; if it is active, the name is misspelled."
 msgstr ""
 
-#. translators: 1: where EASY_MCP_AI_TOOLS is set, 2: comma-separated tool names.
+#. translators: 1: where WORDPRESS_CODE_AI_TOOLS is set, 2: comma-separated tool names.
 #: includes/diagnostics/class-check-tool-visibility.php:498
 #, php-format
 msgid "These names in %1$s match no tool: %2$s. A name that matches no tool switches nothing, so the tool you meant is on or off exactly as if the entry were not there."
 msgstr ""
 
-#. translators: %s: where EASY_MCP_AI_TOOLS is set.
+#. translators: %s: where WORDPRESS_CODE_AI_TOOLS is set.
 #: includes/diagnostics/class-check-tool-visibility.php:509
 #, php-format
 msgid "Correct the names in %s. Tool names are exact and lower case, for example wp_delete_post."
 msgstr ""
 
-#. translators: %s: where EASY_MCP_AI_TOOLS is set.
+#. translators: %s: where WORDPRESS_CODE_AI_TOOLS is set.
 #: includes/diagnostics/class-check-tool-visibility.php:524
 #, php-format
 msgid "If the plugin is active, correct the name in %s: an ability tool is named wp_ability_ followed by the ability, as the Tools screen lists it."
 msgstr ""
 
-#. translators: %d: number of tool names EASY_MCP_AI_TOOLS lists.
+#. translators: %d: number of tool names WORDPRESS_CODE_AI_TOOLS lists.
 #: includes/diagnostics/class-check-tool-visibility.php:537
 #, php-format
 msgid "The %d name it lists is a tool."
@@ -2960,7 +2946,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:667
-msgid "The plugin that published these abilities may have been deactivated, renamed them, or may conflict with another plugin bundling the same abilities library. Untick them under Easy MCP AI → Tools → Abilities, or resolve the conflicting plugin. Every other tool is unaffected."
+msgid "The plugin that published these abilities may have been deactivated, renamed them, or may conflict with another plugin bundling the same abilities library. Untick them under wordpress-code-ai → Tools → Abilities, or resolve the conflicting plugin. Every other tool is unaffected."
 msgstr ""
 
 #. translators: 1: current WordPress version, 2: minimum required version.
@@ -2976,7 +2962,7 @@ msgstr ""
 #. translators: 1: "1 ability" or "N abilities", 2: nothing — the count is already inside %1$s.
 #: includes/diagnostics/class-check-tool-visibility.php:703
 #, php-format
-msgid "%1$s available on this site. None are switched on, which is the default — abilities are opt-in under Easy MCP AI → Tools → Abilities."
+msgid "%1$s available on this site. None are switched on, which is the default — abilities are opt-in under wordpress-code-ai → Tools → Abilities."
 msgstr ""
 
 #. translators: %d: number of abilities registered in WordPress.
@@ -3042,15 +3028,15 @@ msgid "no tools are registered."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:866
-msgid "Edit the token under Easy MCP AI → Connections → API tokens and widen the tools it may use."
+msgid "Edit the token under wordpress-code-ai → Connections → API tokens and widen the tools it may use."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:868
-msgid "Re-enable the tools you need under Easy MCP AI → Tools → Core."
+msgid "Re-enable the tools you need under wordpress-code-ai → Tools → Core."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:870
-msgid "Correct or clear the patterns under Easy MCP AI → Settings → Advanced → Whitelist tools."
+msgid "Correct or clear the patterns under wordpress-code-ai → Settings → Advanced → Whitelist tools."
 msgstr ""
 
 #: includes/diagnostics/class-check-tool-visibility.php:872
@@ -3178,7 +3164,7 @@ msgid "This site appears to be behind a proxy or CDN: every request reaches PHP 
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:422
-msgid "Declare the proxy with the EASY_MCP_AI_TRUSTED_PROXIES constant in wp-config.php — see https://docs.easymcpai.com/trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The easy_mcp_ai_client_ip filter remains available."
+msgid "Declare the proxy with the WORDPRESS_CODE_AI_TRUSTED_PROXIES constant in wp-config.php — see https://docs.easymcpai.com/trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The wordpress_code_ai_client_ip filter remains available."
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:432
@@ -3186,7 +3172,7 @@ msgid "Trusted proxies are declared, but this request still resolved to the prox
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:433
-msgid "Add the address shown in the evidence to EASY_MCP_AI_TRUSTED_PROXIES in wp-config.php, or set EASY_MCP_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://docs.easymcpai.com/trusted-proxies."
+msgid "Add the address shown in the evidence to WORDPRESS_CODE_AI_TRUSTED_PROXIES in wp-config.php, or set WORDPRESS_CODE_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://docs.easymcpai.com/trusted-proxies."
 msgstr ""
 
 #: includes/diagnostics/class-check-transport.php:449
@@ -3239,7 +3225,7 @@ msgid "No problems found in this area."
 msgstr ""
 
 #: includes/diagnostics/class-diagnostics-site-health.php:189
-msgid "Open Easy MCP AI diagnostics"
+msgid "Open wordpress-code-ai diagnostics"
 msgstr ""
 
 #. translators: 1: total checks, 2: passed, 3: warnings, 4: failures, 5: could not run on this host.
@@ -3261,13 +3247,13 @@ msgid "(%d hidden — only a network administrator can see them.)"
 msgstr ""
 
 #: includes/diagnostics/class-diagnostics-site-health.php:322
-msgid "Easy MCP AI diagnostics"
+msgid "wordpress-code-ai diagnostics"
 msgstr ""
 
 #. translators: %s: diagnostics group name, e.g. "Database schema".
 #: includes/diagnostics/class-diagnostics-site-health.php:360
 #, php-format
-msgid "Easy MCP AI: %s"
+msgid "wordpress-code-ai: %s"
 msgstr ""
 
 #: includes/diagnostics/class-diagnostics.php:201
@@ -3815,7 +3801,7 @@ msgid "The application's registration at %1$s is not valid (%2$s)."
 msgstr ""
 
 #: includes/oauth/class-client-registry.php:118
-msgid "Dynamic Client Registration is disabled on this site. An administrator can enable it under Easy MCP AI > Connections > OAuth > Token lifetimes and client registration."
+msgid "Dynamic Client Registration is disabled on this site. An administrator can enable it under wordpress-code-ai > Connections > OAuth > Token lifetimes and client registration."
 msgstr ""
 
 #: includes/oauth/class-client-registry.php:133
@@ -4343,7 +4329,7 @@ msgid "HTTPS is required, and this request arrived over HTTPS at your proxy or C
 msgstr ""
 
 #: includes/oauth/class-token-endpoint.php:1372
-msgid "HTTPS is required. This request reached PHP over plain HTTP. If your site is served over HTTPS through a proxy or CDN, WordPress is not being told — set $_SERVER[\"HTTPS\"] from the forwarded protocol in wp-config.php. For local development over plain HTTP, define EASY_MCP_AI_OAUTH_ALLOW_HTTP as true in wp-config.php instead. Never set that on a production site."
+msgid "HTTPS is required. This request reached PHP over plain HTTP. If your site is served over HTTPS through a proxy or CDN, WordPress is not being told — set $_SERVER[\"HTTPS\"] from the forwarded protocol in wp-config.php. For local development over plain HTTP, define WORDPRESS_CODE_AI_OAUTH_ALLOW_HTTP as true in wp-config.php instead. Never set that on a production site."
 msgstr ""
 
 #: includes/oauth/views/consent.php:52
@@ -4459,7 +4445,7 @@ msgid "Privileged"
 msgstr ""
 
 #: includes/oauth/views/consent.php:308
-msgid "Only abilities and plugins an administrator enabled under Easy MCP AI → Tools can be called."
+msgid "Only abilities and plugins an administrator enabled under wordpress-code-ai → Tools can be called."
 msgstr ""
 
 #: includes/oauth/views/consent.php:315
@@ -5287,7 +5273,7 @@ msgid "Resume AI access"
 msgstr ""
 
 #: assets/build/index.js:19
-msgid "Couldn't reach the admin API. If a security plugin blocks the REST API, allow the easy-mcp-ai-admin namespace."
+msgid "Couldn't reach the admin API. If a security plugin blocks the REST API, allow the wordpress-code-ai-admin namespace."
 msgstr ""
 
 #: assets/build/index.js:19
@@ -8253,7 +8239,7 @@ msgid "Roles that can connect an AI client"
 msgstr ""
 
 #: assets/build/page-settings.js:4
-msgid "Set in code by the easy_mcp_ai_oauth_min_capability filter. The ticks show who it lets in and cannot be changed here."
+msgid "Set in code by the wordpress_code_ai_oauth_min_capability filter. The ticks show who it lets in and cannot be changed here."
 msgstr ""
 
 #. translators: %s: a role name, e.g. Subscriber
@@ -8369,7 +8355,7 @@ msgid "Applies to every request on the MCP endpoint, with an API key or an OAuth
 msgstr ""
 
 #: assets/build/page-settings.js:6
-msgid "Behind a reverse proxy, load balancer or CDN such as Cloudflare, WordPress sees the proxy’s address for every visitor, so this list, the rate limits and the audit log cannot tell visitors apart. Declare the proxy with the <code>EASY_MCP_AI_TRUSTED_PROXIES</code> constant in wp-config.php — see <a>Trusted proxies</a>."
+msgid "Behind a reverse proxy, load balancer or CDN such as Cloudflare, WordPress sees the proxy’s address for every visitor, so this list, the rate limits and the audit log cannot tell visitors apart. Declare the proxy with the <code>WORDPRESS_CODE_AI_TRUSTED_PROXIES</code> constant in wp-config.php — see <a>Trusted proxies</a>."
 msgstr ""
 
 #: assets/build/page-settings.js:6

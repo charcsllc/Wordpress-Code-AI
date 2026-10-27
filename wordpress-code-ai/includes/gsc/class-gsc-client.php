@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\GSC;
+namespace wordpress_code_ai\GSC;
 
-use Easy_MCP_AI\Abstract_Google_Client;
+use wordpress_code_ai\Abstract_Google_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -9,12 +9,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class GSC_Client extends Abstract_Google_Client {
 
-    const OPTION_JSON     = 'easy_mcp_ai_gsc_service_account_json';
+    const OPTION_JSON     = 'wordpress_code_ai_gsc_service_account_json';
     const PROVIDER        = 'gsc';
-    const OPTION_SITE_URL = 'easy_mcp_ai_gsc_default_site_url';
-    const TRANSIENT_TOKEN = 'easy_mcp_ai_gsc_token';
+    const OPTION_SITE_URL = 'wordpress_code_ai_gsc_default_site_url';
+    const TRANSIENT_TOKEN = 'wordpress_code_ai_gsc_token';
     const SCOPE           = 'https://www.googleapis.com/auth/webmasters';
-    const HKDF_INFO       = 'easy_mcp_ai_gsc_creds_v1';
+    const HKDF_INFO       = 'wordpress_code_ai_gsc_creds_v1';
 
     protected static function product_name(): string {
         return 'Google Search Console';
@@ -98,7 +98,7 @@ class GSC_Client extends Abstract_Google_Client {
                 );
             }
             throw new \RuntimeException(
-                'Access denied by Google Search Console. The configured service account does not have access to this property. A site administrator can grant access in Easy MCP AI → Tools → External data → Test connection.'
+                'Access denied by Google Search Console. The configured service account does not have access to this property. A site administrator can grant access in wordpress-code-ai → Tools → External data → Test connection.'
             );
         }
         if ( 404 === $code ) {
@@ -128,16 +128,16 @@ class GSC_Client extends Abstract_Google_Client {
     }
 
     public static function default_site_url(): string {
-        $url = (string) \Easy_MCP_AI\Config::get( self::OPTION_SITE_URL, '' );
-        if ( empty( $url ) && in_array( \Easy_MCP_AI\Config::constant_name( self::OPTION_SITE_URL ), \Easy_MCP_AI\Config_Admin::invalid_settings(), true ) ) {
+        $url = (string) \wordpress_code_ai\Config::get( self::OPTION_SITE_URL, '' );
+        if ( empty( $url ) && in_array( \wordpress_code_ai\Config::constant_name( self::OPTION_SITE_URL ), \wordpress_code_ai\Config_Admin::invalid_settings(), true ) ) {
             
             throw new \RuntimeException(
-                'No site_url provided, and EASY_MCP_AI_GSC_DEFAULT_SITE_URL is not a valid Search Console property. Set it to a URL-prefix property (https://example.com/) or a domain property (sc-domain:example.com), or pass site_url.'
+                'No site_url provided, and WORDPRESS_CODE_AI_GSC_DEFAULT_SITE_URL is not a valid Search Console property. Set it to a URL-prefix property (https://example.com/) or a domain property (sc-domain:example.com), or pass site_url.'
             );
         }
         if ( empty( $url ) ) {
             throw new \RuntimeException(
-                'No site_url provided and no default property configured. Set one in Easy MCP AI → Tools → External data, or define EASY_MCP_AI_GSC_DEFAULT_SITE_URL in wp-config.php.'
+                'No site_url provided and no default property configured. Set one in wordpress-code-ai → Tools → External data, or define WORDPRESS_CODE_AI_GSC_DEFAULT_SITE_URL in wp-config.php.'
             );
         }
         return self::validate_site_url( $url );

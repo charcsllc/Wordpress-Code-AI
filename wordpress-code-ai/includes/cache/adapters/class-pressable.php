@@ -5,11 +5,11 @@
 
 
 
-namespace Easy_MCP_AI\Cache\Adapters;
+namespace wordpress_code_ai\Cache\Adapters;
 
-use Easy_MCP_AI\Cache\Cache_Adapter;
-use Easy_MCP_AI\Cache\Layer_Result;
-use Easy_MCP_AI\Cache\Purge_Request;
+use wordpress_code_ai\Cache\Cache_Adapter;
+use wordpress_code_ai\Cache\Layer_Result;
+use wordpress_code_ai\Cache\Purge_Request;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -40,7 +40,7 @@ final class Pressable extends Cache_Adapter {
 
     const PLUGIN = 'Edge_Cache_Plugin';
 
-    const REASON = 'easy-mcp-ai-clear-cache';
+    const REASON = 'wordpress-code-ai-clear-cache';
 
     public function id(): string {
         return 'pressable';

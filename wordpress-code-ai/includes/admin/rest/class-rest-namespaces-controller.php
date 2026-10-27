@@ -8,10 +8,10 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
-use Easy_MCP_AI\Rest_Routes\Namespace_State;
-use Easy_MCP_AI\Rest_Routes\Route_Catalogue;
+use wordpress_code_ai\Rest_Routes\Namespace_State;
+use wordpress_code_ai\Rest_Routes\Route_Catalogue;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -52,15 +52,15 @@ class Rest_Namespaces_Controller extends Admin_Rest_Controller {
                 $raw = array();
             }
             if ( ! is_array( $raw ) ) {
-                return $this->fail( 'easy_mcp_ai_invalid_param', \__( 'Expected a list of namespaces.', 'easy-mcp-ai' ), 400, array( 'field' => $field ) );
+                return $this->fail( 'wordpress_code_ai_invalid_param', \__( 'Expected a list of namespaces.', 'wordpress-code-ai' ), 400, array( 'field' => $field ) );
             }
             $lists[ $field ] = array();
             foreach ( $raw as $namespace ) {
                 if ( ! is_string( $namespace ) || 1 !== preg_match( self::NAMESPACE_PATTERN, trim( $namespace, " /" ) ) ) {
                     return $this->fail(
-                        'easy_mcp_ai_invalid_param',
+                        'wordpress_code_ai_invalid_param',
                         /* translators: %s: the rejected value */
-                        sprintf( \__( '%s is not a REST namespace.', 'easy-mcp-ai' ), is_string( $namespace ) ? $namespace : \wp_json_encode( $namespace ) ),
+                        sprintf( \__( '%s is not a REST namespace.', 'wordpress-code-ai' ), is_string( $namespace ) ? $namespace : \wp_json_encode( $namespace ) ),
                         400,
                         array( 'field' => $field )
                     );

@@ -1,13 +1,13 @@
 <?php
-namespace Easy_MCP_AI\Tools\Cache;
+namespace wordpress_code_ai\Tools\Cache;
 
-use Easy_MCP_AI\Cache\Cache_Purger;
-use Easy_MCP_AI\Cache\Cache_Registry;
-use Easy_MCP_AI\Cache\Layer_Result;
-use Easy_MCP_AI\Cache\Post_Urls;
-use Easy_MCP_AI\Cache\Purge_Request;
-use Easy_MCP_AI\Cache\Url_Guard;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Cache\Cache_Purger;
+use wordpress_code_ai\Cache\Cache_Registry;
+use wordpress_code_ai\Cache\Layer_Result;
+use wordpress_code_ai\Cache\Post_Urls;
+use wordpress_code_ai\Cache\Purge_Request;
+use wordpress_code_ai\Cache\Url_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -32,7 +32,7 @@ class Clear_Cache extends Base_Tool {
     const COOLDOWN_SECONDS = 300;
 
     
-    const COOLDOWN_OPTION = 'easy_mcp_ai_cache_site_purge_at';
+    const COOLDOWN_OPTION = 'wordpress_code_ai_cache_site_purge_at';
 
     
     const TIME_BUDGET = 25;
@@ -140,14 +140,14 @@ class Clear_Cache extends Base_Tool {
 
 
     public function describe( array $arguments ) {
-        $text = __( 'Clear every page and asset cache of this site that its cache plugins let you clear.', 'easy-mcp-ai' );
+        $text = __( 'Clear every page and asset cache of this site that its cache plugins let you clear.', 'wordpress-code-ai' );
         if ( self::flag( $arguments, 'include_cdn' ) ) {
-            $text .= ' ' . __( 'Also purge the whole CDN zone (for example Cloudflare), which every visitor then refills from the server.', 'easy-mcp-ai' );
+            $text .= ' ' . __( 'Also purge the whole CDN zone (for example Cloudflare), which every visitor then refills from the server.', 'wordpress-code-ai' );
         }
         if ( self::flag( $arguments, 'include_object_cache' ) ) {
-            $text .= ' ' . __( 'Also flush the object cache (Redis or Memcached), which resets the rate limits and sign-in lockouts of AI connections.', 'easy-mcp-ai' );
+            $text .= ' ' . __( 'Also flush the object cache (Redis or Memcached), which resets the rate limits and sign-in lockouts of AI connections.', 'wordpress-code-ai' );
         }
-        return $text . ' ' . __( 'Visitors refill the caches from the server afterwards; no content or setting is deleted.', 'easy-mcp-ai' );
+        return $text . ' ' . __( 'Visitors refill the caches from the server afterwards; no content or setting is deleted.', 'wordpress-code-ai' );
     }
 
     

@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -36,23 +36,23 @@ class Activator {
             self::set_default_options();
             self::mark_setup_complete();
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_audit_log' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_audit_log' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_audit_log' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_audit_log' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_oauth' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_oauth' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_oauth' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_oauth' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_new_token_meta' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_new_token_meta' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_new_token_meta' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_new_token_meta' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_change_log' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_change_log' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_change_log' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_change_log' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_tasks' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_tasks' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_tasks' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_tasks' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_approvals' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_approvals' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_approvals' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_approvals' );
         }
         
         
@@ -89,23 +89,23 @@ class Activator {
         self::maybe_upgrade_change_log_tables();
         self::maybe_upgrade_tasks_tables();
         self::maybe_upgrade_approvals_tables();
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_audit_log' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_audit_log' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_audit_log' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_audit_log' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_oauth' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_oauth' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_oauth' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_oauth' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_new_token_meta' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_new_token_meta' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_new_token_meta' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_new_token_meta' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_change_log' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_change_log' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_change_log' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_change_log' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_tasks' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_tasks' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_tasks' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_tasks' );
         }
-        if ( ! \wp_next_scheduled( 'easy_mcp_ai_cleanup_approvals' ) ) {
-            \wp_schedule_event( time(), 'daily', 'easy_mcp_ai_cleanup_approvals' );
+        if ( ! \wp_next_scheduled( 'wordpress_code_ai_cleanup_approvals' ) ) {
+            \wp_schedule_event( time(), 'daily', 'wordpress_code_ai_cleanup_approvals' );
         }
     }
 
@@ -165,14 +165,14 @@ class Activator {
 
 
     public static function maybe_upgrade_core_tables() {
-        if ( \get_option( 'easy_mcp_ai_db_version' ) === EASY_MCP_AI_VERSION
-            || ! Schema_Guard::may_retry( 'easy_mcp_ai_db_version', EASY_MCP_AI_VERSION ) ) {
+        if ( \get_option( 'wordpress_code_ai_db_version' ) === WORDPRESS_CODE_AI_VERSION
+            || ! Schema_Guard::may_retry( 'wordpress_code_ai_db_version', WORDPRESS_CODE_AI_VERSION ) ) {
             return;
         }
         
         self::mark_setup_complete();
         self::create_tables();
-        Schema_Guard::settle( 'easy_mcp_ai_db_version', EASY_MCP_AI_VERSION, \get_option( 'easy_mcp_ai_db_version' ) === EASY_MCP_AI_VERSION );
+        Schema_Guard::settle( 'wordpress_code_ai_db_version', WORDPRESS_CODE_AI_VERSION, \get_option( 'wordpress_code_ai_db_version' ) === WORDPRESS_CODE_AI_VERSION );
     }
 
     
@@ -223,8 +223,8 @@ class Activator {
             return;
         }
         $charset_collate = $wpdb->get_charset_collate();
-        $tokens_table = $wpdb->prefix . 'easy_mcp_ai_tokens';
-        $audit_table  = $wpdb->prefix . 'easy_mcp_ai_audit_log';
+        $tokens_table = $wpdb->prefix . 'wordpress_code_ai_tokens';
+        $audit_table  = $wpdb->prefix . 'wordpress_code_ai_audit_log';
 
         
         
@@ -335,7 +335,7 @@ class Activator {
                 return;
             }
         }
-        \update_option( 'easy_mcp_ai_db_version', EASY_MCP_AI_VERSION );
+        \update_option( 'wordpress_code_ai_db_version', WORDPRESS_CODE_AI_VERSION );
     }
 
     
@@ -357,7 +357,7 @@ class Activator {
         if ( ! is_object( $wpdb ) || ! method_exists( $wpdb, 'query' ) || ! method_exists( $wpdb, 'prepare' ) ) {
             return true; 
         }
-        $host_hash = \Easy_MCP_AI\Site_Host::current_hash();
+        $host_hash = \wordpress_code_ai\Site_Host::current_hash();
         if ( '' === $host_hash ) {
             return false; 
         }
@@ -378,8 +378,8 @@ class Activator {
         if ( class_exists( OAuth\OAuth_Site_Move::class ) ) {
             OAuth\OAuth_Site_Move::ensure_recorded();
         }
-        if ( class_exists( \Easy_MCP_AI\OAuth\OAuth_Schema::class ) ) {
-            \Easy_MCP_AI\OAuth\OAuth_Schema::create_tables();
+        if ( class_exists( \wordpress_code_ai\OAuth\OAuth_Schema::class ) ) {
+            \wordpress_code_ai\OAuth\OAuth_Schema::create_tables();
         }
     }
 
@@ -388,8 +388,8 @@ class Activator {
 
 
     private static function maybe_upgrade_oauth_tables() {
-        if ( class_exists( \Easy_MCP_AI\OAuth\OAuth_Schema::class ) ) {
-            \Easy_MCP_AI\OAuth\OAuth_Schema::maybe_upgrade();
+        if ( class_exists( \wordpress_code_ai\OAuth\OAuth_Schema::class ) ) {
+            \wordpress_code_ai\OAuth\OAuth_Schema::maybe_upgrade();
         }
     }
 
@@ -398,7 +398,7 @@ class Activator {
 
 
     private static function create_change_log_tables() {
-        if ( ! class_exists( \Easy_MCP_AI\History\Change_Log_Schema::class ) ) {
+        if ( ! class_exists( \wordpress_code_ai\History\Change_Log_Schema::class ) ) {
             return;
         }
 
@@ -417,13 +417,13 @@ class Activator {
         
         
         
-        \Easy_MCP_AI\History\Change_Log_Schema::maybe_upgrade();
-        \Easy_MCP_AI\History\Change_Log_Schema::create_tables();
+        \wordpress_code_ai\History\Change_Log_Schema::maybe_upgrade();
+        \wordpress_code_ai\History\Change_Log_Schema::create_tables();
 
         
         
-        \add_option( 'easy_mcp_ai_change_log_retention', 30 );
-        \add_option( 'easy_mcp_ai_change_log_enabled', true );
+        \add_option( 'wordpress_code_ai_change_log_retention', 30 );
+        \add_option( 'wordpress_code_ai_change_log_enabled', true );
 
         self::ensure_view_all_history_cap();
     }
@@ -440,8 +440,8 @@ class Activator {
 
     private static function ensure_view_all_history_cap() {
         $admin_role = \get_role( 'administrator' );
-        if ( $admin_role && ! $admin_role->has_cap( 'easy_mcp_ai_view_all_history' ) ) {
-            $admin_role->add_cap( 'easy_mcp_ai_view_all_history' );
+        if ( $admin_role && ! $admin_role->has_cap( 'wordpress_code_ai_view_all_history' ) ) {
+            $admin_role->add_cap( 'wordpress_code_ai_view_all_history' );
         }
     }
 
@@ -451,38 +451,38 @@ class Activator {
 
 
     private static function create_tasks_tables() {
-        if ( ! class_exists( \Easy_MCP_AI\Tasks\Task_Schema::class ) ) {
+        if ( ! class_exists( \wordpress_code_ai\Tasks\Task_Schema::class ) ) {
             return;
         }
-        \Easy_MCP_AI\Tasks\Task_Schema::create_tables();
+        \wordpress_code_ai\Tasks\Task_Schema::create_tables();
     }
 
     private static function maybe_upgrade_tasks_tables() {
-        if ( ! class_exists( \Easy_MCP_AI\Tasks\Task_Schema::class ) ) {
+        if ( ! class_exists( \wordpress_code_ai\Tasks\Task_Schema::class ) ) {
             return;
         }
-        \Easy_MCP_AI\Tasks\Task_Schema::maybe_upgrade();
+        \wordpress_code_ai\Tasks\Task_Schema::maybe_upgrade();
     }
 
     private static function create_approvals_tables() {
-        if ( ! class_exists( \Easy_MCP_AI\Approvals\Approval_Schema::class ) ) {
+        if ( ! class_exists( \wordpress_code_ai\Approvals\Approval_Schema::class ) ) {
             return;
         }
-        \Easy_MCP_AI\Approvals\Approval_Schema::create_tables();
+        \wordpress_code_ai\Approvals\Approval_Schema::create_tables();
     }
 
     private static function maybe_upgrade_approvals_tables() {
-        if ( ! class_exists( \Easy_MCP_AI\Approvals\Approval_Schema::class ) ) {
+        if ( ! class_exists( \wordpress_code_ai\Approvals\Approval_Schema::class ) ) {
             return;
         }
-        \Easy_MCP_AI\Approvals\Approval_Schema::maybe_upgrade();
+        \wordpress_code_ai\Approvals\Approval_Schema::maybe_upgrade();
     }
 
     private static function maybe_upgrade_change_log_tables() {
-        if ( ! class_exists( \Easy_MCP_AI\History\Change_Log_Schema::class ) ) {
+        if ( ! class_exists( \wordpress_code_ai\History\Change_Log_Schema::class ) ) {
             return;
         }
-        \Easy_MCP_AI\History\Change_Log_Schema::maybe_upgrade();
+        \wordpress_code_ai\History\Change_Log_Schema::maybe_upgrade();
         self::ensure_view_all_history_cap();
     }
 
@@ -540,10 +540,10 @@ class Activator {
         
         
         
-        $fresh_abilities = ( false === \get_option( 'easy_mcp_ai_enabled_abilities' ) );
+        $fresh_abilities = ( false === \get_option( 'wordpress_code_ai_enabled_abilities' ) );
         foreach ( $defaults as $key => $value ) {
-            if ( false === \get_option( 'easy_mcp_ai_' . $key ) ) {
-                \add_option( 'easy_mcp_ai_' . $key, $value );
+            if ( false === \get_option( 'wordpress_code_ai_' . $key ) ) {
+                \add_option( 'wordpress_code_ai_' . $key, $value );
             }
         }
         if ( $fresh_abilities ) {

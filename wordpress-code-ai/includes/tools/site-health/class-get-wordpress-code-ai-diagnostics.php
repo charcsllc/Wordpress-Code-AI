@@ -1,10 +1,10 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Health;
+namespace wordpress_code_ai\Tools\Site_Health;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Text_Redactor;
-use Easy_MCP_AI\Diagnostics\Diagnostics;
-use Easy_MCP_AI\Diagnostics\Diagnostic_Result;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Text_Redactor;
+use wordpress_code_ai\Diagnostics\Diagnostics;
+use wordpress_code_ai\Diagnostics\Diagnostic_Result;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -27,14 +27,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 
-class Get_Easy_Mcp_Diagnostics extends Base_Tool {
+class Get_Wordpress_Code_Ai_Diagnostics extends Base_Tool {
 
     public function get_name() {
-        return 'wp_get_easy_mcp_diagnostics';
+        return 'wp_get_wordpress_code_ai_diagnostics';
     }
 
     public function get_description() {
-        return 'Get the Easy MCP AI self-diagnostics report (the Diagnostics card on the plugin dashboard): the plugin\'s own checks of authentication headers, sessions, database tables, tool visibility, plugin conflicts, configuration and environment. By default returns the cached report; `rerun` (default false) runs the full suite first, including the slower checks, exactly like the card\'s Re-run button, and stores the new report. Returns { generated_at (ISO 8601 UTC or null), stale, summary: { total, pass, warn, fail, unknown, deferred }, results: [{ id, status (PASS | WARN | FAIL | UNKNOWN), tier (blocker | warning | info), label, detail, fix, deferred }] }. A blocker-tier fail is what raises the plugin\'s admin banner. Requires manage_options.';
+        return 'Get the wordpress-code-ai self-diagnostics report (the Diagnostics card on the plugin dashboard): the plugin\'s own checks of authentication headers, sessions, database tables, tool visibility, plugin conflicts, configuration and environment. By default returns the cached report; `rerun` (default false) runs the full suite first, including the slower checks, exactly like the card\'s Re-run button, and stores the new report. Returns { generated_at (ISO 8601 UTC or null), stale, summary: { total, pass, warn, fail, unknown, deferred }, results: [{ id, status (PASS | WARN | FAIL | UNKNOWN), tier (blocker | warning | info), label, detail, fix, deferred }] }. A blocker-tier fail is what raises the plugin\'s admin banner. Requires manage_options.';
     }
 
     public function get_category() {
@@ -115,7 +115,7 @@ class Get_Easy_Mcp_Diagnostics extends Base_Tool {
             'results'      => $rows,
         );
         if ( empty( $rows ) ) {
-            $out['note'] = 'No diagnostics report has been generated yet. Call again with rerun=true, or open the Easy MCP AI dashboard in wp-admin.';
+            $out['note'] = 'No diagnostics report has been generated yet. Call again with rerun=true, or open the wordpress-code-ai dashboard in wp-admin.';
         }
         return $out;
     }
@@ -128,6 +128,6 @@ class Get_Easy_Mcp_Diagnostics extends Base_Tool {
 
 
     protected function live_tool_registry() {
-        return class_exists( '\\Easy_MCP_AI\\Plugin' ) ? \Easy_MCP_AI\Plugin::instance()->get_tool_registry() : null;
+        return class_exists( '\\wordpress_code_ai\\Plugin' ) ? \wordpress_code_ai\Plugin::instance()->get_tool_registry() : null;
     }
 }

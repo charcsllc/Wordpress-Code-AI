@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Auth;
+namespace wordpress_code_ai\Auth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -15,14 +15,14 @@ class Token_Auth {
     public function authenticate( \WP_REST_Request $request ) {
         $auth_header = $request->get_header( 'authorization' );
         if ( empty( $auth_header ) ) {
-            return new \WP_Error( 'no_auth', __( 'Missing Authorization header.', 'easy-mcp-ai' ) );
+            return new \WP_Error( 'no_auth', __( 'Missing Authorization header.', 'wordpress-code-ai' ) );
         }
         if ( 0 !== stripos( $auth_header, 'Bearer ' ) ) {
-            return new \WP_Error( 'invalid_auth', __( 'Authorization header must use Bearer scheme.', 'easy-mcp-ai' ) );
+            return new \WP_Error( 'invalid_auth', __( 'Authorization header must use Bearer scheme.', 'wordpress-code-ai' ) );
         }
         $raw_token = substr( $auth_header, 7 );
         if ( empty( $raw_token ) ) {
-            return new \WP_Error( 'empty_token', __( 'Bearer token is empty.', 'easy-mcp-ai' ) );
+            return new \WP_Error( 'empty_token', __( 'Bearer token is empty.', 'wordpress-code-ai' ) );
         }
         $token = $this->token_manager->validate_token( $raw_token );
         if ( false === $token ) {
@@ -34,7 +34,7 @@ class Token_Auth {
             if ( \is_wp_error( $reason ) && Token_Manager::ERROR_SITE_MISMATCH === $reason->get_error_code() ) {
                 return $reason;
             }
-            return new \WP_Error( 'invalid_token', __( 'Invalid or expired token.', 'easy-mcp-ai' ) );
+            return new \WP_Error( 'invalid_token', __( 'Invalid or expired token.', 'wordpress-code-ai' ) );
         }
         
         
@@ -75,7 +75,7 @@ class Token_Auth {
     }
 
     private function is_ip_allowed( $ip = null ) {
-        $whitelist_raw = \Easy_MCP_AI\Config::get( 'easy_mcp_ai_ip_whitelist', '' );
+        $whitelist_raw = \wordpress_code_ai\Config::get( 'wordpress_code_ai_ip_whitelist', '' );
         if ( empty( trim( $whitelist_raw ) ) ) {
             return true; 
         }
@@ -83,19 +83,19 @@ class Token_Auth {
         
         
         $cache_key = 'ip_wl_' . substr( md5( $whitelist_raw ), 0, 12 );
-        $entries   = \wp_cache_get( $cache_key, 'easy_mcp_ai' );
+        $entries   = \wp_cache_get( $cache_key, 'wordpress_code_ai' );
         if ( false === $entries ) {
             $entries = array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', $whitelist_raw ) ) );
-            \wp_cache_set( $cache_key, $entries, 'easy_mcp_ai', 300 );
+            \wp_cache_set( $cache_key, $entries, 'wordpress_code_ai', 300 );
         }
         if ( null === $ip ) {
-            $ip = (string) \Easy_MCP_AI\Client_IP::get();
+            $ip = (string) \wordpress_code_ai\Client_IP::get();
         }
         
         
         
         
         
-        return \Easy_MCP_AI\Client_IP::matches_any( (string) $ip, $entries );
+        return \wordpress_code_ai\Client_IP::matches_any( (string) $ip, $entries );
     }
 }

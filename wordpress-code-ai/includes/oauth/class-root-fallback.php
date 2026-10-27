@@ -29,7 +29,7 @@
 
 
 
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -38,10 +38,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Root_Fallback {
 
     
-    const STATE_OPTION = 'easy_mcp_ai_oauth_root_discovery';
+    const STATE_OPTION = 'wordpress_code_ai_oauth_root_discovery';
 
     
-    const FILTER = 'easy_mcp_ai_oauth_root_fallback';
+    const FILTER = 'wordpress_code_ai_oauth_root_fallback';
 
     
     const GRANT_TYPES = array(
@@ -64,7 +64,7 @@ class Root_Fallback {
 
 
     public static function mode(): string {
-        $mode = \Easy_MCP_AI\Config::get( 'oauth_root_fallback' );
+        $mode = \wordpress_code_ai\Config::get( 'oauth_root_fallback' );
         $mode = \apply_filters( self::FILTER, $mode );
         return in_array( $mode, array( 'auto', 'on', 'off' ), true ) ? $mode : 'auto';
     }
@@ -147,7 +147,7 @@ class Root_Fallback {
 
 
     public static function endpoint_for( $method, $path, array $query, array $body, $content_type, $home_path = '' ): ?string {
-        $path = \Easy_MCP_AI\Plugin::strip_home_path( (string) $path, (string) $home_path );
+        $path = \wordpress_code_ai\Plugin::strip_home_path( (string) $path, (string) $home_path );
         if ( ! isset( self::ENDPOINT_METHODS[ $path ] ) || strtoupper( (string) $method ) !== self::ENDPOINT_METHODS[ $path ] ) {
             return null;
         }
@@ -270,7 +270,7 @@ class Root_Fallback {
         }
 
         $request   = self::read_request();
-        $home_path = \Easy_MCP_AI\Plugin::home_path();
+        $home_path = \wordpress_code_ai\Plugin::home_path();
         $endpoint  = self::endpoint_for( $request['method'], $path, $request['query'], $request['body'], $request['content_type'], $home_path );
         if ( null === $endpoint ) {
             return;
@@ -283,10 +283,10 @@ class Root_Fallback {
         if ( 'authorize' === $endpoint ) {
             
             
-            \Easy_MCP_AI\Plugin::instance()->serve_oauth_authorize( 'none' );
+            \wordpress_code_ai\Plugin::instance()->serve_oauth_authorize( 'none' );
             return;
         }
-        $wp->query_vars['rest_route'] = '/easy-mcp-ai/v1/oauth/' . $endpoint;
+        $wp->query_vars['rest_route'] = '/wordpress-code-ai/v1/oauth/' . $endpoint;
     }
 
     
@@ -301,7 +301,7 @@ class Root_Fallback {
         if ( ! preg_match( '#/(authorize|register|token)/?$#', $path ) ) {
             return false;
         }
-        if ( ! \apply_filters( 'easy_mcp_ai_oauth_enabled', \Easy_MCP_AI\Config::get( 'oauth_enabled' ) ) ) {
+        if ( ! \apply_filters( 'wordpress_code_ai_oauth_enabled', \wordpress_code_ai\Config::get( 'oauth_enabled' ) ) ) {
             return false;
         }
         if ( ! self::is_armed() ) {

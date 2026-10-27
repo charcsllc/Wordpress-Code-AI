@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GA;
+namespace wordpress_code_ai\Tools\GA;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GA\GA_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GA\GA_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -13,7 +13,7 @@ class Run_Pivot_Report extends Base_Tool {
     public function get_name() { return 'wp_ga_run_pivot_report'; }
 
     public function get_description() {
-        return 'Runs a pivot-table Analytics report. Example: countries down the rows and devices across the columns, with sessions in each cell. Provide pivots in Google-native shape — array of {fieldNames[], orderBys[], offset, limit, metricAggregations[]}. Requires a Google service-account credential configured under Easy MCP AI → Tools → External data.';
+        return 'Runs a pivot-table Analytics report. Example: countries down the rows and devices across the columns, with sessions in each cell. Provide pivots in Google-native shape — array of {fieldNames[], orderBys[], offset, limit, metricAggregations[]}. Requires a Google service-account credential configured under wordpress-code-ai → Tools → External data.';
     }
 
     public function get_category() { return 'ga'; }

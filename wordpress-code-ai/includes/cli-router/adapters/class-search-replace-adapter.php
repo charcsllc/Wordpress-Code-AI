@@ -1,13 +1,13 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Handlers\Db_Handler;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Tabular;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Handlers\Db_Handler;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Tabular;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -59,7 +59,7 @@ class Search_Replace_Adapter extends Command_Handler {
     const TOOL = 'wp_privileged_search_replace_run';
 
     
-    const PLUGIN_MARK = 'easy_mcp_ai_';
+    const PLUGIN_MARK = 'wordpress_code_ai_';
 
     
     const LOG_PREFIXES = array( '< ', '> ' );

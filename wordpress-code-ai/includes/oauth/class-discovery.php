@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -20,7 +20,7 @@ class Discovery {
 
 
 
-    const NAMESPACE_V1 = 'easy-mcp-ai/v1';
+    const NAMESPACE_V1 = 'wordpress-code-ai/v1';
 
     
 
@@ -65,7 +65,7 @@ class Discovery {
     public static function authorization_endpoint( string $variant = self::ISSUER_SITE ): string {
         $structure = (string) get_option( 'permalink_structure' );
         $prefix    = ( '' !== $structure && 0 !== strpos( ltrim( $structure, '/' ), 'index.php' ) ) ? '' : '/index.php';
-        return home_url( $prefix . '/easy-mcp-ai/authorize' . ( self::ISSUER_RESOURCE === $variant ? '/resource' : '' ) );
+        return home_url( $prefix . '/wordpress-code-ai/authorize' . ( self::ISSUER_RESOURCE === $variant ? '/resource' : '' ) );
     }
 
     
@@ -294,7 +294,7 @@ class Discovery {
     private static function not_available(): \WP_Error {
         return new \WP_Error(
             'rest_no_route',
-            __( 'No discovery document is served at this address on this site.', 'easy-mcp-ai' ),
+            __( 'No discovery document is served at this address on this site.', 'wordpress-code-ai' ),
             array( 'status' => 404 )
         );
     }
@@ -314,7 +314,7 @@ class Discovery {
         }
         return new \WP_Error(
             'oauth_requires_https',
-            __( 'OAuth metadata endpoints require HTTPS.', 'easy-mcp-ai' ),
+            __( 'OAuth metadata endpoints require HTTPS.', 'wordpress-code-ai' ),
             array( 'status' => 403 )
         );
     }

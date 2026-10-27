@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Posts;
+namespace wordpress_code_ai\Tools\Posts;
 
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Post_Type_Rest_Base;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Post_Type_Rest_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -240,10 +240,10 @@ class Duplicate_Post extends Base_Tool {
 
 
     protected function caller_may_create_custom_items(): ?bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\MCP\\Server' ) ) {
             return null;
         }
-        return \Easy_MCP_AI\MCP\Server::current_call_may_use( 'wp_create_cpt_item' );
+        return \wordpress_code_ai\MCP\Server::current_call_may_use( 'wp_create_cpt_item' );
     }
 
     
@@ -268,7 +268,7 @@ class Duplicate_Post extends Base_Tool {
         $shown = array();
         foreach ( $failed as $entry ) {
             $candidate = array_merge( $shown, array( $entry ) );
-            if ( strlen( \Easy_MCP_AI\MCP\Server::sanitize_error_message( $head . $list( $candidate ) . $tail, PHP_INT_MAX ) ) > Detailed_Tool_Error::MAX_DETAILS ) {
+            if ( strlen( \wordpress_code_ai\MCP\Server::sanitize_error_message( $head . $list( $candidate ) . $tail, PHP_INT_MAX ) ) > Detailed_Tool_Error::MAX_DETAILS ) {
                 break;
             }
             $shown = $candidate;

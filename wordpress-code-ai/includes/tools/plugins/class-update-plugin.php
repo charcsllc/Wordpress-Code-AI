@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Plugins;
+namespace wordpress_code_ai\Tools\Plugins;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -23,7 +23,7 @@ class Update_Plugin extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Updates one installed plugin to its available new version, exactly as the "Update now" link on the Plugins screen does (download, replace files, the plugin keeps its active state). Required: `plugin` (e.g. "akismet/akismet.php" — the `plugin` field from wp_list_plugin_updates). Optional: `version` — install that exact wordpress.org version instead (a downgrade is allowed; "dev" is the development version), as `wp plugin update --version` does; it needs the install_plugins capability as well and works only for a plugin wordpress.org\'s update data identifies as its own; refused when the plugin is already at that version or wordpress.org does not list it. Returns { plugin, name, old_version, new_version, active (whether it is active after the update), network_active, messages (the upgrader log, last 20 lines, with every URL cut to its host because package URLs can carry licence keys) }. Check wp_list_plugin_updates first: without `version`, refused when no update is available. Also refused when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress would need FTP/SSH credentials to write the files, for Easy MCP AI itself, and on multisite unless you are a super admin with manage_network_plugins. The update runs within this request and can take a minute; while an active plugin is being replaced WordPress puts the site in maintenance mode.';
+        return 'Updates one installed plugin to its available new version, exactly as the "Update now" link on the Plugins screen does (download, replace files, the plugin keeps its active state). Required: `plugin` (e.g. "akismet/akismet.php" — the `plugin` field from wp_list_plugin_updates). Optional: `version` — install that exact wordpress.org version instead (a downgrade is allowed; "dev" is the development version), as `wp plugin update --version` does; it needs the install_plugins capability as well and works only for a plugin wordpress.org\'s update data identifies as its own; refused when the plugin is already at that version or wordpress.org does not list it. Returns { plugin, name, old_version, new_version, active (whether it is active after the update), network_active, messages (the upgrader log, last 20 lines, with every URL cut to its host because package URLs can carry licence keys) }. Check wp_list_plugin_updates first: without `version`, refused when no update is available. Also refused when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress would need FTP/SSH credentials to write the files, for wordpress-code-ai itself, and on multisite unless you are a super admin with manage_network_plugins. The update runs within this request and can take a minute; while an active plugin is being replaced WordPress puts the site in maintenance mode.';
     }
 
     public function get_category() {
@@ -182,7 +182,7 @@ class Update_Plugin extends Base_Tool {
         $this->assert_network_update_allowed( 'manage_network_plugins' );
 
         if ( $this->is_own_plugin( $plugin ) ) {
-            throw new \RuntimeException( 'Easy MCP AI cannot update itself over MCP: replacing its files mid-request would cut off this connection. Update it from wp-admin → Plugins or Dashboard → Updates.' );
+            throw new \RuntimeException( 'wordpress-code-ai cannot update itself over MCP: replacing its files mid-request would cut off this connection. Update it from wp-admin → Plugins or Dashboard → Updates.' );
         }
     }
 

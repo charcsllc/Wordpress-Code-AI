@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Tools\Cli;
+namespace wordpress_code_ai\Tools\Cli;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Cli_Router\Router;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Output;
-use Easy_MCP_AI\Cli_Router\Redactor;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Cli_Router\Router;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Output;
+use wordpress_code_ai\Cli_Router\Redactor;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -176,15 +176,15 @@ class Cli_Run extends Base_Tool {
 
 
     public function approval_refusal( array $arguments ): ?string {
-        $length = \Easy_MCP_AI\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
+        $length = \wordpress_code_ai\Approvals\Approval_Gate::preview_overflow( (string) $this->describe( $arguments ) );
         if ( null === $length ) {
             return null;
         }
         return sprintf(
             /* translators: 1: preview length, 2: the most the approval page shows */
-            __( 'This command\'s approval preview is %1$d characters long and the approval page shows %2$d, so it was not sent for approval: a person must see every write they approve. Run it for fewer targets at a time.', 'easy-mcp-ai' ),
+            __( 'This command\'s approval preview is %1$d characters long and the approval page shows %2$d, so it was not sent for approval: a person must see every write they approve. Run it for fewer targets at a time.', 'wordpress-code-ai' ),
             $length,
-            \Easy_MCP_AI\Approvals\Approval_Gate::PREVIEW_MAX
+            \wordpress_code_ai\Approvals\Approval_Gate::PREVIEW_MAX
         );
     }
 
@@ -208,7 +208,7 @@ class Cli_Run extends Base_Tool {
         
         
         
-        $redeemed = 'redeem' === \Easy_MCP_AI\MCP\Server::current_call_approval_kind();
+        $redeemed = 'redeem' === \wordpress_code_ai\MCP\Server::current_call_approval_kind();
         $ctx      = new Context(
             new Output(),
             $this->dispatcher,
@@ -221,7 +221,7 @@ class Cli_Run extends Base_Tool {
     
 
 
-    private static function classify( array $arguments ): \Easy_MCP_AI\Cli_Router\Classification {
+    private static function classify( array $arguments ): \wordpress_code_ai\Cli_Router\Classification {
         return Router::classify( isset( $arguments['command'] ) && is_string( $arguments['command'] ) ? $arguments['command'] : '' );
     }
 }

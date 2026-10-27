@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Resources;
+namespace wordpress_code_ai\Resources;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -82,23 +82,23 @@ class Resource_Registry {
     public function auto_discover() {
         $resource_classes = array(
             
-            'Easy_MCP_AI\\Resources\\Site_Info_Resource',
-            'Easy_MCP_AI\\Resources\\Recent_Posts_Resource',
-            'Easy_MCP_AI\\Resources\\Site_Stats_Resource',
+            'wordpress_code_ai\\Resources\\Site_Info_Resource',
+            'wordpress_code_ai\\Resources\\Recent_Posts_Resource',
+            'wordpress_code_ai\\Resources\\Site_Stats_Resource',
             
-            'Easy_MCP_AI\\Resources\\Reading_Settings_Resource',
-            'Easy_MCP_AI\\Resources\\Discussion_Settings_Resource',
-            'Easy_MCP_AI\\Resources\\Active_Plugins_Resource',
-            'Easy_MCP_AI\\Resources\\Post_Types_Resource',
-            'Easy_MCP_AI\\Resources\\Taxonomies_Resource',
-            'Easy_MCP_AI\\Resources\\Authors_Resource',
-            'Easy_MCP_AI\\Resources\\Theme_Templates_Resource',
-            'Easy_MCP_AI\\Resources\\Menus_Resource',
-            'Easy_MCP_AI\\Resources\\Draft_Posts_Resource',
-            'Easy_MCP_AI\\Resources\\Scheduled_Posts_Resource',
-            'Easy_MCP_AI\\Resources\\Recent_Media_Resource',
+            'wordpress_code_ai\\Resources\\Reading_Settings_Resource',
+            'wordpress_code_ai\\Resources\\Discussion_Settings_Resource',
+            'wordpress_code_ai\\Resources\\Active_Plugins_Resource',
+            'wordpress_code_ai\\Resources\\Post_Types_Resource',
+            'wordpress_code_ai\\Resources\\Taxonomies_Resource',
+            'wordpress_code_ai\\Resources\\Authors_Resource',
+            'wordpress_code_ai\\Resources\\Theme_Templates_Resource',
+            'wordpress_code_ai\\Resources\\Menus_Resource',
+            'wordpress_code_ai\\Resources\\Draft_Posts_Resource',
+            'wordpress_code_ai\\Resources\\Scheduled_Posts_Resource',
+            'wordpress_code_ai\\Resources\\Recent_Media_Resource',
             
-            'Easy_MCP_AI\\Resources\\Approval_Card_Resource',
+            'wordpress_code_ai\\Resources\\Approval_Card_Resource',
         );
         foreach ( $resource_classes as $class ) {
             if ( class_exists( $class ) ) {

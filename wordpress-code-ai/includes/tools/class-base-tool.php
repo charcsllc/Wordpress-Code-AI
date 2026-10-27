@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -329,7 +329,7 @@ abstract class Base_Tool {
             $value = isset( $value['rendered'] ) ? $value['rendered'] : ( isset( $value['raw'] ) ? $value['raw'] : '' );
         }
         $value = trim( \wp_strip_all_tags( (string) $value ) );
-        return '' === $value ? __( '(no title)', 'easy-mcp-ai' ) : $value;
+        return '' === $value ? __( '(no title)', 'wordpress-code-ai' ) : $value;
     }
 
     
@@ -389,10 +389,10 @@ abstract class Base_Tool {
 
 
     public function get_ui_meta() {
-        if ( ! \Easy_MCP_AI\Config::get( 'approval_required' ) || ! \Easy_MCP_AI\Approvals\Approval_Gate::is_destructive_by_annotation( $this ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'approval_required' ) || ! \wordpress_code_ai\Approvals\Approval_Gate::is_destructive_by_annotation( $this ) ) {
             return array();
         }
-        return array( 'resourceUri' => 'ui://easy-mcp-ai/approval' );
+        return array( 'resourceUri' => 'ui://wordpress-code-ai/approval' );
     }
 
     
@@ -512,7 +512,7 @@ abstract class Base_Tool {
         if ( null === $title ) {
             return;
         }
-        $max = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_max_title_length', 0 );
+        $max = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_max_title_length', 0 );
         if ( $max > 0 && mb_strlen( $title ) > $max ) {
             throw new \InvalidArgumentException(
                 sprintf( 'Title exceeds maximum allowed length of %d characters.', $max ) // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
@@ -526,7 +526,7 @@ abstract class Base_Tool {
 
 
     protected function maybe_force_draft( array &$params ) {
-        if ( \Easy_MCP_AI\Config::get( 'easy_mcp_ai_force_draft_on_create', false ) ) {
+        if ( \wordpress_code_ai\Config::get( 'wordpress_code_ai_force_draft_on_create', false ) ) {
             $params['status'] = 'draft';
         }
     }
@@ -732,7 +732,7 @@ abstract class Base_Tool {
         if ( ! is_object( $post ) || ! current_user_can( 'edit_post', $post_id ) ) {
             return;
         }
-        $adapter = \Easy_MCP_AI\Builders\Builder_Registry::for_post( $post );
+        $adapter = \wordpress_code_ai\Builders\Builder_Registry::for_post( $post );
         if ( null === $adapter ) {
             return;
         }
@@ -1312,7 +1312,7 @@ abstract class Base_Tool {
 
 
 
-        do_action( 'easy_mcp_ai_post_changed', $post_id, $context );
+        do_action( 'wordpress_code_ai_post_changed', $post_id, $context );
     }
 
     
@@ -1336,7 +1336,7 @@ abstract class Base_Tool {
 
 
 
-        do_action( 'easy_mcp_ai_clear_page_cache', $post_ids, $urls );
+        do_action( 'wordpress_code_ai_clear_page_cache', $post_ids, $urls );
     }
 
     
@@ -1564,8 +1564,8 @@ abstract class Base_Tool {
             implode( ', ', $ignored )
         );
         $explained = array();
-        if ( class_exists( '\\Easy_MCP_AI\\Meta\\Meta_Exposure' ) ) {
-            $explained = \Easy_MCP_AI\Meta\Meta_Exposure::explain_ignored_keys( $ignored );
+        if ( class_exists( '\\wordpress_code_ai\\Meta\\Meta_Exposure' ) ) {
+            $explained = \wordpress_code_ai\Meta\Meta_Exposure::explain_ignored_keys( $ignored );
             if ( ! empty( $explained ) ) {
                 $notice .= ' ' . implode( ' ', array_values( $explained ) );
             }
@@ -1700,7 +1700,7 @@ abstract class Base_Tool {
 
 
     protected function require_compat_shim( string $id, array $arguments ): void {
-        $registry = '\\Easy_MCP_AI\\Compat\\Compat_Registry';
+        $registry = '\\wordpress_code_ai\\Compat\\Compat_Registry';
         if ( class_exists( $registry ) && $registry::is_armed( $id, $this, $arguments ) ) {
             return;
         }
@@ -1779,7 +1779,7 @@ abstract class Base_Tool {
             }
         }
         $label = function_exists( 'mb_substr' ) ? mb_substr( $name, 0, self::EXISTING_TITLE_LABEL_LENGTH ) : substr( $name, 0, self::EXISTING_TITLE_LABEL_LENGTH );
-        throw new \Easy_MCP_AI\MCP\Detailed_Tool_Error( // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+        throw new \wordpress_code_ai\MCP\Detailed_Tool_Error( // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
             sprintf( '%1$s "%2$s" already exists (ID %3$d). Nothing was changed.', ucfirst( $noun ), $label, $id ),
             sprintf(
                 'Existing %1$s %2$d%3$s. %4$s To create a second %1$s with the same name anyway, call this tool again with `allow_duplicate` set to true. Use `%5$s` with `search` to see every match.',
@@ -1840,7 +1840,7 @@ abstract class Base_Tool {
 
 
     protected static function response_noise_keys(): array {
-        $keys = apply_filters( 'easy_mcp_ai_response_noise_keys', self::RESPONSE_NOISE_KEYS );
+        $keys = apply_filters( 'wordpress_code_ai_response_noise_keys', self::RESPONSE_NOISE_KEYS );
         if ( ! is_array( $keys ) ) {
             return self::RESPONSE_NOISE_KEYS;
         }

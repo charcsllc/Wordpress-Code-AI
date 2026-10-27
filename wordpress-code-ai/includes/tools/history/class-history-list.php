@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\History;
+namespace wordpress_code_ai\Tools\History;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\History\Change_Log_Repository;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\History\Change_Log_Repository;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -22,7 +22,7 @@ class History_List extends Base_Tool {
 
     public function get_name() { return 'wp_history_list'; }
     public function get_description() {
-        return 'List change-history entries for write operations performed via MCP. Filter by object, tool, user, or date range. Returns summaries only — call wp_history_get to see before/after payloads. Each item names its object in `object_title` (post or product title, term name, user display name; null when the object is gone, when you may not read it, or when more than five inherit attachments that each have a parent run in a row starting with it, following post_parent, or they loop (a cycle); callers with `easy_mcp_ai_view_all_history` are not refused for any reason but a gone object) and its user in `user_login`. Non-admin callers (without the `easy_mcp_ai_view_all_history` capability) cannot view other users\' history: any `wp_user_id` filter they pass is silently overridden and pinned to their own user ID, with no error or notice.';
+        return 'List change-history entries for write operations performed via MCP. Filter by object, tool, user, or date range. Returns summaries only — call wp_history_get to see before/after payloads. Each item names its object in `object_title` (post or product title, term name, user display name; null when the object is gone, when you may not read it, or when more than five inherit attachments that each have a parent run in a row starting with it, following post_parent, or they loop (a cycle); callers with `wordpress_code_ai_view_all_history` are not refused for any reason but a gone object) and its user in `user_login`. Non-admin callers (without the `wordpress_code_ai_view_all_history` capability) cannot view other users\' history: any `wp_user_id` filter they pass is silently overridden and pinned to their own user ID, with no error or notice.';
     }
     public function get_category() { return 'history'; }
     public function get_required_capability() { return 'read'; }
@@ -68,13 +68,13 @@ class History_List extends Base_Tool {
         
         
         
-        $can_view_all = \current_user_can( 'easy_mcp_ai_view_all_history' );
+        $can_view_all = \current_user_can( 'wordpress_code_ai_view_all_history' );
         $self_scope   = $can_view_all
             ? array()
             : array( 'wp_user_id' => (int) \get_current_user_id() );
 
         $extra_filters = \apply_filters(
-            'easy_mcp_ai_history_query_scope',
+            'wordpress_code_ai_history_query_scope',
             array(),
             $args,
             (int) \get_current_user_id(),
@@ -108,7 +108,7 @@ class History_List extends Base_Tool {
         
         
         
-        $list_columns = \Easy_MCP_AI\History\Change_Log_Repository::list_columns();
+        $list_columns = \wordpress_code_ai\History\Change_Log_Repository::list_columns();
         $rows = ( new Change_Log_Repository() )->query(
             array_merge( $filters, (array) $extra_filters, $self_scope ),
             $limit,

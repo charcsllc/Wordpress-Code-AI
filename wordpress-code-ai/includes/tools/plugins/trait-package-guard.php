@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -446,13 +446,13 @@ trait Package_Guard {
 
 
     protected function refuse_own_plugin_files( string $plugin, string $why ): void {
-        $own = defined( 'EASY_MCP_AI_PLUGIN_BASENAME' ) ? (string) EASY_MCP_AI_PLUGIN_BASENAME : '';
+        $own = defined( 'WORDPRESS_CODE_AI_PLUGIN_BASENAME' ) ? (string) WORDPRESS_CODE_AI_PLUGIN_BASENAME : '';
         if ( '' === $own ) {
             return;
         }
         $same_folder = false !== strpos( $own, '/' ) && false !== strpos( $plugin, '/' ) && dirname( $own ) === dirname( $plugin );
         if ( $plugin === $own || $same_folder ) {
-            throw new \RuntimeException( sprintf( 'Refused: %s is Easy MCP AI\'s own %s, and %s. Use wp-admin → Plugins instead.', $plugin, $plugin === $own ? 'plugin file' : 'folder', $why ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+            throw new \RuntimeException( sprintf( 'Refused: %s is wordpress-code-ai\'s own %s, and %s. Use wp-admin → Plugins instead.', $plugin, $plugin === $own ? 'plugin file' : 'folder', $why ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
         }
     }
 

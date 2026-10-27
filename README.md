@@ -1,16 +1,15 @@
-# Wordpress-Code-AI
+# wordpress-code-ai
 
 > Connect Claude, ChatGPT, Cursor, Gemini, n8n, and any MCP-compatible AI to your WordPress site. Manage your entire site by chat — content, media, SEO, analytics, WooCommerce, and more. **214 tools. 14 resources. Free.**
 
-**Plugin page:** https://github.com/charcsllc/Wordpress-Code-AI  
-**WordPress.org:** https://wordpress.org/plugins/wordpress-code-ai/  
+**Plugin page:** https://github.com/charcsllc/wordpress-code-ai  
 **License:** GPL-2.0-or-later  
 **Requires:** WordPress 6.0+, PHP 7.4+
 
 ---
 
-> **This is the setup and integration documentation only.**
-> For installation, download the plugin directly from the [WordPress.org plugin directory](https://wordpress.org/plugins/wordpress-code-ai/). The full plugin source code is available via the [WordPress.org SVN repository](https://plugins.svn.wordpress.org/wordpress-code-ai/).
+> **The plugin is in this repository.**
+> The plugin code is in the [`wordpress-code-ai/`](wordpress-code-ai/) folder, and [`wordpress-code-ai.zip`](wordpress-code-ai.zip) is the ready-to-install package.
 
 ---
 
@@ -33,13 +32,14 @@
 - [Resources](#resources-16)
 - [Skills](#skills)
 - [Security](#security)
+- [Credits](#credits)
 - [License](#license)
 
 ---
 
 ## What This Is
 
-Wordpress-Code-AI exposes your WordPress site as a **remote MCP server** over HTTPS. Any MCP-compatible AI client — assistant or autonomous agent — connects directly to your site and gets scoped, capability-checked access to content, media, users, SEO data, analytics, and WooCommerce — all over the Model Context Protocol.
+wordpress-code-ai exposes your WordPress site as a **remote MCP server** over HTTPS. Any MCP-compatible AI client — assistant or autonomous agent — connects directly to your site and gets scoped, capability-checked access to content, media, users, SEO data, analytics, and WooCommerce — all over the Model Context Protocol.
 
 Install the plugin, generate a token, paste your endpoint URL into your AI client. Nothing else runs on your server. No Node.js, no proxy, no sidecar process.
 
@@ -47,17 +47,16 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 
 ## Installation
 
-### Method 1 — WordPress.org (Recommended)
+### Method 1 — ZIP Upload (Recommended)
 
-1. Go to **Plugins → Add New** in your WordPress admin.
-2. Search for **Wordpress-Code-AI**.
-3. Click **Install Now**, then **Activate**.
-
-### Method 2 — Manual ZIP Upload
-
-1. Download `wordpress-code-ai.zip` from https://wordpress.org/plugins/wordpress-code-ai/
-2. Go to **Plugins → Add New → Upload Plugin**.
+1. Download [`wordpress-code-ai.zip`](wordpress-code-ai.zip) from this repository (open the file on GitHub and click **Download raw file**).
+2. Go to **Plugins → Add New Plugin → Upload Plugin** in your WordPress admin.
 3. Upload the ZIP and click **Install Now**, then **Activate**.
+
+### Method 2 — Manual Copy
+
+1. Copy the [`wordpress-code-ai/`](wordpress-code-ai/) folder into `wp-content/plugins/` on your server.
+2. Go to **Plugins** in your WordPress admin and click **Activate** under **wordpress-code-ai**.
 
 ---
 
@@ -65,7 +64,7 @@ Install the plugin, generate a token, paste your endpoint URL into your AI clien
 
 ### Step 1 — Find Your Endpoint URL
 
-After activation, go to **Wordpress-Code-AI → Dashboard** in your WordPress admin. Your MCP endpoint is shown there:
+After activation, go to **wordpress-code-ai → Dashboard** in your WordPress admin. Your MCP endpoint is shown there:
 
 ```
 https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp
@@ -83,13 +82,13 @@ Use this if your AI client supports OAuth (Claude Desktop, Claude.ai, Cursor, Ch
 4. Log in to WordPress, review the permission scopes, click **Approve**.
 5. Done — the client receives a short-lived token that refreshes automatically.
 
-Manage or revoke connected clients anytime under **Wordpress-Code-AI → API Tokens & OAuth → OAuth** tab.
+Manage or revoke connected clients anytime under **wordpress-code-ai → Connections**, on the OAuth tab.
 
 **Path B — Manual Token (Bearer)**
 
 Use this if your client does not support OAuth (Claude Code CLI, Windsurf, Cline, Roo Code, n8n, Gemini CLI, Manus).
 
-1. Go to **Wordpress-Code-AI → API Tokens** in your WordPress admin.
+1. Go to **wordpress-code-ai → Connections → API tokens** in your WordPress admin.
 2. Click **Create New Token**.
 3. Set a name (e.g. `Cursor — My Mac`).
 4. Choose the WordPress user whose capabilities the token inherits (Administrator = full access).
@@ -633,10 +632,16 @@ The `skills/wordpress-site-manager.md` file contains a ready-to-use Claude skill
 - **WordPress capability gate:** Each tool declares a minimum WordPress capability; the plugin verifies it against the user bound to the token before executing anything.
 - **Scoped access:** Tokens can be locked to a subset of tools via glob patterns (e.g. `wp_list_*`, `wp_get_*`), so a read-only AI client can never trigger writes.
 - **Rate limiting:** Configurable per-token call rate (default 60/minute).
-- **Audit log:** A timestamped record of every tool call — arguments, result, token used, and client IP — is kept under **Wordpress-Code-AI → Audit Log**.
+- **Audit log:** A timestamped record of every tool call — arguments, result, token used, and client IP — is kept under **wordpress-code-ai → Activity**.
 - **Change snapshots:** Write operations store before/after JSON payloads, queryable later via the `wp_history_*` tools.
 - **OAuth 2.1:** Full PKCE S256 flow with rotating refresh tokens, per-scope consent, and RFC 7009 token revocation.
 - **Force Draft:** A global switch that pins all AI-created content to `draft` status, regardless of what the AI requests.
+
+---
+
+## Credits
+
+wordpress-code-ai is a modified version of [Easy MCP AI](https://easymcpai.com) 2.3.0 by EasyMCPAI, used under the GNU General Public License v2 or later. Changes: the plugin is renamed and the bundled Themeisle SDK is removed.
 
 ---
 

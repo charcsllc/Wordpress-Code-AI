@@ -1,10 +1,10 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Ids;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Ids;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Meta_Command;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -45,7 +45,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Term_Meta_Handler extends Meta_Command {
 
-    use \Easy_MCP_AI\Tools\Taxonomy\Term_Meta_Auth_Guard;
+    use \wordpress_code_ai\Tools\Taxonomy\Term_Meta_Auth_Guard;
 
     
     protected $meta_type = 'term';
@@ -182,7 +182,7 @@ final class Term_Meta_Handler extends Meta_Command {
             return sprintf( self::YOAST, $key );
         }
         if ( function_exists( 'apply_filters' ) ) {
-            foreach ( (array) \apply_filters( 'easy_mcp_ai_term_meta_blocked_key_patterns', array() ) as $pattern ) {
+            foreach ( (array) \apply_filters( 'wordpress_code_ai_term_meta_blocked_key_patterns', array() ) as $pattern ) {
                 if ( is_string( $pattern ) && '' !== $pattern && fnmatch( $pattern, $key ) ) {
                     return self::BLOCKED;
                 }

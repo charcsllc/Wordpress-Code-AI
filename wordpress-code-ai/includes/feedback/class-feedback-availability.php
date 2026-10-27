@@ -1,10 +1,10 @@
 <?php
-namespace Easy_MCP_AI\Feedback;
+namespace wordpress_code_ai\Feedback;
 
-use Easy_MCP_AI\MCP\Detailed_Tool_Error;
-use Easy_MCP_AI\Tools\Switched_Off_Inventory;
-use Easy_MCP_AI\MCP\Tool_Status;
-use Easy_MCP_AI\Tools\Tool_State;
+use wordpress_code_ai\MCP\Detailed_Tool_Error;
+use wordpress_code_ai\Tools\Switched_Off_Inventory;
+use wordpress_code_ai\MCP\Tool_Status;
+use wordpress_code_ai\Tools\Tool_State;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -151,7 +151,7 @@ class Feedback_Availability {
                     continue;
                 }
                 $tool   = $registry->get_tool( $name );
-                $status = Tool_Status::off( $name, $tool instanceof \Easy_MCP_AI\Tools\Base_Tool && $tool->is_disabled_by_default() );
+                $status = Tool_Status::off( $name, $tool instanceof \wordpress_code_ai\Tools\Base_Tool && $tool->is_disabled_by_default() );
             }
             if ( 'available' === $status['status'] ) {
                 continue;

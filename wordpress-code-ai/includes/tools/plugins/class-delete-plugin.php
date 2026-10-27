@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Plugins;
+namespace wordpress_code_ai\Tools\Plugins;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
-use Easy_MCP_AI\Tools\Package_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Package_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -32,7 +32,7 @@ class Delete_Plugin extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Deletes an inactive plugin\'s files from wp-content/plugins WITHOUT running its uninstall routine, as `wp plugin delete` does: the plugin\'s settings and database tables stay. To remove those too, use wp_uninstall_plugin. Required: `plugin` (e.g. "hello-dolly/hello.php" — the `plugin` field from wp_list_plugins). Returns { plugin, name, version, deleted, changed, uninstall_ran (always false) }. Irreversible: the files are not backed up and change history cannot restore them. Refused when the plugin is not installed, when it is active or network-active (deactivate it first with wp_deactivate_plugin), when other installed plugins require it, when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress cannot write the plugins folder or wp-content directly, on multisite unless you are a super admin with manage_network_plugins, and for Easy MCP AI itself. Off by default; an administrator switches it on.';
+        return 'Deletes an inactive plugin\'s files from wp-content/plugins WITHOUT running its uninstall routine, as `wp plugin delete` does: the plugin\'s settings and database tables stay. To remove those too, use wp_uninstall_plugin. Required: `plugin` (e.g. "hello-dolly/hello.php" — the `plugin` field from wp_list_plugins). Returns { plugin, name, version, deleted, changed, uninstall_ran (always false) }. Irreversible: the files are not backed up and change history cannot restore them. Refused when the plugin is not installed, when it is active or network-active (deactivate it first with wp_deactivate_plugin), when other installed plugins require it, when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress cannot write the plugins folder or wp-content directly, on multisite unless you are a super admin with manage_network_plugins, and for wordpress-code-ai itself. Off by default; an administrator switches it on.';
     }
 
     public function get_category() {
@@ -78,7 +78,7 @@ class Delete_Plugin extends Base_Tool {
         return $this->describe_removal(
             $arguments,
             /* translators: 1: quoted plugin name and version, 2: plugin file */
-            __( 'Delete the files of plugin %1$s (%2$s). Its uninstall routine does not run, so its settings and tables stay. The files cannot be restored.', 'easy-mcp-ai' )
+            __( 'Delete the files of plugin %1$s (%2$s). Its uninstall routine does not run, so its settings and tables stay. The files cannot be restored.', 'wordpress-code-ai' )
         );
     }
 

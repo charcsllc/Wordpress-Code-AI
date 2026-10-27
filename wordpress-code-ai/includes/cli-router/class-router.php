@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router;
+namespace wordpress_code_ai\Cli_Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -202,10 +202,10 @@ final class Router {
             $tool = self::tool( (string) $call['tool'] );
             
             
-            if ( ! is_object( $tool ) || ! class_exists( '\\Easy_MCP_AI\\Approvals\\Approval_Gate' ) ) {
+            if ( ! is_object( $tool ) || ! class_exists( '\\wordpress_code_ai\\Approvals\\Approval_Gate' ) ) {
                 return true;
             }
-            if ( \Easy_MCP_AI\Approvals\Approval_Gate::requires_approval( $tool, (array) $call['arguments'] ) ) {
+            if ( \wordpress_code_ai\Approvals\Approval_Gate::requires_approval( $tool, (array) $call['arguments'] ) ) {
                 return true;
             }
         }
@@ -729,8 +729,8 @@ final class Router {
         if ( ! isset( $parts['scheme'] ) ) {
             $parts = self::parse_url( 'http://' . $url );
         }
-        $host  = isset( $parts['host'] ) ? \Easy_MCP_AI\Site_Host::normalize( (string) $parts['host'] ) : '';
-        $match = '' !== $host && ( $host === \Easy_MCP_AI\Site_Host::normalize( $home ) || \Easy_MCP_AI\Site_Host::matches( $host ) );
+        $host  = isset( $parts['host'] ) ? \wordpress_code_ai\Site_Host::normalize( (string) $parts['host'] ) : '';
+        $match = '' !== $host && ( $host === \wordpress_code_ai\Site_Host::normalize( $home ) || \wordpress_code_ai\Site_Host::matches( $host ) );
         if ( $match && function_exists( 'is_multisite' ) && \is_multisite() ) {
             $match = self::same_path( $parts, self::parse_url( $home ) );
         }
@@ -1676,7 +1676,7 @@ final class Router {
         return sprintf(
             'WordPress or another plugin printed %d bytes during this command, outside WP-CLI\'s output (it is not in output or stderr): %s%s',
             strlen( $printed ),
-            \Easy_MCP_AI\Text_Redactor::redact( $excerpt ),
+            \wordpress_code_ai\Text_Redactor::redact( $excerpt ),
             strlen( $excerpt ) < strlen( $printed ) ? '...' : ''
         );
     }
@@ -1760,7 +1760,7 @@ final class Router {
 
 
 
-    private static function tool_error( ?string $message, bool $from_output, Context $ctx, int $exit, array $envelope ): \Easy_MCP_AI\MCP\Detailed_Tool_Error {
+    private static function tool_error( ?string $message, bool $from_output, Context $ctx, int $exit, array $envelope ): \wordpress_code_ai\MCP\Detailed_Tool_Error {
         $stdout = $ctx->out->stdout();
         $rest   = $ctx->out->stderr();
         if ( $from_output ) {
@@ -1780,7 +1780,7 @@ final class Router {
         if ( '' !== trim( $stdout ) ) {
             $details .= "\n" . rtrim( $stdout, "\n" );
         }
-        return new \Easy_MCP_AI\MCP\Detailed_Tool_Error( (string) $message, $details );
+        return new \wordpress_code_ai\MCP\Detailed_Tool_Error( (string) $message, $details );
     }
 
     
@@ -1843,13 +1843,13 @@ final class Router {
 
 
     private static function cut_by_server( string $message ): bool {
-        $max = \Easy_MCP_AI\MCP\Detailed_Tool_Error::MAX_MESSAGE;
+        $max = \wordpress_code_ai\MCP\Detailed_Tool_Error::MAX_MESSAGE;
         if ( strlen( trim( $message ) ) > $max ) {
             return true;
         }
-        if ( class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) && is_callable( array( '\\Easy_MCP_AI\\MCP\\Server', 'sanitize_error_message' ) ) ) {
+        if ( class_exists( '\\wordpress_code_ai\\MCP\\Server' ) && is_callable( array( '\\wordpress_code_ai\\MCP\\Server', 'sanitize_error_message' ) ) ) {
             try {
-                return strlen( (string) \Easy_MCP_AI\MCP\Server::sanitize_error_message( $message, PHP_INT_MAX ) ) > $max;
+                return strlen( (string) \wordpress_code_ai\MCP\Server::sanitize_error_message( $message, PHP_INT_MAX ) ) > $max;
             } catch ( \Throwable $e ) {
                 return false;
             }
@@ -1900,8 +1900,8 @@ final class Router {
         if ( null !== self::$tool_resolver ) {
             return call_user_func( self::$tool_resolver, $name );
         }
-        if ( class_exists( '\\Easy_MCP_AI\\Plugin', false ) && method_exists( '\\Easy_MCP_AI\\Plugin', 'instance' ) ) {
-            $registry = \Easy_MCP_AI\Plugin::instance()->get_tool_registry();
+        if ( class_exists( '\\wordpress_code_ai\\Plugin', false ) && method_exists( '\\wordpress_code_ai\\Plugin', 'instance' ) ) {
+            $registry = \wordpress_code_ai\Plugin::instance()->get_tool_registry();
             return is_object( $registry ) && method_exists( $registry, 'get_tool' ) ? $registry->get_tool( $name ) : null;
         }
         return null;

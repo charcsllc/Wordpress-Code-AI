@@ -1,17 +1,17 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Batch;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Formatter;
-use Easy_MCP_AI\Cli_Router\Handlers\Theme_Handler;
-use Easy_MCP_AI\Cli_Router\Handlers\Theme_Mod_Handler;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Output;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Values;
+use wordpress_code_ai\Cli_Router\Batch;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Formatter;
+use wordpress_code_ai\Cli_Router\Handlers\Theme_Handler;
+use wordpress_code_ai\Cli_Router\Handlers\Theme_Mod_Handler;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Output;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Values;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -751,8 +751,8 @@ class Theme_Adapter extends Command_Handler {
 
 
     private static function plan_may_read( string $tool, string $cap ): bool {
-        if ( class_exists( '\\Easy_MCP_AI\\MCP\\Server', false ) && method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' )
-            && false === \Easy_MCP_AI\MCP\Server::current_call_may_use( $tool ) ) {
+        if ( class_exists( '\\wordpress_code_ai\\MCP\\Server', false ) && method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' )
+            && false === \wordpress_code_ai\MCP\Server::current_call_may_use( $tool ) ) {
             return false;
         }
         return (bool) \current_user_can( $cap );

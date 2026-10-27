@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -45,19 +45,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Themeisle_SDK {
 
     
-    const PRODUCT_SLUG = 'easy-mcp-ai';
+    const PRODUCT_SLUG = 'wordpress-code-ai';
 
     
-    const PRODUCT_KEY = 'easy_mcp_ai';
+    const PRODUCT_KEY = 'wordpress_code_ai';
 
     
-    const ABOUT_US_MENU_SLUG = 'ti-about-easy_mcp_ai';
+    const ABOUT_US_MENU_SLUG = 'ti-about-wordpress_code_ai';
 
     
-    const MENU_SLUG = 'easy-mcp-ai';
+    const MENU_SLUG = 'wordpress-code-ai';
 
     
-    const CONSENT_OPTION = 'easy_mcp_ai_logger_flag';
+    const CONSENT_OPTION = 'wordpress_code_ai_logger_flag';
 
     
     const USAGE_WINDOW_DAYS = 30;
@@ -232,17 +232,17 @@ final class Themeisle_SDK {
         $out   = array();
         $specs = array(
             'api_keys'      => array(
-                'easy_mcp_ai_tokens',
+                'wordpress_code_ai_tokens',
                 'WHERE is_active = 1 AND ( expires_at IS NULL OR expires_at > %s )',
                 array( $now ),
             ),
             'oauth_clients' => array(
-                'easy_mcp_ai_oauth_clients',
+                'wordpress_code_ai_oauth_clients',
                 'WHERE is_active = 1',
                 array(),
             ),
             'oauth_grants'  => array(
-                'easy_mcp_ai_oauth_access_tokens',
+                'wordpress_code_ai_oauth_access_tokens',
                 'WHERE is_active = 1 AND expires_at > %s',
                 array( $now ),
             ),
@@ -295,7 +295,7 @@ final class Themeisle_SDK {
             return array();
         }
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_audit_log';
+        $table = $wpdb->prefix . 'wordpress_code_ai_audit_log';
         if ( ! self::table_exists( $table ) ) {
             return array();
         }

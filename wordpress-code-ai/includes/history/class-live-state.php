@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\History;
+namespace wordpress_code_ai\History;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -92,7 +92,7 @@ class Live_State {
                 
                 
                 
-                $allowlist = \Easy_MCP_AI\History\Change_Recorder::option_allowlist();
+                $allowlist = \wordpress_code_ai\History\Change_Recorder::option_allowlist();
                 if ( ! in_array( (string) $id, $allowlist, true ) ) {
                     return null;
                 }
@@ -107,9 +107,9 @@ class Live_State {
                 }
                 
                 
-                $scope = \Easy_MCP_AI\History\Change_Recorder::option_scope_from_subtype( (string) $id, $object_subtype );
+                $scope = \wordpress_code_ai\History\Change_Recorder::option_scope_from_subtype( (string) $id, $object_subtype );
                 $live  = \get_option( $id );
-                return array( 'value' => null === $scope ? $live : \Easy_MCP_AI\History\Change_Recorder::option_slice( $live, $scope ) );
+                return array( 'value' => null === $scope ? $live : \wordpress_code_ai\History\Change_Recorder::option_slice( $live, $scope ) );
 
             case 'term':
                 if ( ! function_exists( '\get_term' ) ) {
@@ -220,7 +220,7 @@ class Live_State {
                 
                 
                 return json_decode( wp_json_encode(
-                    \Easy_MCP_AI\History\Change_Recorder::expand_for_storage( $product->get_data() )
+                    \wordpress_code_ai\History\Change_Recorder::expand_for_storage( $product->get_data() )
                 ), true ) ?: array();
 
             case 'wc_order':
@@ -238,7 +238,7 @@ class Live_State {
                 
                 
                 return json_decode( wp_json_encode(
-                    \Easy_MCP_AI\History\Change_Recorder::expand_for_storage( $order->get_data() )
+                    \wordpress_code_ai\History\Change_Recorder::expand_for_storage( $order->get_data() )
                 ), true ) ?: array();
 
             case 'bp_activity':
@@ -310,7 +310,7 @@ class Live_State {
                 
                 
                 
-                $allowlist = \Easy_MCP_AI\History\Change_Recorder::option_allowlist();
+                $allowlist = \wordpress_code_ai\History\Change_Recorder::option_allowlist();
                 if ( ! in_array( (string) $id, $allowlist, true ) ) {
                     return null;
                 }
@@ -402,7 +402,7 @@ class Live_State {
             case 'user_meta':
                 
                 
-                if ( \Easy_MCP_AI\History\Change_Recorder::user_meta_is_blocked( $meta_key ) ) {
+                if ( \wordpress_code_ai\History\Change_Recorder::user_meta_is_blocked( $meta_key ) ) {
                     return null;
                 }
                 $can_read = $can_view_all

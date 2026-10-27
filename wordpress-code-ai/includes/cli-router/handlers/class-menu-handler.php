@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Adapters\Menu_Adapter;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Self_Protection;
+use wordpress_code_ai\Cli_Router\Adapters\Menu_Adapter;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Self_Protection;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -194,10 +194,10 @@ final class Menu_Handler extends Command_Handler {
 
     
     public static function live_option_recordable( string $option ): ?bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\History\\Change_Recorder' ) || ! method_exists( '\\Easy_MCP_AI\\History\\Change_Recorder', 'option_is_recordable' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\History\\Change_Recorder' ) || ! method_exists( '\\wordpress_code_ai\\History\\Change_Recorder', 'option_is_recordable' ) ) {
             return null;
         }
-        return (bool) \Easy_MCP_AI\History\Change_Recorder::option_is_recordable( $option );
+        return (bool) \wordpress_code_ai\History\Change_Recorder::option_is_recordable( $option );
     }
 
     

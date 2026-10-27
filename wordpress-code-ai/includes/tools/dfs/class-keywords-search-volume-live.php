@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\DFS;
+namespace wordpress_code_ai\Tools\DFS;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\DFS\DataforSEO_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\DFS\DataforSEO_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;

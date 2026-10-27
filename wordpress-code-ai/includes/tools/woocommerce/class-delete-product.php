@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -56,7 +56,7 @@ class Delete_Product extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: product name, 2: product id, 3: status */
-            __( "Permanently delete product '%1\$s' (ID %2\$d, %3\$s), bypassing the trash.", 'easy-mcp-ai' ),
+            __( "Permanently delete product '%1\$s' (ID %2\$d, %3\$s), bypassing the trash.", 'wordpress-code-ai' ),
             self::rest_title( $product, 'name' ), $id, isset( $product['status'] ) ? $product['status'] : 'unknown'
         );
     }

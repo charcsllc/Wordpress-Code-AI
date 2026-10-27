@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Privileged\Search_Replace;
+namespace wordpress_code_ai\Privileged\Search_Replace;
 
-use Easy_MCP_AI\Privileged\Privileged_Groups;
+use wordpress_code_ai\Privileged\Privileged_Groups;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 final class Jobs {
 
     const TOOL_NAME = 'wp_privileged_search_replace_run';
-    const TICK_HOOK = 'easy_mcp_ai_search_replace_tick';
+    const TICK_HOOK = 'wordpress_code_ai_search_replace_tick';
     
 
 
@@ -100,10 +100,10 @@ final class Jobs {
         if ( ! empty( $job['needs_network'] ) && ! self::network_user( $user_id ) ) {
             return 'The job reaches network tables, and the user who started it is no longer a super admin with manage_network_options.';
         }
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_enabled', true ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_enabled', true ) ) {
             return 'The audit log was switched off; privileged work runs only while it is on.';
         }
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_enabled', true ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_enabled', true ) ) {
             return 'Change history was switched off; privileged work runs only while it is on.';
         }
         return null;
@@ -172,7 +172,7 @@ final class Jobs {
         
         if ( ! empty( $job['site_address'] ) ) {
             try {
-                \Easy_MCP_AI\Diagnostics\Diagnostics::invalidate();
+                \wordpress_code_ai\Diagnostics\Diagnostics::invalidate();
             } catch ( \Throwable $e ) {
                 unset( $e ); 
             }
@@ -181,7 +181,7 @@ final class Jobs {
             $identity = (array) $job['identity'];
             $summary  = self::runner()->summary( $job );
             unset( $summary['next'], $summary['samples'] );
-            ( new \Easy_MCP_AI\History\Change_Log_Repository() )->insert( array(
+            ( new \wordpress_code_ai\History\Change_Log_Repository() )->insert( array(
                 'audit_id'        => isset( $identity['audit_id'] ) ? (int) $identity['audit_id'] : null,
                 'auth_source'     => (string) ( $identity['auth_source'] ?? 'legacy' ),
                 'token_id'        => (int) ( $identity['token_id'] ?? 0 ),
@@ -201,7 +201,7 @@ final class Jobs {
             ) );
         } catch ( \Throwable $e ) {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                error_log( sprintf( 'Easy MCP AI search-replace history entry failed: %s', $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
+                error_log( sprintf( 'wordpress-code-ai search-replace history entry failed: %s', $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
             }
         }
     }

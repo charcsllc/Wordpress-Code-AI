@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
-use Easy_MCP_AI\Cli_Router\Self_Protection;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Self_Protection;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

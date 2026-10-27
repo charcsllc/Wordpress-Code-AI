@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -204,7 +204,7 @@ class Ability_Input_Policy {
                 $segments = explode( '.', $path );
                 $keys[]   = end( $segments );
             }
-            $parts[] = 'Easy MCP AI refuses PHP callback and REST controller settings (' . implode( ', ', array_unique( $keys ) ) . ').';
+            $parts[] = 'wordpress-code-ai refuses PHP callback and REST controller settings (' . implode( ', ', array_unique( $keys ) ) . ').';
         }
         if ( isset( self::SLUG_GUARDED[ $slug ] ) ) {
             $kind    = self::SLUG_GUARDED[ $slug ];
@@ -233,7 +233,7 @@ class Ability_Input_Policy {
         foreach ( self::refused_paths( $slug ) as $path ) {
             if ( self::path_is_present( $arguments, explode( '.', $path ) ) ) {
                 return sprintf(
-                    "Refused: '%s' names a PHP callback or REST controller class. Easy MCP AI does not accept callback or controller-class settings through MCP; set them in the plugin's own admin screen if they are genuinely needed.",
+                    "Refused: '%s' names a PHP callback or REST controller class. wordpress-code-ai does not accept callback or controller-class settings through MCP; set them in the plugin's own admin screen if they are genuinely needed.",
                     $path
                 );
             }

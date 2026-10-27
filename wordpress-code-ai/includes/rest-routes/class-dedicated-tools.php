@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Rest_Routes;
+namespace wordpress_code_ai\Rest_Routes;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -120,8 +120,8 @@ final class Dedicated_Tools {
         if ( null === $tool ) {
             return null;
         }
-        if ( class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) && method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' ) ) {
-            return true === \Easy_MCP_AI\MCP\Server::current_call_may_use( $tool ) ? $tool : null;
+        if ( class_exists( '\\wordpress_code_ai\\MCP\\Server' ) && method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' ) ) {
+            return true === \wordpress_code_ai\MCP\Server::current_call_may_use( $tool ) ? $tool : null;
         }
         return null;
     }

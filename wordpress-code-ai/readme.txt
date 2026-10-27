@@ -1,5 +1,5 @@
-=== Easy MCP AI – Connect Claude to WordPress: MCP Server for ChatGPT & AI Agents ===
-Contributors: easymcpai
+=== wordpress-code-ai – Connect Claude to WordPress: MCP Server for ChatGPT & AI Agents ===
+Contributors: charcsllc
 Tags: mcp, claude, chatgpt, wordpress-mcp, connector
 Requires at least: 6.0
 Tested up to: 7.1
@@ -12,11 +12,11 @@ Secure WordPress MCP server: we never see your data. Connect Claude, ChatGPT & A
 
 == Description ==
 
-**Secure WordPress MCP server for Claude, ChatGPT and AI agents.** [**Easy MCP AI**](https://easymcpai.com/) is a free plugin that turns your own site into a Model Context Protocol (MCP) server. **Connect Claude to WordPress**, **connect ChatGPT to WordPress**, or give Cursor, OpenAI Codex, GitHub Copilot and other AI agents access limited to the tools and permissions you choose.
+**Secure WordPress MCP server for Claude, ChatGPT and AI agents.** [**wordpress-code-ai**](https://github.com/charcsllc/wordpress-code-ai) is a free plugin that turns your own site into a Model Context Protocol (MCP) server. **Connect Claude to WordPress**, **connect ChatGPT to WordPress**, or give Cursor, OpenAI Codex, GitHub Copilot and other AI agents access limited to the tools and permissions you choose.
 
 Your WordPress AI assistant can write and publish posts, update WooCommerce products, and edit Yoast or Rank Math SEO fields. It answers questions with data from Google Analytics, Search Console and Semrush. Every tool call runs under WordPress permissions, and, when logging is on, the Audit Log records each one.
 
-= Why Easy MCP AI =
+= Why wordpress-code-ai =
 
 * **Secure by design**: OAuth 2.1, WordPress capability checks, per-token permissions, rate limits, an Audit Log and Change History
 * **280+ MCP tools**: 130+ for core WordPress, 90+ for plugin integrations (WooCommerce, ACF, The Events Calendar, BuddyPress and the supported SEO plugins) and 50+ for SEO and analytics
@@ -27,9 +27,9 @@ Your WordPress AI assistant can write and publish posts, update WooCommerce prod
 
 = Connect Claude to WordPress =
 
-Easy MCP AI connects Claude to WordPress from the Claude web app, desktop app, Cowork and Claude Code.
+wordpress-code-ai connects Claude to WordPress from the Claude web app, desktop app, Cowork and Claude Code.
 
-1. In WordPress, open **Easy MCP AI → Dashboard** and click **Connect to Claude**, or copy your MCP server URL and follow the steps below.
+1. In WordPress, open **wordpress-code-ai → Dashboard** and click **Connect to Claude**, or copy your MCP server URL and follow the steps below.
 2. In Claude, open **Settings → Connectors**, add a connector, paste your MCP server URL, then click **Connect**.
 3. Sign in to WordPress, choose what the AI may read or change, and click **Approve**.
 
@@ -79,7 +79,7 @@ Try prompts like:
 
 = SEO MCP for Yoast, Rank Math, AIOSEO, SEOPress, Slim SEO & The SEO Framework =
 
-Easy MCP AI works as a Yoast MCP or Rank Math MCP connector. It exposes your Yoast SEO or Rank Math fields as MCP tools. Your AI agent reads and updates SEO titles and meta descriptions. Where the SEO plugin supports them, it also edits canonical URLs, robots meta tags, Open Graph data, focus keywords and schema settings. Supported fields depend on the SEO plugin and on the version you run.
+wordpress-code-ai works as a Yoast MCP or Rank Math MCP connector. It exposes your Yoast SEO or Rank Math fields as MCP tools. Your AI agent reads and updates SEO titles and meta descriptions. Where the SEO plugin supports them, it also edits canonical URLs, robots meta tags, Open Graph data, focus keywords and schema settings. Supported fields depend on the SEO plugin and on the version you run.
 
 = Google Analytics MCP, Search Console MCP & Semrush MCP =
 
@@ -92,9 +92,9 @@ Pull data from Google Analytics, Search Console, Semrush, SE Ranking, DataForSEO
 * **DataForSEO** (8 tools): live search results pages, search volume, ranked keywords, backlinks and on-page SEO audits
 * **Ahrefs** (1 tool): Domain Rating for any domain with a free Ahrefs APIv3 key. Show the credit "Domain Rating by Ahrefs" wherever you display the rating.
 
-**Setup**: open **Easy MCP AI → Tools → External data**. Upload a Google service-account key file (a JSON file), then set your default GA4 property and Search Console site. Add Semrush, SE Ranking, DataForSEO or Ahrefs credentials, click **Test**, and enable the tools you want.
+**Setup**: open **wordpress-code-ai → Tools → External data**. Upload a Google service-account key file (a JSON file), then set your default GA4 property and Search Console site. Add Semrush, SE Ranking, DataForSEO or Ahrefs credentials, click **Test**, and enable the tools you want.
 
-Easy MCP AI calls a provider in three cases: when you save or test the credentials, when the External data tab loads account details, and when an AI client runs one of that provider's tools.
+wordpress-code-ai calls a provider in three cases: when you save or test the credentials, when the External data tab loads account details, and when an AI client runs one of that provider's tools.
 
 = ACF, The Events Calendar & BuddyPress =
 
@@ -104,7 +104,7 @@ Easy MCP AI calls a provider in three cases: when you save or test the credentia
 
 = WordPress Abilities API & MCP Adapter =
 
-WordPress 6.9+ lets plugins register Abilities. Easy MCP AI acts as a WordPress MCP adapter for them. Under **Easy MCP AI → Tools → Abilities**, select the abilities you want and save. The ones you select become MCP tools, and the adapter exposes nothing else. No adapter code is required. Find compatible plugins in the [Abilities directory](https://easymcpai.com/abilities-directory).
+WordPress 6.9+ lets plugins register Abilities. wordpress-code-ai acts as a WordPress MCP adapter for them. Under **wordpress-code-ai → Tools → Abilities**, select the abilities you want and save. The ones you select become MCP tools, and the adapter exposes nothing else. No adapter code is required. Find compatible plugins in the [Abilities directory](https://easymcpai.com/abilities-directory).
 
 = Change History & Audit Log =
 
@@ -120,29 +120,29 @@ Giving an AI client access to your site is a serious step. This MCP server runs 
 * **Least privilege**: choose which tools each API token or OAuth grant can use, including read-only access
 * **Hashed tokens, encrypted credentials**: token records are SHA-256 hashes, and external data credentials use AES-256-GCM encryption
 * **Rate limits and IP allowlist**: 60 requests per minute per token by default, plus an optional IP allowlist for API tokens
-* **Force Draft on Create** (off by default): Easy MCP's own create tools save new posts, pages, custom post type items, products and events as drafts. Plugin abilities and later edits are not covered
+* **Force Draft on Create** (off by default): wordpress-code-ai's own create tools save new posts, pages, custom post type items, products and events as drafts. Plugin abilities and later edits are not covered
 * **HTTPS**: OAuth requires HTTPS on live sites (local loopback addresses are exempt), and API tokens should use HTTPS too
 
 == Installation ==
 
-1. In **Plugins → Add New Plugin**, search for "Easy MCP AI", click **Install Now**, then **Activate**. For manual installs, upload the ZIP under **Plugins → Add New Plugin → Upload Plugin**.
-2. Open **Easy MCP AI → Dashboard**. Copy the MCP server URL, or use a one-click connect button.
+1. Download `wordpress-code-ai.zip` from https://github.com/charcsllc/wordpress-code-ai, then upload it under **Plugins → Add New Plugin → Upload Plugin**, click **Install Now**, then **Activate**.
+2. Open **wordpress-code-ai → Dashboard**. Copy the MCP server URL, or use a one-click connect button.
 3. **OAuth** (Claude, Claude Desktop, ChatGPT, Cursor, VS Code, Antigravity): add the URL to your AI client. Then sign in to WordPress as the user you want that client to act on behalf of. Choose permissions and click **Approve**.
-4. **API token** (Codex CLI, Windsurf, Zed, LibreChat and other config-file clients): under **Easy MCP AI → Connections → API tokens**, create a token, choose the user and tools, then paste the URL and token into your client. Copy the token before you leave the screen. It is shown only once.
+4. **API token** (Codex CLI, Windsurf, Zed, LibreChat and other config-file clients): under **wordpress-code-ai → Connections → API tokens**, create a token, choose the user and tools, then paste the URL and token into your client. Copy the token before you leave the screen. It is shown only once.
 
-Revoke any OAuth client or token at any time under **Easy MCP AI → Connections**, on its OAuth and API tokens tabs.
+Revoke any OAuth client or token at any time under **wordpress-code-ai → Connections**, on its OAuth and API tokens tabs.
 
 == Frequently Asked Questions ==
 
-= Is Easy MCP AI secure? =
+= Is wordpress-code-ai secure? =
 
 Yes, within the limits you set. Connections use OAuth 2.1 or hashed API tokens, and every tool call runs with the permissions of a real WordPress user. You can also limit each connection to specific tools. Rate limits cap how often an API token can be used, and an optional IP allowlist caps where it can be used from. The Audit Log and Change History let you review what each AI assistant does.
 
 The server runs inside WordPress, with no hosted relay in between. Token records are SHA-256 hashes, and external credentials are encrypted with AES-256-GCM. The plugin itself does not call any AI provider. Abilities you enable from other plugins follow those plugins' own behavior. Report vulnerabilities through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/8e5e1a2e-1cd4-42d7-8a5d-9ff3d1a7f397).
 
-= Can you connect Claude to WordPress with Easy MCP AI? =
+= Can you connect Claude to WordPress with wordpress-code-ai? =
 
-Yes. Easy MCP AI is the MCP server that Claude connects to. Install Easy MCP AI and copy your MCP server URL from **Easy MCP AI → Dashboard**. Add it under **Settings → Connectors** in Claude Desktop or the web app, sign in to WordPress and approve access. The [integration guides](https://easymcpai.com/integrations) show each step.
+Yes. wordpress-code-ai is the MCP server that Claude connects to. Install wordpress-code-ai and copy your MCP server URL from **wordpress-code-ai → Dashboard**. Add it under **Settings → Connectors** in Claude Desktop or the web app, sign in to WordPress and approve access. The [integration guides](https://easymcpai.com/integrations) show each step.
 
 = How do I use Claude Code with WordPress? =
 
@@ -152,13 +152,13 @@ Run the command shown on the dashboard, then run the `/mcp` command in Claude Co
 
 Click **Connect to ChatGPT** on the dashboard, name the connector and paste your MCP server URL. Keep OAuth selected, click **Create** and approve access on your site. ChatGPT may show a warning for custom MCP servers. This is normal.
 
-= Which AI assistants and AI agents work with Easy MCP AI? =
+= Which AI assistants and AI agents work with wordpress-code-ai? =
 
-All of the following connect through MCP: Claude (web, desktop, Cowork and Claude Code), ChatGPT, Cursor, GitHub Copilot in VS Code, OpenAI Codex CLI, Google Antigravity, Windsurf, Cline, Roo Code, Zed, OpenCode, LibreChat, Manus, Pydantic AI and n8n. Other MCP clients that support the Streamable HTTP transport work as well. Easy MCP AI lets you connect several AI assistants at once, each with its own token or OAuth grant, permissions and audit trail.
+All of the following connect through MCP: Claude (web, desktop, Cowork and Claude Code), ChatGPT, Cursor, GitHub Copilot in VS Code, OpenAI Codex CLI, Google Antigravity, Windsurf, Cline, Roo Code, Zed, OpenCode, LibreChat, Manus, Pydantic AI and n8n. Other MCP clients that support the Streamable HTTP transport work as well. wordpress-code-ai lets you connect several AI assistants at once, each with its own token or OAuth grant, permissions and audit trail.
 
 = Is this a WordPress MCP server, an MCP plugin for WordPress or an MCP adapter for the Abilities API? =
 
-All three. Easy MCP AI is a WordPress MCP plugin that works with Claude and other MCP clients. It runs a complete MCP server inside WordPress at `/wp-json/easy-mcp-ai/v1/mcp`. Once you approve access, Claude can use that endpoint as your WordPress MCP server. It supports MCP 2026-07-28 and stays compatible with 2025-11-25, 2025-06-18 and 2025-03-26 clients. It also works as an MCP adapter for the WordPress Abilities API, and adds 280+ ready-made tools, OAuth and permission controls.
+All three. wordpress-code-ai is a WordPress MCP plugin that works with Claude and other MCP clients. It runs a complete MCP server inside WordPress at `/wp-json/wordpress-code-ai/v1/mcp`. Once you approve access, Claude can use that endpoint as your WordPress MCP server. It supports MCP 2026-07-28 and stays compatible with 2025-11-25, 2025-06-18 and 2025-03-26 clients. It also works as an MCP adapter for the WordPress Abilities API, and adds 280+ ready-made tools, OAuth and permission controls.
 
 = What is the Model Context Protocol (MCP)? =
 
@@ -166,17 +166,17 @@ MCP is an open standard, created by Anthropic, that lets AI assistants and AI ag
 
 = How is it different from other WordPress AI plugins? =
 
-Most WordPress AI plugins embed one AI provider inside wp-admin and bill you for usage. Easy MCP AI is an AI connector that works the other way round. Your site becomes an MCP server, and you drive it from the AI client you already use. Use Claude or ChatGPT as an AI writing assistant, a WooCommerce AI agent or an SEO analyst, with your own model and plan. Some MCP plugins route every request through the maker's cloud service, so the connection depends on that service and its plan limits. Easy MCP AI has no relay, and your AI client connects to your site directly.
+Most WordPress AI plugins embed one AI provider inside wp-admin and bill you for usage. wordpress-code-ai is an AI connector that works the other way round. Your site becomes an MCP server, and you drive it from the AI client you already use. Use Claude or ChatGPT as an AI writing assistant, a WooCommerce AI agent or an SEO analyst, with your own model and plan. Some MCP plugins route every request through the maker's cloud service, so the connection depends on that service and its plan limits. wordpress-code-ai has no relay, and your AI client connects to your site directly.
 
 = Are my AI requests private, and do they pass through your servers? =
 
-No. Requests and tool results travel between your AI client and your own site, with no hosted relay or third-party server. If you are comparing with a hosted MCP service such as WPVibe, the difference is where the server runs: a hosted service proxies every request through the vendor's servers, while Easy MCP AI runs inside your own WordPress install. The connection depends only on your site and your AI client, so it keeps working even if our service is down. The plugin is free, all 280+ tools are included, and there is no vendor quota, only rate limits you set yourself, 60 requests per minute per token by default. The plugin sends nothing to us. The optional outside reachability check is a link that opens easymcpai.com in your browser, and it uses only your site address.
+No. Requests and tool results travel between your AI client and your own site, with no hosted relay or third-party server. If you are comparing with a hosted MCP service such as WPVibe, the difference is where the server runs: a hosted service proxies every request through the vendor's servers, while wordpress-code-ai runs inside your own WordPress install. The connection depends only on your site and your AI client, so it keeps working even if our service is down. The plugin is free, all 280+ tools are included, and there is no vendor quota, only rate limits you set yourself, 60 requests per minute per token by default. The plugin sends nothing to us. The optional outside reachability check is a link that opens easymcpai.com in your browser, and it uses only your site address.
 
-Once an AI client has connected, the plugin downloads signed skills (step-by-step instructions for common WordPress tasks) once a day from skills.easymcpai.com. The request carries only the plugin version. To turn it off, add `define( 'EASY_MCP_AI_SKILLS_SYNC', false );` to wp-config.php.
+Once an AI client has connected, the plugin downloads signed skills (step-by-step instructions for common WordPress tasks) once a day from skills.easymcpai.com. The request carries only the plugin version. To turn it off, add `define( 'WORDPRESS_CODE_AI_SKILLS_SYNC', false );` to wp-config.php.
 
-= Is Easy MCP AI free? =
+= Is wordpress-code-ai free? =
 
-Yes. Easy MCP AI is a free WordPress MCP server plugin and includes all 280+ tools. Semrush, SE Ranking, DataForSEO, Ahrefs and Google APIs use your own accounts, so any API charges come from those providers. A provider such as Semrush, SE Ranking, DataForSEO, Ahrefs or Google is contacted only in three cases: when you save or test its credentials, when the External data tab loads account details, or when an AI client runs one of its tools.
+Yes. wordpress-code-ai is a free WordPress MCP server plugin and includes all 280+ tools. Semrush, SE Ranking, DataForSEO, Ahrefs and Google APIs use your own accounts, so any API charges come from those providers. A provider such as Semrush, SE Ranking, DataForSEO, Ahrefs or Google is contacted only in three cases: when you save or test its credentials, when the External data tab loads account details, or when an AI client runs one of its tools.
 
 = Does it send my content to OpenAI, Anthropic or Google? =
 
@@ -184,7 +184,7 @@ No, not to AI providers. The plugin never calls OpenAI, Anthropic or Google's AI
 
 = Does it work with WooCommerce, Yoast, Rank Math, ACF and The Events Calendar? =
 
-Yes. Built-in tool sets cover WooCommerce, Advanced Custom Fields (ACF), The Events Calendar, BuddyPress, Yoast SEO, Rank Math, AIOSEO, SEOPress, Slim SEO and The SEO Framework. Each integration needs the matching plugin active. Turn each integration on under **Easy MCP AI → Tools → Plugins**.
+Yes. Built-in tool sets cover WooCommerce, Advanced Custom Fields (ACF), The Events Calendar, BuddyPress, Yoast SEO, Rank Math, AIOSEO, SEOPress, Slim SEO and The SEO Framework. Each integration needs the matching plugin active. Turn each integration on under **wordpress-code-ai → Tools → Plugins**.
 
 = Does it work with custom post types, ACF fields and Gutenberg blocks? =
 
@@ -200,12 +200,12 @@ When logging is on, the **Audit Log** records each AI assistant's tool calls wit
 
 = Does it work on multisite, localhost or staging? =
 
-Yes. On multisite, each subsite has its own endpoint, tokens and logs. Network-level options need network capabilities. For local development, OAuth accepts plain HTTP on direct loopback requests (127.0.0.1 or ::1). Behind a local HTTPS proxy used for development, add `define('EASY_MCP_AI_OAUTH_ALLOW_HTTP', true);` to `wp-config.php`. Never set that flag on a live site.
+Yes. On multisite, each subsite has its own endpoint, tokens and logs. Network-level options need network capabilities. For local development, OAuth accepts plain HTTP on direct loopback requests (127.0.0.1 or ::1). Behind a local HTTPS proxy used for development, add `define('WORDPRESS_CODE_AI_OAUTH_ALLOW_HTTP', true);` to `wp-config.php`. Never set that flag on a live site.
 
 = Why does the endpoint return 404 or 401? =
 
 * **404**: use the exact MCP server URL from the dashboard. If the route is still missing, re-save **Settings → Permalinks** to flush rewrite rules.
-* **401**: check that your client sends `Authorization: Bearer <token>` and that the token still exists. For OAuth, disconnect and re-approve the connector. Some hosts strip the Authorization header. The diagnostics on **Easy MCP AI → Dashboard** identify the likely cause and suggest a fix.
+* **401**: check that your client sends `Authorization: Bearer <token>` and that the token still exists. For OAuth, disconnect and re-approve the connector. Some hosts strip the Authorization header. The diagnostics on **wordpress-code-ai → Dashboard** identify the likely cause and suggest a fix.
 
 = My site uses Cloudflare Flexible SSL. Why can't AI assistants connect? =
 
@@ -225,7 +225,16 @@ Flexible SSL sends requests to your server over plain HTTP, so the OAuth sign-in
 8. External data: connect Google Analytics 4, Search Console, Semrush, Ahrefs, and more
 9. Access and safety: a per-minute rate limit, Force Draft on Create, and self-service API keys for your users
 
+== Credits ==
+
+wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI (https://easymcpai.com), used under the GNU General Public License v2 or later. The changelog below is the history of that original plugin.
+
 == Changelog ==
+
+= 2.3.0 (wordpress-code-ai) =
+- Renamed the plugin to wordpress-code-ai.
+- Removed the bundled Themeisle SDK.
+
 
 = 2.3.0 =
 - Added page layout tools to read and edit Elementor, WPBakery and Flatsome pages.
@@ -254,9 +263,6 @@ Flexible SSL sends requests to your server over plain HTTP, so the OAuth sign-in
 [See changelog for all versions](https://easymcpai.com/changelog).
 
 == Upgrade Notice ==
-
-= 1.7.17 =
-Easy MCP AI is now part of Themeisle. Your setup keeps working as before, with no action needed.
 
 = 1.7.16 =
 New checks can surface host or proxy faults that were always there. Press "Re-run checks" on the dashboard to see them.

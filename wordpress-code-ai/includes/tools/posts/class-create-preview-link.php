@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Posts;
+namespace wordpress_code_ai\Tools\Posts;
 
-use Easy_MCP_AI\Preview\Preview_Link;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Preview\Preview_Link;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -69,7 +69,7 @@ class Create_Preview_Link extends Base_Tool {
         $minutes = isset( $arguments['expires_in_minutes'] ) && is_numeric( $arguments['expires_in_minutes'] ) ? (int) $arguments['expires_in_minutes'] : Preview_Link::DEFAULT_MINUTES;
         return sprintf(
             /* translators: 1: post title, 2: post id, 3: post status, 4: minutes */
-            __( "Create a preview link for '%1\$s' (ID %2\$d, %3\$s) that anyone can open for %4\$d minutes.", 'easy-mcp-ai' ),
+            __( "Create a preview link for '%1\$s' (ID %2\$d, %3\$s) that anyone can open for %4\$d minutes.", 'wordpress-code-ai' ),
             (string) $post->post_title,
             $id,
             (string) $post->post_status,

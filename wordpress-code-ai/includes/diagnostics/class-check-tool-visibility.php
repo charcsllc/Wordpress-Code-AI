@@ -32,7 +32,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -63,7 +63,7 @@ class Check_Tool_Visibility {
         $results  = self::run_with_definitions(
             self::tool_definitions( $registry ),
             self::off_names( $registry ),
-            (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_allowed_tool_patterns', array() )
+            (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_allowed_tool_patterns', array() )
         );
         $results[] = self::evaluate_override_names( self::override_names( $registry ) );
         return $results;
@@ -79,9 +79,9 @@ class Check_Tool_Visibility {
 
     private static function off_names( $registry ) {
         if ( null === $registry ) {
-            return (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_tools', array() );
+            return (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_tools', array() );
         }
-        return \Easy_MCP_AI\Tools\Tool_State::off_names( $registry );
+        return \wordpress_code_ai\Tools\Tool_State::off_names( $registry );
     }
 
     
@@ -103,16 +103,16 @@ class Check_Tool_Visibility {
 
     public static function run_with_definitions( array $defs, array $disabled, array $patterns ) {
         if ( empty( $defs ) ) {
-            $reason = __( 'Could not read the list of registered tools on this request.', 'easy-mcp-ai' );
+            $reason = __( 'Could not read the list of registered tools on this request.', 'wordpress-code-ai' );
 
             return array(
-                Diagnostic_Result::unknown( 'd1', Diagnostic_Result::TIER_BLOCKER, __( 'Every API token can see tools', 'easy-mcp-ai' ), $reason ),
-                Diagnostic_Result::unknown( 'd2', Diagnostic_Result::TIER_WARNING, __( 'Token users can reach the tools they need', 'easy-mcp-ai' ), $reason ),
-                Diagnostic_Result::unknown( 'd3', Diagnostic_Result::TIER_WARNING, __( 'Tool filter patterns match something', 'easy-mcp-ai' ), $reason ),
-                Diagnostic_Result::unknown( 'd4', Diagnostic_Result::TIER_WARNING, __( 'All tool categories are available', 'easy-mcp-ai' ), $reason ),
+                Diagnostic_Result::unknown( 'd1', Diagnostic_Result::TIER_BLOCKER, __( 'Every API token can see tools', 'wordpress-code-ai' ), $reason ),
+                Diagnostic_Result::unknown( 'd2', Diagnostic_Result::TIER_WARNING, __( 'Token users can reach the tools they need', 'wordpress-code-ai' ), $reason ),
+                Diagnostic_Result::unknown( 'd3', Diagnostic_Result::TIER_WARNING, __( 'Tool filter patterns match something', 'wordpress-code-ai' ), $reason ),
+                Diagnostic_Result::unknown( 'd4', Diagnostic_Result::TIER_WARNING, __( 'All tool categories are available', 'wordpress-code-ai' ), $reason ),
                 self::evaluate_grant_scopes( self::grant_rows() ),
-                Diagnostic_Result::unknown( 'd6', Diagnostic_Result::TIER_WARNING, __( 'WordPress Abilities available', 'easy-mcp-ai' ), $reason ),
-                Diagnostic_Result::unknown( 'd7', Diagnostic_Result::TIER_WARNING, __( 'Plugin ability schemas are client-compatible', 'easy-mcp-ai' ), $reason ),
+                Diagnostic_Result::unknown( 'd6', Diagnostic_Result::TIER_WARNING, __( 'WordPress Abilities available', 'wordpress-code-ai' ), $reason ),
+                Diagnostic_Result::unknown( 'd7', Diagnostic_Result::TIER_WARNING, __( 'Plugin ability schemas are client-compatible', 'wordpress-code-ai' ), $reason ),
             );
         }
 
@@ -163,7 +163,7 @@ class Check_Tool_Visibility {
 
 
     public static function scan_ability_schemas( array $defs ) {
-        if ( ! class_exists( '\Easy_MCP_AI\MCP\Gemini_Safe_Schema' ) ) {
+        if ( ! class_exists( '\wordpress_code_ai\MCP\Gemini_Safe_Schema' ) ) {
             return null;
         }
 
@@ -183,7 +183,7 @@ class Check_Tool_Visibility {
             }
 
             try {
-                $result = \Easy_MCP_AI\MCP\Gemini_Safe_Schema::sanitize( $def['schema'] );
+                $result = \wordpress_code_ai\MCP\Gemini_Safe_Schema::sanitize( $def['schema'] );
             } catch ( \Throwable $e ) {
                 continue; 
             }
@@ -200,7 +200,7 @@ class Check_Tool_Visibility {
             
             
             
-            if ( array() !== \Easy_MCP_AI\MCP\Gemini_Safe_Schema::unreachable_paths( $map ) ) {
+            if ( array() !== \wordpress_code_ai\MCP\Gemini_Safe_Schema::unreachable_paths( $map ) ) {
                 $unrepairable[] = $name;
             }
         }
@@ -241,7 +241,7 @@ class Check_Tool_Visibility {
         
         
         $surviving = array_values( array_filter( $names, static function ( $name ) use ( $allowed ) {
-            return \Easy_MCP_AI\Auth\Permission_Guard::allowlist_permits( $allowed, $name );
+            return \wordpress_code_ai\Auth\Permission_Guard::allowlist_permits( $allowed, $name );
         } ) );
         if ( empty( $surviving ) ) {
             return array( 'visible' => array(), 'zeroed_by' => 'token_allowlist', 'eligible' => 0, 'missing_caps' => array() );
@@ -315,10 +315,10 @@ class Check_Tool_Visibility {
 
 
     public static function evaluate_token_visibility( $tokens ) {
-        $label = __( 'Every API token can see tools', 'easy-mcp-ai' );
+        $label = __( 'Every API token can see tools', 'wordpress-code-ai' );
 
         if ( ! is_array( $tokens ) ) {
-            return Diagnostic_Result::unknown( 'd1', Diagnostic_Result::TIER_BLOCKER, $label, __( 'Could not read the API tokens.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'd1', Diagnostic_Result::TIER_BLOCKER, $label, __( 'Could not read the API tokens.', 'wordpress-code-ai' ) );
         }
 
         $blind = array();
@@ -339,7 +339,7 @@ class Check_Tool_Visibility {
                 'd1',
                 Diagnostic_Result::TIER_BLOCKER,
                 $label,
-                empty( $tokens ) ? __( 'No API tokens exist yet, so there was nothing to check.', 'easy-mcp-ai' ) : self::describe_counts( $tokens ),
+                empty( $tokens ) ? __( 'No API tokens exist yet, so there was nothing to check.', 'wordpress-code-ai' ) : self::describe_counts( $tokens ),
                 array( 'tokens' => $tokens )
             );
         }
@@ -348,8 +348,8 @@ class Check_Tool_Visibility {
         foreach ( $blind as $t ) {
             $lines[] = sprintf(
                 /* translators: 1: token name, 2: WordPress user, 3: explanation of which filter hid the tools. */
-                __( '"%1$s" (user %2$s) sees no tools — %3$s', 'easy-mcp-ai' ),
-                isset( $t['name'] ) ? $t['name'] : __( 'unnamed', 'easy-mcp-ai' ),
+                __( '"%1$s" (user %2$s) sees no tools — %3$s', 'wordpress-code-ai' ),
+                isset( $t['name'] ) ? $t['name'] : __( 'unnamed', 'wordpress-code-ai' ),
                 isset( $t['user'] ) ? $t['user'] : '?',
                 self::stage_explanation( isset( $t['zeroed_by'] ) ? $t['zeroed_by'] : null )
             );
@@ -367,10 +367,10 @@ class Check_Tool_Visibility {
 
     
     public static function evaluate_low_capability( $tokens ) {
-        $label   = __( 'Token users can reach the tools they need', 'easy-mcp-ai' );
+        $label   = __( 'Token users can reach the tools they need', 'wordpress-code-ai' );
 
         if ( ! is_array( $tokens ) ) {
-            return Diagnostic_Result::unknown( 'd2', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the API tokens.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'd2', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the API tokens.', 'wordpress-code-ai' ) );
         }
 
         $limited = array();
@@ -395,7 +395,7 @@ class Check_Tool_Visibility {
             if ( $visible > 0 && $eligible > 0 && ( $visible / $eligible ) < self::LOW_VISIBILITY_RATIO ) {
                 $limited[] = sprintf(
                     '%s (%d/%d%s)',
-                    isset( $t['name'] ) ? $t['name'] : __( 'unnamed', 'easy-mcp-ai' ),
+                    isset( $t['name'] ) ? $t['name'] : __( 'unnamed', 'wordpress-code-ai' ),
                     $visible,
                     $eligible,
                     ! empty( $t['missing_caps'] ) ? '; ' . implode( ', ', (array) $t['missing_caps'] ) : ''
@@ -410,10 +410,10 @@ class Check_Tool_Visibility {
                 $label,
                 sprintf(
                     /* translators: %s: token names with visible/total counts and missing capabilities. */
-                    __( 'These tokens reach only a small part of the tool set because of their WordPress user\'s role: %s.', 'easy-mcp-ai' ),
+                    __( 'These tokens reach only a small part of the tool set because of their WordPress user\'s role: %s.', 'wordpress-code-ai' ),
                     implode( '; ', $limited )
                 ),
-                __( 'Assign the token to a user with a higher role, or lower the minimum capability for External Data tools under Easy MCP AI → Settings → Advanced.', 'easy-mcp-ai' ),
+                __( 'Assign the token to a user with a higher role, or lower the minimum capability for External Data tools under wordpress-code-ai → Settings → Advanced.', 'wordpress-code-ai' ),
                 array( 'limited_tokens' => $limited )
             );
         }
@@ -422,14 +422,14 @@ class Check_Tool_Visibility {
             'd2',
             Diagnostic_Result::TIER_WARNING,
             $label,
-            empty( $tokens ) ? __( 'No API tokens exist yet, so there was nothing to check.', 'easy-mcp-ai' ) : '',
+            empty( $tokens ) ? __( 'No API tokens exist yet, so there was nothing to check.', 'wordpress-code-ai' ) : '',
             array( 'limited_tokens' => array() )
         );
     }
 
     
     public static function evaluate_dead_patterns( array $dead ) {
-        $label = __( 'Tool filter patterns match something', 'easy-mcp-ai' );
+        $label = __( 'Tool filter patterns match something', 'wordpress-code-ai' );
 
         if ( ! empty( $dead ) ) {
             return Diagnostic_Result::warn(
@@ -438,10 +438,10 @@ class Check_Tool_Visibility {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated glob patterns. */
-                    __( 'These tool filter patterns match no tool at all: %s. A pattern that matches nothing hides tools without any warning.', 'easy-mcp-ai' ),
+                    __( 'These tool filter patterns match no tool at all: %s. A pattern that matches nothing hides tools without any warning.', 'wordpress-code-ai' ),
                     implode( ', ', $dead )
                 ),
-                __( 'Correct or remove the pattern under Easy MCP AI → Settings → Advanced → Whitelist tools.', 'easy-mcp-ai' ),
+                __( 'Correct or remove the pattern under wordpress-code-ai → Settings → Advanced → Whitelist tools.', 'wordpress-code-ai' ),
                 array( 'dead_patterns' => $dead )
             );
         }
@@ -467,35 +467,35 @@ class Check_Tool_Visibility {
 
 
     public static function evaluate_override_names( $status ): Diagnostic_Result {
-        $label = __( 'Every tool EASY_MCP_AI_TOOLS names exists', 'easy-mcp-ai' );
+        $label = __( 'Every tool WORDPRESS_CODE_AI_TOOLS names exists', 'wordpress-code-ai' );
 
         if ( null === $status ) {
-            return Diagnostic_Result::unknown( 'd8', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the list of tools this plugin ships.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'd8', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the list of tools this plugin ships.', 'wordpress-code-ai' ) );
         }
         if ( '' === $status['source'] ) {
-            return Diagnostic_Result::pass( 'd8', Diagnostic_Result::TIER_WARNING, $label, __( 'EASY_MCP_AI_TOOLS is not set.', 'easy-mcp-ai' ), $status );
+            return Diagnostic_Result::pass( 'd8', Diagnostic_Result::TIER_WARNING, $label, __( 'WORDPRESS_CODE_AI_TOOLS is not set.', 'wordpress-code-ai' ), $status );
         }
         if ( 0 === $status['named'] ) {
-            return Diagnostic_Result::pass( 'd8', Diagnostic_Result::TIER_WARNING, $label, __( 'EASY_MCP_AI_TOOLS names no tool.', 'easy-mcp-ai' ), $status );
+            return Diagnostic_Result::pass( 'd8', Diagnostic_Result::TIER_WARNING, $label, __( 'WORDPRESS_CODE_AI_TOOLS names no tool.', 'wordpress-code-ai' ), $status );
         }
 
         $where = 'environment' === $status['source']
-            ? __( 'the EASY_MCP_AI_TOOLS environment variable', 'easy-mcp-ai' )
-            : __( 'the EASY_MCP_AI_TOOLS constant in wp-config.php', 'easy-mcp-ai' );
+            ? __( 'the WORDPRESS_CODE_AI_TOOLS environment variable', 'wordpress-code-ai' )
+            : __( 'the WORDPRESS_CODE_AI_TOOLS constant in wp-config.php', 'wordpress-code-ai' );
 
         $abilities = '';
         if ( ! empty( $status['abilities'] ) ) {
             $abilities = sprintf(
                 /* translators: %s: comma-separated ability tool names. */
-                __( 'These ability tools are not registered on this site now: %s. That is expected while the plugin that provides the ability is inactive; if it is active, the name is misspelled.', 'easy-mcp-ai' ),
+                __( 'These ability tools are not registered on this site now: %s. That is expected while the plugin that provides the ability is inactive; if it is active, the name is misspelled.', 'wordpress-code-ai' ),
                 implode( ', ', $status['abilities'] )
             );
         }
 
         if ( ! empty( $status['unknown'] ) ) {
             $detail = sprintf(
-                /* translators: 1: where EASY_MCP_AI_TOOLS is set, 2: comma-separated tool names. */
-                __( 'These names in %1$s match no tool: %2$s. A name that matches no tool switches nothing, so the tool you meant is on or off exactly as if the entry were not there.', 'easy-mcp-ai' ),
+                /* translators: 1: where WORDPRESS_CODE_AI_TOOLS is set, 2: comma-separated tool names. */
+                __( 'These names in %1$s match no tool: %2$s. A name that matches no tool switches nothing, so the tool you meant is on or off exactly as if the entry were not there.', 'wordpress-code-ai' ),
                 $where,
                 implode( ', ', $status['unknown'] )
             );
@@ -505,8 +505,8 @@ class Check_Tool_Visibility {
                 $label,
                 '' === $abilities ? $detail : $detail . ' ' . $abilities,
                 sprintf(
-                    /* translators: %s: where EASY_MCP_AI_TOOLS is set. */
-                    __( 'Correct the names in %s. Tool names are exact and lower case, for example wp_delete_post.', 'easy-mcp-ai' ),
+                    /* translators: %s: where WORDPRESS_CODE_AI_TOOLS is set. */
+                    __( 'Correct the names in %s. Tool names are exact and lower case, for example wp_delete_post.', 'wordpress-code-ai' ),
                     $where
                 ),
                 $status
@@ -520,8 +520,8 @@ class Check_Tool_Visibility {
                 $label,
                 $abilities,
                 sprintf(
-                    /* translators: %s: where EASY_MCP_AI_TOOLS is set. */
-                    __( 'If the plugin is active, correct the name in %s: an ability tool is named wp_ability_ followed by the ability, as the Tools screen lists it.', 'easy-mcp-ai' ),
+                    /* translators: %s: where WORDPRESS_CODE_AI_TOOLS is set. */
+                    __( 'If the plugin is active, correct the name in %s: an ability tool is named wp_ability_ followed by the ability, as the Tools screen lists it.', 'wordpress-code-ai' ),
                     $where
                 ),
                 $status
@@ -533,8 +533,8 @@ class Check_Tool_Visibility {
             Diagnostic_Result::TIER_WARNING,
             $label,
             sprintf(
-                /* translators: %d: number of tool names EASY_MCP_AI_TOOLS lists. */
-                _n( 'The %d name it lists is a tool.', 'All %d names it lists are tools.', $status['named'], 'easy-mcp-ai' ),
+                /* translators: %d: number of tool names WORDPRESS_CODE_AI_TOOLS lists. */
+                _n( 'The %d name it lists is a tool.', 'All %d names it lists are tools.', $status['named'], 'wordpress-code-ai' ),
                 $status['named']
             ),
             $status
@@ -550,7 +550,7 @@ class Check_Tool_Visibility {
 
 
     public static function evaluate_disabled_categories( array $categories ) {
-        $label = __( 'All tool categories are available', 'easy-mcp-ai' );
+        $label = __( 'All tool categories are available', 'wordpress-code-ai' );
 
         if ( ! empty( $categories ) ) {
             return Diagnostic_Result::pass(
@@ -559,7 +559,7 @@ class Check_Tool_Visibility {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated tool category names. */
-                    __( 'Every tool is switched off in: %s. If an AI client cannot do something in these areas, this is why.', 'easy-mcp-ai' ),
+                    __( 'Every tool is switched off in: %s. If an AI client cannot do something in these areas, this is why.', 'wordpress-code-ai' ),
                     implode( ', ', $categories )
                 ),
                 array( 'disabled_categories' => $categories )
@@ -578,17 +578,17 @@ class Check_Tool_Visibility {
 
 
     public static function evaluate_grant_scopes( $grants ) {
-        $label = __( 'Connected clients have usable permissions', 'easy-mcp-ai' );
+        $label = __( 'Connected clients have usable permissions', 'wordpress-code-ai' );
 
         if ( ! is_array( $grants ) ) {
-            return Diagnostic_Result::unknown( 'd5', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the connected clients.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'd5', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the connected clients.', 'wordpress-code-ai' ) );
         }
 
         $empty = array();
 
         foreach ( $grants as $g ) {
             if ( 0 === (int) ( isset( $g['tools'] ) ? $g['tools'] : 0 ) ) {
-                $empty[] = isset( $g['client'] ) ? (string) $g['client'] : __( 'unnamed client', 'easy-mcp-ai' );
+                $empty[] = isset( $g['client'] ) ? (string) $g['client'] : __( 'unnamed client', 'wordpress-code-ai' );
             }
         }
 
@@ -598,7 +598,7 @@ class Check_Tool_Visibility {
         $scope = ! empty( $grants[0]['truncated'] )
             ? ' ' . sprintf(
                 /* translators: %d: number of connected clients examined. */
-                __( '(Only the first %d connected clients were checked.)', 'easy-mcp-ai' ),
+                __( '(Only the first %d connected clients were checked.)', 'wordpress-code-ai' ),
                 self::GRANT_SCAN_LIMIT
             )
             : '';
@@ -610,10 +610,10 @@ class Check_Tool_Visibility {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated OAuth client names. */
-                    __( 'These connected clients were granted permissions that resolve to no tools: %s. They can sign in and will see an empty tool list.', 'easy-mcp-ai' ),
+                    __( 'These connected clients were granted permissions that resolve to no tools: %s. They can sign in and will see an empty tool list.', 'wordpress-code-ai' ),
                     implode( ', ', $empty )
                 ) . $scope,
-                __( 'Disconnect the client and reconnect it, approving broader permissions on the consent screen.', 'easy-mcp-ai' ),
+                __( 'Disconnect the client and reconnect it, approving broader permissions on the consent screen.', 'wordpress-code-ai' ),
                 array( 'empty_grants' => $empty )
             );
         }
@@ -626,7 +626,7 @@ class Check_Tool_Visibility {
 
 
     public static function evaluate_abilities( $wp_version, $ability_count, $registered_in_wp = null, $enabled_but_missing = array() ) {
-        $label    = __( 'WordPress Abilities available', 'easy-mcp-ai' );
+        $label    = __( 'WordPress Abilities available', 'wordpress-code-ai' );
         $missing  = array_values( array_filter( array_map( 'strval', (array) $enabled_but_missing ) ) );
         $evidence = array(
             'wp_version'          => (string) $wp_version,
@@ -659,12 +659,12 @@ class Check_Tool_Visibility {
                         '%1$d ability is switched on but WordPress has no record of it, so no tool was created for it: %2$s',
                         '%1$d abilities are switched on but WordPress has no record of them, so no tools were created for them: %2$s',
                         count( $missing ),
-                        'easy-mcp-ai'
+                        'wordpress-code-ai'
                     ),
                     count( $missing ),
                     implode( ', ', $missing )
                 ),
-                __( 'The plugin that published these abilities may have been deactivated, renamed them, or may conflict with another plugin bundling the same abilities library. Untick them under Easy MCP AI → Tools → Abilities, or resolve the conflicting plugin. Every other tool is unaffected.', 'easy-mcp-ai' ),
+                __( 'The plugin that published these abilities may have been deactivated, renamed them, or may conflict with another plugin bundling the same abilities library. Untick them under wordpress-code-ai → Tools → Abilities, or resolve the conflicting plugin. Every other tool is unaffected.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -676,11 +676,11 @@ class Check_Tool_Visibility {
                 $label,
                 sprintf(
                     /* translators: 1: current WordPress version, 2: minimum required version. */
-                    __( 'This site runs WordPress %1$s. Abilities published by other plugins only become available as MCP tools on WordPress %2$s and later.', 'easy-mcp-ai' ),
+                    __( 'This site runs WordPress %1$s. Abilities published by other plugins only become available as MCP tools on WordPress %2$s and later.', 'wordpress-code-ai' ),
                     (string) $wp_version,
                     self::ABILITIES_MIN_WP
                 ),
-                __( 'Update WordPress to make plugin abilities available to your AI client.', 'easy-mcp-ai' ),
+                __( 'Update WordPress to make plugin abilities available to your AI client.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -700,10 +700,10 @@ class Check_Tool_Visibility {
                     $label,
                     sprintf(
                         /* translators: 1: "1 ability" or "N abilities", 2: nothing — the count is already inside %1$s. */
-                        __( '%1$s available on this site. None are switched on, which is the default — abilities are opt-in under Easy MCP AI → Tools → Abilities.', 'easy-mcp-ai' ),
+                        __( '%1$s available on this site. None are switched on, which is the default — abilities are opt-in under wordpress-code-ai → Tools → Abilities.', 'wordpress-code-ai' ),
                         sprintf(
                             /* translators: %d: number of abilities registered in WordPress. */
-                            \_n( '%d ability is', '%d abilities are', (int) $registered_in_wp, 'easy-mcp-ai' ),
+                            \_n( '%d ability is', '%d abilities are', (int) $registered_in_wp, 'wordpress-code-ai' ),
                             (int) $registered_in_wp
                         )
                     ),
@@ -715,7 +715,7 @@ class Check_Tool_Visibility {
                 'd6',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Supported, but no installed plugin publishes any abilities yet. Nothing is wrong.', 'easy-mcp-ai' ),
+                __( 'Supported, but no installed plugin publishes any abilities yet. Nothing is wrong.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -726,7 +726,7 @@ class Check_Tool_Visibility {
             $label,
             sprintf(
                 /* translators: %d: number of registered abilities. */
-                __( '%d abilities registered.', 'easy-mcp-ai' ),
+                __( '%d abilities registered.', 'wordpress-code-ai' ),
                 (int) $ability_count
             ),
             $evidence
@@ -755,14 +755,14 @@ class Check_Tool_Visibility {
 
 
     public static function evaluate_sanitizer( array $rewritten, array $unrepairable, $sanitizer_available = true, $scanned_count = null ) {
-        $label = __( 'Plugin ability schemas are client-compatible', 'easy-mcp-ai' );
+        $label = __( 'Plugin ability schemas are client-compatible', 'wordpress-code-ai' );
 
         if ( ! $sanitizer_available ) {
             return Diagnostic_Result::unknown(
                 'd7',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Could not verify — the schema compatibility component is not available on this request.', 'easy-mcp-ai' )
+                __( 'Could not verify — the schema compatibility component is not available on this request.', 'wordpress-code-ai' )
             );
         }
 
@@ -773,10 +773,10 @@ class Check_Tool_Visibility {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated ability names. */
-                    __( 'These plugin abilities publish a tool description this plugin cannot make safe: %s. Some AI clients reject the entire tool list when one entry is invalid, so this can hide every tool at once.', 'easy-mcp-ai' ),
+                    __( 'These plugin abilities publish a tool description this plugin cannot make safe: %s. Some AI clients reject the entire tool list when one entry is invalid, so this can hide every tool at once.', 'wordpress-code-ai' ),
                     implode( ', ', $unrepairable )
                 ),
-                __( 'Report the ability names above to the plugin that provides them. Deactivating that plugin restores the rest of the tool list in the meantime.', 'easy-mcp-ai' ),
+                __( 'Report the ability names above to the plugin that provides them. Deactivating that plugin restores the rest of the tool list in the meantime.', 'wordpress-code-ai' ),
                 array( 'unrepairable' => $unrepairable, 'rewritten' => $rewritten )
             );
         }
@@ -788,7 +788,7 @@ class Check_Tool_Visibility {
                 $label,
                 sprintf(
                     /* translators: %d: number of abilities adjusted automatically. */
-                    __( '%d plugin ability schema(s) are adjusted automatically for client compatibility. No action needed.', 'easy-mcp-ai' ),
+                    __( '%d plugin ability schema(s) are adjusted automatically for client compatibility. No action needed.', 'wordpress-code-ai' ),
                     count( $rewritten )
                 ),
                 array( 'rewritten' => $rewritten )
@@ -804,7 +804,7 @@ class Check_Tool_Visibility {
                 'd7',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'No plugin abilities are registered, so there was nothing to check.', 'easy-mcp-ai' ),
+                __( 'No plugin abilities are registered, so there was nothing to check.', 'wordpress-code-ai' ),
                 array( 'rewritten' => array(), 'unrepairable' => array() )
             );
         }
@@ -839,8 +839,8 @@ class Check_Tool_Visibility {
 
 
     private static function effective_capability( $category, $default_cap ) {
-        if ( class_exists( '\Easy_MCP_AI\MCP\Server' ) ) {
-            return \Easy_MCP_AI\MCP\Server::effective_required_capability( $category, $default_cap );
+        if ( class_exists( '\wordpress_code_ai\MCP\Server' ) ) {
+            return \wordpress_code_ai\MCP\Server::effective_required_capability( $category, $default_cap );
         }
         return $default_cap;
     }
@@ -848,30 +848,30 @@ class Check_Tool_Visibility {
     private static function stage_explanation( $stage ) {
         switch ( $stage ) {
             case 'token_allowlist':
-                return __( 'the token is limited to tools that do not exist or are not registered.', 'easy-mcp-ai' );
+                return __( 'the token is limited to tools that do not exist or are not registered.', 'wordpress-code-ai' );
             case 'disabled_tools':
-                return __( 'every tool it is allowed to use has been switched off in Settings.', 'easy-mcp-ai' );
+                return __( 'every tool it is allowed to use has been switched off in Settings.', 'wordpress-code-ai' );
             case 'allowed_tool_patterns':
-                return __( 'the tool filter patterns in Settings exclude all of them.', 'easy-mcp-ai' );
+                return __( 'the tool filter patterns in Settings exclude all of them.', 'wordpress-code-ai' );
             case 'capability':
-                return __( 'the WordPress user this token belongs to does not have permission for any of them.', 'easy-mcp-ai' );
+                return __( 'the WordPress user this token belongs to does not have permission for any of them.', 'wordpress-code-ai' );
             default:
-                return __( 'no tools are registered.', 'easy-mcp-ai' );
+                return __( 'no tools are registered.', 'wordpress-code-ai' );
         }
     }
 
     private static function stage_fix( $stage ) {
         switch ( $stage ) {
             case 'token_allowlist':
-                return __( 'Edit the token under Easy MCP AI → Connections → API tokens and widen the tools it may use.', 'easy-mcp-ai' );
+                return __( 'Edit the token under wordpress-code-ai → Connections → API tokens and widen the tools it may use.', 'wordpress-code-ai' );
             case 'disabled_tools':
-                return __( 'Re-enable the tools you need under Easy MCP AI → Tools → Core.', 'easy-mcp-ai' );
+                return __( 'Re-enable the tools you need under wordpress-code-ai → Tools → Core.', 'wordpress-code-ai' );
             case 'allowed_tool_patterns':
-                return __( 'Correct or clear the patterns under Easy MCP AI → Settings → Advanced → Whitelist tools.', 'easy-mcp-ai' );
+                return __( 'Correct or clear the patterns under wordpress-code-ai → Settings → Advanced → Whitelist tools.', 'wordpress-code-ai' );
             case 'capability':
-                return __( 'Assign the token to a WordPress user whose role permits these actions — an Editor or Administrator for most tools.', 'easy-mcp-ai' );
+                return __( 'Assign the token to a WordPress user whose role permits these actions — an Editor or Administrator for most tools.', 'wordpress-code-ai' );
             default:
-                return __( 'Check that the plugin is fully activated.', 'easy-mcp-ai' );
+                return __( 'Check that the plugin is fully activated.', 'wordpress-code-ai' );
         }
     }
 
@@ -882,10 +882,10 @@ class Check_Tool_Visibility {
         if ( null !== $registry ) {
             return $registry;
         }
-        if ( ! class_exists( '\Easy_MCP_AI\Tools\Tool_Registry' ) ) {
+        if ( ! class_exists( '\wordpress_code_ai\Tools\Tool_Registry' ) ) {
             return null;
         }
-        $registry = new \Easy_MCP_AI\Tools\Tool_Registry();
+        $registry = new \wordpress_code_ai\Tools\Tool_Registry();
         if ( method_exists( $registry, 'auto_discover' ) ) {
             $registry->auto_discover();
         }
@@ -952,7 +952,7 @@ class Check_Tool_Visibility {
             return null; 
         }
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_tokens';
         
         
         $probe_limit = self::TOKEN_SCAN_LIMIT + 1;
@@ -1040,8 +1040,8 @@ class Check_Tool_Visibility {
 
     private static function override_names( $registry ) {
         return self::classify_override_names(
-            \Easy_MCP_AI\Tools\Tool_State::override_source(),
-            array_keys( \Easy_MCP_AI\Tools\Tool_State::overrides() ),
+            \wordpress_code_ai\Tools\Tool_State::override_source(),
+            array_keys( \wordpress_code_ai\Tools\Tool_State::overrides() ),
             static function () use ( $registry ) {
                 return self::known_tool_names( $registry );
             }
@@ -1097,20 +1097,20 @@ class Check_Tool_Visibility {
 
 
     private static function known_tool_names( $registry ) {
-        $catalogue = new \Easy_MCP_AI\Tools\Tool_Registry();
-        $catalogue->auto_discover( true, \Easy_MCP_AI\Tools\Tool_Directories::all() );
+        $catalogue = new \wordpress_code_ai\Tools\Tool_Registry();
+        $catalogue->auto_discover( true, \wordpress_code_ai\Tools\Tool_Directories::all() );
         $names = (array) $catalogue->get_all_tool_names();
         if ( empty( $names ) ) {
             return array();
         }
-        $names[] = \Easy_MCP_AI\Tools\Feedback\Send_Feedback::NAME;
+        $names[] = \wordpress_code_ai\Tools\Feedback\Send_Feedback::NAME;
         if ( null !== $registry && method_exists( $registry, 'get_all_tool_names' ) ) {
             $names = array_merge( $names, (array) $registry->get_all_tool_names() );
         }
         if ( function_exists( 'wp_get_abilities' ) ) {
             $abilities = \wp_get_abilities();
             foreach ( is_array( $abilities ) ? array_keys( $abilities ) : array() as $slug ) {
-                $names[] = \Easy_MCP_AI\Tools\Dynamic_Tool_Registrar::build_tool_name( (string) $slug );
+                $names[] = \wordpress_code_ai\Tools\Dynamic_Tool_Registrar::build_tool_name( (string) $slug );
             }
         }
         return array_fill_keys( array_map( 'strval', $names ), true );
@@ -1171,12 +1171,12 @@ class Check_Tool_Visibility {
         
         
         
-        if ( ! class_exists( '\Easy_MCP_AI\OAuth\Scope_Map' ) ) {
+        if ( ! class_exists( '\wordpress_code_ai\OAuth\Scope_Map' ) ) {
             return null;
         }
 
-        $consents = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
-        $clients  = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $consents = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
+        $clients  = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
         
         
         $probe_limit = self::GRANT_SCAN_LIMIT + 1;
@@ -1204,7 +1204,7 @@ class Check_Tool_Visibility {
             
             
             
-            $tools = \Easy_MCP_AI\OAuth\Scope_Map::resolve_allowed_tools(
+            $tools = \wordpress_code_ai\OAuth\Scope_Map::resolve_allowed_tools(
                 (string) ( isset( $row['scope'] ) ? $row['scope'] : '' )
             );
             $out[] = array(
@@ -1248,7 +1248,7 @@ class Check_Tool_Visibility {
         if ( ! function_exists( 'wp_get_abilities' ) ) {
             return array();
         }
-        $enabled = \get_option( 'easy_mcp_ai_enabled_abilities', array() );
+        $enabled = \get_option( 'wordpress_code_ai_enabled_abilities', array() );
         if ( ! is_array( $enabled ) || ! $enabled ) {
             return array();
         }
@@ -1291,7 +1291,7 @@ class Check_Tool_Visibility {
         foreach ( $tokens as $t ) {
             $parts[] = sprintf(
                 '%s: %d/%d',
-                isset( $t['name'] ) ? $t['name'] : __( 'unnamed', 'easy-mcp-ai' ),
+                isset( $t['name'] ) ? $t['name'] : __( 'unnamed', 'wordpress-code-ai' ),
                 (int) ( isset( $t['visible'] ) ? $t['visible'] : 0 ),
                 (int) ( isset( $t['total'] ) ? $t['total'] : 0 )
             );
@@ -1304,7 +1304,7 @@ class Check_Tool_Visibility {
         if ( ! empty( $tokens[0]['truncated'] ) ) {
             $detail .= ' ' . sprintf(
                 /* translators: %d: number of tokens examined. */
-                __( '(Only the first %d tokens were checked.)', 'easy-mcp-ai' ),
+                __( '(Only the first %d tokens were checked.)', 'wordpress-code-ai' ),
                 self::TOKEN_SCAN_LIMIT
             );
         }

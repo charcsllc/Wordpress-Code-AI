@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Health;
+namespace wordpress_code_ai\Tools\Site_Health;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Text_Redactor;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Text_Redactor;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Run_Cron_Event extends Base_Tool {
 
     
-    const OWN_PREFIX = 'easy_mcp_ai_';
+    const OWN_PREFIX = 'wordpress_code_ai_';
 
     
     const OUTPUT_LIMIT = 16384;
@@ -38,7 +38,7 @@ class Run_Cron_Event extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Run one scheduled WP-Cron event now, the way wp-cron.php and `wp cron event run` do: a recurring event is rescheduled to its next occurrence and the due instance removed, a one-off event is removed, then the hook fires with its STORED arguments. Required: `hook` (exact name). Optional: `key` (instance key from wp_list_cron_events) or `args` (the exact stored argument array) to pick one instance when the hook has several; with neither, exactly one instance must exist. Refuses a hook that is not scheduled, and every easy_mcp_ai_* hook (use the plugin admin screens for those). The callback runs as no logged-in user, exactly like real cron, so it cannot borrow your permissions. Returns { hook, key, args (redacted), schedule, next_run (after this run, or null), had_callbacks, duration_ms, output (echoed text, redacted, truncated at 16 KB), output_truncated, error (null, or the callback\'s exception message) }. Requires manage_options; on multisite only a network administrator, because core\'s update-check and automatic-update events act on the whole network.';
+        return 'Run one scheduled WP-Cron event now, the way wp-cron.php and `wp cron event run` do: a recurring event is rescheduled to its next occurrence and the due instance removed, a one-off event is removed, then the hook fires with its STORED arguments. Required: `hook` (exact name). Optional: `key` (instance key from wp_list_cron_events) or `args` (the exact stored argument array) to pick one instance when the hook has several; with neither, exactly one instance must exist. Refuses a hook that is not scheduled, and every wordpress_code_ai_* hook (use the plugin admin screens for those). The callback runs as no logged-in user, exactly like real cron, so it cannot borrow your permissions. Returns { hook, key, args (redacted), schedule, next_run (after this run, or null), had_callbacks, duration_ms, output (echoed text, redacted, truncated at 16 KB), output_truncated, error (null, or the callback\'s exception message) }. Requires manage_options; on multisite only a network administrator, because core\'s update-check and automatic-update events act on the whole network.';
     }
 
     public function get_category() {
@@ -94,7 +94,7 @@ class Run_Cron_Event extends Base_Tool {
         
         
         if ( 0 === strpos( $hook, self::OWN_PREFIX ) ) {
-            throw new \RuntimeException( sprintf( 'Refused: %s belongs to Easy MCP AI. Its scheduled tasks are run from the plugin\'s own admin screens, not through this tool.', $hook ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+            throw new \RuntimeException( sprintf( 'Refused: %s belongs to wordpress-code-ai. Its scheduled tasks are run from the plugin\'s own admin screens, not through this tool.', $hook ) ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
         }
 
         $event = $this->select_event( $hook, $arguments );
@@ -301,8 +301,8 @@ class Run_Cron_Event extends Base_Tool {
             }
         }
 
-        if ( null !== $error && class_exists( '\\Easy_MCP_AI\\MCP\\Server' ) ) {
-            $error = \Easy_MCP_AI\MCP\Server::sanitize_error_message( $error );
+        if ( null !== $error && class_exists( '\\wordpress_code_ai\\MCP\\Server' ) ) {
+            $error = \wordpress_code_ai\MCP\Server::sanitize_error_message( $error );
         }
 
         return array(

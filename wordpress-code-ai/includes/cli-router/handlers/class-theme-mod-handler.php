@@ -1,10 +1,10 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -163,12 +163,12 @@ class Theme_Mod_Handler extends Command_Handler {
             return false;
         }
         foreach ( $args as $mod ) {
-            if ( '' === trim( $mod ) || false !== strpbrk( $mod, '[]' ) || null !== \Easy_MCP_AI\Tools\Appearance\Customizer_Settings::denied_reason( $mod ) ) {
+            if ( '' === trim( $mod ) || false !== strpbrk( $mod, '[]' ) || null !== \wordpress_code_ai\Tools\Appearance\Customizer_Settings::denied_reason( $mod ) ) {
                 return false;
             }
         }
-        return ! class_exists( '\\Easy_MCP_AI\\MCP\\Server', false ) || ! method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' )
-            || false !== \Easy_MCP_AI\MCP\Server::current_call_may_use( self::TOOL );
+        return ! class_exists( '\\wordpress_code_ai\\MCP\\Server', false ) || ! method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' )
+            || false !== \wordpress_code_ai\MCP\Server::current_call_may_use( self::TOOL );
     }
 
     

@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -61,7 +61,7 @@ class Delete_Tax_Class extends Base_Tool {
             $slug = $this->parse_slug( $arguments );
             return sprintf(
                 /* translators: 1: tax class slug, 2: number of tax rates */
-                __( "Permanently delete tax class '%1\$s' and its %2\$d tax rate(s).", 'easy-mcp-ai' ),
+                __( "Permanently delete tax class '%1\$s' and its %2\$d tax rate(s).", 'wordpress-code-ai' ),
                 $slug,
                 $this->count_rates( $slug )
             );

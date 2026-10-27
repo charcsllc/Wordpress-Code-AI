@@ -32,7 +32,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -45,10 +45,10 @@ class Check_Transport {
 
     
     const CLEANUP_EVENTS = array(
-        'easy_mcp_ai_cleanup_audit_log',
-        'easy_mcp_ai_cleanup_oauth',
-        'easy_mcp_ai_cleanup_change_log',
-        'easy_mcp_ai_cleanup_new_token_meta',
+        'wordpress_code_ai_cleanup_audit_log',
+        'wordpress_code_ai_cleanup_oauth',
+        'wordpress_code_ai_cleanup_change_log',
+        'wordpress_code_ai_cleanup_new_token_meta',
     );
 
     
@@ -84,7 +84,7 @@ class Check_Transport {
             self::evaluate_proxy_ip(
                 isset( $_SERVER['REMOTE_ADDR'] ) ? \sanitize_text_field( \wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
                 self::forwarding_header_present(),
-                (bool) \has_filter( 'easy_mcp_ai_client_ip' ),
+                (bool) \has_filter( 'wordpress_code_ai_client_ip' ),
                 self::trusted_proxies_configured(),
                 self::resolved_client_ip()
             ),
@@ -102,21 +102,21 @@ class Check_Transport {
 
     public static function evaluate_sapi( $sapi, $server_software ) {
         $sapi     = strtolower( (string) $sapi );
-        $label    = __( 'PHP server interface', 'easy-mcp-ai' );
+        $label    = __( 'PHP server interface', 'wordpress-code-ai' );
         $evidence = array( 'sapi' => $sapi, 'server_software' => (string) $server_software );
 
         if ( 'cgi-fcgi' === $sapi || 'fpm-fcgi' === $sapi ) {
             $detail = sprintf(
                 /* translators: %s: PHP SAPI name. */
-                __( 'Running as %s (FastCGI). If Bearer tokens are being lost, the web server is not handing the Authorization header to PHP, and PHP cannot recover it on its own. On Apache either the .htaccess rewrite WordPress writes or CGIPassAuth On in the server configuration hands it over; on nginx the server configuration needs the equivalent fastcgi_param.', 'easy-mcp-ai' ),
+                __( 'Running as %s (FastCGI). If Bearer tokens are being lost, the web server is not handing the Authorization header to PHP, and PHP cannot recover it on its own. On Apache either the .htaccess rewrite WordPress writes or CGIPassAuth On in the server configuration hands it over; on nginx the server configuration needs the equivalent fastcgi_param.', 'wordpress-code-ai' ),
                 $sapi
             );
         } elseif ( 'apache2handler' === $sapi ) {
-            $detail = __( 'Running as mod_php. If Bearer tokens are being lost, the .htaccess rewrite that passes the Authorization header to PHP is missing — see the next check.', 'easy-mcp-ai' );
+            $detail = __( 'Running as mod_php. If Bearer tokens are being lost, the .htaccess rewrite that passes the Authorization header to PHP is missing — see the next check.', 'wordpress-code-ai' );
         } else {
             $detail = sprintf(
                 /* translators: %s: PHP SAPI name. */
-                __( 'Running as %s.', 'easy-mcp-ai' ),
+                __( 'Running as %s.', 'wordpress-code-ai' ),
                 $sapi
             );
         }
@@ -146,14 +146,14 @@ class Check_Transport {
 
 
     public static function evaluate_htaccess_rule( $htaccess, $is_apache, $permalinks, $sapi = '', $is_multisite = false ) {
-        $label = __( 'Authorization header rewrite present', 'easy-mcp-ai' );
+        $label = __( 'Authorization header rewrite present', 'wordpress-code-ai' );
 
         if ( ! $is_apache ) {
             return Diagnostic_Result::unknown(
                 'a3',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Not applicable — this check only applies to Apache and LiteSpeed, which read .htaccess.', 'easy-mcp-ai' )
+                __( 'Not applicable — this check only applies to Apache and LiteSpeed, which read .htaccess.', 'wordpress-code-ai' )
             );
         }
 
@@ -162,7 +162,7 @@ class Check_Transport {
                 'a3',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Not checked — on Multisite, WordPress never writes this rewrite rule automatically. If Bearer tokens are being lost, it has to be added to .htaccess by hand; there is no settings screen that generates it here.', 'easy-mcp-ai' )
+                __( 'Not checked — on Multisite, WordPress never writes this rewrite rule automatically. If Bearer tokens are being lost, it has to be added to .htaccess by hand; there is no settings screen that generates it here.', 'wordpress-code-ai' )
             );
         }
 
@@ -174,7 +174,7 @@ class Check_Transport {
                 'a3',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Not checked — permalinks are set to Plain, which is reported separately and is the cause to fix first.', 'easy-mcp-ai' )
+                __( 'Not checked — permalinks are set to Plain, which is reported separately and is the cause to fix first.', 'wordpress-code-ai' )
             );
         }
 
@@ -183,7 +183,7 @@ class Check_Transport {
                 'a3',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Could not read .htaccess. It may be absent, outside the readable path, or managed by the host.', 'easy-mcp-ai' )
+                __( 'Could not read .htaccess. It may be absent, outside the readable path, or managed by the host.', 'wordpress-code-ai' )
             );
         }
 
@@ -206,8 +206,8 @@ class Check_Transport {
             'a3',
             Diagnostic_Result::TIER_WARNING,
             $label,
-            __( 'The .htaccess rewrite that hands the Authorization header to PHP is missing. Bearer tokens can be dropped before WordPress ever sees them, which looks exactly like an invalid token.', 'easy-mcp-ai' ),
-            __( 'Open Settings → Permalinks and press Save Changes — WordPress rewrites the rule. If .htaccess is not writable, add it manually above the WordPress block.', 'easy-mcp-ai' ),
+            __( 'The .htaccess rewrite that hands the Authorization header to PHP is missing. Bearer tokens can be dropped before WordPress ever sees them, which looks exactly like an invalid token.', 'wordpress-code-ai' ),
+            __( 'Open Settings → Permalinks and press Save Changes — WordPress rewrites the rule. If .htaccess is not writable, add it manually above the WordPress block.', 'wordpress-code-ai' ),
             array( 'rule_present' => false, 'sapi' => (string) $sapi )
         );
     }
@@ -230,12 +230,12 @@ class Check_Transport {
         $detail = $rule_present
             ? sprintf(
                 /* translators: %s: PHP SAPI name, e.g. "fpm-fcgi". */
-                __( 'The .htaccess rewrite is present. This site runs PHP as %s (FastCGI), where whether this rule delivers the Authorization header depends on how the web server hands requests to PHP, so the file alone cannot confirm the header arrives. The "Login credentials reach WordPress" check measures it on a full Re-run.', 'easy-mcp-ai' ),
+                __( 'The .htaccess rewrite is present. This site runs PHP as %s (FastCGI), where whether this rule delivers the Authorization header depends on how the web server hands requests to PHP, so the file alone cannot confirm the header arrives. The "Login credentials reach WordPress" check measures it on a full Re-run.', 'wordpress-code-ai' ),
                 $sapi
             )
             : sprintf(
                 /* translators: %s: PHP SAPI name, e.g. "fpm-fcgi". */
-                __( 'The .htaccess rewrite is not present. This site runs PHP as %s (FastCGI), where the web server can deliver the Authorization header without it (CGIPassAuth On in its configuration), so a missing rule is not a fault on its own. The "Login credentials reach WordPress" check measures it on a full Re-run, and offers to add the rule if the header is lost.', 'easy-mcp-ai' ),
+                __( 'The .htaccess rewrite is not present. This site runs PHP as %s (FastCGI), where the web server can deliver the Authorization header without it (CGIPassAuth On in its configuration), so a missing rule is not a fault on its own. The "Login credentials reach WordPress" check measures it on a full Re-run, and offers to add the rule if the header is lost.', 'wordpress-code-ai' ),
                 $sapi
             );
 
@@ -253,7 +253,7 @@ class Check_Transport {
 
 
     public static function evaluate_error_display( $display_errors, $wp_debug_display, $wp_debug = false ) {
-        $label = __( 'PHP errors hidden from responses', 'easy-mcp-ai' );
+        $label = __( 'PHP errors hidden from responses', 'wordpress-code-ai' );
 
         
         
@@ -284,8 +284,8 @@ class Check_Transport {
                 'a4',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'PHP is configured to print errors into the page. WordPress suppresses this for REST responses, so most MCP tool replies are unaffected — but OAuth discovery responses, anything emitted before WordPress finishes loading, and output a plugin echoes directly are all still at risk, and any of those can make a reply unreadable to the AI client.', 'easy-mcp-ai' ),
-                __( 'Set WP_DEBUG_DISPLAY to false in wp-config.php, and display_errors to Off in php.ini on production.', 'easy-mcp-ai' ),
+                __( 'PHP is configured to print errors into the page. WordPress suppresses this for REST responses, so most MCP tool replies are unaffected — but OAuth discovery responses, anything emitted before WordPress finishes loading, and output a plugin echoes directly are all still at risk, and any of those can make a reply unreadable to the AI client.', 'wordpress-code-ai' ),
+                __( 'Set WP_DEBUG_DISPLAY to false in wp-config.php, and display_errors to Off in php.ini on production.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -314,14 +314,14 @@ class Check_Transport {
 
 
     public static function evaluate_stray_output( array $heads, array $tails = array() ) {
-        $label = __( 'No stray output before headers', 'easy-mcp-ai' );
+        $label = __( 'No stray output before headers', 'wordpress-code-ai' );
 
         if ( empty( $heads ) && empty( $tails ) ) {
             return Diagnostic_Result::unknown(
                 'a5',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Could not read wp-config.php or the active theme\'s functions.php to check them.', 'easy-mcp-ai' )
+                __( 'Could not read wp-config.php or the active theme\'s functions.php to check them.', 'wordpress-code-ai' )
             );
         }
 
@@ -344,14 +344,14 @@ class Check_Transport {
             if ( ! empty( $dirty_before ) ) {
                 $where[] = sprintf(
                     /* translators: %s: comma-separated file names. */
-                    __( 'before the opening PHP tag in: %s', 'easy-mcp-ai' ),
+                    __( 'before the opening PHP tag in: %s', 'wordpress-code-ai' ),
                     implode( ', ', $dirty_before )
                 );
             }
             if ( ! empty( $dirty_after ) ) {
                 $where[] = sprintf(
                     /* translators: %s: comma-separated file names. */
-                    __( 'after the closing PHP tag in: %s', 'easy-mcp-ai' ),
+                    __( 'after the closing PHP tag in: %s', 'wordpress-code-ai' ),
                     implode( ', ', $dirty_after )
                 );
             }
@@ -362,10 +362,10 @@ class Check_Transport {
                 $label,
                 sprintf(
                     /* translators: %s: one or two clauses naming where and in which files. */
-                    __( 'Content appears %s. That output is sent ahead of the response headers, which breaks OAuth discovery and can corrupt JSON replies.', 'easy-mcp-ai' ),
+                    __( 'Content appears %s. That output is sent ahead of the response headers, which breaks OAuth discovery and can corrupt JSON replies.', 'wordpress-code-ai' ),
                     implode( '; and ', $where )
                 ),
-                __( 'Edit the listed files and remove any blank lines, spaces or byte-order marks outside the <?php ... ?> tags — including anything left after a trailing ?> at the end of the file.', 'easy-mcp-ai' ),
+                __( 'Edit the listed files and remove any blank lines, spaces or byte-order marks outside the <?php ... ?> tags — including anything left after a trailing ?> at the end of the file.', 'wordpress-code-ai' ),
                 array(
                     'files_with_stray_output_before' => $dirty_before,
                     'files_with_stray_output_after'  => $dirty_after,
@@ -404,7 +404,7 @@ class Check_Transport {
 
 
     public static function evaluate_proxy_ip( $remote_addr, $forwarding_header_present, $filter_hooked, $trusted_configured = false, $resolved_addr = null ) {
-        $label    = __( 'Client IP resolves per visitor', 'easy-mcp-ai' );
+        $label    = __( 'Client IP resolves per visitor', 'wordpress-code-ai' );
         $evidence = array(
             'remote_addr'        => (string) $remote_addr,
             'forwarding_header'  => (bool) $forwarding_header_present,
@@ -418,8 +418,8 @@ class Check_Transport {
                 'a6',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'This site appears to be behind a proxy or CDN: every request reaches PHP from the same internal address. Per-IP rate limits, the failed-authentication lockout, the IP whitelist and the addresses in the Audit Log are therefore shared across all visitors.', 'easy-mcp-ai' ),
-                __( 'Declare the proxy with the EASY_MCP_AI_TRUSTED_PROXIES constant in wp-config.php — see https://docs.easymcpai.com/trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The easy_mcp_ai_client_ip filter remains available.', 'easy-mcp-ai' ),
+                __( 'This site appears to be behind a proxy or CDN: every request reaches PHP from the same internal address. Per-IP rate limits, the failed-authentication lockout, the IP whitelist and the addresses in the Audit Log are therefore shared across all visitors.', 'wordpress-code-ai' ),
+                __( 'Declare the proxy with the WORDPRESS_CODE_AI_TRUSTED_PROXIES constant in wp-config.php — see https://docs.easymcpai.com/trusted-proxies. Best of all is fixing it on the server — mod_remoteip on Apache, or set_real_ip_from / real_ip_header on nginx — which corrects WordPress and every other plugin at once. The wordpress_code_ai_client_ip filter remains available.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -429,8 +429,8 @@ class Check_Transport {
                 'a6',
                 Diagnostic_Result::TIER_WARNING,
                 $label,
-                __( 'Trusted proxies are declared, but this request still resolved to the proxy address: the proxy that delivered it is not on the list, or the declared client-IP header is not the one it sends.', 'easy-mcp-ai' ),
-                __( 'Add the address shown in the evidence to EASY_MCP_AI_TRUSTED_PROXIES in wp-config.php, or set EASY_MCP_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://docs.easymcpai.com/trusted-proxies.', 'easy-mcp-ai' ),
+                __( 'Trusted proxies are declared, but this request still resolved to the proxy address: the proxy that delivered it is not on the list, or the declared client-IP header is not the one it sends.', 'wordpress-code-ai' ),
+                __( 'Add the address shown in the evidence to WORDPRESS_CODE_AI_TRUSTED_PROXIES in wp-config.php, or set WORDPRESS_CODE_AI_CLIENT_IP_HEADER to the header your proxy actually sends (Cloudflare sends CF-Connecting-IP) — see https://docs.easymcpai.com/trusted-proxies.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -446,7 +446,7 @@ class Check_Transport {
 
 
     public static function evaluate_cron( array $unscheduled, $cron_disabled, array $overdue = array() ) {
-        $label    = __( 'Scheduled cleanup is registered', 'easy-mcp-ai' );
+        $label    = __( 'Scheduled cleanup is registered', 'wordpress-code-ai' );
         $evidence = array(
             'unscheduled'     => $unscheduled,
             'overdue'         => $overdue,
@@ -454,7 +454,7 @@ class Check_Transport {
         );
 
         $note = $cron_disabled
-            ? ' ' . __( 'DISABLE_WP_CRON is set on this site, so WordPress relies on a system cron to run scheduled work.', 'easy-mcp-ai' )
+            ? ' ' . __( 'DISABLE_WP_CRON is set on this site, so WordPress relies on a system cron to run scheduled work.', 'wordpress-code-ai' )
             : '';
 
         if ( ! empty( $unscheduled ) ) {
@@ -464,10 +464,10 @@ class Check_Transport {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated cron event names. */
-                    __( 'These cleanup jobs are not scheduled: %s. Without them the audit log, change history and expired OAuth records grow without limit, which slows the database over time.', 'easy-mcp-ai' ),
+                    __( 'These cleanup jobs are not scheduled: %s. Without them the audit log, change history and expired OAuth records grow without limit, which slows the database over time.', 'wordpress-code-ai' ),
                     implode( ', ', $unscheduled )
                 ) . $note,
-                __( 'Deactivate and reactivate the plugin to re-register its scheduled jobs.', 'easy-mcp-ai' ),
+                __( 'Deactivate and reactivate the plugin to re-register its scheduled jobs.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -490,12 +490,12 @@ class Check_Transport {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated cron event names. */
-                    __( 'These cleanup jobs are scheduled but have not run for days: %s. That usually means WordPress\'s scheduler is not firing at all, so the audit log, change history and expired OAuth records keep growing.', 'easy-mcp-ai' ),
+                    __( 'These cleanup jobs are scheduled but have not run for days: %s. That usually means WordPress\'s scheduler is not firing at all, so the audit log, change history and expired OAuth records keep growing.', 'wordpress-code-ai' ),
                     implode( ', ', $overdue )
                 ) . $note,
                 $cron_disabled
-                    ? __( 'DISABLE_WP_CRON is set, so check that the system cron job which calls wp-cron.php actually exists and is running.', 'easy-mcp-ai' )
-                    : __( 'Check that wp-cron.php can be reached on this site — some hosts and security plugins block it.', 'easy-mcp-ai' ),
+                    ? __( 'DISABLE_WP_CRON is set, so check that the system cron job which calls wp-cron.php actually exists and is running.', 'wordpress-code-ai' )
+                    : __( 'Check that wp-cron.php can be reached on this site — some hosts and security plugins block it.', 'wordpress-code-ai' ),
                 $evidence
             );
         }
@@ -504,7 +504,7 @@ class Check_Transport {
             'b3',
             Diagnostic_Result::TIER_WARNING,
             $label,
-            trim( __( 'All cleanup jobs are scheduled.', 'easy-mcp-ai' ) . $note ),
+            trim( __( 'All cleanup jobs are scheduled.', 'wordpress-code-ai' ) . $note ),
             $evidence
         );
     }
@@ -875,12 +875,12 @@ class Check_Transport {
 
     
     private static function trusted_proxies_configured() {
-        return count( \Easy_MCP_AI\Client_IP::trusted_proxies() ) > 0;
+        return count( \wordpress_code_ai\Client_IP::trusted_proxies() ) > 0;
     }
 
     
     private static function resolved_client_ip() {
-        return (string) \Easy_MCP_AI\Client_IP::get();
+        return (string) \wordpress_code_ai\Client_IP::get();
     }
 
     private static function forwarding_header_present() {

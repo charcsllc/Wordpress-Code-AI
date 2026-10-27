@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
-use Easy_MCP_AI\Auth\Token_Keys;
+use wordpress_code_ai\Auth\Token_Keys;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -40,10 +40,10 @@ class OAuth_Token_Manager {
     public function mint_access_token( string $client_id, int $wp_user_id, string $resource, string $scope, int $parent_id = 0 ): ?array {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
 
         $access_ttl  = self::access_ttl( $client_id, $wp_user_id );
-        $refresh_ttl = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_oauth_refresh_token_ttl', self::DEFAULT_REFRESH_TTL );
+        $refresh_ttl = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_oauth_refresh_token_ttl', self::DEFAULT_REFRESH_TTL );
 
         
         
@@ -110,7 +110,7 @@ class OAuth_Token_Manager {
 
 
     private static function access_ttl( string $client_id, int $wp_user_id ): int {
-        $configured = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_oauth_access_token_ttl', self::DEFAULT_ACCESS_TTL );
+        $configured = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_oauth_access_token_ttl', self::DEFAULT_ACCESS_TTL );
 
         
 
@@ -125,10 +125,10 @@ class OAuth_Token_Manager {
 
 
 
-        $filtered = \apply_filters( 'easy_mcp_ai_oauth_access_token_ttl', $configured, $wp_user_id, $client_id );
+        $filtered = \apply_filters( 'wordpress_code_ai_oauth_access_token_ttl', $configured, $wp_user_id, $client_id );
 
         $valid = false;
-        $ttl   = \Easy_MCP_AI\Config::validate( 'oauth_access_token_ttl', $filtered, $valid );
+        $ttl   = \wordpress_code_ai\Config::validate( 'oauth_access_token_ttl', $filtered, $valid );
         return $valid ? (int) $ttl : $configured;
     }
 
@@ -141,7 +141,7 @@ class OAuth_Token_Manager {
     public function validate_access_token( string $raw_token ) {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
 
         
         if ( 0 !== strpos( $raw_token, self::TOKEN_PREFIX ) ) {
@@ -181,7 +181,7 @@ class OAuth_Token_Manager {
 
         
         
-        $throttle_key = 'easy_mcp_ai_oat_lu_' . (int) $row['id'];
+        $throttle_key = 'wordpress_code_ai_oat_lu_' . (int) $row['id'];
         if ( ! \get_transient( $throttle_key ) ) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Plugin-owned table write; throttled via transient.
             $wpdb->update(
@@ -210,7 +210,7 @@ class OAuth_Token_Manager {
     public function refresh( string $raw_refresh_token, string $client_id, string $resource ) {
         global $wpdb;
 
-        $table        = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table        = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
         $key_id       = Token_Keys::parse_id( $raw_refresh_token, '' );
         $refresh_hash = Token_Keys::hash( $raw_refresh_token, $key_id );
         if ( null === $refresh_hash ) {
@@ -233,7 +233,7 @@ class OAuth_Token_Manager {
 
         
         
-        $row['scope'] = implode( ' ', \Easy_MCP_AI\OAuth\Scope_Map::apply_legacy_scope_upgrades(
+        $row['scope'] = implode( ' ', \wordpress_code_ai\OAuth\Scope_Map::apply_legacy_scope_upgrades(
             array_filter( explode( ' ', $row['scope'] ) )
         ) );
 
@@ -336,7 +336,7 @@ class OAuth_Token_Manager {
     public function revoke_token( string $token_hash, string $client_id = '' ): bool {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
 
         
         if ( '' !== $client_id ) {
@@ -378,7 +378,7 @@ class OAuth_Token_Manager {
     public function revoke_by_refresh_hash( string $refresh_hash, string $client_id = '' ): bool {
         global $wpdb;
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix.
         $row   = $wpdb->get_row(
             $wpdb->prepare(
@@ -478,7 +478,7 @@ class OAuth_Token_Manager {
             return false;
         }
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix; freshness required.
         
@@ -507,13 +507,13 @@ class OAuth_Token_Manager {
 
 
     private function log_refresh_event( string $event, int $chain_id, string $client_id ): void {
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_enabled', true ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_enabled', true ) ) {
             return;
         }
         global $wpdb;
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Plugin-owned audit table.
         $wpdb->insert(
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             array(
                 'token_id'      => 0,
                 'tool_name'     => '_oauth_refresh',
@@ -528,7 +528,7 @@ class OAuth_Token_Manager {
                 
                 
                 
-                'ip_address'    => class_exists( '\\Easy_MCP_AI\\Client_IP' ) ? \Easy_MCP_AI\Client_IP::get() : '',
+                'ip_address'    => class_exists( '\\wordpress_code_ai\\Client_IP' ) ? \wordpress_code_ai\Client_IP::get() : '',
                 
                 
                 'auth_source'     => 'oauth',
@@ -557,7 +557,7 @@ class OAuth_Token_Manager {
 
         global $wpdb;
 
-        $table  = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $table  = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix.
         $result = $wpdb->query(
             $wpdb->prepare(

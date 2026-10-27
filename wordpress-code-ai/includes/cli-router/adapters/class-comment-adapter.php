@@ -1,12 +1,12 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Batch;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Db_Object_Command;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Batch;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Db_Object_Command;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -739,10 +739,10 @@ class Comment_Adapter extends Db_Object_Command {
 
 
     private static function caller_may_use( string $tool ): bool {
-        if ( ! class_exists( '\\Easy_MCP_AI\\MCP\\Server', false ) || ! method_exists( '\\Easy_MCP_AI\\MCP\\Server', 'current_call_may_use' ) ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\MCP\\Server', false ) || ! method_exists( '\\wordpress_code_ai\\MCP\\Server', 'current_call_may_use' ) ) {
             return true;
         }
-        return false !== \Easy_MCP_AI\MCP\Server::current_call_may_use( $tool );
+        return false !== \wordpress_code_ai\MCP\Server::current_call_may_use( $tool );
     }
 
     

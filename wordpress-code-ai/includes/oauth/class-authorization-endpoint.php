@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -20,7 +20,7 @@ class Authorization_Endpoint {
 
 
 
-    const NAMESPACE_V1 = 'easy-mcp-ai/v1';
+    const NAMESPACE_V1 = 'wordpress-code-ai/v1';
 
     
 
@@ -49,7 +49,7 @@ class Authorization_Endpoint {
     const ISS_NONE     = 'none';
 
     
-    const ISS_PARAM = 'easy_mcp_ai_iss';
+    const ISS_PARAM = 'wordpress_code_ai_iss';
 
     
 
@@ -96,7 +96,7 @@ class Authorization_Endpoint {
 
 
     public static function consent_nonce_action( string $client_id, string $mode ): string {
-        $action = 'easy_mcp_ai_oauth_consent_' . $client_id;
+        $action = 'wordpress_code_ai_oauth_consent_' . $client_id;
         return self::ISS_SITE === $mode ? $action : $action . '|' . $mode;
     }
 
@@ -113,7 +113,7 @@ class Authorization_Endpoint {
 
 
     public static function resolved_min_capability() {
-        return \Easy_MCP_AI\Auth\Connect_Policy::floor_capability();
+        return \wordpress_code_ai\Auth\Connect_Policy::floor_capability();
     }
 
     
@@ -165,11 +165,11 @@ class Authorization_Endpoint {
         
         
         
-        if ( ! \Easy_MCP_AI\Auth\Connect_Policy::current_user_can_connect( \Easy_MCP_AI\Auth\Connect_Policy::CHANNEL_OAUTH ) ) {
+        if ( ! \wordpress_code_ai\Auth\Connect_Policy::current_user_can_connect( \wordpress_code_ai\Auth\Connect_Policy::CHANNEL_OAUTH ) ) {
             return $this->redirect_with_error(
                 $params,
                 'access_denied',
-                __( 'Your account does not have sufficient permissions to authorize MCP access.', 'easy-mcp-ai' ),
+                __( 'Your account does not have sufficient permissions to authorize MCP access.', 'wordpress-code-ai' ),
                 'insufficient_capability'
             );
         }
@@ -186,7 +186,7 @@ class Authorization_Endpoint {
         foreach ( $scope_list as $s ) {
             if ( 'mcp' !== $s && ! in_array( $s, $valid_scopes, true ) ) {
                 return $this->error_response(
-                    new \WP_Error( 'invalid_scope', __( 'Unknown scope requested.', 'easy-mcp-ai' ) ),
+                    new \WP_Error( 'invalid_scope', __( 'Unknown scope requested.', 'wordpress-code-ai' ) ),
                     $params
                 );
             }
@@ -237,7 +237,7 @@ class Authorization_Endpoint {
                     
                     $code = $this->mint_authorization_code( $stored, $user->ID, $grant_scope );
                     if ( null === $code ) {
-                        return $this->redirect_with_error( $params, 'server_error', __( 'Failed to issue authorization code.', 'easy-mcp-ai' ), 'code_issue_failed' );
+                        return $this->redirect_with_error( $params, 'server_error', __( 'Failed to issue authorization code.', 'wordpress-code-ai' ), 'code_issue_failed' );
                     }
                     Step_Up::clear( $user->ID, $stored['client_id'] );
                     return $this->redirect_with_code( $params['redirect_uri'], $code, $params['state'] );
@@ -265,13 +265,13 @@ class Authorization_Endpoint {
         
         
         $params['scope_sig'] = self::sign_scope( $params['client_id'], $params['scope'] );
-        $script_nonce        = wp_create_nonce( 'easy_mcp_ai_consent_script' );
+        $script_nonce        = wp_create_nonce( 'wordpress_code_ai_consent_script' );
         
         
         $consent_options = array();
         if ( self::ISS_SITE !== $this->iss_mode ) {
             $consent_options = array(
-                'form_action'  => home_url( '?easy_mcp_ai_oauth=authorize&' . self::ISS_PARAM . '=' . $this->iss_mode ),
+                'form_action'  => home_url( '?wordpress_code_ai_oauth=authorize&' . self::ISS_PARAM . '=' . $this->iss_mode ),
                 'nonce_action' => self::consent_nonce_action( $params['client_id'], $this->iss_mode ),
             );
         }
@@ -284,7 +284,7 @@ class Authorization_Endpoint {
             if ( $local_document ) {
                 $consent_options['notice'] = sprintf(
                     /* translators: 1: application name, 2: where the sign-in goes, such as 127.0.0.1 */
-                    __( '%1$s will hand this sign-in to a program on your computer (%2$s). Any program can use this application\'s public client ID, so approve only if you started this connection yourself just now.', 'easy-mcp-ai' ),
+                    __( '%1$s will hand this sign-in to a program on your computer (%2$s). Any program can use this application\'s public client ID, so approve only if you started this connection yourself just now.', 'wordpress-code-ai' ),
                     (string) $client->client_name,
                     (string) ( wp_parse_url( $params['redirect_uri'], PHP_URL_HOST ) ?: wp_parse_url( $params['redirect_uri'], PHP_URL_SCHEME ) )
                 );
@@ -330,17 +330,17 @@ class Authorization_Endpoint {
             $this->log_authorize_failure( 'not_logged_in', $this->extract_params( $request ) );
             return new \WP_Error(
                 'access_denied',
-                __( 'You must be logged in to authorize this request.', 'easy-mcp-ai' ),
+                __( 'You must be logged in to authorize this request.', 'wordpress-code-ai' ),
                 array( 'status' => 401 )
             );
         }
 
         
-        if ( ! \Easy_MCP_AI\Auth\Connect_Policy::current_user_can_connect( \Easy_MCP_AI\Auth\Connect_Policy::CHANNEL_OAUTH ) ) {
+        if ( ! \wordpress_code_ai\Auth\Connect_Policy::current_user_can_connect( \wordpress_code_ai\Auth\Connect_Policy::CHANNEL_OAUTH ) ) {
             $this->log_authorize_failure( 'insufficient_capability', $this->extract_params( $request ) );
             return new \WP_Error(
                 'access_denied',
-                __( 'Your account does not have sufficient permissions to authorize MCP access.', 'easy-mcp-ai' ),
+                __( 'Your account does not have sufficient permissions to authorize MCP access.', 'wordpress-code-ai' ),
                 array( 'status' => 403 )
             );
         }
@@ -353,7 +353,7 @@ class Authorization_Endpoint {
             $this->log_authorize_failure( 'nonce_failed', $params );
             return new \WP_Error(
                 'invalid_request',
-                __( 'Security check failed. Please try again.', 'easy-mcp-ai' ),
+                __( 'Security check failed. Please try again.', 'wordpress-code-ai' ),
                 array( 'status' => 403 )
             );
         }
@@ -371,7 +371,7 @@ class Authorization_Endpoint {
             $this->log_authorize_failure( 'scope_signature_failed', $params );
             return new \WP_Error(
                 'invalid_request',
-                __( 'Scope integrity check failed. Please restart authorization.', 'easy-mcp-ai' ),
+                __( 'Scope integrity check failed. Please restart authorization.', 'wordpress-code-ai' ),
                 array( 'status' => 403 )
             );
         }
@@ -447,7 +447,7 @@ class Authorization_Endpoint {
         return $this->redirect_with_error(
             $params,
             'access_denied',
-            __( 'The user denied the authorization request.', 'easy-mcp-ai' ),
+            __( 'The user denied the authorization request.', 'wordpress-code-ai' ),
             'user_denied'
         );
     }
@@ -475,7 +475,7 @@ class Authorization_Endpoint {
         return $this->redirect_with_error(
             $params,
             'access_denied',
-            __( 'No permissions were selected, so nothing was granted. Choose at least one permission and approve again.', 'easy-mcp-ai' ),
+            __( 'No permissions were selected, so nothing was granted. Choose at least one permission and approve again.', 'wordpress-code-ai' ),
             'approved_without_scopes'
         );
     }
@@ -506,7 +506,7 @@ class Authorization_Endpoint {
         self::store_consent( $user->ID, $stored['client_id'], $scope_string );
         $code = $this->mint_authorization_code( $stored, $user->ID, $scope_string );
         if ( null === $code ) {
-            return $this->redirect_with_error( $params, 'server_error', __( 'Failed to issue authorization code.', 'easy-mcp-ai' ), 'code_issue_failed' );
+            return $this->redirect_with_error( $params, 'server_error', __( 'Failed to issue authorization code.', 'wordpress-code-ai' ), 'code_issue_failed' );
         }
         Step_Up::clear( $user->ID, $stored['client_id'] );
 
@@ -658,7 +658,7 @@ class Authorization_Endpoint {
 
 
     private function log_authorize_failure( $reason, array $params = array(), $detail = '' ) {
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_enabled', true ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_enabled', true ) ) {
             return;
         }
 
@@ -685,7 +685,7 @@ class Authorization_Endpoint {
 
         global $wpdb;
         $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct insert required for audit logging; mirrors Server::log_auth_failure().
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             array(
                 'token_id'        => 0,
                 'tool_name'       => '_oauth_authorize',
@@ -695,7 +695,7 @@ class Authorization_Endpoint {
                 
                 
                 
-                'ip_address'      => class_exists( '\\Easy_MCP_AI\\Client_IP' ) ? \Easy_MCP_AI\Client_IP::get() : '',
+                'ip_address'      => class_exists( '\\wordpress_code_ai\\Client_IP' ) ? \wordpress_code_ai\Client_IP::get() : '',
                 
                 
                 
@@ -803,14 +803,14 @@ class Authorization_Endpoint {
         if ( empty( $params['client_id'] ) ) {
             return new \WP_Error(
                 'invalid_request',
-                __( 'Missing required parameter: client_id', 'easy-mcp-ai' ),
+                __( 'Missing required parameter: client_id', 'wordpress-code-ai' ),
                 array( 'status' => 400, 'no_redirect' => true )
             );
         }
         if ( empty( $params['redirect_uri'] ) ) {
             return new \WP_Error(
                 'invalid_request',
-                __( 'Missing required parameter: redirect_uri', 'easy-mcp-ai' ),
+                __( 'Missing required parameter: redirect_uri', 'wordpress-code-ai' ),
                 array( 'status' => 400, 'no_redirect' => true )
             );
         }
@@ -826,10 +826,10 @@ class Authorization_Endpoint {
             $accept_new = Client_Metadata_Support::accepts_sign_ins();
             if ( $accept_new || Client_Metadata::is_stored( $params['client_id'] ) ) {
                 
-                if ( ! \Easy_MCP_AI\Auth\Connect_Policy::current_user_can_connect( \Easy_MCP_AI\Auth\Connect_Policy::CHANNEL_OAUTH ) ) {
+                if ( ! \wordpress_code_ai\Auth\Connect_Policy::current_user_can_connect( \wordpress_code_ai\Auth\Connect_Policy::CHANNEL_OAUTH ) ) {
                     return new \WP_Error(
                         'access_denied',
-                        __( 'Your account does not have sufficient permissions to authorize MCP access.', 'easy-mcp-ai' ),
+                        __( 'Your account does not have sufficient permissions to authorize MCP access.', 'wordpress-code-ai' ),
                         array( 'status' => 403, 'no_redirect' => true, 'log_reason' => 'insufficient_capability' )
                     );
                 }
@@ -844,7 +844,7 @@ class Authorization_Endpoint {
         if ( ! $client ) {
             return new \WP_Error(
                 'invalid_client',
-                __( 'Unknown or inactive client.', 'easy-mcp-ai' ),
+                __( 'Unknown or inactive client.', 'wordpress-code-ai' ),
                 array( 'status' => 400, 'no_redirect' => true )
             );
         }
@@ -856,7 +856,7 @@ class Authorization_Endpoint {
             
             return new \WP_Error(
                 'invalid_redirect_uri',
-                __( 'The redirect_uri does not match any registered URI for this client.', 'easy-mcp-ai' ),
+                __( 'The redirect_uri does not match any registered URI for this client.', 'wordpress-code-ai' ),
                 array( 'status' => 400, 'no_redirect' => true )
             );
         }
@@ -868,7 +868,7 @@ class Authorization_Endpoint {
         if ( 'code' !== $params['response_type'] ) {
             return new \WP_Error(
                 'unsupported_response_type',
-                __( 'Only response_type=code is supported.', 'easy-mcp-ai' )
+                __( 'Only response_type=code is supported.', 'wordpress-code-ai' )
             );
         }
 
@@ -882,7 +882,7 @@ class Authorization_Endpoint {
                 return new \WP_Error(
                     'invalid_request',
                     /* translators: %s: parameter name */
-                    sprintf( __( 'Missing required parameter: %s', 'easy-mcp-ai' ), $field )
+                    sprintf( __( 'Missing required parameter: %s', 'wordpress-code-ai' ), $field )
                 );
             }
         }
@@ -891,7 +891,7 @@ class Authorization_Endpoint {
         if ( 'S256' !== $params['code_challenge_method'] ) {
             return new \WP_Error(
                 'invalid_request',
-                __( 'Only code_challenge_method=S256 is supported.', 'easy-mcp-ai' )
+                __( 'Only code_challenge_method=S256 is supported.', 'wordpress-code-ai' )
             );
         }
 
@@ -900,7 +900,7 @@ class Authorization_Endpoint {
         if ( ! preg_match( '/^[A-Za-z0-9\-._~]{43,128}$/', $params['code_challenge'] ) ) {
             return new \WP_Error(
                 'invalid_request',
-                __( 'Invalid code_challenge format.', 'easy-mcp-ai' )
+                __( 'Invalid code_challenge format.', 'wordpress-code-ai' )
             );
         }
 
@@ -913,7 +913,7 @@ class Authorization_Endpoint {
         if ( ! Token_Endpoint::resource_matches( $params['resource'], $expected_resource ) ) {
             return new \WP_Error(
                 'invalid_target',
-                __( 'Resource parameter does not match this server.', 'easy-mcp-ai' )
+                __( 'Resource parameter does not match this server.', 'wordpress-code-ai' )
             );
         }
 
@@ -982,9 +982,9 @@ class Authorization_Endpoint {
     private function render_error_page( \WP_Error $error ) {
         $code    = esc_html( $error->get_error_code() );
         $message = esc_html( $error->get_error_message() );
-        $title   = esc_html__( 'Authorization Error', 'easy-mcp-ai' );
+        $title   = esc_html__( 'Authorization Error', 'wordpress-code-ai' );
 
-        $site = esc_html( \Easy_MCP_AI\Console_Styles::site_label() );
+        $site = esc_html( \wordpress_code_ai\Console_Styles::site_label() );
 
         $html  = '<!DOCTYPE html>' . "\n";
         $html .= '<html lang="' . esc_attr( get_locale() ) . '">' . "\n";
@@ -993,21 +993,21 @@ class Authorization_Endpoint {
         $html .= '<meta name="viewport" content="width=device-width, initial-scale=1">' . "\n";
         $html .= '<meta name="robots" content="noindex, nofollow">' . "\n";
         $html .= '<title>' . $title . ' &mdash; ' . $site . '</title>' . "\n";
-        $html .= \Easy_MCP_AI\Console_Styles::inline() . "\n";
+        $html .= \wordpress_code_ai\Console_Styles::inline() . "\n";
         $html .= '</head>' . "\n";
-        $html .= '<body class="emcp-page">' . "\n";
-        $html .= '<div class="emcp-shell emcp-shell--narrow">' . "\n";
-        $html .= '<div class="emcp-topbar">' . \Easy_MCP_AI\Console_Styles::logo();
-        $html .= '<h1 class="emcp-topbar__title">' . $title . '</h1>';
-        $html .= \Easy_MCP_AI\Console_Styles::site_name() . '</div>' . "\n";
-        $html .= '<div class="emcp-body">' . "\n";
-        $html .= '<div class="emcp-notice emcp-notice--error">' . "\n";
-        $html .= '<p class="emcp-notice__title"><code class="emcp-mono">' . $code . '</code></p>' . "\n";
+        $html .= '<body class="wcai-page">' . "\n";
+        $html .= '<div class="wcai-shell wcai-shell--narrow">' . "\n";
+        $html .= '<div class="wcai-topbar">' . \wordpress_code_ai\Console_Styles::logo();
+        $html .= '<h1 class="wcai-topbar__title">' . $title . '</h1>';
+        $html .= \wordpress_code_ai\Console_Styles::site_name() . '</div>' . "\n";
+        $html .= '<div class="wcai-body">' . "\n";
+        $html .= '<div class="wcai-notice wcai-notice--error">' . "\n";
+        $html .= '<p class="wcai-notice__title"><code class="wcai-mono">' . $code . '</code></p>' . "\n";
         $html .= '<p>' . $message . '</p>' . "\n";
         $html .= '</div>' . "\n";
         $html .= '</div>' . "\n";
         $html .= '</div>' . "\n";
-        $html .= '<p class="emcp-pagenote"><span class="emcp-dot"></span>' . esc_html__( 'Powered by Easy MCP AI', 'easy-mcp-ai' ) . '</p>' . "\n";
+        $html .= '<p class="wcai-pagenote"><span class="wcai-dot"></span>' . esc_html__( 'Powered by wordpress-code-ai', 'wordpress-code-ai' ) . '</p>' . "\n";
         $html .= '</body>' . "\n";
         $html .= '</html>' . "\n";
 
@@ -1023,7 +1023,7 @@ class Authorization_Endpoint {
 
     private function get_existing_consent( $user_id, $client_id ) {
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom plugin table; name is prefixed by $wpdb->prefix (trusted); admin-side single-row lookup does not warrant object cache.
         return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE wp_user_id = %d AND client_id = %s LIMIT 1", $user_id, $client_id ) );
@@ -1049,7 +1049,7 @@ class Authorization_Endpoint {
 
     public static function store_consent( $user_id, $client_id, $scope ) {
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
         $now   = current_time( 'mysql', true );
 
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom plugin table; name is prefixed by $wpdb->prefix (trusted); upsert cannot use $wpdb->insert().
@@ -1071,8 +1071,8 @@ class Authorization_Endpoint {
         global $wpdb;
 
         $raw_code  = bin2hex( random_bytes( 32 ) );
-        $code_hash = \Easy_MCP_AI\Auth\Token_Keys::hash_current( $raw_code );
-        $table     = $wpdb->prefix . 'easy_mcp_ai_oauth_codes';
+        $code_hash = \wordpress_code_ai\Auth\Token_Keys::hash_current( $raw_code );
+        $table     = $wpdb->prefix . 'wordpress_code_ai_oauth_codes';
         $expires   = gmdate( 'Y-m-d H:i:s', time() + self::CODE_LIFETIME );
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- $wpdb->insert() on plugin-owned table; writes don't need caching.

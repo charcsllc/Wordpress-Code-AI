@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Auth;
+namespace wordpress_code_ai\Auth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -44,8 +44,8 @@ class Token_Keys {
     const MIN_KEY_BYTES = 32;
 
     
-    const FILTER   = 'easy_mcp_ai_token_keys';
-    const CONSTANT = 'EASY_MCP_AI_TOKEN_KEYS';
+    const FILTER   = 'wordpress_code_ai_token_keys';
+    const CONSTANT = 'WORDPRESS_CODE_AI_TOKEN_KEYS';
 
     
     private static $resolved = null;
@@ -144,7 +144,7 @@ class Token_Keys {
 
 
     public static function id_for( $secret ) {
-        return substr( hash_hmac( 'sha256', 'easy-mcp-ai-key-id', (string) $secret ), 0, self::ID_LENGTH );
+        return substr( hash_hmac( 'sha256', 'wordpress-code-ai-key-id', (string) $secret ), 0, self::ID_LENGTH );
     }
 
     

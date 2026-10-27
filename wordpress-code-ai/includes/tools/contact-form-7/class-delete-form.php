@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Contact_Form_7;
+namespace wordpress_code_ai\Tools\Contact_Form_7;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -53,7 +53,7 @@ class Delete_Form extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: contact form id, 2: contact form title */
-            __( 'Permanently delete contact form #%1$d "%2$s"', 'easy-mcp-ai' ),
+            __( 'Permanently delete contact form #%1$d "%2$s"', 'wordpress-code-ai' ),
             $target['id'],
             $target['title']
         );

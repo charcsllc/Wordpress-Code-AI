@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tasks;
+namespace wordpress_code_ai\Tasks;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -23,16 +23,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 class Task_Scheduler {
-    const HOOK  = 'easy_mcp_ai_task_tick';
-    const GROUP = 'easy-mcp-ai-tasks';
+    const HOOK  = 'wordpress_code_ai_task_tick';
+    const GROUP = 'wordpress-code-ai-tasks';
 
     
     const AS_QUEUE_HOOK    = 'action_scheduler_run_queue';
-    const AS_QUEUE_CONTEXT = 'Easy MCP AI';
+    const AS_QUEUE_CONTEXT = 'wordpress-code-ai';
 
     
     public static function backend() {
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_tasks_background', true ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_tasks_background', true ) ) {
             return 'off';
         }
         
@@ -40,7 +40,7 @@ class Task_Scheduler {
 
 
 
-        if ( \apply_filters( 'easy_mcp_ai_tasks_use_action_scheduler', true ) && self::action_scheduler_ready() ) {
+        if ( \apply_filters( 'wordpress_code_ai_tasks_use_action_scheduler', true ) && self::action_scheduler_ready() ) {
             return 'action-scheduler';
         }
         return 'wp-cron';

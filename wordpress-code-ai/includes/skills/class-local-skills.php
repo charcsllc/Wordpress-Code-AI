@@ -18,7 +18,7 @@
 
 
 
-namespace Easy_MCP_AI\Skills;
+namespace wordpress_code_ai\Skills;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Local_Skills {
 
-    const FILTER = 'easy_mcp_ai_skills_directory';
+    const FILTER = 'wordpress_code_ai_skills_directory';
 
     
     const TEXT_EXTENSIONS = array( 'md', 'txt', 'json', 'yaml', 'yml', 'csv' );

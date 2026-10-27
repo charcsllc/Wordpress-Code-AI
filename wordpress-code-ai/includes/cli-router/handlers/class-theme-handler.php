@@ -1,12 +1,12 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Values;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Values;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -1064,7 +1064,7 @@ class Theme_Handler extends Command_Handler {
         $candidates = array();
         foreach ( $names as $name ) {
             $name = (string) $name;
-            if ( '' === trim( $name ) || false !== strpbrk( $name, '[]' ) || null !== \Easy_MCP_AI\Tools\Appearance\Customizer_Settings::denied_reason( $name ) ) {
+            if ( '' === trim( $name ) || false !== strpbrk( $name, '[]' ) || null !== \wordpress_code_ai\Tools\Appearance\Customizer_Settings::denied_reason( $name ) ) {
                 continue;
             }
             $candidates[] = $name;
@@ -1073,7 +1073,7 @@ class Theme_Handler extends Command_Handler {
             return array();
         }
         try {
-            return \Easy_MCP_AI\Tools\Appearance\Customizer_Settings::with_manager(
+            return \wordpress_code_ai\Tools\Appearance\Customizer_Settings::with_manager(
                 static function ( object $manager ) use ( $candidates ): array {
                     $owned = array();
                     foreach ( $candidates as $name ) {

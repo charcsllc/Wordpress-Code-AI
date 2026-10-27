@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Comments;
+namespace wordpress_code_ai\Tools\Comments;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -62,9 +62,9 @@ class Delete_Comment extends Base_Tool {
         $force = ! empty( $arguments['force'] ) && \rest_sanitize_boolean( $arguments['force'] );
         return sprintf(
             /* translators: 1: comment id, 2: author name, 3: post id, 4: what happens */
-            __( "Delete comment #%1\$d by '%2\$s' on post #%3\$d — %4\$s.", 'easy-mcp-ai' ),
+            __( "Delete comment #%1\$d by '%2\$s' on post #%3\$d — %4\$s.", 'wordpress-code-ai' ),
             $id, isset( $comment['author_name'] ) ? \wp_strip_all_tags( (string) $comment['author_name'] ) : '?', isset( $comment['post'] ) ? (int) $comment['post'] : 0,
-            $force ? __( 'permanently, bypassing the trash', 'easy-mcp-ai' ) : __( 'moves it to the trash', 'easy-mcp-ai' )
+            $force ? __( 'permanently, bypassing the trash', 'wordpress-code-ai' ) : __( 'moves it to the trash', 'wordpress-code-ai' )
         );
     }
 

@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,7 +29,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
     const RECENT_LIMIT = 3;
 
     
-    const LAST_CALL_OPTION = 'easy_mcp_ai_last_tool_call';
+    const LAST_CALL_OPTION = 'wordpress_code_ai_last_tool_call';
 
     
     private $db;
@@ -69,8 +69,8 @@ class Dashboard_Controller extends Admin_Rest_Controller {
         $bounds = self::window_bounds( $now );
         $calls  = self::window_bounds( $now, self::CALLS_WINDOW_DAYS );
 
-        $audit_enabled  = (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_enabled', true );
-        $change_enabled = (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_enabled', true );
+        $audit_enabled  = (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_enabled', true );
+        $change_enabled = (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_enabled', true );
 
         $audit_rows  = $audit_enabled ? $this->grouped_audit_rows( $calls ) : array();
         $change_rows = $change_enabled ? $this->grouped_change_rows( $bounds ) : array();
@@ -111,14 +111,14 @@ class Dashboard_Controller extends Admin_Rest_Controller {
             'changesByType' => self::changes_by_type( $change_rows ),
             'attention'     => $attention,
             'access'        => array(
-                'draftMode'    => (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_force_draft_on_create', false ),
+                'draftMode'    => (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_force_draft_on_create', false ),
                 'tokens'       => (int) $this->token_manager->count_tokens(),
                 'grants'       => $this->count_grants(),
                 'toolsEnabled' => $tools,
                 
                 'preset'       => null,
             ),
-            'mcpUrl'        => \rest_url( 'easy-mcp-ai/v1/mcp' ),
+            'mcpUrl'        => \rest_url( 'wordpress-code-ai/v1/mcp' ),
             'connectorName' => self::connector_name( \get_bloginfo( 'name' ) ),
             'usageAsk'      => Settings_Controller::usage_ask(),
         );
@@ -359,7 +359,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
         }
         return array(
             'kind' => 'oauth' === $source ? 'oauth' : 'token',
-            'name' => (string) \Easy_MCP_AI\Audit_Log_Repository::credential_label( $row )['label'],
+            'name' => (string) \wordpress_code_ai\Audit_Log_Repository::credential_label( $row )['label'],
         );
     }
 
@@ -460,23 +460,23 @@ class Dashboard_Controller extends Admin_Rest_Controller {
         $id    = (string) ( $row['object_id'] ?? '' );
         $label = ( null !== $title && '' !== $title )
             /* translators: %s: post title */
-            ? sprintf( \__( '“%s”', 'easy-mcp-ai' ), $title )
+            ? sprintf( \__( '“%s”', 'wordpress-code-ai' ), $title )
             : ( is_numeric( $id ) ? '#' . $id : $id );
         $object = trim( self::object_type_label( $type ) . ' ' . $label );
 
         switch ( (string) ( $row['action'] ?? '' ) ) {
             case 'create':
                 /* translators: %s: object, e.g. post “Spring launch” */
-                return sprintf( \__( 'Created %s', 'easy-mcp-ai' ), $object );
+                return sprintf( \__( 'Created %s', 'wordpress-code-ai' ), $object );
             case 'delete':
                 /* translators: %s: object, e.g. post “Spring launch” */
-                return sprintf( \__( 'Deleted %s', 'easy-mcp-ai' ), $object );
+                return sprintf( \__( 'Deleted %s', 'wordpress-code-ai' ), $object );
             case 'update':
                 /* translators: %s: object, e.g. post “Spring launch” */
-                return sprintf( \__( 'Updated %s', 'easy-mcp-ai' ), $object );
+                return sprintf( \__( 'Updated %s', 'wordpress-code-ai' ), $object );
             default:
                 /* translators: %s: object, e.g. post “Spring launch” */
-                return sprintf( \__( 'Changed %s', 'easy-mcp-ai' ), $object );
+                return sprintf( \__( 'Changed %s', 'wordpress-code-ai' ), $object );
         }
     }
 
@@ -487,33 +487,33 @@ class Dashboard_Controller extends Admin_Rest_Controller {
     public static function object_type_label( $type ) {
         switch ( $type ) {
             case 'post':
-                return \__( 'post', 'easy-mcp-ai' );
+                return \__( 'post', 'wordpress-code-ai' );
             case 'term':
-                return \__( 'term', 'easy-mcp-ai' );
+                return \__( 'term', 'wordpress-code-ai' );
             case 'user':
-                return \__( 'user', 'easy-mcp-ai' );
+                return \__( 'user', 'wordpress-code-ai' );
             case 'comment':
-                return \__( 'comment', 'easy-mcp-ai' );
+                return \__( 'comment', 'wordpress-code-ai' );
             case 'option':
-                return \__( 'option', 'easy-mcp-ai' );
+                return \__( 'option', 'wordpress-code-ai' );
             case 'site_option':
-                return \__( 'network option', 'easy-mcp-ai' );
+                return \__( 'network option', 'wordpress-code-ai' );
             case 'meta':
-                return \__( 'post meta', 'easy-mcp-ai' );
+                return \__( 'post meta', 'wordpress-code-ai' );
             case 'term_meta':
-                return \__( 'term meta', 'easy-mcp-ai' );
+                return \__( 'term meta', 'wordpress-code-ai' );
             case 'user_meta':
-                return \__( 'user meta', 'easy-mcp-ai' );
+                return \__( 'user meta', 'wordpress-code-ai' );
             case 'comment_meta':
-                return \__( 'comment meta', 'easy-mcp-ai' );
+                return \__( 'comment meta', 'wordpress-code-ai' );
             case 'wc_product':
-                return \__( 'product', 'easy-mcp-ai' );
+                return \__( 'product', 'wordpress-code-ai' );
             case 'wc_order':
-                return \__( 'order', 'easy-mcp-ai' );
+                return \__( 'order', 'wordpress-code-ai' );
             case 'bp_activity':
-                return \__( 'activity item', 'easy-mcp-ai' );
+                return \__( 'activity item', 'wordpress-code-ai' );
             case 'external':
-                return \__( 'external service', 'easy-mcp-ai' );
+                return \__( 'external service', 'wordpress-code-ai' );
             default:
                 return str_replace( '_', ' ', (string) $type );
         }
@@ -559,7 +559,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
                 if ( '' === $name || in_array( $name, $disabled, true ) ) {
                     continue;
                 }
-                if ( ! \Easy_MCP_AI\MCP\Server::matches_tool_patterns( $name, $patterns ) ) {
+                if ( ! \wordpress_code_ai\MCP\Server::matches_tool_patterns( $name, $patterns ) ) {
                     continue;
                 }
                 $total++;
@@ -596,8 +596,8 @@ class Dashboard_Controller extends Admin_Rest_Controller {
         }
         return self::count_active_tools(
             (array) $this->tool_registry->get_tools_by_category(),
-            \Easy_MCP_AI\Tools\Tool_State::off_names( $this->tool_registry ),
-            (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_allowed_tool_patterns', array() )
+            \wordpress_code_ai\Tools\Tool_State::off_names( $this->tool_registry ),
+            (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_allowed_tool_patterns', array() )
         );
     }
 
@@ -612,7 +612,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
     }
 
     private function grouped_audit_rows( array $b ) {
-        $table  = $this->db->prefix . 'easy_mcp_ai_audit_log';
+        $table  = $this->db->prefix . 'wordpress_code_ai_audit_log';
         $bucket = self::bucket_sql();
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- plugin-owned table; the bucket expression is a constant.
         $rows = $this->db->get_results(
@@ -644,7 +644,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
     }
 
     private function recent_audit_rows() {
-        $table = $this->db->prefix . 'easy_mcp_ai_audit_log';
+        $table = $this->db->prefix . 'wordpress_code_ai_audit_log';
         
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- plugin-owned table.
         $rows = $this->db->get_results(
@@ -663,11 +663,11 @@ class Dashboard_Controller extends Admin_Rest_Controller {
 
 
     private function attach_labels( array $rows ): array {
-        return ( new \Easy_MCP_AI\Audit_Log_Repository() )->attach_labels( $rows );
+        return ( new \wordpress_code_ai\Audit_Log_Repository() )->attach_labels( $rows );
     }
 
     private function legacy_client_rows( array $b ) {
-        $table = $this->db->prefix . 'easy_mcp_ai_tokens';
+        $table = $this->db->prefix . 'wordpress_code_ai_tokens';
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- plugin-owned table.
         $rows = $this->db->get_results(
             $this->db->prepare(
@@ -681,8 +681,8 @@ class Dashboard_Controller extends Admin_Rest_Controller {
     }
 
     private function oauth_client_rows( array $b ) {
-        $tokens  = $this->db->prefix . 'easy_mcp_ai_oauth_access_tokens';
-        $clients = $this->db->prefix . 'easy_mcp_ai_oauth_clients';
+        $tokens  = $this->db->prefix . 'wordpress_code_ai_oauth_access_tokens';
+        $clients = $this->db->prefix . 'wordpress_code_ai_oauth_clients';
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- plugin-owned tables.
         $rows = $this->db->get_results(
             $this->db->prepare(
@@ -715,8 +715,8 @@ class Dashboard_Controller extends Admin_Rest_Controller {
     }
 
     private function count_grants() {
-        $consents = $this->db->prefix . 'easy_mcp_ai_oauth_consents';
-        $clients  = $this->db->prefix . 'easy_mcp_ai_oauth_clients';
+        $consents = $this->db->prefix . 'wordpress_code_ai_oauth_consents';
+        $clients  = $this->db->prefix . 'wordpress_code_ai_oauth_clients';
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- plugin-owned tables, no user input.
         return (int) $this->db->get_var(
             "SELECT COUNT(*) FROM `{$consents}` con INNER JOIN `{$clients}` cl ON cl.client_id = con.client_id AND cl.is_active = 1"
@@ -736,7 +736,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
             array( 'since' => $b['from'], 'until' => $b['to'] ),
             self::CHANGES_LIMIT,
             0,
-            \Easy_MCP_AI\History\Change_Log_Repository::list_columns() . ', token_id'
+            \wordpress_code_ai\History\Change_Log_Repository::list_columns() . ', token_id'
         );
         $rows = is_array( $rows ) ? $rows : array();
         if ( ! $rows ) {
@@ -815,7 +815,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
         if ( ! $ids ) {
             return array();
         }
-        $table        = $this->db->prefix . 'easy_mcp_ai_audit_log';
+        $table        = $this->db->prefix . 'wordpress_code_ai_audit_log';
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- placeholders generated, plugin-owned table.
         $rows = $this->db->get_results( $this->db->prepare( "SELECT id, result_status FROM `{$table}` WHERE id IN ({$placeholders})", ...$ids ), ARRAY_A );
@@ -831,7 +831,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
         if ( ! $ids ) {
             return array();
         }
-        $table        = $this->db->prefix . 'easy_mcp_ai_tokens';
+        $table        = $this->db->prefix . 'wordpress_code_ai_tokens';
         $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- placeholders generated, plugin-owned table.
         $rows = $this->db->get_results( $this->db->prepare( "SELECT id, name FROM `{$table}` WHERE id IN ({$placeholders})", ...$ids ), ARRAY_A );
@@ -847,7 +847,7 @@ class Dashboard_Controller extends Admin_Rest_Controller {
         if ( ! $client_ids ) {
             return array();
         }
-        $table        = $this->db->prefix . 'easy_mcp_ai_oauth_clients';
+        $table        = $this->db->prefix . 'wordpress_code_ai_oauth_clients';
         $placeholders = implode( ',', array_fill( 0, count( $client_ids ), '%s' ) );
         // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- placeholders generated, plugin-owned table.
         $rows = $this->db->get_results( $this->db->prepare( "SELECT client_id, client_name FROM `{$table}` WHERE client_id IN ({$placeholders})", ...$client_ids ), ARRAY_A );

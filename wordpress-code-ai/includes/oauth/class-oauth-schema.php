@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -91,7 +91,7 @@ class OAuth_Schema {
 
 
     const DB_VERSION = '1.0.11';
-    const VERSION_OPTION = 'easy_mcp_ai_oauth_db_version';
+    const VERSION_OPTION = 'wordpress_code_ai_oauth_db_version';
 
     
 
@@ -102,7 +102,7 @@ class OAuth_Schema {
         global $wpdb;
 
         $charset_collate = $wpdb->get_charset_collate();
-        $prefix          = $wpdb->prefix . 'easy_mcp_ai_oauth_';
+        $prefix          = $wpdb->prefix . 'wordpress_code_ai_oauth_';
 
         
         
@@ -248,7 +248,7 @@ class OAuth_Schema {
         foreach ( $expected as $table ) {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table existence check; name is $wpdb->prefix-derived.
             $exists = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $table ) );
-            if ( ! \Easy_MCP_AI\Schema_Guard::table_found( $exists, $table ) ) {
+            if ( ! \wordpress_code_ai\Schema_Guard::table_found( $exists, $table ) ) {
                 return;
             }
         }
@@ -372,9 +372,9 @@ class OAuth_Schema {
         $installed_version = get_option( self::VERSION_OPTION, '0' );
 
         if ( version_compare( $installed_version, self::DB_VERSION, '<' )
-            && \Easy_MCP_AI\Schema_Guard::may_retry( self::VERSION_OPTION, self::DB_VERSION ) ) {
+            && \wordpress_code_ai\Schema_Guard::may_retry( self::VERSION_OPTION, self::DB_VERSION ) ) {
             self::create_tables();
-            \Easy_MCP_AI\Schema_Guard::settle(
+            \wordpress_code_ai\Schema_Guard::settle(
                 self::VERSION_OPTION,
                 self::DB_VERSION,
                 version_compare( (string) get_option( self::VERSION_OPTION, '0' ), self::DB_VERSION, '>=' )

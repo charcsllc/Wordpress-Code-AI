@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Posts;
+namespace wordpress_code_ai\Tools\Posts;
 
-use Easy_MCP_AI\Approvals\Approval_Gate;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Approvals\Approval_Gate;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -40,7 +40,7 @@ class Replace_In_Post extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Performs search-and-replace inside ONE field of a post without re-uploading the full content. Required: `id`, `field` (post_content|post_excerpt|post_title), `search`, `replace`. Optional: `regex` (default false), `max_replacements` (-1 = unlimited). Limits: subject 200KB, pattern 500 chars. Regex mode bounded by pcre.backtrack_limit + nested-quantifier heuristic (heuristic is advisory only — the backtrack limit is the real ReDoS defence). Site owners can disable regex entirely via the `easy_mcp_ai_replace_in_post_allow_regex` filter. Returns { id, field, replacements_count, content_length_before, content_length_after }. Major token-saver for small edits to large posts.';
+        return 'Performs search-and-replace inside ONE field of a post without re-uploading the full content. Required: `id`, `field` (post_content|post_excerpt|post_title), `search`, `replace`. Optional: `regex` (default false), `max_replacements` (-1 = unlimited). Limits: subject 200KB, pattern 500 chars. Regex mode bounded by pcre.backtrack_limit + nested-quantifier heuristic (heuristic is advisory only — the backtrack limit is the real ReDoS defence). Site owners can disable regex entirely via the `wordpress_code_ai_replace_in_post_allow_regex` filter. Returns { id, field, replacements_count, content_length_before, content_length_after }. Major token-saver for small edits to large posts.';
     }
 
     public function get_category() {
@@ -134,23 +134,23 @@ class Replace_In_Post extends Base_Tool {
         $max    = isset( $arguments['max_replacements'] ) ? (int) $arguments['max_replacements'] : -1;
         $format = 'custom_css' === $target['type']
             /* translators: 1: post ID, 2: post field, e.g. post_content */
-            ? __( 'Edit the Additional CSS (post %1$d, field %2$s): the CSS its theme prints on every page.', 'easy-mcp-ai' )
+            ? __( 'Edit the Additional CSS (post %1$d, field %2$s): the CSS its theme prints on every page.', 'wordpress-code-ai' )
             /* translators: 1: post ID, 2: post field, e.g. post_content */
-            : __( 'Edit the site\'s global styles (post %1$d, field %2$s): the block theme styles, Additional CSS included, that every page prints.', 'easy-mcp-ai' );
+            : __( 'Edit the site\'s global styles (post %1$d, field %2$s): the block theme styles, Additional CSS included, that every page prints.', 'wordpress-code-ai' );
         $text   = sprintf( $format, $target['id'], self::as_text( $arguments['field'] ?? '' ) );
         $text  .= ' ' . sprintf(
             /* translators: %s: the text or pattern to find, as a JSON string */
-            ! empty( $arguments['regex'] ) ? __( 'Find the regular expression: %s', 'easy-mcp-ai' ) : __( 'Find: %s', 'easy-mcp-ai' ),
+            ! empty( $arguments['regex'] ) ? __( 'Find the regular expression: %s', 'wordpress-code-ai' ) : __( 'Find: %s', 'wordpress-code-ai' ),
             self::shown( self::as_text( $arguments['search'] ?? '' ) )
         );
         $replace = self::as_text( $arguments['replace'] ?? '' );
         $text   .= ' ' . ( '' === $replace
-            ? __( 'Delete each match.', 'easy-mcp-ai' )
+            ? __( 'Delete each match.', 'wordpress-code-ai' )
             /* translators: %s: the replacement text, as a JSON string */
-            : sprintf( __( 'Replace with: %s', 'easy-mcp-ai' ), self::shown( $replace ) ) );
+            : sprintf( __( 'Replace with: %s', 'wordpress-code-ai' ), self::shown( $replace ) ) );
         if ( $max > 0 ) {
             /* translators: %d: the most matches replaced */
-            $text .= ' ' . sprintf( __( '(at most %d matches)', 'easy-mcp-ai' ), $max );
+            $text .= ' ' . sprintf( __( '(at most %d matches)', 'wordpress-code-ai' ), $max );
         }
         return $text;
     }
@@ -177,7 +177,7 @@ class Replace_In_Post extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: preview length, 2: the most the approval page shows */
-            __( 'This change to the site\'s CSS has an approval preview of %1$d characters and the approval page shows %2$d, so it was not sent for approval: a person must see every change they approve. Make it in shorter replacements.', 'easy-mcp-ai' ),
+            __( 'This change to the site\'s CSS has an approval preview of %1$d characters and the approval page shows %2$d, so it was not sent for approval: a person must see every change they approve. Make it in shorter replacements.', 'wordpress-code-ai' ),
             $length,
             Approval_Gate::PREVIEW_MAX
         );
@@ -346,9 +346,9 @@ class Replace_In_Post extends Base_Tool {
 
         $pattern = null;
         if ( ! empty( $arguments['regex'] ) ) {
-            $allow_regex = (bool) apply_filters( 'easy_mcp_ai_replace_in_post_allow_regex', true );
+            $allow_regex = (bool) apply_filters( 'wordpress_code_ai_replace_in_post_allow_regex', true );
             if ( ! $allow_regex ) {
-                throw new \InvalidArgumentException( 'Regex replacement is disabled on this site (filter: easy_mcp_ai_replace_in_post_allow_regex).' );
+                throw new \InvalidArgumentException( 'Regex replacement is disabled on this site (filter: wordpress_code_ai_replace_in_post_allow_regex).' );
             }
 
             

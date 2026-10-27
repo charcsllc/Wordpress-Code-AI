@@ -22,7 +22,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -32,14 +32,14 @@ class Check_Schema {
 
     
     const TABLES = array(
-        'easy_mcp_ai_tokens',
-        'easy_mcp_ai_audit_log',
-        'easy_mcp_ai_change_log',
-        'easy_mcp_ai_oauth_clients',
-        'easy_mcp_ai_oauth_codes',
-        'easy_mcp_ai_oauth_access_tokens',
-        'easy_mcp_ai_oauth_consents',
-        'easy_mcp_ai_oauth_device_codes',
+        'wordpress_code_ai_tokens',
+        'wordpress_code_ai_audit_log',
+        'wordpress_code_ai_change_log',
+        'wordpress_code_ai_oauth_clients',
+        'wordpress_code_ai_oauth_codes',
+        'wordpress_code_ai_oauth_access_tokens',
+        'wordpress_code_ai_oauth_consents',
+        'wordpress_code_ai_oauth_device_codes',
     );
 
     
@@ -78,7 +78,7 @@ class Check_Schema {
 
     private static function abstention_reason( $reason ) {
         if ( self::REASON_OAUTH_UNAVAILABLE === $reason ) {
-            return __( 'The OAuth layer is switched off on this site, so its tables and indexes were not examined. This is not a database problem.', 'easy-mcp-ai' );
+            return __( 'The OAuth layer is switched off on this site, so its tables and indexes were not examined. This is not a database problem.', 'wordpress-code-ai' );
         }
 
         
@@ -91,7 +91,7 @@ class Check_Schema {
         
         
         
-        return __( 'The indexes could not be read. If a table is missing, the table check above says so; otherwise the database did not answer this query.', 'easy-mcp-ai' );
+        return __( 'The indexes could not be read. If a table is missing, the table check above says so; otherwise the database did not answer this query.', 'wordpress-code-ai' );
     }
 
     
@@ -100,7 +100,7 @@ class Check_Schema {
 
 
     private static function oauth_layer_used(): bool {
-        return class_exists( '\Easy_MCP_AI\OAuth\OAuth_Schema', false );
+        return class_exists( '\wordpress_code_ai\OAuth\OAuth_Schema', false );
     }
 
     
@@ -165,10 +165,10 @@ class Check_Schema {
 
 
     public static function evaluate_tables( $missing ) {
-        $label = __( 'Plugin database tables present', 'easy-mcp-ai' );
+        $label = __( 'Plugin database tables present', 'wordpress-code-ai' );
 
         if ( null === $missing ) {
-            return Diagnostic_Result::unknown( 'c1', Diagnostic_Result::TIER_BLOCKER, $label, __( 'Could not query the database.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'c1', Diagnostic_Result::TIER_BLOCKER, $label, __( 'Could not query the database.', 'wordpress-code-ai' ) );
         }
 
         if ( ! empty( $missing ) ) {
@@ -178,10 +178,10 @@ class Check_Schema {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated database table names. */
-                    __( 'Missing: %s. Features backed by these tables cannot work, and depending on which is absent, authentication itself may fail.', 'easy-mcp-ai' ),
+                    __( 'Missing: %s. Features backed by these tables cannot work, and depending on which is absent, authentication itself may fail.', 'wordpress-code-ai' ),
                     implode( ', ', $missing )
                 ),
-                __( 'Deactivate and reactivate the plugin to recreate them. If they are still missing afterwards, the database user is probably not allowed to create tables — see the database privileges check.', 'easy-mcp-ai' ),
+                __( 'Deactivate and reactivate the plugin to recreate them. If they are still missing afterwards, the database user is probably not allowed to create tables — see the database privileges check.', 'wordpress-code-ai' ),
                 array( 'missing_tables' => $missing )
             );
         }
@@ -196,7 +196,7 @@ class Check_Schema {
 
 
     public static function evaluate_indexes( $missing, $reason = self::REASON_NO_DATABASE ) {
-        $label = __( 'Required database indexes present', 'easy-mcp-ai' );
+        $label = __( 'Required database indexes present', 'wordpress-code-ai' );
 
         if ( null === $missing ) {
             return Diagnostic_Result::unknown( 'c2', Diagnostic_Result::TIER_WARNING, $label, self::abstention_reason( $reason ) );
@@ -209,10 +209,10 @@ class Check_Schema {
                 $label,
                 sprintf(
                     /* translators: %s: comma-separated index names. */
-                    __( 'Missing: %s. The index was requested during setup but the database did not create it, so the affected queries scan whole tables and get slower as the site grows.', 'easy-mcp-ai' ),
+                    __( 'Missing: %s. The index was requested during setup but the database did not create it, so the affected queries scan whole tables and get slower as the site grows.', 'wordpress-code-ai' ),
                     implode( ', ', $missing )
                 ),
-                __( 'Deactivate and reactivate the plugin to retry the index creation.', 'easy-mcp-ai' ),
+                __( 'Deactivate and reactivate the plugin to retry the index creation.', 'wordpress-code-ai' ),
                 array( 'missing_indexes' => $missing )
             );
         }
@@ -229,7 +229,7 @@ class Check_Schema {
 
 
     public static function evaluate_change_log_index( $present, $db_describe, $reason = self::REASON_NO_DATABASE ) {
-        $label = __( 'Change history lookup index', 'easy-mcp-ai' );
+        $label = __( 'Change history lookup index', 'wordpress-code-ai' );
 
         if ( null === $present ) {
             return Diagnostic_Result::unknown( 'c3', Diagnostic_Result::TIER_WARNING, $label, self::abstention_reason( $reason ) );
@@ -242,10 +242,10 @@ class Check_Schema {
                 $label,
                 sprintf(
                     /* translators: %s: database engine and version, e.g. "MariaDB 11.4". */
-                    __( 'The change history table has no lookup index on this database (%s). Some engines reject the index for exceeding their maximum key length; history still records correctly, but looking up an object\'s history scans the whole table.', 'easy-mcp-ai' ),
+                    __( 'The change history table has no lookup index on this database (%s). Some engines reject the index for exceeding their maximum key length; history still records correctly, but looking up an object\'s history scans the whole table.', 'wordpress-code-ai' ),
                     (string) $db_describe
                 ),
-                __( 'Deactivate and reactivate the plugin to retry. If it does not return, report the database version above — the index length may need adjusting for your engine.', 'easy-mcp-ai' ),
+                __( 'Deactivate and reactivate the plugin to retry. If it does not return, report the database version above — the index length may need adjusting for your engine.', 'wordpress-code-ai' ),
                 array( 'change_log_index' => false, 'database' => (string) $db_describe )
             );
         }
@@ -259,12 +259,12 @@ class Check_Schema {
 
 
     public static function evaluate_schema_versions( $versions ) {
-        $label  = __( 'Database migrations complete', 'easy-mcp-ai' );
+        $label  = __( 'Database migrations complete', 'wordpress-code-ai' );
 
         
         
         if ( ! is_array( $versions ) || empty( $versions ) ) {
-            return Diagnostic_Result::unknown( 'c4', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the recorded database versions.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'c4', Diagnostic_Result::TIER_WARNING, $label, __( 'Could not read the recorded database versions.', 'wordpress-code-ai' ) );
         }
 
         $behind = array();
@@ -290,11 +290,11 @@ class Check_Schema {
                 $label,
                 sprintf(
                     /* translators: 1: comma-separated "option (stored < code)" entries, 2: minutes between retries. */
-                    __( 'A database upgrade started but did not finish: %1$s. The plugin tries again at most every %2$d minutes, on admin, REST API, WP-CLI and cron requests, so a version that never advances means the change is being refused.', 'easy-mcp-ai' ),
+                    __( 'A database upgrade started but did not finish: %1$s. The plugin tries again at most every %2$d minutes, on admin, REST API, WP-CLI and cron requests, so a version that never advances means the change is being refused.', 'wordpress-code-ai' ),
                     implode( ', ', $behind ),
-                    (int) ( \Easy_MCP_AI\Schema_Guard::RETRY_AFTER / 60 )
+                    (int) ( \wordpress_code_ai\Schema_Guard::RETRY_AFTER / 60 )
                 ),
-                __( 'Deactivate and reactivate the plugin. If the version still does not advance, check the database privileges below.', 'easy-mcp-ai' ),
+                __( 'Deactivate and reactivate the plugin. If the version still does not advance, check the database privileges below.', 'wordpress-code-ai' ),
                 array( 'behind' => $behind )
             );
         }
@@ -309,14 +309,14 @@ class Check_Schema {
 
 
     public static function evaluate_privileges( $grants ) {
-        $label = __( 'Database user can change the schema', 'easy-mcp-ai' );
+        $label = __( 'Database user can change the schema', 'wordpress-code-ai' );
 
         if ( null === $grants ) {
             return Diagnostic_Result::unknown(
                 'c5',
                 Diagnostic_Result::TIER_INFO,
                 $label,
-                __( 'Could not read the database privileges. Many managed hosts do not permit this; it is not a fault.', 'easy-mcp-ai' )
+                __( 'Could not read the database privileges. Many managed hosts do not permit this; it is not a fault.', 'wordpress-code-ai' )
             );
         }
 
@@ -327,7 +327,7 @@ class Check_Schema {
         
         $upper = strtoupper( self::privilege_lists( (string) $grants ) );
         if ( false !== strpos( $upper, 'ALL PRIVILEGES' ) ) {
-            return Diagnostic_Result::pass( 'c5', Diagnostic_Result::TIER_INFO, $label, __( 'Full privileges.', 'easy-mcp-ai' ), array( 'schema_privileges' => true ) );
+            return Diagnostic_Result::pass( 'c5', Diagnostic_Result::TIER_INFO, $label, __( 'Full privileges.', 'wordpress-code-ai' ), array( 'schema_privileges' => true ) );
         }
 
         
@@ -358,10 +358,10 @@ class Check_Schema {
             return Diagnostic_Result::pass(
                 'c5',
                 Diagnostic_Result::TIER_INFO,
-                __( 'Database schema privileges', 'easy-mcp-ai' ),
+                __( 'Database schema privileges', 'wordpress-code-ai' ),
                 sprintf(
                     /* translators: %s: comma-separated SQL privilege names. */
-                    __( 'The database user appears to lack: %s. If tables or indexes above are reported missing, this is why reactivating does not repair them.', 'easy-mcp-ai' ),
+                    __( 'The database user appears to lack: %s. If tables or indexes above are reported missing, this is why reactivating does not repair them.', 'wordpress-code-ai' ),
                     implode( ', ', $missing )
                 ),
                 array( 'schema_privileges' => false, 'missing_privileges' => $missing )
@@ -443,9 +443,9 @@ class Check_Schema {
 
         global $wpdb;
         $missing = array();
-        foreach ( \Easy_MCP_AI\OAuth\OAuth_Schema::REQUIRED_INDEXES as $suffix => $indexes ) {
+        foreach ( \wordpress_code_ai\OAuth\OAuth_Schema::REQUIRED_INDEXES as $suffix => $indexes ) {
             foreach ( $indexes as $index ) {
-                $table   = $wpdb->prefix . 'easy_mcp_ai_oauth_' . $suffix;
+                $table   = $wpdb->prefix . 'wordpress_code_ai_oauth_' . $suffix;
                 $present = self::index_probe( $table, $index );
 
                 if ( null === $present ) {
@@ -468,13 +468,13 @@ class Check_Schema {
         }
         
         
-        return self::index_probe( $wpdb->prefix . 'easy_mcp_ai_change_log', self::CHANGE_LOG_INDEX );
+        return self::index_probe( $wpdb->prefix . 'wordpress_code_ai_change_log', self::CHANGE_LOG_INDEX );
     }
 
     private static function db_description() {
         $wpdb = self::wpdb( 'db_version' );
         if ( null === $wpdb ) {
-            return __( 'unknown database', 'easy-mcp-ai' );
+            return __( 'unknown database', 'wordpress-code-ai' );
         }
         $server = method_exists( $wpdb, 'db_server_info' ) ? (string) $wpdb->db_server_info() : '';
         $engine = ( '' !== $server && false !== stripos( $server, 'mariadb' ) ) ? 'MariaDB' : 'MySQL';
@@ -496,34 +496,34 @@ class Check_Schema {
 
         $versions = array();
 
-        if ( defined( 'EASY_MCP_AI_VERSION' ) ) {
-            $versions['easy_mcp_ai_db_version'] = array(
-                'stored' => (string) \get_option( 'easy_mcp_ai_db_version', '' ),
-                'code'   => (string) EASY_MCP_AI_VERSION,
+        if ( defined( 'WORDPRESS_CODE_AI_VERSION' ) ) {
+            $versions['wordpress_code_ai_db_version'] = array(
+                'stored' => (string) \get_option( 'wordpress_code_ai_db_version', '' ),
+                'code'   => (string) WORDPRESS_CODE_AI_VERSION,
             );
         }
         if ( self::oauth_layer_used() ) {
-            $versions['easy_mcp_ai_oauth_db_version'] = array(
-                'stored' => (string) \get_option( 'easy_mcp_ai_oauth_db_version', '' ),
-                'code'   => (string) \Easy_MCP_AI\OAuth\OAuth_Schema::DB_VERSION,
+            $versions['wordpress_code_ai_oauth_db_version'] = array(
+                'stored' => (string) \get_option( 'wordpress_code_ai_oauth_db_version', '' ),
+                'code'   => (string) \wordpress_code_ai\OAuth\OAuth_Schema::DB_VERSION,
             );
         }
-        if ( class_exists( '\Easy_MCP_AI\History\Change_Log_Schema' ) ) {
-            $versions['easy_mcp_ai_change_log_db_version'] = array(
-                'stored' => (string) \get_option( 'easy_mcp_ai_change_log_db_version', '' ),
-                'code'   => (string) \Easy_MCP_AI\History\Change_Log_Schema::DB_VERSION,
+        if ( class_exists( '\wordpress_code_ai\History\Change_Log_Schema' ) ) {
+            $versions['wordpress_code_ai_change_log_db_version'] = array(
+                'stored' => (string) \get_option( 'wordpress_code_ai_change_log_db_version', '' ),
+                'code'   => (string) \wordpress_code_ai\History\Change_Log_Schema::DB_VERSION,
             );
         }
-        if ( class_exists( '\Easy_MCP_AI\Tasks\Task_Schema' ) ) {
-            $versions[ \Easy_MCP_AI\Tasks\Task_Schema::OPTION_NAME ] = array(
-                'stored' => (string) \get_option( \Easy_MCP_AI\Tasks\Task_Schema::OPTION_NAME, '' ),
-                'code'   => (string) \Easy_MCP_AI\Tasks\Task_Schema::DB_VERSION,
+        if ( class_exists( '\wordpress_code_ai\Tasks\Task_Schema' ) ) {
+            $versions[ \wordpress_code_ai\Tasks\Task_Schema::OPTION_NAME ] = array(
+                'stored' => (string) \get_option( \wordpress_code_ai\Tasks\Task_Schema::OPTION_NAME, '' ),
+                'code'   => (string) \wordpress_code_ai\Tasks\Task_Schema::DB_VERSION,
             );
         }
-        if ( class_exists( '\Easy_MCP_AI\Approvals\Approval_Schema' ) ) {
-            $versions[ \Easy_MCP_AI\Approvals\Approval_Schema::OPTION_NAME ] = array(
-                'stored' => (string) \get_option( \Easy_MCP_AI\Approvals\Approval_Schema::OPTION_NAME, '' ),
-                'code'   => (string) \Easy_MCP_AI\Approvals\Approval_Schema::DB_VERSION,
+        if ( class_exists( '\wordpress_code_ai\Approvals\Approval_Schema' ) ) {
+            $versions[ \wordpress_code_ai\Approvals\Approval_Schema::OPTION_NAME ] = array(
+                'stored' => (string) \get_option( \wordpress_code_ai\Approvals\Approval_Schema::OPTION_NAME, '' ),
+                'code'   => (string) \wordpress_code_ai\Approvals\Approval_Schema::DB_VERSION,
             );
         }
 

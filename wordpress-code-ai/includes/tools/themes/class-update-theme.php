@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Themes;
+namespace wordpress_code_ai\Tools\Themes;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

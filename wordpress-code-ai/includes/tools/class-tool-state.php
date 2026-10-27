@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -36,8 +36,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Tool_State {
 
-    const OVERRIDE_NAME  = 'EASY_MCP_AI_TOOLS';
-    const ENABLED_OPTION = 'easy_mcp_ai_enabled_tools';
+    const OVERRIDE_NAME  = 'WORDPRESS_CODE_AI_TOOLS';
+    const ENABLED_OPTION = 'wordpress_code_ai_enabled_tools';
     
     const STRICT_ENTRY = '*';
 
@@ -154,7 +154,7 @@ final class Tool_State {
 
     
     public static function disabled_list() {
-        return array_values( array_filter( (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_disabled_tools', array() ), 'is_string' ) );
+        return array_values( array_filter( (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_disabled_tools', array() ), 'is_string' ) );
     }
 
     
@@ -164,7 +164,7 @@ final class Tool_State {
 
 
     public static function enabled_list() {
-        if ( \Easy_MCP_AI\Config::is_locked( 'easy_mcp_ai_disabled_tools' ) ) {
+        if ( \wordpress_code_ai\Config::is_locked( 'wordpress_code_ai_disabled_tools' ) ) {
             return array();
         }
         return self::stored_enabled_list();

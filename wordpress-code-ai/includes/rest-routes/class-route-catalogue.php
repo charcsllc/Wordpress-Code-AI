@@ -5,7 +5,7 @@
 
 
 
-namespace Easy_MCP_AI\Rest_Routes;
+namespace wordpress_code_ai\Rest_Routes;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

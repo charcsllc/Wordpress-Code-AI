@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\Posts;
+namespace wordpress_code_ai\Tools\Posts;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Post_Type_Rest_Base;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Post_Type_Rest_Base;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -31,7 +31,7 @@ class Get_Post_Full extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Returns the complete view of a post in ONE call: post fields + all meta + all taxonomy terms grouped by taxonomy + featured image data + author data. Replaces 4–20 separate calls. Required: `id` (the post ID — called `post_id` on some sibling tools). Optional: `post_type` (REST base, default `posts`; same concept as `rest_base` on the CPT tools), `include` (subset of [meta, terms, thumbnail, author] — omit for all), `exclude` (e.g. ["content"] to drop large post_content), `context` (view|edit, default view; edit exposes protected fields/meta and requires edit_post cap), `raw_post` (boolean, edit context only: adds `raw_post`, every database column of the post as stored — raw post_title, to_ping, pinged, post_content_filtered, post_mime_type, comment_count and the rest), `meta_keys` (array: return only these meta keys, so the key cap cannot hide one), `meta_all_values` (boolean: each meta key maps to the list of all its stored values instead of the first), `terms_taxonomies` (array: only these taxonomies in `terms`), `full_terms` (boolean: each term also carries term_taxonomy_id, description, parent, count and term_group). Meta values are the stored strings (serialized values are not unserialized). For a password-protected post you cannot edit, `meta` is left out and `meta_withheld` says why. Caps: 100 terms per taxonomy (filter: easy_mcp_ai_post_full_max_terms_per_taxonomy), 200 meta keys (filter: easy_mcp_ai_post_full_max_meta_keys). Response includes terms_truncated / meta_truncated / taxonomies_truncated flags when the respective caps are hit. SEO head markup (yoast_head*, aioseo_head*, aioseo_breadcrumb*) is omitted from `post`: saved Yoast fields are in `meta` (context=edit), and AIOSEO\'s stay in post.aioseo_meta_data. For the rendered head, use the Yoast SEO or AIOSEO tool for a post when one is listed.';
+        return 'Returns the complete view of a post in ONE call: post fields + all meta + all taxonomy terms grouped by taxonomy + featured image data + author data. Replaces 4–20 separate calls. Required: `id` (the post ID — called `post_id` on some sibling tools). Optional: `post_type` (REST base, default `posts`; same concept as `rest_base` on the CPT tools), `include` (subset of [meta, terms, thumbnail, author] — omit for all), `exclude` (e.g. ["content"] to drop large post_content), `context` (view|edit, default view; edit exposes protected fields/meta and requires edit_post cap), `raw_post` (boolean, edit context only: adds `raw_post`, every database column of the post as stored — raw post_title, to_ping, pinged, post_content_filtered, post_mime_type, comment_count and the rest), `meta_keys` (array: return only these meta keys, so the key cap cannot hide one), `meta_all_values` (boolean: each meta key maps to the list of all its stored values instead of the first), `terms_taxonomies` (array: only these taxonomies in `terms`), `full_terms` (boolean: each term also carries term_taxonomy_id, description, parent, count and term_group). Meta values are the stored strings (serialized values are not unserialized). For a password-protected post you cannot edit, `meta` is left out and `meta_withheld` says why. Caps: 100 terms per taxonomy (filter: wordpress_code_ai_post_full_max_terms_per_taxonomy), 200 meta keys (filter: wordpress_code_ai_post_full_max_meta_keys). Response includes terms_truncated / meta_truncated / taxonomies_truncated flags when the respective caps are hit. SEO head markup (yoast_head*, aioseo_head*, aioseo_breadcrumb*) is omitted from `post`: saved Yoast fields are in `meta` (context=edit), and AIOSEO\'s stay in post.aioseo_meta_data. For the rendered head, use the Yoast SEO or AIOSEO tool for a post when one is listed.';
     }
 
     public function get_category() {
@@ -381,7 +381,7 @@ class Get_Post_Full extends Base_Tool {
 
 
     private function meta_section( int $post_id, string $context, ?array $meta_keys, bool $meta_all_values ): array {
-        $meta_cap = (int) apply_filters( 'easy_mcp_ai_post_full_max_meta_keys', self::DEFAULT_MAX_META_KEYS );
+        $meta_cap = (int) apply_filters( 'wordpress_code_ai_post_full_max_meta_keys', self::DEFAULT_MAX_META_KEYS );
         $all_meta = get_post_meta( $post_id );
         if ( ! is_array( $all_meta ) ) {
             $all_meta = array();
@@ -465,7 +465,7 @@ class Get_Post_Full extends Base_Tool {
 
 
     private static function terms_section( int $post_id, string $post_type, ?array $terms_taxonomies, bool $full_terms ): array {
-        $terms_cap                          = (int) apply_filters( 'easy_mcp_ai_post_full_max_terms_per_taxonomy', self::DEFAULT_MAX_TERMS_PER_TAXONOMY );
+        $terms_cap                          = (int) apply_filters( 'wordpress_code_ai_post_full_max_terms_per_taxonomy', self::DEFAULT_MAX_TERMS_PER_TAXONOMY );
         list( $taxonomies, $tax_truncated ) = self::taxonomies_to_read( $post_type, $terms_taxonomies );
         $terms_by_tax                       = array();
         $truncated                          = array();
@@ -500,7 +500,7 @@ class Get_Post_Full extends Base_Tool {
 
 
     private static function taxonomies_to_read( string $post_type, ?array $terms_taxonomies ): array {
-        $tax_cap    = (int) apply_filters( 'easy_mcp_ai_post_full_max_taxonomies', self::DEFAULT_MAX_TAXONOMIES );
+        $tax_cap    = (int) apply_filters( 'wordpress_code_ai_post_full_max_taxonomies', self::DEFAULT_MAX_TAXONOMIES );
         $taxonomies = null !== $terms_taxonomies ? $terms_taxonomies : get_object_taxonomies( $post_type, 'names' );
         $taxonomies = is_array( $taxonomies ) ? $taxonomies : array();
         if ( $tax_cap > 0 && count( $taxonomies ) > $tax_cap ) {

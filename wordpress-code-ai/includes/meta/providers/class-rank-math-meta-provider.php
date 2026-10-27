@@ -18,9 +18,9 @@
 
 
 
-namespace Easy_MCP_AI\Meta\Providers;
+namespace wordpress_code_ai\Meta\Providers;
 
-use Easy_MCP_AI\Meta\Meta_Field_Provider;
+use wordpress_code_ai\Meta\Meta_Field_Provider;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

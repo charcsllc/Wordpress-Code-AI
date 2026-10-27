@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI\Compat;
+namespace wordpress_code_ai\Compat;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -62,7 +62,7 @@ final class Learnpress_Abilities extends Vendor_Abilities {
 
 
 
-    const ENABLE_PENDING_OPTION = 'easy_mcp_ai_learnpress_enable_pending';
+    const ENABLE_PENDING_OPTION = 'wordpress_code_ai_learnpress_enable_pending';
 
     
 

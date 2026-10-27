@@ -6,7 +6,7 @@
 
 
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -42,11 +42,11 @@ final class Schema_Guard {
 
 
     const WAIT_OPTIONS = array(
-        'easy_mcp_ai_db_version'            => 'easy_mcp_ai_schema_retry_core',
-        'easy_mcp_ai_oauth_db_version'      => 'easy_mcp_ai_schema_retry_oauth',
-        'easy_mcp_ai_change_log_db_version' => 'easy_mcp_ai_schema_retry_change_log',
-        'easy_mcp_ai_tasks_db_version'      => 'easy_mcp_ai_schema_retry_tasks',
-        'easy_mcp_ai_approvals_db_version'  => 'easy_mcp_ai_schema_retry_approvals',
+        'wordpress_code_ai_db_version'            => 'wordpress_code_ai_schema_retry_core',
+        'wordpress_code_ai_oauth_db_version'      => 'wordpress_code_ai_schema_retry_oauth',
+        'wordpress_code_ai_change_log_db_version' => 'wordpress_code_ai_schema_retry_change_log',
+        'wordpress_code_ai_tasks_db_version'      => 'wordpress_code_ai_schema_retry_tasks',
+        'wordpress_code_ai_approvals_db_version'  => 'wordpress_code_ai_schema_retry_approvals',
     );
 
     
@@ -150,6 +150,6 @@ final class Schema_Guard {
 
     
     private static function plugin_version(): string {
-        return defined( 'EASY_MCP_AI_VERSION' ) ? (string) EASY_MCP_AI_VERSION : '';
+        return defined( 'WORDPRESS_CODE_AI_VERSION' ) ? (string) WORDPRESS_CODE_AI_VERSION : '';
     }
 }

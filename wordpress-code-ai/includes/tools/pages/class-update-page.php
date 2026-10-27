@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Pages;
+namespace wordpress_code_ai\Tools\Pages;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\CPT\Create_CPT_Item;
-use Easy_MCP_AI\Tools\Posts\Update_Post;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\CPT\Create_CPT_Item;
+use wordpress_code_ai\Tools\Posts\Update_Post;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

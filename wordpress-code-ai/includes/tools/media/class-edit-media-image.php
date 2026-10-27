@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Media;
+namespace wordpress_code_ai\Tools\Media;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -151,9 +151,9 @@ class Edit_Media_Image extends Base_Tool {
         $file = isset( $media['source_url'] ) ? basename( (string) $media['source_url'] ) : '';
         return sprintf(
             /* translators: 1: media title, 2: file name, 3: media id, 4: list of edits */
-            __( "Create an edited copy of media '%1\$s' (%2\$s, ID %3\$d): %4\$s. The original is not changed.", 'easy-mcp-ai' ),
+            __( "Create an edited copy of media '%1\$s' (%2\$s, ID %3\$d): %4\$s. The original is not changed.", 'wordpress-code-ai' ),
             self::rest_title( $media ),
-            '' !== $file ? $file : __( 'unknown file', 'easy-mcp-ai' ),
+            '' !== $file ? $file : __( 'unknown file', 'wordpress-code-ai' ),
             $id,
             implode( '; ', array_map( array( $this, 'summarize_operation' ), $operations ) )
         );

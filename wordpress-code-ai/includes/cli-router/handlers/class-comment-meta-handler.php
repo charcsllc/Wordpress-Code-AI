@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
-use Easy_MCP_AI\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Read_Value;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -53,7 +53,7 @@ class Comment_Meta_Handler extends Meta_Command {
     );
 
     
-    const NOT_CAPTURED_META = 'comment meta: change history\'s meta capture (easy_mcp_ai_change_log_capture_meta) is off';
+    const NOT_CAPTURED_META = 'comment meta: change history\'s meta capture (wordpress_code_ai_change_log_capture_meta) is off';
 
     const BAD_ID = "wp_cli_run refuses '%s' as a comment ID: it is not a whole number in digits, and WP-CLI would convert it to a different ID rather than refuse it. Pass the ID as digits only.";
 
@@ -391,8 +391,8 @@ class Comment_Meta_Handler extends Meta_Command {
     
     private function note_history( Context $ctx ): void {
         $on = true;
-        if ( class_exists( '\\Easy_MCP_AI\\Config' ) ) {
-            $on = (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_capture_meta', true );
+        if ( class_exists( '\\wordpress_code_ai\\Config' ) ) {
+            $on = (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_capture_meta', true );
         }
         if ( ! $on ) {
             $ctx->not_captured( self::NOT_CAPTURED_META );

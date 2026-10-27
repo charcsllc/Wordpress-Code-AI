@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -36,7 +36,7 @@ class Admin_Page {
 
 
     public static function oauth_transport_problem(): string {
-        if ( \Easy_MCP_AI\Config::get( 'oauth_allow_http' ) ) {
+        if ( \wordpress_code_ai\Config::get( 'oauth_allow_http' ) ) {
             return '';
         }
 
@@ -111,8 +111,8 @@ class Admin_Page {
             return 'auth_rule_refused';
         }
 
-        $written = \Easy_MCP_AI\Diagnostics\Htaccess_Auth_Rule::write(
-            \Easy_MCP_AI\Diagnostics\Htaccess_Auth_Rule::htaccess_path()
+        $written = \wordpress_code_ai\Diagnostics\Htaccess_Auth_Rule::write(
+            \wordpress_code_ai\Diagnostics\Htaccess_Auth_Rule::htaccess_path()
         );
         if ( ! $written ) {
             return 'auth_rule_failed';
@@ -120,8 +120,8 @@ class Admin_Page {
 
         
         
-        if ( class_exists( '\Easy_MCP_AI\Diagnostics\Diagnostics' ) ) {
-            \Easy_MCP_AI\Diagnostics\Diagnostics::run( true );
+        if ( class_exists( '\wordpress_code_ai\Diagnostics\Diagnostics' ) ) {
+            \wordpress_code_ai\Diagnostics\Diagnostics::run( true );
         }
 
         return 'auth_rule_written';
@@ -135,7 +135,7 @@ class Admin_Page {
 
     private static function may_write_htaccess(): bool {
         $is_multisite = function_exists( 'is_multisite' ) && \is_multisite();
-        return \Easy_MCP_AI\Diagnostics\Htaccess_Auth_Rule::may_write(
+        return \wordpress_code_ai\Diagnostics\Htaccess_Auth_Rule::may_write(
             \current_user_can( 'manage_options' ),
             $is_multisite,
             $is_multisite && \is_super_admin(),
@@ -170,24 +170,24 @@ class Admin_Page {
             return 'plain_routes_not_applicable';
         }
 
-        $path    = \Easy_MCP_AI\Diagnostics\Htaccess_Auth_Rule::htaccess_path();
-        $before  = \Easy_MCP_AI\Diagnostics\Htaccess_Plain_Routes::front_page_status();
-        $written = \Easy_MCP_AI\Diagnostics\Htaccess_Plain_Routes::write(
+        $path    = \wordpress_code_ai\Diagnostics\Htaccess_Auth_Rule::htaccess_path();
+        $before  = \wordpress_code_ai\Diagnostics\Htaccess_Plain_Routes::front_page_status();
+        $written = \wordpress_code_ai\Diagnostics\Htaccess_Plain_Routes::write(
             $path,
-            \Easy_MCP_AI\Diagnostics\Htaccess_Plain_Routes::home_root()
+            \wordpress_code_ai\Diagnostics\Htaccess_Plain_Routes::home_root()
         );
         if ( ! $written ) {
             return 'plain_routes_failed';
         }
-        if ( \Easy_MCP_AI\Diagnostics\Htaccess_Plain_Routes::breaks_site( $before, \Easy_MCP_AI\Diagnostics\Htaccess_Plain_Routes::front_page_status() ) ) {
-            \Easy_MCP_AI\Diagnostics\Htaccess_Plain_Routes::remove( $path );
+        if ( \wordpress_code_ai\Diagnostics\Htaccess_Plain_Routes::breaks_site( $before, \wordpress_code_ai\Diagnostics\Htaccess_Plain_Routes::front_page_status() ) ) {
+            \wordpress_code_ai\Diagnostics\Htaccess_Plain_Routes::remove( $path );
             return 'plain_routes_reverted';
         }
 
         
         
-        if ( class_exists( '\Easy_MCP_AI\Diagnostics\Diagnostics' ) ) {
-            \Easy_MCP_AI\Diagnostics\Diagnostics::run( true, \Easy_MCP_AI\Diagnostics\Diagnostics::CONNECTION_GROUPS );
+        if ( class_exists( '\wordpress_code_ai\Diagnostics\Diagnostics' ) ) {
+            \wordpress_code_ai\Diagnostics\Diagnostics::run( true, \wordpress_code_ai\Diagnostics\Diagnostics::CONNECTION_GROUPS );
         }
 
         return 'plain_routes_written';
@@ -206,9 +206,9 @@ class Admin_Page {
 
     public static function oauth_min_capability_choices() {
         return array(
-            'publish_posts'     => __( 'Author and above (default)', 'easy-mcp-ai' ),
-            'edit_others_posts' => __( 'Editor and above', 'easy-mcp-ai' ),
-            'manage_options'    => __( 'Administrators only', 'easy-mcp-ai' ),
+            'publish_posts'     => __( 'Author and above (default)', 'wordpress-code-ai' ),
+            'edit_others_posts' => __( 'Editor and above', 'wordpress-code-ai' ),
+            'manage_options'    => __( 'Administrators only', 'wordpress-code-ai' ),
         );
     }
 
@@ -241,9 +241,9 @@ class Admin_Page {
 
     public static function external_data_min_capability_choices() {
         return array(
-            'manage_options'    => __( 'Administrators only (default)', 'easy-mcp-ai' ),
-            'edit_others_posts' => __( 'Editor and above', 'easy-mcp-ai' ),
-            'publish_posts'     => __( 'Author and above', 'easy-mcp-ai' ),
+            'manage_options'    => __( 'Administrators only (default)', 'wordpress-code-ai' ),
+            'edit_others_posts' => __( 'Editor and above', 'wordpress-code-ai' ),
+            'publish_posts'     => __( 'Author and above', 'wordpress-code-ai' ),
         );
     }
 
@@ -355,10 +355,10 @@ class Admin_Page {
             return $custom;
         }
         if ( ! preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $custom, $m ) || ! checkdate( (int) $m[2], (int) $m[3], (int) $m[1] ) ) {
-            return new \WP_Error( 'invalid_expiry', __( 'Choose a valid expiration date.', 'easy-mcp-ai' ) );
+            return new \WP_Error( 'invalid_expiry', __( 'Choose a valid expiration date.', 'wordpress-code-ai' ) );
         }
         if ( $custom < self::token_expiry_preset_date( 1, $now ) ) {
-            return new \WP_Error( 'invalid_expiry', __( 'The expiration date must be in the future.', 'easy-mcp-ai' ) );
+            return new \WP_Error( 'invalid_expiry', __( 'The expiration date must be in the future.', 'wordpress-code-ai' ) );
         }
         return $custom;
     }
@@ -392,7 +392,7 @@ class Admin_Page {
         
         $table   = \esc_sql( $table );
         $iter    = 0;
-        $max     = (int) \Easy_MCP_AI\Plugin::CLEANUP_MAX_ITERATIONS;
+        $max     = (int) \wordpress_code_ai\Plugin::CLEANUP_MAX_ITERATIONS;
         $deleted = 0;
         do {
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- $table is plugin-controlled (esc_sql'd above); retention is %d-bound.

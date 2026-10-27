@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -458,7 +458,7 @@ final class Client_Metadata {
                 'limit_response_size' => self::MAX_BYTES + 1,
                 
                 
-                'user-agent'          => 'EasyMCPAI-OAuth/' . ( defined( 'EASY_MCP_AI_VERSION' ) ? EASY_MCP_AI_VERSION : '0' ),
+                'user-agent'          => 'wordpress-code-ai-OAuth/' . ( defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '0' ),
                 'headers'             => array( 'Accept' => 'application/json' ),
             )
         );
@@ -611,29 +611,29 @@ final class Client_Metadata {
         switch ( $reason ) {
             case self::REASON_INVALID_URL:
                 $code    = 'invalid_client';
-                $message = __( 'This application identifies itself with a client ID this site cannot use. A client ID that is a URL must use HTTPS and a host name, have a path, and carry no query string.', 'easy-mcp-ai' );
+                $message = __( 'This application identifies itself with a client ID this site cannot use. A client ID that is a URL must use HTTPS and a host name, have a path, and carry no query string.', 'wordpress-code-ai' );
                 break;
             case self::REASON_FETCH_FAILED:
                 $code    = 'invalid_client';
                 /* translators: 1: host name, 2: what failed, such as http_404 */
-                $message = sprintf( __( 'This site could not read the application\'s registration from %1$s (%2$s). Try again in a moment.', 'easy-mcp-ai' ), $host, $detail );
+                $message = sprintf( __( 'This site could not read the application\'s registration from %1$s (%2$s). Try again in a moment.', 'wordpress-code-ai' ), $host, $detail );
                 break;
             case self::REASON_UNSUPPORTED_AUTH:
                 $code    = 'invalid_client';
-                $message = __( 'The application\'s registration asks to authenticate in a way this site does not support. Applications that sign in with a client ID URL must be public clients.', 'easy-mcp-ai' );
+                $message = __( 'The application\'s registration asks to authenticate in a way this site does not support. Applications that sign in with a client ID URL must be public clients.', 'wordpress-code-ai' );
                 break;
             case self::REASON_CLIENT_CAP:
                 $code    = 'server_error';
-                $message = __( 'Maximum number of registered clients has been reached.', 'easy-mcp-ai' );
+                $message = __( 'Maximum number of registered clients has been reached.', 'wordpress-code-ai' );
                 break;
             case self::REASON_STORE_FAILED:
                 $code    = 'server_error';
-                $message = __( 'This site could not save the application\'s registration. Please try again.', 'easy-mcp-ai' );
+                $message = __( 'This site could not save the application\'s registration. Please try again.', 'wordpress-code-ai' );
                 break;
             default:
                 $code    = 'invalid_client';
                 /* translators: 1: host name, 2: what is wrong, such as client_id_mismatch */
-                $message = sprintf( __( 'The application\'s registration at %1$s is not valid (%2$s).', 'easy-mcp-ai' ), $host, $detail );
+                $message = sprintf( __( 'The application\'s registration at %1$s is not valid (%2$s).', 'wordpress-code-ai' ), $host, $detail );
         }
         return new \WP_Error(
             $code,
@@ -667,7 +667,7 @@ final class Client_Metadata {
 
     private static function stored_row( string $id ) {
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix; a sign-in must read the current row.
         $row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE client_id = %s LIMIT 1", $id ) );
         // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter
@@ -720,7 +720,7 @@ final class Client_Metadata {
             return;
         }
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Plugin-owned table write.
         $wpdb->update(
             $table,
@@ -756,7 +756,7 @@ final class Client_Metadata {
 
     private static function store( string $url, string $id, array $fields, int $ttl, $row ) {
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
         $now   = current_time( 'mysql', true );
         $data  = array(
             'client_name'         => $fields['client_name'],
@@ -781,7 +781,7 @@ final class Client_Metadata {
             }
         }
         if ( null === $row ) {
-            $client_ip = class_exists( '\Easy_MCP_AI\Client_IP' ) ? (string) \Easy_MCP_AI\Client_IP::get() : '';
+            $client_ip = class_exists( '\wordpress_code_ai\Client_IP' ) ? (string) \wordpress_code_ai\Client_IP::get() : '';
             // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Plugin-owned table write.
             $inserted = $wpdb->insert(
                 $table,
@@ -819,8 +819,8 @@ final class Client_Metadata {
 
     private static function at_client_cap(): bool {
         global $wpdb;
-        $table = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
-        $max   = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_oauth_max_clients', Client_Registry::DEFAULT_MAX_CLIENTS );
+        $table = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
+        $max   = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_oauth_max_clients', Client_Registry::DEFAULT_MAX_CLIENTS );
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table prefixed by $wpdb->prefix; the cap needs a live count.
         $count = (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$table} WHERE is_active = %d", 1 ) );
         // phpcs:enable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter

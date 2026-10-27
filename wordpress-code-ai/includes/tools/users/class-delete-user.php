@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Users;
+namespace wordpress_code_ai\Tools\Users;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -101,21 +101,21 @@ class Delete_User extends Base_Tool {
         if ( self::flag( $arguments, 'network' ) ) {
             return sprintf(
                 /* translators: 1: display name, 2: login, 3: user id */
-                __( "Permanently delete user '%1\$s' (%2\$s, ID %3\$d) from the whole network; their posts and links on every site are deleted.", 'easy-mcp-ai' ),
+                __( "Permanently delete user '%1\$s' (%2\$s, ID %3\$d) from the whole network; their posts and links on every site are deleted.", 'wordpress-code-ai' ),
                 $name, $login, $id
             );
         }
         if ( self::flag( $arguments, 'delete_content' ) && ! isset( $arguments['reassign'] ) ) {
             return sprintf(
                 /* translators: 1: display name, 2: login, 3: user id */
-                __( "Permanently delete user '%1\$s' (%2\$s, ID %3\$d); their posts and links are deleted too.", 'easy-mcp-ai' ),
+                __( "Permanently delete user '%1\$s' (%2\$s, ID %3\$d); their posts and links are deleted too.", 'wordpress-code-ai' ),
                 $name, $login, $id
             );
         }
         $reassign = isset( $arguments['reassign'] ) ? (int) $arguments['reassign'] : 0;
         return sprintf(
             /* translators: 1: display name, 2: login, 3: user id, 4: id of the user who inherits the content */
-            __( "Permanently delete user '%1\$s' (%2\$s, ID %3\$d); their posts are reassigned to user #%4\$d.", 'easy-mcp-ai' ),
+            __( "Permanently delete user '%1\$s' (%2\$s, ID %3\$d); their posts are reassigned to user #%4\$d.", 'wordpress-code-ai' ),
             $name, $login, $id, $reassign
         );
     }

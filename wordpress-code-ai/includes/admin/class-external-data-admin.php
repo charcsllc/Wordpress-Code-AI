@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
-use Easy_MCP_AI\GSC\GSC_Client;
-use Easy_MCP_AI\GA\GA_Client;
+use wordpress_code_ai\GSC\GSC_Client;
+use wordpress_code_ai\GA\GA_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -31,13 +31,13 @@ class External_Data_Admin {
 
     public static function disabled_tool_bucket_options() {
         return array(
-            'easy_mcp_ai_disabled_plugin_tools',
-            'easy_mcp_ai_disabled_gsc_tools',
-            'easy_mcp_ai_disabled_ga_tools',
-            'easy_mcp_ai_disabled_dfs_tools',
-            'easy_mcp_ai_disabled_semrush_tools',
-            'easy_mcp_ai_disabled_seranking_tools',
-            'easy_mcp_ai_disabled_ahrefs_tools',
+            'wordpress_code_ai_disabled_plugin_tools',
+            'wordpress_code_ai_disabled_gsc_tools',
+            'wordpress_code_ai_disabled_ga_tools',
+            'wordpress_code_ai_disabled_dfs_tools',
+            'wordpress_code_ai_disabled_semrush_tools',
+            'wordpress_code_ai_disabled_seranking_tools',
+            'wordpress_code_ai_disabled_ahrefs_tools',
         );
     }
 
@@ -55,9 +55,9 @@ class External_Data_Admin {
         return array_values( array_unique( $merged ) );
     }
 
-    const OPTION_GSC_SITES_CACHE = 'easy_mcp_ai_gsc_sites_cache';
+    const OPTION_GSC_SITES_CACHE = 'wordpress_code_ai_gsc_sites_cache';
 
-    const OPTION_GA_PROPS_CACHE  = 'easy_mcp_ai_ga_properties_cache';
+    const OPTION_GA_PROPS_CACHE  = 'wordpress_code_ai_ga_properties_cache';
 
     
 
@@ -68,8 +68,8 @@ class External_Data_Admin {
 
 
     const CACHE_OWNER_OPTIONS = array(
-        'ga'  => 'easy_mcp_ai_ga_properties_cache_owner',
-        'gsc' => 'easy_mcp_ai_gsc_sites_cache_owner',
+        'ga'  => 'wordpress_code_ai_ga_properties_cache_owner',
+        'gsc' => 'wordpress_code_ai_gsc_sites_cache_owner',
     );
 
     
@@ -82,14 +82,14 @@ class External_Data_Admin {
     public static function cache_is_current( string $provider ): bool {
         $owner = isset( self::CACHE_OWNER_OPTIONS[ $provider ] ) ? \get_option( self::CACHE_OWNER_OPTIONS[ $provider ], null ) : null;
         if ( ! is_string( $owner ) ) {
-            return ! \Easy_MCP_AI\Provider_Credentials::is_deployed( $provider );
+            return ! \wordpress_code_ai\Provider_Credentials::is_deployed( $provider );
         }
-        return hash_equals( $owner, \Easy_MCP_AI\Provider_Credentials::fingerprint( $provider ) );
+        return hash_equals( $owner, \wordpress_code_ai\Provider_Credentials::fingerprint( $provider ) );
     }
 
     
     private static function mark_cache_owner( string $provider ): void {
-        \update_option( self::CACHE_OWNER_OPTIONS[ $provider ], \Easy_MCP_AI\Provider_Credentials::fingerprint( $provider ), false );
+        \update_option( self::CACHE_OWNER_OPTIONS[ $provider ], \wordpress_code_ai\Provider_Credentials::fingerprint( $provider ), false );
     }
 
     
@@ -99,8 +99,8 @@ class External_Data_Admin {
 
 
     private static function may_seed_default( string $provider, string $option ): bool {
-        return ! \Easy_MCP_AI\Config::is_locked( $option )
-            && ! \Easy_MCP_AI\Provider_Credentials::is_deployed( $provider )
+        return ! \wordpress_code_ai\Config::is_locked( $option )
+            && ! \wordpress_code_ai\Provider_Credentials::is_deployed( $provider )
             && '' === \get_option( $option, '' );
     }
 

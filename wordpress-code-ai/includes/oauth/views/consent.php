@@ -49,25 +49,25 @@ if ( ! defined( 'ABSPATH' ) ) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title><?php echo esc_html__( 'Authorize Application', 'easy-mcp-ai' ); ?> &mdash; <?php echo esc_html( \Easy_MCP_AI\Console_Styles::site_label() ); ?></title>
+    <title><?php echo esc_html__( 'Authorize Application', 'wordpress-code-ai' ); ?> &mdash; <?php echo esc_html( \wordpress_code_ai\Console_Styles::site_label() ); ?></title>
     <?php
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Plugin-owned stylesheet; see Console_Styles::inline().
-    echo \Easy_MCP_AI\Console_Styles::inline();
+    echo \wordpress_code_ai\Console_Styles::inline();
     ?>
 </head>
-<body class="emcp-page">
+<body class="wcai-page">
 
-<div class="emcp-shell">
+<div class="wcai-shell">
 
-    <div class="emcp-topbar">
+    <div class="wcai-topbar">
         <?php
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static plugin-owned markup; see Console_Styles::logo().
-        echo \Easy_MCP_AI\Console_Styles::logo();
+        echo \wordpress_code_ai\Console_Styles::logo();
         ?>
-        <h1 class="emcp-topbar__title"><?php echo esc_html__( 'Authorize Application', 'easy-mcp-ai' ); ?></h1>
+        <h1 class="wcai-topbar__title"><?php echo esc_html__( 'Authorize Application', 'wordpress-code-ai' ); ?></h1>
         <?php
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped inside Console_Styles::site_name().
-        echo \Easy_MCP_AI\Console_Styles::site_name();
+        echo \wordpress_code_ai\Console_Styles::site_name();
         ?>
     </div>
 
@@ -98,51 +98,51 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 
-        foreach ( $hidden_fields as $easy_mcp_ai_hidden_name => $easy_mcp_ai_hidden_value ) :
+        foreach ( $hidden_fields as $wordpress_code_ai_hidden_name => $wordpress_code_ai_hidden_value ) :
             ?>
-        <input type="hidden" name="<?php echo esc_attr( $easy_mcp_ai_hidden_name ); ?>" value="<?php echo esc_attr( $easy_mcp_ai_hidden_value ); ?>">
+        <input type="hidden" name="<?php echo esc_attr( $wordpress_code_ai_hidden_name ); ?>" value="<?php echo esc_attr( $wordpress_code_ai_hidden_value ); ?>">
         <?php endforeach; ?>
 
         <?php
         
         
-        foreach ( $carried_scopes as $easy_mcp_ai_carried_scope ) :
+        foreach ( $carried_scopes as $wordpress_code_ai_carried_scope ) :
             ?>
-        <input type="hidden" name="scopes[]" value="<?php echo esc_attr( $easy_mcp_ai_carried_scope ); ?>" data-carried-scope>
+        <input type="hidden" name="scopes[]" value="<?php echo esc_attr( $wordpress_code_ai_carried_scope ); ?>" data-carried-scope>
         <?php endforeach; ?>
 
-    <div class="emcp-body">
+    <div class="wcai-body">
 
         <?php if ( ! empty( $notice ) ) : ?>
-        <div class="emcp-notice emcp-notice--warn"><?php echo esc_html( $notice ); ?></div>
+        <div class="wcai-notice wcai-notice--warn"><?php echo esc_html( $notice ); ?></div>
         <?php endif; ?>
 
         <?php if ( ! empty( $step_up_notice ) ) : ?>
-        <div class="emcp-notice emcp-notice--info" data-step-up-notice><?php echo esc_html( $step_up_notice ); ?></div>
+        <div class="wcai-notice wcai-notice--info" data-step-up-notice><?php echo esc_html( $step_up_notice ); ?></div>
         <?php endif; ?>
 
-        <div class="emcp-card emcp-card--subtle">
-            <div class="emcp-h2"><?php echo esc_html( $client_name ); ?></div>
-            <p class="emcp-text emcp-text--small">
+        <div class="wcai-card wcai-card--subtle">
+            <div class="wcai-h2"><?php echo esc_html( $client_name ); ?></div>
+            <p class="wcai-text wcai-text--small">
                 <?php
                 printf(
                     /* translators: 1: user display name, 2: comma-separated role list */
-                    esc_html__( 'Will act on this site as %1$s (%2$s), and never beyond what that account can do.', 'easy-mcp-ai' ),
+                    esc_html__( 'Will act on this site as %1$s (%2$s), and never beyond what that account can do.', 'wordpress-code-ai' ),
                     '<strong>' . esc_html( $user_display_name ) . '</strong>',
                     esc_html( $user_roles )
                 );
                 ?>
             </p>
-            <p class="emcp-text emcp-text--small emcp-text--muted">
-                <?php echo esc_html__( 'Client ID:', 'easy-mcp-ai' ); ?>
+            <p class="wcai-text wcai-text--small wcai-text--muted">
+                <?php echo esc_html__( 'Client ID:', 'wordpress-code-ai' ); ?>
                 <?php if ( '' !== $client_label ) : ?>
-                <code class="emcp-mono"><?php echo esc_html( $client_label ); ?></code>
+                <code class="wcai-mono"><?php echo esc_html( $client_label ); ?></code>
                 <?php else : ?>
-                <code class="emcp-mono"><?php echo esc_html( $client_id_prefix ); ?>&hellip;</code>
+                <code class="wcai-mono"><?php echo esc_html( $client_id_prefix ); ?>&hellip;</code>
                 <?php endif; ?>
                 &nbsp;&middot;&nbsp;
                 <?php echo esc_html( $context_label ); ?>
-                <code class="emcp-mono"><?php echo esc_html( $context_value ); ?></code>
+                <code class="wcai-mono"><?php echo esc_html( $context_value ); ?></code>
             </p>
         </div>
 
@@ -150,41 +150,41 @@ if ( ! defined( 'ABSPATH' ) ) {
         // phpcs:disable WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- Template-local variables inside a view; not global scope.
         $levels = array(
             'read'   => array(
-                __( 'Read-only', 'easy-mcp-ai' ),
-                __( 'The AI can view content, settings and the user list. It cannot create, change or delete anything.', 'easy-mcp-ai' ),
+                __( 'Read-only', 'wordpress-code-ai' ),
+                __( 'The AI can view content, settings and the user list. It cannot create, change or delete anything.', 'wordpress-code-ai' ),
             ),
             'full'   => array(
-                __( 'Full access', 'easy-mcp-ai' ),
-                __( 'All tools, current and future, including plugin integrations, external data connections and WordPress Abilities.', 'easy-mcp-ai' ),
+                __( 'Full access', 'wordpress-code-ai' ),
+                __( 'All tools, current and future, including plugin integrations, external data connections and WordPress Abilities.', 'wordpress-code-ai' ),
             ),
             'custom' => array(
-                __( 'Custom', 'easy-mcp-ai' ),
-                __( 'Pick read and write access per category under Customize permissions.', 'easy-mcp-ai' ),
+                __( 'Custom', 'wordpress-code-ai' ),
+                __( 'Pick read and write access per category under Customize permissions.', 'wordpress-code-ai' ),
             ),
         );
         $levels = array( $default_level => $levels[ $default_level ] ) + $levels;
         ?>
-        <fieldset class="emcp-choices">
-            <legend class="emcp-eyebrow"><?php echo esc_html__( 'Access level', 'easy-mcp-ai' ); ?></legend>
-            <div class="emcp-choices__list">
+        <fieldset class="wcai-choices">
+            <legend class="wcai-eyebrow"><?php echo esc_html__( 'Access level', 'wordpress-code-ai' ); ?></legend>
+            <div class="wcai-choices__list">
             <?php
             foreach ( $levels as $level => $copy ) :
                 if ( 'custom' !== $level && empty( $level_scopes[ $level ] ) ) {
                     continue;
                 }
                 ?>
-            <label class="emcp-choice">
-                <input type="radio" name="access_level" value="<?php echo esc_attr( $level ); ?>" class="emcp-radio" <?php checked( $default_level, $level ); ?>>
+            <label class="wcai-choice">
+                <input type="radio" name="access_level" value="<?php echo esc_attr( $level ); ?>" class="wcai-radio" <?php checked( $default_level, $level ); ?>>
                 <span>
-                    <span class="emcp-choice__name">
+                    <span class="wcai-choice__name">
                         <?php echo esc_html( $copy[0] ); ?>
                     </span>
-                    <span class="emcp-text emcp-text--small emcp-text--muted"><?php echo esc_html( $copy[1] ); ?></span>
+                    <span class="wcai-text wcai-text--small wcai-text--muted"><?php echo esc_html( $copy[1] ); ?></span>
                     <?php if ( 'full' === $level && ! empty( $privileged_rows ) ) : ?>
-                    <span class="emcp-text emcp-text--small emcp-text--danger" data-privileged-notice>
+                    <span class="wcai-text wcai-text--small wcai-text--danger" data-privileged-notice>
                         <?php
                         /* translators: %s: comma-separated privileged actions, e.g. "Run PHP code" */
-                        echo esc_html( sprintf( __( 'Includes privileged actions, which can run code, read files on the server or rewrite the database: %s.', 'easy-mcp-ai' ), implode( ', ', array_column( $privileged_rows, 'label' ) ) ) );
+                        echo esc_html( sprintf( __( 'Includes privileged actions, which can run code, read files on the server or rewrite the database: %s.', 'wordpress-code-ai' ), implode( ', ', array_column( $privileged_rows, 'label' ) ) ) );
                         ?>
                     </span>
                     <?php endif; ?>
@@ -195,19 +195,19 @@ if ( ! defined( 'ABSPATH' ) ) {
         </fieldset>
 
         <?php if ( empty( $ceiling_all ) ) : ?>
-        <p class="emcp-text emcp-text--small emcp-text--muted">
+        <p class="wcai-text wcai-text--small wcai-text--muted">
             <?php
             /* translators: %s: application name */
-            echo esc_html( sprintf( __( '%s asked for access to part of this site only, so every option stays within what it asked for.', 'easy-mcp-ai' ), $client_name ) );
+            echo esc_html( sprintf( __( '%s asked for access to part of this site only, so every option stays within what it asked for.', 'wordpress-code-ai' ), $client_name ) );
             ?>
         </p>
         <?php endif; ?>
 
-        <details id="customize" class="emcp-details" <?php echo 'custom' === $default_level ? 'open' : ''; ?>>
-            <summary><?php echo esc_html__( 'Customize permissions', 'easy-mcp-ai' ); ?></summary>
+        <details id="customize" class="wcai-details" <?php echo 'custom' === $default_level ? 'open' : ''; ?>>
+            <summary><?php echo esc_html__( 'Customize permissions', 'wordpress-code-ai' ); ?></summary>
 
-            <div class="emcp-stack">
-            <p class="emcp-text emcp-text--small emcp-text--muted"><?php echo esc_html__( 'These boxes apply when Custom is selected.', 'easy-mcp-ai' ); ?></p>
+            <div class="wcai-stack">
+            <p class="wcai-text wcai-text--small wcai-text--muted"><?php echo esc_html__( 'These boxes apply when Custom is selected.', 'wordpress-code-ai' ); ?></p>
 
             <?php
             
@@ -216,25 +216,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
             ?>
-            <div class="emcp-btn-row" data-bulk-row hidden>
-                <button type="button" class="emcp-btn emcp-btn--secondary emcp-btn--sm" data-bulk="all"><?php echo esc_html__( 'Select all', 'easy-mcp-ai' ); ?></button>
-                <button type="button" class="emcp-btn emcp-btn--secondary emcp-btn--sm" data-bulk="none"><?php echo esc_html__( 'Clear', 'easy-mcp-ai' ); ?></button>
+            <div class="wcai-btn-row" data-bulk-row hidden>
+                <button type="button" class="wcai-btn wcai-btn--secondary wcai-btn--sm" data-bulk="all"><?php echo esc_html__( 'Select all', 'wordpress-code-ai' ); ?></button>
+                <button type="button" class="wcai-btn wcai-btn--secondary wcai-btn--sm" data-bulk="none"><?php echo esc_html__( 'Clear', 'wordpress-code-ai' ); ?></button>
             </div>
 
-            <table id="scope-table" class="emcp-table emcp-table--columns">
+            <table id="scope-table" class="wcai-table wcai-table--columns">
                 <thead>
                     <tr>
-                        <th><?php echo esc_html__( 'Category', 'easy-mcp-ai' ); ?></th>
-                        <th class="emcp-table__toggle">
-                            <label class="emcp-table__column">
-                                <?php echo esc_html__( 'Read', 'easy-mcp-ai' ); ?>
-                                <input type="checkbox" class="emcp-checkbox" data-column="read" aria-label="<?php echo esc_attr__( 'Tick every Read box', 'easy-mcp-ai' ); ?>" hidden>
+                        <th><?php echo esc_html__( 'Category', 'wordpress-code-ai' ); ?></th>
+                        <th class="wcai-table__toggle">
+                            <label class="wcai-table__column">
+                                <?php echo esc_html__( 'Read', 'wordpress-code-ai' ); ?>
+                                <input type="checkbox" class="wcai-checkbox" data-column="read" aria-label="<?php echo esc_attr__( 'Tick every Read box', 'wordpress-code-ai' ); ?>" hidden>
                             </label>
                         </th>
-                        <th class="emcp-table__toggle">
-                            <label class="emcp-table__column">
-                                <?php echo esc_html__( 'Write', 'easy-mcp-ai' ); ?>
-                                <input type="checkbox" class="emcp-checkbox" data-column="write" aria-label="<?php echo esc_attr__( 'Tick every Write box', 'easy-mcp-ai' ); ?>" hidden>
+                        <th class="wcai-table__toggle">
+                            <label class="wcai-table__column">
+                                <?php echo esc_html__( 'Write', 'wordpress-code-ai' ); ?>
+                                <input type="checkbox" class="wcai-checkbox" data-column="write" aria-label="<?php echo esc_attr__( 'Tick every Write box', 'wordpress-code-ai' ); ?>" hidden>
                             </label>
                         </th>
                     </tr>
@@ -244,7 +244,7 @@ if ( ! defined( 'ABSPATH' ) ) {
                     $has_ability_row = false;
 
                     foreach ( $categories as $category ) :
-                        if ( ! empty( $category['plugin_required'] ) && ! \Easy_MCP_AI\OAuth\Scope_Map::is_plugin_category_active( $category['slug'] ) ) {
+                        if ( ! empty( $category['plugin_required'] ) && ! \wordpress_code_ai\OAuth\Scope_Map::is_plugin_category_active( $category['slug'] ) ) {
                             continue;
                         }
                         if ( ! empty( $category['is_ability'] ) ) {
@@ -254,22 +254,22 @@ if ( ! defined( 'ABSPATH' ) ) {
                         $row_new = in_array( isset( $category['read_scope'] ) ? (string) $category['read_scope'] : '', $new_scopes, true )
                             || in_array( isset( $category['write_scope'] ) ? (string) $category['write_scope'] : '', $new_scopes, true );
                         ?>
-                    <tr<?php echo $row_new ? ' class="emcp-table__row--new"' : ''; ?>>
+                    <tr<?php echo $row_new ? ' class="wcai-table__row--new"' : ''; ?>>
                         <td><?php echo esc_html( $label ); ?></td>
                         <?php
                         foreach ( array( 'read', 'write' ) as $kind ) :
                             $box_scope = isset( $category[ $kind . '_scope' ] ) ? (string) $category[ $kind . '_scope' ] : '';
                             ?>
-                        <td class="emcp-table__toggle">
+                        <td class="wcai-table__toggle">
                             <?php if ( '' !== $box_scope ) : ?>
-                                <input type="checkbox" name="scopes[]" value="<?php echo esc_attr( $box_scope ); ?>" class="scope-checkbox emcp-checkbox" data-kind="<?php echo esc_attr( $kind ); ?>"
+                                <input type="checkbox" name="scopes[]" value="<?php echo esc_attr( $box_scope ); ?>" class="scope-checkbox wcai-checkbox" data-kind="<?php echo esc_attr( $kind ); ?>"
                                     <?php checked( $tick_all || in_array( $box_scope, $checked_scopes, true ) ); ?>
                                     <?php disabled( ! $ceiling_all && ! in_array( $box_scope, $ceiling, true ) ); ?>>
                                 <?php if ( in_array( $box_scope, $new_scopes, true ) ) : ?>
-                                <span class="emcp-flag emcp-flag--new" data-new-scope="<?php echo esc_attr( $box_scope ); ?>"><?php echo esc_html__( 'New', 'easy-mcp-ai' ); ?></span>
+                                <span class="wcai-flag wcai-flag--new" data-new-scope="<?php echo esc_attr( $box_scope ); ?>"><?php echo esc_html__( 'New', 'wordpress-code-ai' ); ?></span>
                                 <?php endif; ?>
                             <?php else : ?>
-                                <span class="emcp-none">&mdash;</span>
+                                <span class="wcai-none">&mdash;</span>
                             <?php endif; ?>
                         </td>
                         <?php endforeach; ?>
@@ -285,16 +285,16 @@ if ( ! defined( 'ABSPATH' ) ) {
                             continue;
                         }
                         ?>
-                    <tr data-privileged-row<?php echo in_array( $box_scope, $new_scopes, true ) ? ' class="emcp-table__row--new"' : ''; ?>>
+                    <tr data-privileged-row<?php echo in_array( $box_scope, $new_scopes, true ) ? ' class="wcai-table__row--new"' : ''; ?>>
                         <td>
                             <?php echo esc_html( $privileged_row['label'] ); ?>
-                            <span class="emcp-flag emcp-flag--danger"><?php echo esc_html__( 'Privileged', 'easy-mcp-ai' ); ?></span>
+                            <span class="wcai-flag wcai-flag--danger"><?php echo esc_html__( 'Privileged', 'wordpress-code-ai' ); ?></span>
                         </td>
-                        <td class="emcp-table__toggle" colspan="2">
-                            <input type="checkbox" name="scopes[]" value="<?php echo esc_attr( $box_scope ); ?>" class="scope-checkbox emcp-checkbox"
+                        <td class="wcai-table__toggle" colspan="2">
+                            <input type="checkbox" name="scopes[]" value="<?php echo esc_attr( $box_scope ); ?>" class="scope-checkbox wcai-checkbox"
                                 <?php checked( $tick_all || in_array( $box_scope, $checked_scopes, true ) ); ?>>
                             <?php if ( in_array( $box_scope, $new_scopes, true ) ) : ?>
-                            <span class="emcp-flag emcp-flag--new" data-new-scope="<?php echo esc_attr( $box_scope ); ?>"><?php echo esc_html__( 'New', 'easy-mcp-ai' ); ?></span>
+                            <span class="wcai-flag wcai-flag--new" data-new-scope="<?php echo esc_attr( $box_scope ); ?>"><?php echo esc_html__( 'New', 'wordpress-code-ai' ); ?></span>
                             <?php endif; ?>
                         </td>
                     </tr>
@@ -304,31 +304,31 @@ if ( ! defined( 'ABSPATH' ) ) {
             </table>
 
             <?php if ( ! empty( $has_ability_row ) ) : ?>
-            <p class="emcp-text emcp-text--small emcp-text--muted">
-                <?php echo esc_html__( 'Only abilities and plugins an administrator enabled under Easy MCP AI → Tools can be called.', 'easy-mcp-ai' ); ?>
+            <p class="wcai-text wcai-text--small wcai-text--muted">
+                <?php echo esc_html__( 'Only abilities and plugins an administrator enabled under wordpress-code-ai → Tools can be called.', 'wordpress-code-ai' ); ?>
             </p>
             <?php endif; ?>
             </div>
         </details>
 
-        <p class="emcp-text emcp-text--small emcp-text--muted">
-            <?php echo esc_html__( 'Approving lets this app act on your site within the access above. Check your AI client’s auto-run settings for each tool. Post and page edits can be undone via WordPress revisions.', 'easy-mcp-ai' ); ?>
+        <p class="wcai-text wcai-text--small wcai-text--muted">
+            <?php echo esc_html__( 'Approving lets this app act on your site within the access above. Check your AI client’s auto-run settings for each tool. Post and page edits can be undone via WordPress revisions.', 'wordpress-code-ai' ); ?>
         </p>
 
     </div>
 
-        <div class="emcp-footer">
-            <button type="submit" name="consent_action" value="deny" class="emcp-btn emcp-btn--secondary emcp-btn--lg">
-                <?php echo esc_html__( 'Deny', 'easy-mcp-ai' ); ?>
+        <div class="wcai-footer">
+            <button type="submit" name="consent_action" value="deny" class="wcai-btn wcai-btn--secondary wcai-btn--lg">
+                <?php echo esc_html__( 'Deny', 'wordpress-code-ai' ); ?>
             </button>
-            <button type="submit" name="consent_action" value="approve" class="emcp-btn emcp-btn--accent emcp-btn--lg">
-                <?php echo esc_html__( 'Approve &amp; Continue', 'easy-mcp-ai' ); ?>
+            <button type="submit" name="consent_action" value="approve" class="wcai-btn wcai-btn--accent wcai-btn--lg">
+                <?php echo esc_html__( 'Approve &amp; Continue', 'wordpress-code-ai' ); ?>
             </button>
         </div>
     </form>
 </div>
 
-<p class="emcp-pagenote"><span class="emcp-dot"></span><?php echo esc_html__( 'Powered by Easy MCP AI', 'easy-mcp-ai' ); ?></p>
+<p class="wcai-pagenote"><span class="wcai-dot"></span><?php echo esc_html__( 'Powered by wordpress-code-ai', 'wordpress-code-ai' ); ?></p>
 
 <script nonce="<?php echo esc_attr( $script_nonce ); ?>">
 (function() {

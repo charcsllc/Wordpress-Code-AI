@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Pages;
+namespace wordpress_code_ai\Tools\Pages;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -62,9 +62,9 @@ class Delete_Page extends Base_Tool {
         $force = ! empty( $arguments['force'] ) && \rest_sanitize_boolean( $arguments['force'] );
         return sprintf(
             /* translators: 1: page title, 2: page id, 3: page status, 4: what happens */
-            __( "Delete page '%1\$s' (ID %2\$d, %3\$s) — %4\$s.", 'easy-mcp-ai' ),
+            __( "Delete page '%1\$s' (ID %2\$d, %3\$s) — %4\$s.", 'wordpress-code-ai' ),
             self::rest_title( $page ), $id, isset( $page['status'] ) ? $page['status'] : 'unknown',
-            $force ? __( 'permanently, bypassing the trash', 'easy-mcp-ai' ) : __( 'moves it to the trash', 'easy-mcp-ai' )
+            $force ? __( 'permanently, bypassing the trash', 'wordpress-code-ai' ) : __( 'moves it to the trash', 'wordpress-code-ai' )
         );
     }
 

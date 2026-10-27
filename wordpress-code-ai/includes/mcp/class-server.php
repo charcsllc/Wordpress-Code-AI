@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\MCP;
+namespace wordpress_code_ai\MCP;
 
-use Easy_MCP_AI\Auth\Token_Manager;
-use Easy_MCP_AI\Auth\Permission_Guard;
-use Easy_MCP_AI\Tools\Tool_Registry;
-use Easy_MCP_AI\Tools\Tool_State;
-use Easy_MCP_AI\Resources\Resource_Registry;
+use wordpress_code_ai\Auth\Token_Manager;
+use wordpress_code_ai\Auth\Permission_Guard;
+use wordpress_code_ai\Tools\Tool_Registry;
+use wordpress_code_ai\Tools\Tool_State;
+use wordpress_code_ai\Resources\Resource_Registry;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -21,7 +21,7 @@ class Server {
     const PROTOCOL_VERSION = '2026-07-28';
     
     const LEGACY_PROTOCOL_VERSION = '2025-11-25';
-    const SERVER_NAME      = 'easy-mcp-ai';
+    const SERVER_NAME      = 'wordpress-code-ai';
 
     
 
@@ -45,8 +45,8 @@ class Server {
 
 
     public static function effective_required_capability( $category, $tool_default_cap ) {
-        if ( in_array( $category, \Easy_MCP_AI\Tools\Base_Tool::EXTERNAL_DATA_CATEGORIES, true ) ) {
-            $cap = \Easy_MCP_AI\Config::get( 'easy_mcp_ai_external_data_min_capability', 'manage_options' );
+        if ( in_array( $category, \wordpress_code_ai\Tools\Base_Tool::EXTERNAL_DATA_CATEGORIES, true ) ) {
+            $cap = \wordpress_code_ai\Config::get( 'wordpress_code_ai_external_data_min_capability', 'manage_options' );
             
             
             
@@ -135,8 +135,8 @@ class Server {
         $this->token_manager     = $token_manager;
         $this->session_manager   = new Session();
         $this->permission_guard  = new Permission_Guard( $token_manager );
-        $this->audit_log_enabled    = (bool)  \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_enabled', true );
-        $this->allowed_tool_patterns = (array) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_allowed_tool_patterns', array() );
+        $this->audit_log_enabled    = (bool)  \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_enabled', true );
+        $this->allowed_tool_patterns = (array) \wordpress_code_ai\Config::get( 'wordpress_code_ai_allowed_tool_patterns', array() );
 
         register_shutdown_function( array( $this, 'finalise_interrupted_calls' ) );
     }
@@ -173,8 +173,8 @@ class Server {
         
         
         
-        if ( class_exists( '\\Easy_MCP_AI\\Compat\\Compat_Registry' ) ) {
-            \Easy_MCP_AI\Compat\Compat_Registry::release( 0 );
+        if ( class_exists( '\\wordpress_code_ai\\Compat\\Compat_Registry' ) ) {
+            \wordpress_code_ai\Compat\Compat_Registry::release( 0 );
         }
         if ( empty( $this->in_flight ) ) {
             return;
@@ -184,15 +184,15 @@ class Server {
         foreach ( $unfinished as $audit_id ) {
             $this->update_audit_status( (int) $audit_id, 'error' );
         }
-        if ( ! class_exists( '\\Easy_MCP_AI\\History\\Change_Context' ) || ! \Easy_MCP_AI\History\Change_Context::is_active() ) {
+        if ( ! class_exists( '\\wordpress_code_ai\\History\\Change_Context' ) || ! \wordpress_code_ai\History\Change_Context::is_active() ) {
             return;
         }
         try {
-            \do_action( 'easy_mcp_ai_change_context_disarming' );
+            \do_action( 'wordpress_code_ai_change_context_disarming' );
         } catch ( \Throwable $ignored ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
             
         } finally {
-            \Easy_MCP_AI\History\Change_Context::clear();
+            \wordpress_code_ai\History\Change_Context::clear();
         }
     }
 
@@ -249,7 +249,7 @@ class Server {
         if ( 'oauth' !== $this->request_auth_source ) {
             return null;
         }
-        $scope = \Easy_MCP_AI\OAuth\Scope_Map::scope_for_tool( (string) $tool_name );
+        $scope = \wordpress_code_ai\OAuth\Scope_Map::scope_for_tool( (string) $tool_name );
         $tool  = null === $scope ? null : $this->tool_registry->get_tool( $tool_name );
         if ( ! $tool || ! Tool_State::is_enabled( $tool ) || ! $this->tool_matches_pattern_filter( $tool_name ) ) {
             return null;
@@ -290,7 +290,7 @@ class Server {
 
     public function get_task_manager() {
         if ( null === $this->task_manager ) {
-            $this->task_manager = new \Easy_MCP_AI\Tasks\Task_Manager( $this, $this->tool_registry, new \Easy_MCP_AI\Tasks\Wpdb_Task_Store() );
+            $this->task_manager = new \wordpress_code_ai\Tasks\Task_Manager( $this, $this->tool_registry, new \wordpress_code_ai\Tasks\Wpdb_Task_Store() );
         }
         return $this->task_manager;
     }
@@ -309,8 +309,8 @@ class Server {
     public function get_approval_gate() {
         if ( null === $this->approval_gate ) {
             $manager = $this->token_manager;
-            $this->approval_gate = new \Easy_MCP_AI\Approvals\Approval_Gate(
-                new \Easy_MCP_AI\Approvals\Wpdb_Approval_Store(),
+            $this->approval_gate = new \wordpress_code_ai\Approvals\Approval_Gate(
+                new \wordpress_code_ai\Approvals\Wpdb_Approval_Store(),
                 static function ( $token_id ) use ( $manager ) {
                     $row = $manager->get_token_by_id( (int) $token_id );
                     return is_array( $row ) && ! empty( $row['unattended'] );
@@ -325,7 +325,7 @@ class Server {
     }
 
     
-    public function set_feedback_queue( ?\Easy_MCP_AI\Feedback\Feedback_Queue $queue ): void {
+    public function set_feedback_queue( ?\wordpress_code_ai\Feedback\Feedback_Queue $queue ): void {
         $this->feedback_queue = $queue;
     }
 
@@ -602,7 +602,7 @@ class Server {
             $response['result']['resultType'] = 'complete';
         }
         $response['result']['_meta']['io.modelcontextprotocol/serverInfo'] = array(
-            'name' => self::SERVER_NAME, 'version' => EASY_MCP_AI_VERSION,
+            'name' => self::SERVER_NAME, 'version' => WORDPRESS_CODE_AI_VERSION,
         );
         if ( in_array( $method, array( 'server/discover', 'tools/list', 'resources/list', 'resources/read', 'prompts/list', 'prompts/get', 'skills/list', 'skills/get' ), true ) ) {
             
@@ -764,7 +764,7 @@ class Server {
                 'resources' => new \stdClass(),
                 'prompts'   => new \stdClass(),
             ),
-            'serverInfo'      => array( 'name' => self::SERVER_NAME, 'version' => EASY_MCP_AI_VERSION ),
+            'serverInfo'      => array( 'name' => self::SERVER_NAME, 'version' => WORDPRESS_CODE_AI_VERSION ),
             'instructions'    => $this->instructions( $token_id, $allowed_tools ),
         ) );
     }
@@ -851,7 +851,7 @@ class Server {
 
     
     private static function instructions_limit(): int {
-        return \Easy_MCP_AI\Skills\Skill_Instructions::MAX_LENGTH;
+        return \wordpress_code_ai\Skills\Skill_Instructions::MAX_LENGTH;
     }
 
     
@@ -881,12 +881,12 @@ class Server {
 
 
     private function feedback_line( $token_id ): string {
-        if ( null === $token_id || \Easy_MCP_AI\Config::is_white_labelled() || ! Tool_State::resolve( 'wp_send_feedback', false )[0] ) {
+        if ( null === $token_id || \wordpress_code_ai\Config::is_white_labelled() || ! Tool_State::resolve( 'wp_send_feedback', false )[0] ) {
             return '';
         }
         try {
             if ( null === $this->feedback_queue ) {
-                $this->feedback_queue = \Easy_MCP_AI\Feedback\Feedback_Queue::create();
+                $this->feedback_queue = \wordpress_code_ai\Feedback\Feedback_Queue::create();
             }
             return (string) $this->feedback_queue->instructions_line( $this->request_identity( $token_id ) );
         } catch ( \Throwable $e ) {
@@ -906,12 +906,12 @@ class Server {
 
     private function skill_instructions( $token_id, ?array $allowed_tools, int $reserve ): string {
         try {
-            $served = \Easy_MCP_AI\Skills\Skills::served();
+            $served = \wordpress_code_ai\Skills\Skills::served();
             if ( $served->is_empty() ) {
                 return self::INSTRUCTIONS;
             }
             $can_use = null !== $token_id && $this->token_may_use( $token_id, is_array( $allowed_tools ) ? $allowed_tools : null, 'wp_get_skill' );
-            return \Easy_MCP_AI\Skills\Skill_Instructions::build( $served, $can_use, self::INSTRUCTIONS, $reserve );
+            return \wordpress_code_ai\Skills\Skill_Instructions::build( $served, $can_use, self::INSTRUCTIONS, $reserve );
         } catch ( \Throwable $e ) {
             return self::INSTRUCTIONS;
         }
@@ -924,7 +924,7 @@ class Server {
 
     private static function arm_skill_sync(): void {
         try {
-            \Easy_MCP_AI\Skills\Skill_Sync::arm();
+            \wordpress_code_ai\Skills\Skill_Sync::arm();
         } catch ( \Throwable $e ) {
             return;
         }
@@ -957,11 +957,11 @@ class Server {
     }
 
     
-    private static function served_skills(): ?\Easy_MCP_AI\Skills\Skill_Set {
+    private static function served_skills(): ?\wordpress_code_ai\Skills\Skill_Set {
         if ( self::is_paused() ) {
             return null;
         }
-        return \Easy_MCP_AI\Skills\Skills::served();
+        return \wordpress_code_ai\Skills\Skills::served();
     }
 
     
@@ -973,7 +973,7 @@ class Server {
         $entries = array();
         $served  = self::served_skills();
         foreach ( null === $served ? array() : $served->skills() as $skill ) {
-            $entries[] = \Easy_MCP_AI\Skills\Skill_Set::entry( $skill );
+            $entries[] = \wordpress_code_ai\Skills\Skill_Set::entry( $skill );
         }
         return JSON_RPC::success_response( $id, array( 'skills' => $entries ) );
     }
@@ -986,8 +986,8 @@ class Server {
         }
         $uri = is_array( $params ) && isset( $params['uri'] ) && is_string( $params['uri'] ) ? $params['uri'] : '';
         foreach ( self::served_skills()->skills() as $skill ) {
-            if ( \Easy_MCP_AI\Skills\Skill_Set::uri( $skill ) === $uri ) {
-                return JSON_RPC::success_response( $id, array( 'skill' => \Easy_MCP_AI\Skills\Skill_Set::entry( $skill ) ) );
+            if ( \wordpress_code_ai\Skills\Skill_Set::uri( $skill ) === $uri ) {
+                return JSON_RPC::success_response( $id, array( 'skill' => \wordpress_code_ai\Skills\Skill_Set::entry( $skill ) ) );
             }
         }
         return JSON_RPC::error_response( $id, Error_Codes::INVALID_PARAMS, '' === $uri ? 'Missing skill URI' : 'No skill is served at ' . $uri );
@@ -1009,7 +1009,7 @@ class Server {
             $prompts[] = array(
                 'name'        => $skill['name'],
                 'title'       => ucfirst( str_replace( '-', ' ', $skill['name'] ) ),
-                'description' => \Easy_MCP_AI\Skills\Skill_Set::description( $skill ),
+                'description' => \wordpress_code_ai\Skills\Skill_Set::description( $skill ),
                 'arguments'   => array(),
             );
         }
@@ -1028,7 +1028,7 @@ class Server {
             return JSON_RPC::error_response( $id, Error_Codes::INVALID_PARAMS, 'Unknown prompt' );
         }
         return JSON_RPC::success_response( $id, array(
-            'description' => \Easy_MCP_AI\Skills\Skill_Set::description( $skill ),
+            'description' => \wordpress_code_ai\Skills\Skill_Set::description( $skill ),
             'messages'    => array(
                 array(
                     'role'    => 'user',
@@ -1042,7 +1042,7 @@ class Server {
                     'content' => array(
                         'type'     => 'resource',
                         'resource' => array(
-                            'uri'      => \Easy_MCP_AI\Skills\Skill_Set::uri( $skill ),
+                            'uri'      => \wordpress_code_ai\Skills\Skill_Set::uri( $skill ),
                             'mimeType' => 'text/markdown',
                             'text'     => $skill['files'][0]['text'],
                         ),
@@ -1099,7 +1099,7 @@ class Server {
                 $needed[] = $name;
             }
             $cli_tool = $this->tool_registry->get_tool( 'wp_cli_run' );
-            $text     = sprintf( 'WP-CLI (wp_cli_run) is switched off; it covers %s.', $cli_tool instanceof \Easy_MCP_AI\Tools\Base_Tool ? $cli_tool->get_covers() : '' );
+            $text     = sprintf( 'WP-CLI (wp_cli_run) is switched off; it covers %s.', $cli_tool instanceof \wordpress_code_ai\Tools\Base_Tool ? $cli_tool->get_covers() : '' );
             $text .= array() === $needed ? '' : sprintf( ' The tools that install or delete plugins and themes and update core are off too (%s).', implode( ', ', $needed ) );
             return $text . ' Before saying a task cannot be done, tell the user which tool to switch on, by its name, and that ' . Tool_Status::who_switches_on( $off, $locked, Tool_Status::switch_path( 'wp_cli_run', true ) ) . '.';
         } catch ( \Throwable $e ) {
@@ -1118,15 +1118,15 @@ class Server {
 
     
     public static function is_paused() {
-        return true === \Easy_MCP_AI\Config::get( 'paused' );
+        return true === \wordpress_code_ai\Config::get( 'paused' );
     }
 
     
     public static function available_tools( Tool_Registry $registry, $require_instance = false, $definitions = null ) {
-        if ( ! \Easy_MCP_AI\Config::tool_policy_valid() ) {
+        if ( ! \wordpress_code_ai\Config::tool_policy_valid() ) {
             return array();
         }
-        $patterns = (array) \Easy_MCP_AI\Config::get( 'allowed_tool_patterns' );
+        $patterns = (array) \wordpress_code_ai\Config::get( 'allowed_tool_patterns' );
         return array_values( array_filter( null === $definitions ? $registry->get_all_definitions() : $definitions, static function ( $definition ) use ( $registry, $patterns, $require_instance ) {
             $name = $definition['name'];
             $tool = $registry->get_tool( $name );
@@ -1148,7 +1148,7 @@ class Server {
         if ( null === $token_id ) {
             return JSON_RPC::error_response( $id, Error_Codes::UNAUTHORIZED, 'Authentication required' );
         }
-        if ( ! \Easy_MCP_AI\Config::tool_policy_valid() || self::is_paused() ) {
+        if ( ! \wordpress_code_ai\Config::tool_policy_valid() || self::is_paused() ) {
             return JSON_RPC::success_response( $id, array( 'tools' => array() ) );
         }
         if ( ! $this->check_rate_limit( $token_id ) ) {
@@ -1163,7 +1163,7 @@ class Server {
         
         
         $step_up   = 'oauth' === $this->request_auth_source
-            ? \Easy_MCP_AI\OAuth\Scope_Map::scopes_for_tools( array_column( $all_tools, 'name' ) )
+            ? \wordpress_code_ai\OAuth\Scope_Map::scopes_for_tools( array_column( $all_tools, 'name' ) )
             : array();
         $all_tools = array_values( array_filter( $all_tools, static function ( $tool ) use ( $allowed, $step_up ) {
             return Permission_Guard::allowlist_permits( (array) $allowed, $tool['name'] ) || isset( $step_up[ $tool['name'] ] );
@@ -1224,7 +1224,7 @@ class Server {
             $this->log_refusal( $token_id, $tool_name, $arguments );
             return JSON_RPC::error_response( $id, Error_Codes::PAUSED, Error_Codes::PAUSED_MESSAGE );
         }
-        if ( ! \Easy_MCP_AI\Config::tool_policy_valid() ) {
+        if ( ! \wordpress_code_ai\Config::tool_policy_valid() ) {
             return JSON_RPC::error_response( $id, Error_Codes::FORBIDDEN, 'Invalid deployment tool policy' );
         }
         
@@ -1340,7 +1340,7 @@ class Server {
         
         
         if ( 'skip' !== $this->approval_mode && method_exists( $tool, 'precheck' ) ) {
-            if ( \Easy_MCP_AI\Approvals\Approval_Gate::requires_approval( $tool, $approval_subject ) ) {
+            if ( \wordpress_code_ai\Approvals\Approval_Gate::requires_approval( $tool, $approval_subject ) ) {
                 
                 
                 $caller_before     = self::$active_call;
@@ -1390,7 +1390,7 @@ class Server {
         if ( 'refused' === $approval['kind'] ) {
             $this->last_approval = array( 'kind' => 'refused', 'approval_id' => null );
             $this->log_tool_call( $token_id, $tool_name, $sent_arguments, 'approval_refused' );
-            return JSON_RPC::success_response( $id, \Easy_MCP_AI\Approvals\Approval_Gate::refusal_result( $approval['reason'], $approval['message'] ) );
+            return JSON_RPC::success_response( $id, \wordpress_code_ai\Approvals\Approval_Gate::refusal_result( $approval['reason'], $approval['message'] ) );
         }
         if ( 'replay' === $approval['kind'] ) {
             $this->last_approval = array( 'kind' => 'replay', 'approval_id' => $approval['row']['approval_id'] );
@@ -1447,7 +1447,7 @@ class Server {
         $outer_call   = self::$active_call;
         
         
-        $compat_mark  = class_exists( '\\Easy_MCP_AI\\Compat\\Compat_Registry' ) ? \Easy_MCP_AI\Compat\Compat_Registry::mark() : null;
+        $compat_mark  = class_exists( '\\wordpress_code_ai\\Compat\\Compat_Registry' ) ? \wordpress_code_ai\Compat\Compat_Registry::mark() : null;
         $option_guard_armed = false;
         
         
@@ -1469,8 +1469,8 @@ class Server {
         
         
         try {
-        if ( ! $composite && class_exists( '\\Easy_MCP_AI\\History\\Change_Context' ) ) {
-            \Easy_MCP_AI\History\Change_Context::set( array(
+        if ( ! $composite && class_exists( '\\wordpress_code_ai\\History\\Change_Context' ) ) {
+            \wordpress_code_ai\History\Change_Context::set( array(
                 'audit_id'        => $audit_id,
                 'tool_name'       => $tool_name,
                 'token_id'        => $token_id ? (int) $token_id : 0,
@@ -1496,7 +1496,7 @@ class Server {
                 'own_history'     => method_exists( $tool, 'records_own_history' ) && $tool->records_own_history(),
             ) );
             
-            \do_action( 'easy_mcp_ai_change_context_armed' );
+            \do_action( 'wordpress_code_ai_change_context_armed' );
         }
 
             
@@ -1514,18 +1514,18 @@ class Server {
             
             
             
-            if ( class_exists( '\\Easy_MCP_AI\\Meta\\Meta_Exposure' ) ) {
-                \Easy_MCP_AI\Meta\Meta_Exposure::register_for_request();
+            if ( class_exists( '\\wordpress_code_ai\\Meta\\Meta_Exposure' ) ) {
+                \wordpress_code_ai\Meta\Meta_Exposure::register_for_request();
             }
             
             
-            \Easy_MCP_AI\Cache\Page_Cache_Queue::listen();
+            \wordpress_code_ai\Cache\Page_Cache_Queue::listen();
             
             
             
             
             if ( null !== $compat_mark ) {
-                \Easy_MCP_AI\Compat\Compat_Registry::arm_for( $tool, $arguments );
+                \wordpress_code_ai\Compat\Compat_Registry::arm_for( $tool, $arguments );
             }
             
             
@@ -1564,7 +1564,7 @@ class Server {
 
 
 
-            \do_action( 'easy_mcp_ai_before_tool_call', $tool_name, $hook_arguments, $call_context );
+            \do_action( 'wordpress_code_ai_before_tool_call', $tool_name, $hook_arguments, $call_context );
             $exec_started = microtime( true );
             $result       = $tool->execute( $arguments );
             $final_status = 'success';
@@ -1661,7 +1661,7 @@ class Server {
             
             
             if ( null !== $compat_mark ) {
-                \Easy_MCP_AI\Compat\Compat_Registry::release( $compat_mark );
+                \wordpress_code_ai\Compat\Compat_Registry::release( $compat_mark );
             }
             self::$active_call = $outer_call;
             if ( $stack_entered ) {
@@ -1691,7 +1691,7 @@ class Server {
                         
                     }
                 }
-                if ( ! $composite && class_exists( '\\Easy_MCP_AI\\History\\Change_Context' ) ) {
+                if ( ! $composite && class_exists( '\\wordpress_code_ai\\History\\Change_Context' ) ) {
                     
                     
                     
@@ -1711,15 +1711,15 @@ class Server {
                     
                     
                     try {
-                        \do_action( 'easy_mcp_ai_change_context_disarming' );
+                        \do_action( 'wordpress_code_ai_change_context_disarming' );
                     } finally {
-                        \Easy_MCP_AI\History\Change_Context::clear();
+                        \wordpress_code_ai\History\Change_Context::clear();
                     }
                 }
                 
                 
                 
-                \Easy_MCP_AI\Cache\Page_Cache_Queue::flush();
+                \wordpress_code_ai\Cache\Page_Cache_Queue::flush();
 
                 
                 
@@ -1750,9 +1750,9 @@ class Server {
 
 
 
-                            \do_action( 'easy_mcp_ai_tool_mutated', $tool_name, $this->redact_for_tool( $tool_name, $arguments ), $result );
+                            \do_action( 'wordpress_code_ai_tool_mutated', $tool_name, $this->redact_for_tool( $tool_name, $arguments ), $result );
                         } catch ( \Throwable $e ) {
-                            self::log_listener_failure( 'easy_mcp_ai_tool_mutated', $tool_name, $e );
+                            self::log_listener_failure( 'wordpress_code_ai_tool_mutated', $tool_name, $e );
                         }
                     }
                 }
@@ -1761,13 +1761,13 @@ class Server {
                 
                 
                 
-                if ( ! $composite && class_exists( '\\Easy_MCP_AI\\History\\Change_Context' ) && \Easy_MCP_AI\History\Change_Context::is_active() && $audit_id === \Easy_MCP_AI\History\Change_Context::get( 'audit_id' ) ) {
+                if ( ! $composite && class_exists( '\\wordpress_code_ai\\History\\Change_Context' ) && \wordpress_code_ai\History\Change_Context::is_active() && $audit_id === \wordpress_code_ai\History\Change_Context::get( 'audit_id' ) ) {
                     try {
-                        \do_action( 'easy_mcp_ai_change_context_disarming' );
+                        \do_action( 'wordpress_code_ai_change_context_disarming' );
                     } catch ( \Throwable $ignored ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
                         
                     } finally {
-                        \Easy_MCP_AI\History\Change_Context::clear();
+                        \wordpress_code_ai\History\Change_Context::clear();
                     }
                 }
                 if ( $stack_entered ) {
@@ -1810,9 +1810,9 @@ class Server {
 
 
 
-            \do_action( 'easy_mcp_ai_after_tool_call', $tool_name, $arguments, $context );
+            \do_action( 'wordpress_code_ai_after_tool_call', $tool_name, $arguments, $context );
         } catch ( \Throwable $e ) {
-            self::log_listener_failure( 'easy_mcp_ai_after_tool_call', $tool_name, $e );
+            self::log_listener_failure( 'wordpress_code_ai_after_tool_call', $tool_name, $e );
         }
     }
 
@@ -1827,7 +1827,7 @@ class Server {
 
     private static function log_listener_failure( string $hook, string $tool_name, \Throwable $e ): void {
         if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-            error_log( sprintf( 'Easy MCP AI %s listener failed [%s]: %s', $hook, $tool_name, $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
+            error_log( sprintf( 'wordpress-code-ai %s listener failed [%s]: %s', $hook, $tool_name, $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
         }
     }
 
@@ -1843,8 +1843,8 @@ class Server {
 
 
 
-    private static function normalize_booleans( \Easy_MCP_AI\Tools\Base_Tool $tool, array $arguments ): array {
-        if ( $tool instanceof \Easy_MCP_AI\Tools\Dynamic_Tool ) {
+    private static function normalize_booleans( \wordpress_code_ai\Tools\Base_Tool $tool, array $arguments ): array {
+        if ( $tool instanceof \wordpress_code_ai\Tools\Dynamic_Tool ) {
             return $arguments;
         }
         try {
@@ -1868,7 +1868,7 @@ class Server {
 
 
 
-    private static function call_is_composite( \Easy_MCP_AI\Tools\Base_Tool $tool, array $arguments ): bool {
+    private static function call_is_composite( \wordpress_code_ai\Tools\Base_Tool $tool, array $arguments ): bool {
         try {
             return (bool) $tool->is_composite( $arguments );
         } catch ( \Throwable $e ) {
@@ -1885,7 +1885,7 @@ class Server {
 
 
 
-    private static function call_is_read_only( \Easy_MCP_AI\Tools\Base_Tool $tool, array $arguments ): bool {
+    private static function call_is_read_only( \wordpress_code_ai\Tools\Base_Tool $tool, array $arguments ): bool {
         try {
             return (bool) $tool->is_read_only_call( $arguments );
         } catch ( \Throwable $e ) {
@@ -1895,8 +1895,8 @@ class Server {
 
     
     private static function privileged_group( $tool_name ) {
-        return class_exists( '\\Easy_MCP_AI\\Privileged\\Privileged_Groups' )
-            ? \Easy_MCP_AI\Privileged\Privileged_Groups::group_of_tool( $tool_name )
+        return class_exists( '\\wordpress_code_ai\\Privileged\\Privileged_Groups' )
+            ? \wordpress_code_ai\Privileged\Privileged_Groups::group_of_tool( $tool_name )
             : null;
     }
 
@@ -1914,9 +1914,9 @@ class Server {
 
 
 
-    private static function privileged_switch_off( \Easy_MCP_AI\Tools\Base_Tool $tool, string $tool_name ): ?array {
+    private static function privileged_switch_off( \wordpress_code_ai\Tools\Base_Tool $tool, string $tool_name ): ?array {
         $group = self::privileged_group( $tool_name );
-        if ( null === $group || Tool_State::is_enabled( $tool ) || ! \Easy_MCP_AI\Privileged\Privileged_Groups::floor_passes( $group, (int) \get_current_user_id() ) ) {
+        if ( null === $group || Tool_State::is_enabled( $tool ) || ! \wordpress_code_ai\Privileged\Privileged_Groups::floor_passes( $group, (int) \get_current_user_id() ) ) {
             return null;
         }
         return Tool_Status::off( $tool_name, (bool) $tool->is_disabled_by_default() );
@@ -1934,13 +1934,13 @@ class Server {
 
 
     private function privileged_refusal( $group ) {
-        if ( ! \Easy_MCP_AI\Privileged\Privileged_Groups::is_enabled( $group ) ) {
+        if ( ! \wordpress_code_ai\Privileged\Privileged_Groups::is_enabled( $group ) ) {
             return 'This privileged tool is not enabled on this site.';
         }
         if ( ! $this->audit_log_enabled ) {
             return 'Privileged tools run only while the audit log is on. Ask the site administrator to turn it on.';
         }
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_enabled', true ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_enabled', true ) ) {
             return 'Privileged tools run only while change history is on. Ask the site administrator to turn it on.';
         }
         return null;
@@ -1954,16 +1954,16 @@ class Server {
 
 
     private function check_privileged_rate_limit( $token_id ) {
-        $limit = \Easy_MCP_AI\Privileged\Privileged_Groups::RATE_LIMIT_PER_MINUTE;
+        $limit = \wordpress_code_ai\Privileged\Privileged_Groups::RATE_LIMIT_PER_MINUTE;
         if ( 'oauth' === $this->request_auth_source ) {
             $principal = 'o' . substr( hash( 'sha256', (string) $this->request_client_id . '|' . (int) $this->request_wp_user_id ), 0, 32 );
         } else {
             $principal = 'k' . (int) $token_id;
         }
-        $cache_key = 'easy_mcp_ai_priv_rate_' . $principal;
+        $cache_key = 'wordpress_code_ai_priv_rate_' . $principal;
         if ( \wp_using_ext_object_cache() ) {
-            \wp_cache_add( $cache_key, 0, 'easy_mcp_ai', 60 );
-            return \wp_cache_incr( $cache_key, 1, 'easy_mcp_ai' ) <= $limit;
+            \wp_cache_add( $cache_key, 0, 'wordpress_code_ai', 60 );
+            return \wp_cache_incr( $cache_key, 1, 'wordpress_code_ai' ) <= $limit;
         }
         
         
@@ -1992,8 +1992,8 @@ class Server {
             return;
         }
         $text = $outcome['content'][0]['text'];
-        if ( class_exists( '\\Easy_MCP_AI\\Text_Redactor' ) ) {
-            $text = \Easy_MCP_AI\Text_Redactor::redact( $text );
+        if ( class_exists( '\\wordpress_code_ai\\Text_Redactor' ) ) {
+            $text = \wordpress_code_ai\Text_Redactor::redact( $text );
         }
         $text = function_exists( 'mb_strcut' ) ? mb_strcut( $text, 0, 1000, 'UTF-8' ) : substr( $text, 0, 1000 );
         if ( '' === trim( $text ) ) {
@@ -2002,7 +2002,7 @@ class Server {
         global $wpdb;
         $quiet = method_exists( $wpdb, 'suppress_errors' ) ? $wpdb->suppress_errors( true ) : null;
         $wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct update of the plugin's own audit row.
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             array( 'error_message' => $text ),
             array( 'id' => (int) $audit_id ),
             array( '%s' ),
@@ -2041,7 +2041,7 @@ class Server {
         
         $quiet = method_exists( $wpdb, 'suppress_errors' ) ? $wpdb->suppress_errors( true ) : null;
         $wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct update of the plugin's own audit row.
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             $data,
             array( 'id' => (int) $audit_id ),
             $format,
@@ -2115,7 +2115,7 @@ class Server {
 
 
 
-    private static function precheck_refusal( \Easy_MCP_AI\Tools\Base_Tool $tool, array $arguments ): ?array {
+    private static function precheck_refusal( \wordpress_code_ai\Tools\Base_Tool $tool, array $arguments ): ?array {
         try {
             $tool->precheck( Gemini_Safe_Schema::coerce( $arguments, Gemini_Safe_Schema::sanitize( $tool->get_input_schema() )['map'] ) );
         } catch ( \Exception $e ) {
@@ -2188,7 +2188,7 @@ class Server {
         if ( self::is_paused() ) {
             return array( 'status' => 'paused' );
         }
-        if ( ! \Easy_MCP_AI\Config::tool_policy_valid() ) {
+        if ( ! \wordpress_code_ai\Config::tool_policy_valid() ) {
             return array( 'status' => 'policy' );
         }
         $allowed = null !== $allowed_tools
@@ -2222,7 +2222,7 @@ class Server {
         if ( ! Tool_State::is_enabled( $tool ) ) {
             return Tool_Status::off( $tool_name, (bool) $tool->is_disabled_by_default() );
         }
-        if ( ! self::matches_tool_patterns( $tool_name, (array) \Easy_MCP_AI\Config::get( 'allowed_tool_patterns' ) ) ) {
+        if ( ! self::matches_tool_patterns( $tool_name, (array) \wordpress_code_ai\Config::get( 'allowed_tool_patterns' ) ) ) {
             return array( 'status' => 'pattern' );
         }
         $refusal = $this->late_call_refusal( $tool, $tool_name );
@@ -2240,7 +2240,7 @@ class Server {
 
 
 
-    private function late_call_refusal( \Easy_MCP_AI\Tools\Base_Tool $tool, string $tool_name ): ?array {
+    private function late_call_refusal( \wordpress_code_ai\Tools\Base_Tool $tool, string $tool_name ): ?array {
         if ( self::is_app_only_tool( $tool ) && ! $this->client_declared_apps() ) {
             return array( 'status' => 'app_only' );
         }
@@ -2265,14 +2265,14 @@ class Server {
 
 
     private function evaluate_approval( $tool, array $arguments, $token_id, array $params ) {
-        if ( ! \Easy_MCP_AI\Approvals\Approval_Gate::requires_approval( $tool, $arguments ) ) {
+        if ( ! \wordpress_code_ai\Approvals\Approval_Gate::requires_approval( $tool, $arguments ) ) {
             return array( 'kind' => 'run' );
         }
         try {
             return $this->get_approval_gate()->evaluate( $tool, $arguments, $this->request_identity( $token_id ), $params, $this->request_client_caps, $this->request_client_protocol );
         } catch ( \Throwable $e ) {
             if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-                error_log( sprintf( 'Easy MCP AI approval gate failed for %s: %s', $tool->get_name(), $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
+                error_log( sprintf( 'wordpress-code-ai approval gate failed for %s: %s', $tool->get_name(), $e->getMessage() ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- intentional debug logging
             }
             return array( 'kind' => 'refused', 'reason' => 'unavailable', 'message' => 'the approval system could not record this request, so the operation was not run. Try again shortly.' );
         }
@@ -2283,7 +2283,7 @@ class Server {
             return 'Tool execution failed.';
         }
 
-        $message = \Easy_MCP_AI\Config::brand( $message );
+        $message = \wordpress_code_ai\Config::brand( $message );
 
         
         $message = preg_replace( '/\s*Stack trace:.*$/s', '', $message );
@@ -2432,7 +2432,7 @@ class Server {
 
 
 
-    private function resource_tool_permitted( \Easy_MCP_AI\Resources\Base_Resource $resource, $token_id, ?array $allowed_tools ): bool {
+    private function resource_tool_permitted( \wordpress_code_ai\Resources\Base_Resource $resource, $token_id, ?array $allowed_tools ): bool {
         $tool = $resource->get_required_tool();
         if ( null === $tool ) {
             return true;
@@ -2470,12 +2470,12 @@ class Server {
             return;
         }
 
-        $limit = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_rate_limit_per_minute', 60 );
-        $key   = 'easy_mcp_ai_reflog_' . (int) $token_id;
+        $limit = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_rate_limit_per_minute', 60 );
+        $key   = 'wordpress_code_ai_reflog_' . (int) $token_id;
 
         if ( \wp_using_ext_object_cache() ) {
-            \wp_cache_add( $key, 0, 'easy_mcp_ai', 60 );
-            if ( (int) \wp_cache_incr( $key, 1, 'easy_mcp_ai' ) > $limit ) {
+            \wp_cache_add( $key, 0, 'wordpress_code_ai', 60 );
+            if ( (int) \wp_cache_incr( $key, 1, 'wordpress_code_ai' ) > $limit ) {
                 return;
             }
         } else {
@@ -2493,15 +2493,15 @@ class Server {
         if ( null === $token_id ) {
             return true; 
         }
-        $limit     = (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_rate_limit_per_minute', 60 );
-        $cache_key = 'easy_mcp_ai_rate_' . (int) $token_id;
+        $limit     = (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_rate_limit_per_minute', 60 );
+        $cache_key = 'wordpress_code_ai_rate_' . (int) $token_id;
 
         
         
         
         if ( \wp_using_ext_object_cache() ) {
-            \wp_cache_add( $cache_key, 0, 'easy_mcp_ai', 60 );
-            $new_count = \wp_cache_incr( $cache_key, 1, 'easy_mcp_ai' );
+            \wp_cache_add( $cache_key, 0, 'wordpress_code_ai', 60 );
+            $new_count = \wp_cache_incr( $cache_key, 1, 'wordpress_code_ai' );
             return $new_count <= $limit;
         }
 
@@ -2539,7 +2539,7 @@ class Server {
             ? $identity['auth_source']
             : null;
         $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct insert required for audit logging.
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             array(
                 'token_id'        => ! empty( $identity['token_id'] ) ? (int) $identity['token_id'] : 0,
                 'tool_name'       => '_auth_failure',
@@ -2584,7 +2584,7 @@ class Server {
     const STATUS_REFUSED = 'refused';
 
     
-    const LAST_CALL_OPTION = 'easy_mcp_ai_last_tool_call';
+    const LAST_CALL_OPTION = 'wordpress_code_ai_last_tool_call';
 
     
 
@@ -2625,7 +2625,7 @@ class Server {
         
         $source = in_array( $this->request_auth_source, array( 'legacy', 'oauth' ), true ) ? $this->request_auth_source : null;
         $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Direct insert required for audit logging.
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             array(
                 'token_id'        => $token_id ? (int) $token_id : 0,
                 'tool_name'       => $tool_name,
@@ -2659,7 +2659,7 @@ class Server {
             $format[]            = '%d';
         }
         $wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct update required to finalize audit status.
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             $data,
             array( 'id' => (int) $audit_id ),
             $format,
@@ -2707,7 +2707,7 @@ class Server {
 
 
 
-    private static function record_redaction( \Easy_MCP_AI\Tools\Base_Tool $tool, array $args ): array {
+    private static function record_redaction( \wordpress_code_ai\Tools\Base_Tool $tool, array $args ): array {
         try {
             $masked = $tool->redact_for_record( $args );
         } catch ( \Throwable $e ) {
@@ -2749,8 +2749,8 @@ class Server {
         
         
         
-        if ( class_exists( '\Easy_MCP_AI\Client_IP' ) ) {
-            $ip = (string) \Easy_MCP_AI\Client_IP::get();
+        if ( class_exists( '\wordpress_code_ai\Client_IP' ) ) {
+            $ip = (string) \wordpress_code_ai\Client_IP::get();
             return filter_var( $ip, FILTER_VALIDATE_IP ) ? $ip : '';
         }
         if ( ! empty( $_SERVER['REMOTE_ADDR'] ) ) {

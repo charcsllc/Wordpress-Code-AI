@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\History;
+namespace wordpress_code_ai\Tools\History;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\History\Change_Log_Repository;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\History\Change_Log_Repository;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -11,7 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class History_Get extends Base_Tool {
     public function get_name() { return 'wp_history_get'; }
     public function get_description() {
-        return 'Get one change-history entry by id, including before/after payloads. For a post, page or media entry whose body changed or that was permanently deleted, `content_before` is the body BEFORE the change; when it cannot be given, `content_before_unavailable` says why. `revision_content` is the body AFTER the change (the revision WordPress saved with it), returned only when you can read the parent post. Body text is shown only when you can read the post now. `unrecoverable`, when present, maps each value this entry cannot give back to a reason: redacted, truncated, value_unavailable (path "*" means the whole previous state), not_stored, revision_gone or not_recorded. Non-admin callers (without the `easy_mcp_ai_view_all_history` capability) can only fetch entries they originated; entries belonging to another user are reported as "not found" rather than a permission error. The `ip_address` field is included only for callers with `easy_mcp_ai_view_all_history` (admins).';
+        return 'Get one change-history entry by id, including before/after payloads. For a post, page or media entry whose body changed or that was permanently deleted, `content_before` is the body BEFORE the change; when it cannot be given, `content_before_unavailable` says why. `revision_content` is the body AFTER the change (the revision WordPress saved with it), returned only when you can read the parent post. Body text is shown only when you can read the post now. `unrecoverable`, when present, maps each value this entry cannot give back to a reason: redacted, truncated, value_unavailable (path "*" means the whole previous state), not_stored, revision_gone or not_recorded. Non-admin callers (without the `wordpress_code_ai_view_all_history` capability) can only fetch entries they originated; entries belonging to another user are reported as "not found" rather than a permission error. The `ip_address` field is included only for callers with `wordpress_code_ai_view_all_history` (admins).';
     }
     public function get_category() { return 'history'; }
     public function get_required_capability() { return 'read'; }
@@ -44,7 +44,7 @@ class History_Get extends Base_Tool {
         
         
         
-        $can_view_all = \current_user_can( 'easy_mcp_ai_view_all_history' );
+        $can_view_all = \current_user_can( 'wordpress_code_ai_view_all_history' );
         if ( ! $can_view_all && (int) ( $row['wp_user_id'] ?? 0 ) !== (int) \get_current_user_id() ) {
             throw new \RuntimeException( 'History entry not found' );
         }
@@ -99,7 +99,7 @@ class History_Get extends Base_Tool {
             
             
             if ( ! $rev ) {
-                $out['revision_content_unavailable'] = __( 'unavailable — the linked revision no longer exists; it was pruned by the revision limit, or removed with its parent post', 'easy-mcp-ai' );
+                $out['revision_content_unavailable'] = __( 'unavailable — the linked revision no longer exists; it was pruned by the revision limit, or removed with its parent post', 'wordpress-code-ai' );
             }
 
             if ( $rev && isset( $rev->post_content ) ) {
@@ -164,7 +164,7 @@ class History_Get extends Base_Tool {
             return null; 
         }
 
-        $hidden = __( 'hidden — you cannot read this post now', 'easy-mcp-ai' );
+        $hidden = __( 'hidden — you cannot read this post now', 'wordpress-code-ai' );
         if ( array_key_exists( 'post_content', $before ) ) {
             if ( $can_read ) {
                 $out['content_before'] = (string) $before['post_content'];
@@ -177,7 +177,7 @@ class History_Get extends Base_Tool {
             $revision_id = (int) $before['content_revision_id'];
             $revision    = \function_exists( '\wp_get_post_revision' ) ? \wp_get_post_revision( $revision_id ) : null;
             if ( ! $revision ) {
-                $out['content_before_unavailable'] = __( 'unavailable — the revision that held the previous body no longer exists; it was pruned by the revision limit, or removed with its parent post', 'easy-mcp-ai' );
+                $out['content_before_unavailable'] = __( 'unavailable — the revision that held the previous body no longer exists; it was pruned by the revision limit, or removed with its parent post', 'wordpress-code-ai' );
                 return 'revision_gone';
             }
             if ( ! $can_read ) {
@@ -192,8 +192,8 @@ class History_Get extends Base_Tool {
             return 'not_stored';
         }
         $out['content_before_unavailable'] = $is_delete
-            ? __( 'not recorded — this entry was written before permanent deletes kept the body', 'easy-mcp-ai' )
-            : __( 'not recorded — this entry was written before the previous body was kept; an older revision may hold it (wp_list_revisions)', 'easy-mcp-ai' );
+            ? __( 'not recorded — this entry was written before permanent deletes kept the body', 'wordpress-code-ai' )
+            : __( 'not recorded — this entry was written before the previous body was kept; an older revision may hold it (wp_list_revisions)', 'wordpress-code-ai' );
         return 'not_recorded';
     }
 
@@ -225,7 +225,7 @@ class History_Get extends Base_Tool {
         if ( array_key_exists( 'value_unavailable', $before ) ) {
             $map[ array_key_exists( 'value', $before ) ? 'value' : '*' ] = 'value_unavailable';
         }
-        $max = class_exists( '\\Easy_MCP_AI\\History\\Change_Redactor' ) ? \Easy_MCP_AI\History\Change_Redactor::MAX_BYTES : 262144;
+        $max = class_exists( '\\wordpress_code_ai\\History\\Change_Redactor' ) ? \wordpress_code_ai\History\Change_Redactor::MAX_BYTES : 262144;
         $this->collect_markers( $before, '', $row_truncated, $max, $map );
         if ( ! empty( $before['object_ids_truncated'] ) ) {
             $map['object_ids'] = 'truncated';

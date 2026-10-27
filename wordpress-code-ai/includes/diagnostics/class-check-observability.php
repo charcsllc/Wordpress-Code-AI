@@ -32,7 +32,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -50,7 +50,7 @@ class Check_Observability {
 
 
     public static function run() {
-        $audit_enabled = (bool) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_enabled', true );
+        $audit_enabled = (bool) \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_enabled', true );
 
         return array(
             self::evaluate_auth_failures( self::count_auth_failures(), $audit_enabled ),
@@ -60,8 +60,8 @@ class Check_Observability {
             
             self::evaluate_table_growth(
                 self::table_counts(),
-                (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_retention', 30 ),
-                (int) \Easy_MCP_AI\Config::get( 'easy_mcp_ai_change_log_retention', 30 )
+                (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_retention', 30 ),
+                (int) \wordpress_code_ai\Config::get( 'wordpress_code_ai_change_log_retention', 30 )
             ),
         );
     }
@@ -73,10 +73,10 @@ class Check_Observability {
 
 
     public static function evaluate_auth_failures( $count, $log_enabled = true ) {
-        $label = __( 'Recent sign-in failures', 'easy-mcp-ai' );
+        $label = __( 'Recent sign-in failures', 'wordpress-code-ai' );
 
         if ( null === $count ) {
-            return Diagnostic_Result::unknown( 'h1', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the activity log.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'h1', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the activity log.', 'wordpress-code-ai' ) );
         }
 
         
@@ -89,7 +89,7 @@ class Check_Observability {
                 'h1',
                 Diagnostic_Result::TIER_INFO,
                 $label,
-                __( 'Activity logging is off, so refused sign-ins are not recorded and there is nothing to count. This is not a sign that any AI client succeeded or failed.', 'easy-mcp-ai' )
+                __( 'Activity logging is off, so refused sign-ins are not recorded and there is nothing to count. This is not a sign that any AI client succeeded or failed.', 'wordpress-code-ai' )
             );
         }
 
@@ -100,7 +100,7 @@ class Check_Observability {
                 $label,
                 sprintf(
                     /* translators: %d: number of hours in the reporting window. */
-                    __( 'No AI client was refused a token in the last %d hours.', 'easy-mcp-ai' ),
+                    __( 'No AI client was refused a token in the last %d hours.', 'wordpress-code-ai' ),
                     self::FAILURE_WINDOW_HOURS
                 ),
                 array( 'auth_failures_24h' => 0 )
@@ -113,7 +113,7 @@ class Check_Observability {
             $label,
             sprintf(
                 /* translators: 1: number of rejected requests, 2: number of hours in the window. */
-                __( '%1$d sign-in refusal(s) were recorded in the last %2$d hours: a token that was missing, expired or not recognised; a real credential refused by a site rule (issued for another site address, sent from an address outside the IP whitelist, or an API key sent outside the Authorization header on a header-only site); or a failed step of an OAuth authorization or device sign-in, including too many device-code attempts. This counts sign-in refusals only. Tool calls refused after sign-in for insufficient permission are recorded separately, under Easy MCP AI → Activity → Audit log, and are not counted here; MCP requests refused for exceeding the rate limit are not recorded at all.', 'easy-mcp-ai' ),
+                __( '%1$d sign-in refusal(s) were recorded in the last %2$d hours: a token that was missing, expired or not recognised; a real credential refused by a site rule (issued for another site address, sent from an address outside the IP whitelist, or an API key sent outside the Authorization header on a header-only site); or a failed step of an OAuth authorization or device sign-in, including too many device-code attempts. This counts sign-in refusals only. Tool calls refused after sign-in for insufficient permission are recorded separately, under wordpress-code-ai → Activity → Audit log, and are not counted here; MCP requests refused for exceeding the rate limit are not recorded at all.', 'wordpress-code-ai' ),
                 (int) $count,
                 self::FAILURE_WINDOW_HOURS
             ),
@@ -127,31 +127,31 @@ class Check_Observability {
 
 
     public static function evaluate_last_used( $tokens ) {
-        $label = __( 'When each API token last worked', 'easy-mcp-ai' );
+        $label = __( 'When each API token last worked', 'wordpress-code-ai' );
 
         if ( ! is_array( $tokens ) ) {
-            return Diagnostic_Result::unknown( 'h2', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the API tokens.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'h2', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the API tokens.', 'wordpress-code-ai' ) );
         }
 
         if ( empty( $tokens ) ) {
-            return Diagnostic_Result::pass( 'h2', Diagnostic_Result::TIER_INFO, $label, __( 'No active API tokens.', 'easy-mcp-ai' ), array( 'tokens' => array() ) );
+            return Diagnostic_Result::pass( 'h2', Diagnostic_Result::TIER_INFO, $label, __( 'No active API tokens.', 'wordpress-code-ai' ), array( 'tokens' => array() ) );
         }
 
         $parts = array();
         foreach ( array_slice( $tokens, 0, self::MAX_TOKENS_LISTED ) as $token ) {
-            $name = isset( $token['name'] ) && '' !== $token['name'] ? $token['name'] : __( 'unnamed', 'easy-mcp-ai' );
+            $name = isset( $token['name'] ) && '' !== $token['name'] ? $token['name'] : __( 'unnamed', 'wordpress-code-ai' );
             $days = isset( $token['days_ago'] ) ? $token['days_ago'] : null;
 
             if ( null === $days ) {
                 /* translators: %s: token name. */
-                $parts[] = sprintf( __( '%s: never used', 'easy-mcp-ai' ), $name );
+                $parts[] = sprintf( __( '%s: never used', 'wordpress-code-ai' ), $name );
             } elseif ( 0 === (int) $days ) {
                 /* translators: %s: token name. */
-                $parts[] = sprintf( __( '%s: today', 'easy-mcp-ai' ), $name );
+                $parts[] = sprintf( __( '%s: today', 'wordpress-code-ai' ), $name );
             } else {
                 $parts[] = sprintf(
                     /* translators: 1: token name, 2: number of days since last use. */
-                    __( '%1$s: %2$d day(s) ago', 'easy-mcp-ai' ),
+                    __( '%1$s: %2$d day(s) ago', 'wordpress-code-ai' ),
                     $name,
                     (int) $days
                 );
@@ -161,7 +161,7 @@ class Check_Observability {
         if ( count( $tokens ) > self::MAX_TOKENS_LISTED ) {
             $parts[] = sprintf(
                 /* translators: %d: number of tokens not listed. */
-                __( 'and %d more', 'easy-mcp-ai' ),
+                __( 'and %d more', 'wordpress-code-ai' ),
                 count( $tokens ) - self::MAX_TOKENS_LISTED
             );
         }
@@ -177,19 +177,19 @@ class Check_Observability {
 
     
     public static function evaluate_audit_log( $enabled ) {
-        $label = __( 'Activity logging', 'easy-mcp-ai' );
+        $label = __( 'Activity logging', 'wordpress-code-ai' );
 
         if ( ! $enabled ) {
             return Diagnostic_Result::pass(
                 'h3',
                 Diagnostic_Result::TIER_INFO,
                 $label,
-                __( 'Off. Nothing is recorded about AI requests, so the two checks above have nothing to report and there will be no trail to inspect if a problem appears.', 'easy-mcp-ai' ),
+                __( 'Off. Nothing is recorded about AI requests, so the two checks above have nothing to report and there will be no trail to inspect if a problem appears.', 'wordpress-code-ai' ),
                 array( 'audit_log_enabled' => false )
             );
         }
 
-        return Diagnostic_Result::pass( 'h3', Diagnostic_Result::TIER_INFO, $label, __( 'On.', 'easy-mcp-ai' ), array( 'audit_log_enabled' => true ) );
+        return Diagnostic_Result::pass( 'h3', Diagnostic_Result::TIER_INFO, $label, __( 'On.', 'wordpress-code-ai' ), array( 'audit_log_enabled' => true ) );
     }
 
     
@@ -205,10 +205,10 @@ class Check_Observability {
 
 
     public static function evaluate_table_growth( $counts, $audit_retention_days, $change_retention_days = null ) {
-        $label = __( 'Stored history size', 'easy-mcp-ai' );
+        $label = __( 'Stored history size', 'wordpress-code-ai' );
 
         if ( null === $counts || ! is_array( $counts ) ) {
-            return Diagnostic_Result::unknown( 'h4', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the table sizes.', 'easy-mcp-ai' ) );
+            return Diagnostic_Result::unknown( 'h4', Diagnostic_Result::TIER_INFO, $label, __( 'Could not read the table sizes.', 'wordpress-code-ai' ) );
         }
 
         $parts = array();
@@ -220,21 +220,21 @@ class Check_Observability {
 
         $sentences[] = sprintf(
             /* translators: %d: audit log retention in days. */
-            __( 'Activity log rows older than %d days are removed automatically.', 'easy-mcp-ai' ),
+            __( 'Activity log rows older than %d days are removed automatically.', 'wordpress-code-ai' ),
             (int) $audit_retention_days
         );
 
         if ( null !== $change_retention_days ) {
             $sentences[] = ( 0 === (int) $change_retention_days )
-                ? __( 'Change history rows are never removed — its retention is set to 0, which disables the cleanup.', 'easy-mcp-ai' )
+                ? __( 'Change history rows are never removed — its retention is set to 0, which disables the cleanup.', 'wordpress-code-ai' )
                 : sprintf(
                     /* translators: %d: change log retention in days. */
-                    __( 'Change history rows older than %d days are removed automatically.', 'easy-mcp-ai' ),
+                    __( 'Change history rows older than %d days are removed automatically.', 'wordpress-code-ai' ),
                     (int) $change_retention_days
                 );
         }
 
-        $sentences[] = __( 'If these keep growing, the scheduled cleanup is not running.', 'easy-mcp-ai' );
+        $sentences[] = __( 'If these keep growing, the scheduled cleanup is not running.', 'wordpress-code-ai' );
 
         return Diagnostic_Result::pass(
             'h4',
@@ -266,7 +266,7 @@ class Check_Observability {
             return null;
         }
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_audit_log';
+        $table = $wpdb->prefix . 'wordpress_code_ai_audit_log';
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table; created_at is indexed, and diagnostics must read live state.
         $count = $wpdb->get_var(
             $wpdb->prepare(
@@ -289,7 +289,7 @@ class Check_Observability {
             return null; 
         }
 
-        $table = $wpdb->prefix . 'easy_mcp_ai_tokens';
+        $table = $wpdb->prefix . 'wordpress_code_ai_tokens';
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Plugin-owned table; diagnostics must read live state.
         $rows = $wpdb->get_results(
             "SELECT name, last_used_at FROM `{$table}` WHERE is_active = 1 ORDER BY last_used_at DESC LIMIT 50",
@@ -341,7 +341,7 @@ class Check_Observability {
 
         $counts = array();
         foreach ( array( 'audit_log', 'change_log' ) as $suffix ) {
-            $table = $wpdb->prefix . 'easy_mcp_ai_' . $suffix;
+            $table = $wpdb->prefix . 'wordpress_code_ai_' . $suffix;
 
             if ( property_exists( $wpdb, 'last_error' ) ) {
                 $wpdb->last_error = '';

@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Privileged\Search_Replace;
+namespace wordpress_code_ai\Privileged\Search_Replace;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -15,10 +15,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class Job_Store {
 
-    const JOB_PREFIX  = 'easy_mcp_ai_sr_job_';
-    const INDEX       = 'easy_mcp_ai_sr_index';
-    const LIVE        = 'easy_mcp_ai_sr_live';
-    const LOCK_PREFIX = 'easy_mcp_ai_sr_lock_';
+    const JOB_PREFIX  = 'wordpress_code_ai_sr_job_';
+    const INDEX       = 'wordpress_code_ai_sr_index';
+    const LIVE        = 'wordpress_code_ai_sr_live';
+    const LOCK_PREFIX = 'wordpress_code_ai_sr_lock_';
     
     const INDEX_MAX = 20;
 

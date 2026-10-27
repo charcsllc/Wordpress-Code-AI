@@ -20,7 +20,7 @@
 
 
 
-namespace Easy_MCP_AI;
+namespace wordpress_code_ai;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -30,12 +30,12 @@ final class Provider_Credentials {
 
     
     const SECRETS = array(
-        'ga'        => array( 'easy_mcp_ai_ga_service_account_json' ),
-        'gsc'       => array( 'easy_mcp_ai_gsc_service_account_json' ),
-        'dfs'       => array( 'easy_mcp_ai_dfs_login', 'easy_mcp_ai_dfs_api_password' ),
-        'semrush'   => array( 'easy_mcp_ai_semrush_api_key' ),
-        'seranking' => array( 'easy_mcp_ai_seranking_api_key' ),
-        'ahrefs'    => array( 'easy_mcp_ai_ahrefs_api_key' ),
+        'ga'        => array( 'wordpress_code_ai_ga_service_account_json' ),
+        'gsc'       => array( 'wordpress_code_ai_gsc_service_account_json' ),
+        'dfs'       => array( 'wordpress_code_ai_dfs_login', 'wordpress_code_ai_dfs_api_password' ),
+        'semrush'   => array( 'wordpress_code_ai_semrush_api_key' ),
+        'seranking' => array( 'wordpress_code_ai_seranking_api_key' ),
+        'ahrefs'    => array( 'wordpress_code_ai_ahrefs_api_key' ),
     );
 
     
@@ -49,7 +49,7 @@ final class Provider_Credentials {
 
 
     public static function constant_name( string $option ): string {
-        return 'EASY_MCP_AI_' . strtoupper( preg_replace( '/^easy_mcp_ai_/', '', $option ) );
+        return 'WORDPRESS_CODE_AI_' . strtoupper( preg_replace( '/^wordpress_code_ai_/', '', $option ) );
     }
 
     

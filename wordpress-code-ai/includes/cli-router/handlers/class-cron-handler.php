@@ -1,14 +1,14 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Handlers;
+namespace wordpress_code_ai\Cli_Router\Handlers;
 
-use Easy_MCP_AI\Cli_Router\Batch;
-use Easy_MCP_AI\Cli_Router\Command_Handler;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Formatter;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Output;
-use Easy_MCP_AI\Cli_Router\Read_Value;
-use Easy_MCP_AI\Cli_Router\Self_Protection;
+use wordpress_code_ai\Cli_Router\Batch;
+use wordpress_code_ai\Cli_Router\Command_Handler;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Formatter;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Output;
+use wordpress_code_ai\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Self_Protection;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -93,7 +93,7 @@ class Cron_Handler extends Command_Handler {
         $scratch = new Output( $ctx->out->is_quiet() );
         try {
             $events = $this->selection( $inv, $scratch );
-        } catch ( \Easy_MCP_AI\Cli_Router\Cli_Exit $e ) {
+        } catch ( \wordpress_code_ai\Cli_Router\Cli_Exit $e ) {
             foreach ( $scratch->warnings() as $warning ) {
                 $ctx->out->warning( $warning );
             }
@@ -359,7 +359,7 @@ class Cron_Handler extends Command_Handler {
         $lines = array();
         try {
             $events = self::split_protected( $this->selection( $inv, $out ) )[0];
-        } catch ( \Easy_MCP_AI\Cli_Router\Cli_Exit $e ) {
+        } catch ( \wordpress_code_ai\Cli_Router\Cli_Exit $e ) {
             return array( 'The selection cannot be built: ' . implode( ' ', $out->errors() ) );
         }
         foreach ( $events as $event ) {
@@ -916,7 +916,7 @@ class Cron_Handler extends Command_Handler {
 
     private static function redact_args( array $events, Context $ctx ): array {
         foreach ( $events as $key => $event ) {
-            $masked = \Easy_MCP_AI\Text_Redactor::redact_value( $event->args );
+            $masked = \wordpress_code_ai\Text_Redactor::redact_value( $event->args );
             if ( $masked !== $event->args ) {
                 $copy           = clone $event;
                 $copy->args     = $masked;
@@ -970,8 +970,8 @@ class Cron_Handler extends Command_Handler {
 
     
     private static function args_preview( array $args ): string {
-        $text = (string) json_encode( \Easy_MCP_AI\Text_Redactor::redact_value( $args ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR );
-        return strlen( $text ) > 200 ? \Easy_MCP_AI\Cli_Router\Envelope::cut( $text, 197 ) . '...' : $text;
+        $text = (string) json_encode( \wordpress_code_ai\Text_Redactor::redact_value( $args ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PARTIAL_OUTPUT_ON_ERROR );
+        return strlen( $text ) > 200 ? \wordpress_code_ai\Cli_Router\Envelope::cut( $text, 197 ) . '...' : $text;
     }
 }
 

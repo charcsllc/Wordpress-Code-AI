@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Privileged;
+namespace wordpress_code_ai\Privileged;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -85,20 +85,20 @@ final class Privileged_Groups {
 
     const GROUPS = array(
         'files_read'     => array(
-            'capability' => 'easy_mcp_ai_read_files',
+            'capability' => 'wordpress_code_ai_read_files',
             'floor'      => 'files',
             'read_only'  => true,
         ),
         'wp_cli'         => array(
-            'capability' => 'easy_mcp_ai_run_wp_cli',
+            'capability' => 'wordpress_code_ai_run_wp_cli',
             'floor'      => 'code',
         ),
         'execute_php'    => array(
-            'capability' => 'easy_mcp_ai_execute_php',
+            'capability' => 'wordpress_code_ai_execute_php',
             'floor'      => 'code',
         ),
         'search_replace' => array(
-            'capability' => 'easy_mcp_ai_search_replace',
+            'capability' => 'wordpress_code_ai_search_replace',
             'floor'      => 'site',
         ),
     );
@@ -109,12 +109,12 @@ final class Privileged_Groups {
 
 
     const TOOL_CLASSES = array(
-        '\\Easy_MCP_AI\\Tools\\Privileged\\Search_Replace_Run', 
-        '\\Easy_MCP_AI\\Tools\\Privileged\\Files_Read_Query', 
+        '\\wordpress_code_ai\\Tools\\Privileged\\Search_Replace_Run', 
+        '\\wordpress_code_ai\\Tools\\Privileged\\Files_Read_Query', 
     );
 
     
-    const SITE_CAPABILITY_FILTER = 'easy_mcp_ai_search_replace_capability';
+    const SITE_CAPABILITY_FILTER = 'wordpress_code_ai_search_replace_capability';
 
     
     private static $tools = array();
@@ -150,7 +150,7 @@ final class Privileged_Groups {
 
 
     public static function switch_source(): string {
-        return \Easy_MCP_AI\Tools\Tool_State::override_source();
+        return \wordpress_code_ai\Tools\Tool_State::override_source();
     }
 
     
@@ -162,11 +162,11 @@ final class Privileged_Groups {
 
 
     public static function switched_on_names(): array {
-        $names = array_merge( array_keys( \Easy_MCP_AI\Tools\Tool_State::overrides() ), \Easy_MCP_AI\Tools\Tool_State::enabled_list() );
+        $names = array_merge( array_keys( \wordpress_code_ai\Tools\Tool_State::overrides() ), \wordpress_code_ai\Tools\Tool_State::enabled_list() );
         $out   = array();
         foreach ( array_unique( array_map( 'strval', $names ) ) as $name ) {
             $group = self::group_of_name( $name );
-            if ( null !== $group && \Easy_MCP_AI\Tools\Tool_State::resolve( $name, true )[0] ) {
+            if ( null !== $group && \wordpress_code_ai\Tools\Tool_State::resolve( $name, true )[0] ) {
                 $out[ $group ][] = $name;
             }
         }
@@ -397,13 +397,13 @@ final class Privileged_Groups {
     public static function group_label( $group ): string {
         switch ( $group ) {
             case 'files_read':
-                return \__( 'Read files on the server', 'easy-mcp-ai' );
+                return \__( 'Read files on the server', 'wordpress-code-ai' );
             case 'wp_cli':
-                return \__( 'Run WP-CLI commands', 'easy-mcp-ai' );
+                return \__( 'Run WP-CLI commands', 'wordpress-code-ai' );
             case 'execute_php':
-                return \__( 'Run PHP code', 'easy-mcp-ai' );
+                return \__( 'Run PHP code', 'wordpress-code-ai' );
             case 'search_replace':
-                return \__( 'Search and replace across the database', 'easy-mcp-ai' );
+                return \__( 'Search and replace across the database', 'wordpress-code-ai' );
         }
         return '';
     }
@@ -606,7 +606,7 @@ final class Privileged_Groups {
         return array(
             'source' => self::switch_source(),
             
-            'strict' => \Easy_MCP_AI\Tools\Tool_State::is_strict(),
+            'strict' => \wordpress_code_ai\Tools\Tool_State::is_strict(),
             'groups' => $groups,
         );
     }

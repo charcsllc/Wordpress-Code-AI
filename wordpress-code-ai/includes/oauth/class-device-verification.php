@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -101,7 +101,7 @@ class Device_Verification {
             $this->log_event( 'auth_failure', 'not_logged_in' );
             return new \WP_Error(
                 'access_denied',
-                __( 'You must be logged in to authorize this request.', 'easy-mcp-ai' ),
+                __( 'You must be logged in to authorize this request.', 'wordpress-code-ai' ),
                 array( 'status' => 401 )
             );
         }
@@ -130,11 +130,11 @@ class Device_Verification {
 
     private function handle_lookup( \WP_REST_Request $request ) {
         $nonce = sanitize_text_field( $request->get_param( '_wpnonce' ) );
-        if ( ! wp_verify_nonce( $nonce, 'easy_mcp_ai_oauth_device_lookup' ) ) {
+        if ( ! wp_verify_nonce( $nonce, 'wordpress_code_ai_oauth_device_lookup' ) ) {
             $this->log_event( 'auth_failure', 'nonce_failed' );
             return new \WP_Error(
                 'invalid_request',
-                __( 'Security check failed. Please try again.', 'easy-mcp-ai' ),
+                __( 'Security check failed. Please try again.', 'wordpress-code-ai' ),
                 array( 'status' => 403 )
             );
         }
@@ -142,14 +142,14 @@ class Device_Verification {
         
         if ( $this->lookup_rate_limited() ) {
             $this->log_event( 'auth_failure', 'lookup_rate_limited' );
-            return $this->render_code_form( __( 'Too many attempts. Wait a while and try again.', 'easy-mcp-ai' ), 429 );
+            return $this->render_code_form( __( 'Too many attempts. Wait a while and try again.', 'wordpress-code-ai' ), 429 );
         }
 
         $normalized = Device_Authorization::normalize_user_code( $request->get_param( 'user_code' ) );
         $row        = self::live_pending_row( $normalized );
         if ( null === $row ) {
             $this->log_event( 'auth_failure', 'code_not_found' );
-            return $this->render_code_form( __( 'That code is not valid or has expired. Check the code shown by your application and try again.', 'easy-mcp-ai' ) );
+            return $this->render_code_form( __( 'That code is not valid or has expired. Check the code shown by your application and try again.', 'wordpress-code-ai' ) );
         }
 
         $client = ( new Client_Registry() )->get_client( (string) $row->client_id );
@@ -157,7 +157,7 @@ class Device_Verification {
             
             
             $this->log_event( 'auth_failure', 'client_inactive', $row );
-            return $this->render_code_form( __( 'The application that requested this code is no longer registered.', 'easy-mcp-ai' ) );
+            return $this->render_code_form( __( 'The application that requested this code is no longer registered.', 'wordpress-code-ai' ) );
         }
 
         return $this->render_consent( $client, $row, $normalized );
@@ -179,11 +179,11 @@ class Device_Verification {
         $normalized = Device_Authorization::normalize_user_code( $request->get_param( 'user_code' ) );
 
         $nonce = sanitize_text_field( $request->get_param( '_wpnonce' ) );
-        if ( '' === $normalized || ! wp_verify_nonce( $nonce, 'easy_mcp_ai_oauth_device_decide_' . $normalized ) ) {
+        if ( '' === $normalized || ! wp_verify_nonce( $nonce, 'wordpress_code_ai_oauth_device_decide_' . $normalized ) ) {
             $this->log_event( 'auth_failure', 'nonce_failed' );
             return new \WP_Error(
                 'invalid_request',
-                __( 'Security check failed. Please start again from the code entry form.', 'easy-mcp-ai' ),
+                __( 'Security check failed. Please start again from the code entry form.', 'wordpress-code-ai' ),
                 array( 'status' => 403 )
             );
         }
@@ -191,7 +191,7 @@ class Device_Verification {
         $row = self::live_pending_row( $normalized );
         if ( null === $row ) {
             $this->log_event( 'auth_failure', 'code_not_found' );
-            return $this->render_code_form( __( 'That code is no longer pending. It may have expired, or a decision was already recorded.', 'easy-mcp-ai' ) );
+            return $this->render_code_form( __( 'That code is no longer pending. It may have expired, or a decision was already recorded.', 'wordpress-code-ai' ) );
         }
 
         $user   = wp_get_current_user();
@@ -202,8 +202,8 @@ class Device_Verification {
             $this->log_event( 'auth_failure', $recorded ? 'user_denied' : 'decision_lost_race', $row );
             return $this->render_result(
                 false,
-                __( 'Access denied', 'easy-mcp-ai' ),
-                __( 'The application was not connected. You can close this page; the application will report that access was denied.', 'easy-mcp-ai' )
+                __( 'Access denied', 'wordpress-code-ai' ),
+                __( 'The application was not connected. You can close this page; the application will report that access was denied.', 'wordpress-code-ai' )
             );
         }
 
@@ -217,9 +217,9 @@ class Device_Verification {
             $this->log_event( 'auth_failure', 'approved_without_scopes', $row );
             $client = ( new Client_Registry() )->get_client( (string) $row->client_id );
             if ( null === $client ) {
-                return $this->render_code_form( __( 'The application that requested this code is no longer registered.', 'easy-mcp-ai' ) );
+                return $this->render_code_form( __( 'The application that requested this code is no longer registered.', 'wordpress-code-ai' ) );
             }
-            return $this->render_consent( $client, $row, $normalized, __( 'No permissions were selected, so nothing was granted. Choose at least one permission and approve again.', 'easy-mcp-ai' ) );
+            return $this->render_consent( $client, $row, $normalized, __( 'No permissions were selected, so nothing was granted. Choose at least one permission and approve again.', 'wordpress-code-ai' ) );
         }
 
         
@@ -234,7 +234,7 @@ class Device_Verification {
         $consent_id = Authorization_Endpoint::store_consent( (int) $user->ID, (string) $row->client_id, $scope_string );
         if ( $consent_id <= 0 ) {
             $this->log_event( 'auth_failure', 'consent_write_failed', $row );
-            return $this->render_code_form( __( 'The approval could not be saved. Please try again.', 'easy-mcp-ai' ) );
+            return $this->render_code_form( __( 'The approval could not be saved. Please try again.', 'wordpress-code-ai' ) );
         }
 
         $recorded = Device_Authorization::record_decision( (int) $row->id, true, (int) $user->ID, $scope_string, $consent_id );
@@ -246,15 +246,15 @@ class Device_Verification {
             
             
             $this->log_event( 'auth_failure', 'decision_lost_race', $row );
-            return $this->render_code_form( __( 'That code is no longer pending. It may have expired, or a decision was already recorded.', 'easy-mcp-ai' ) );
+            return $this->render_code_form( __( 'That code is no longer pending. It may have expired, or a decision was already recorded.', 'wordpress-code-ai' ) );
         }
 
         $this->log_event( 'success', 'approved', $row, $scope_string );
 
         return $this->render_result(
             true,
-            __( 'Device connected', 'easy-mcp-ai' ),
-            __( 'You can close this page and return to the application. It will finish connecting on its own within a few seconds.', 'easy-mcp-ai' )
+            __( 'Device connected', 'wordpress-code-ai' ),
+            __( 'You can close this page and return to the application. It will finish connecting on its own within a few seconds.', 'wordpress-code-ai' )
         );
     }
 
@@ -291,7 +291,7 @@ class Device_Verification {
         
         
         
-        $script_nonce = wp_create_nonce( 'easy_mcp_ai_consent_script' );
+        $script_nonce = wp_create_nonce( 'wordpress_code_ai_consent_script' );
         $html         = self::render_view(
             array(
                 'stage'        => 'enter',
@@ -318,7 +318,7 @@ class Device_Verification {
 
     private function render_consent( $client, $row, $normalized, $notice = '' ) {
         $user         = wp_get_current_user();
-        $script_nonce = wp_create_nonce( 'easy_mcp_ai_consent_script' );
+        $script_nonce = wp_create_nonce( 'wordpress_code_ai_consent_script' );
 
         $html = Consent_Screen::render(
             $client,
@@ -332,8 +332,8 @@ class Device_Verification {
                     'device_action' => 'decide',
                     'user_code'     => $normalized,
                 ),
-                'nonce_action'  => 'easy_mcp_ai_oauth_device_decide_' . $normalized,
-                'context_label' => __( 'Device code:', 'easy-mcp-ai' ),
+                'nonce_action'  => 'wordpress_code_ai_oauth_device_decide_' . $normalized,
+                'context_label' => __( 'Device code:', 'wordpress-code-ai' ),
                 'context_value' => Device_Authorization::format_user_code( $normalized ),
                 'notice'        => $notice,
             )
@@ -393,13 +393,13 @@ class Device_Verification {
 
 
     private function enforce_min_capability( $log_reason ) {
-        if ( \Easy_MCP_AI\Auth\Connect_Policy::current_user_can_connect( \Easy_MCP_AI\Auth\Connect_Policy::CHANNEL_DEVICE ) ) {
+        if ( \wordpress_code_ai\Auth\Connect_Policy::current_user_can_connect( \wordpress_code_ai\Auth\Connect_Policy::CHANNEL_DEVICE ) ) {
             return null;
         }
         $this->log_event( 'auth_failure', $log_reason );
         return new \WP_Error(
             'access_denied',
-            __( 'Your account does not have sufficient permissions to authorize MCP access.', 'easy-mcp-ai' ),
+            __( 'Your account does not have sufficient permissions to authorize MCP access.', 'wordpress-code-ai' ),
             array( 'status' => 403 )
         );
     }
@@ -410,17 +410,17 @@ class Device_Verification {
 
 
     private function lookup_rate_limited() {
-        $ip   = \Easy_MCP_AI\Client_IP::get();
+        $ip   = \wordpress_code_ai\Client_IP::get();
         $keys = array(
-            'easy_mcp_ai_device_lookup_rl_ip_' . md5( $ip ),
-            'easy_mcp_ai_device_lookup_rl_user_' . (int) get_current_user_id(),
+            'wordpress_code_ai_device_lookup_rl_ip_' . md5( $ip ),
+            'wordpress_code_ai_device_lookup_rl_user_' . (int) get_current_user_id(),
         );
 
         $limited = false;
         foreach ( $keys as $key ) {
             if ( \wp_using_ext_object_cache() ) {
-                \wp_cache_add( $key, 0, 'easy_mcp_ai', HOUR_IN_SECONDS );
-                $count = \wp_cache_incr( $key, 1, 'easy_mcp_ai' );
+                \wp_cache_add( $key, 0, 'wordpress_code_ai', HOUR_IN_SECONDS );
+                $count = \wp_cache_incr( $key, 1, 'wordpress_code_ai' );
             } else {
                 $count = Token_Endpoint::rl_transient_increment( $key );
             }
@@ -494,7 +494,7 @@ class Device_Verification {
 
 
     private function log_event( $result_status, $reason, $row = null, $scope = '' ) {
-        if ( ! \Easy_MCP_AI\Config::get( 'easy_mcp_ai_audit_log_enabled', true ) ) {
+        if ( ! \wordpress_code_ai\Config::get( 'wordpress_code_ai_audit_log_enabled', true ) ) {
             return;
         }
 
@@ -510,13 +510,13 @@ class Device_Verification {
 
         global $wpdb;
         $wpdb->insert( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Direct insert required for audit logging; mirrors Authorization_Endpoint::log_authorize_failure().
-            $wpdb->prefix . 'easy_mcp_ai_audit_log',
+            $wpdb->prefix . 'wordpress_code_ai_audit_log',
             array(
                 'token_id'        => 0,
                 'tool_name'       => '_oauth_device',
                 'arguments'       => wp_json_encode( $details ),
                 'result_status'   => (string) $result_status,
-                'ip_address'      => class_exists( '\\Easy_MCP_AI\\Client_IP' ) ? \Easy_MCP_AI\Client_IP::get() : '',
+                'ip_address'      => class_exists( '\\wordpress_code_ai\\Client_IP' ) ? \wordpress_code_ai\Client_IP::get() : '',
                 
                 'auth_source'     => 'oauth',
                 'wp_user_id'      => ! empty( $details['wp_user_id'] ) ? (int) $details['wp_user_id'] : null,

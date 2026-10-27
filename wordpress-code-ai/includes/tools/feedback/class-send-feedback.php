@@ -1,10 +1,10 @@
 <?php
-namespace Easy_MCP_AI\Tools\Feedback;
+namespace wordpress_code_ai\Tools\Feedback;
 
-use Easy_MCP_AI\Feedback\Feedback_Availability;
-use Easy_MCP_AI\Feedback\Feedback_Queue;
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Tool_State;
+use wordpress_code_ai\Feedback\Feedback_Availability;
+use wordpress_code_ai\Feedback\Feedback_Queue;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Tool_State;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -51,7 +51,7 @@ class Send_Feedback extends Base_Tool {
 
     private static function list_tool_is_on(): bool {
         return Tool_State::resolve( 'wp_list_disabled_tools', false )[0]
-            && \Easy_MCP_AI\MCP\Server::matches_tool_patterns( 'wp_list_disabled_tools', (array) \Easy_MCP_AI\Config::get( 'allowed_tool_patterns' ) );
+            && \wordpress_code_ai\MCP\Server::matches_tool_patterns( 'wp_list_disabled_tools', (array) \wordpress_code_ai\Config::get( 'allowed_tool_patterns' ) );
     }
 
     public function get_category() {
@@ -122,20 +122,20 @@ class Send_Feedback extends Base_Tool {
             is_string( $details ) ? $details : '',
             $this->registry(),
             static function ( $tool_name ) {
-                return \Easy_MCP_AI\MCP\Server::current_call_tool_status( (string) $tool_name );
+                return \wordpress_code_ai\MCP\Server::current_call_tool_status( (string) $tool_name );
             },
             self::NAME
         );
         if ( ! empty( $found ) ) {
-            throw Feedback_Availability::refusal( $found, true === \Easy_MCP_AI\MCP\Server::current_call_may_use( 'wp_list_disabled_tools' ) );
+            throw Feedback_Availability::refusal( $found, true === \wordpress_code_ai\MCP\Server::current_call_may_use( 'wp_list_disabled_tools' ) );
         }
 
         return $this->queue()->queue( $this->identity, $kind, $summary, $details );
     }
 
     
-    protected function registry(): ?\Easy_MCP_AI\Tools\Tool_Registry {
-        return class_exists( '\\Easy_MCP_AI\\Plugin' ) ? \Easy_MCP_AI\Plugin::instance()->get_tool_registry() : null;
+    protected function registry(): ?\wordpress_code_ai\Tools\Tool_Registry {
+        return class_exists( '\\wordpress_code_ai\\Plugin' ) ? \wordpress_code_ai\Plugin::instance()->get_tool_registry() : null;
     }
 
     

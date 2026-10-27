@@ -5,11 +5,11 @@
 
 
 
-namespace Easy_MCP_AI\Cache\Adapters;
+namespace wordpress_code_ai\Cache\Adapters;
 
-use Easy_MCP_AI\Cache\Cache_Adapter;
-use Easy_MCP_AI\Cache\Layer_Result;
-use Easy_MCP_AI\Cache\Purge_Request;
+use wordpress_code_ai\Cache\Cache_Adapter;
+use wordpress_code_ai\Cache\Layer_Result;
+use wordpress_code_ai\Cache\Purge_Request;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -100,7 +100,7 @@ final class Kinsta extends Cache_Adapter {
         }
         $single = array();
         foreach ( $request->urls as $i => $url ) {
-            $single[ 'easy-mcp-ai-' . $i ] = $url;
+            $single[ 'wordpress-code-ai-' . $i ] = $url;
         }
         $body   = $calls->call( array( $purger, 'convert_purge_list_to_request' ), array( array( 'single' => $single ) ) );
         $answer = $calls->call( array( $purger, 'send_cache_purge_request' ), array( $endpoint, is_array( $body ) ? $body : array() ) );

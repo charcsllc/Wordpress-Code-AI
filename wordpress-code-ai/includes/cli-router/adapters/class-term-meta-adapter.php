@@ -1,14 +1,14 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router\Adapters;
+namespace wordpress_code_ai\Cli_Router\Adapters;
 
-use Easy_MCP_AI\Cli_Router\Batch;
-use Easy_MCP_AI\Cli_Router\Context;
-use Easy_MCP_AI\Cli_Router\Fetchers;
-use Easy_MCP_AI\Cli_Router\Handlers\Term_Meta_Handler;
-use Easy_MCP_AI\Cli_Router\Ids;
-use Easy_MCP_AI\Cli_Router\Invocation;
-use Easy_MCP_AI\Cli_Router\Meta_Command;
-use Easy_MCP_AI\Cli_Router\Read_Value;
+use wordpress_code_ai\Cli_Router\Batch;
+use wordpress_code_ai\Cli_Router\Context;
+use wordpress_code_ai\Cli_Router\Fetchers;
+use wordpress_code_ai\Cli_Router\Handlers\Term_Meta_Handler;
+use wordpress_code_ai\Cli_Router\Ids;
+use wordpress_code_ai\Cli_Router\Invocation;
+use wordpress_code_ai\Cli_Router\Meta_Command;
+use wordpress_code_ai\Cli_Router\Read_Value;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -58,7 +58,7 @@ final class Term_Meta_Adapter extends Meta_Command {
 
     use Planned_Run;
 
-    use \Easy_MCP_AI\Tools\Taxonomy\Term_Meta_Auth_Guard;
+    use \wordpress_code_ai\Tools\Taxonomy\Term_Meta_Auth_Guard;
 
     
     protected $meta_type = 'term';
@@ -115,7 +115,7 @@ final class Term_Meta_Adapter extends Meta_Command {
             $inv,
             'patch',
             self::TOOLS['patch'],
-            array( 'wp_get_term_meta' => '\\Easy_MCP_AI\\Tools\\Taxonomy\\Get_Term_Meta' )
+            array( 'wp_get_term_meta' => '\\wordpress_code_ai\\Tools\\Taxonomy\\Get_Term_Meta' )
         );
     }
 

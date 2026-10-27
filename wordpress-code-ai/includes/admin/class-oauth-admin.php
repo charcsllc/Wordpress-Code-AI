@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -25,9 +25,9 @@ class OAuth_Admin {
         $access_ttl  = max( 60, (int) $access_ttl );
         $refresh_ttl = max( 60, (int) $refresh_ttl );
 
-        \Easy_MCP_AI\Config::update( 'easy_mcp_ai_oauth_access_token_ttl', $access_ttl );
-        \Easy_MCP_AI\Config::update( 'easy_mcp_ai_oauth_refresh_token_ttl', $refresh_ttl );
-        \Easy_MCP_AI\Config::update( 'easy_mcp_ai_oauth_dcr_enabled', $dcr_enabled ? 1 : 0 );
+        \wordpress_code_ai\Config::update( 'wordpress_code_ai_oauth_access_token_ttl', $access_ttl );
+        \wordpress_code_ai\Config::update( 'wordpress_code_ai_oauth_refresh_token_ttl', $refresh_ttl );
+        \wordpress_code_ai\Config::update( 'wordpress_code_ai_oauth_dcr_enabled', $dcr_enabled ? 1 : 0 );
     }
 
     
@@ -45,10 +45,10 @@ class OAuth_Admin {
         }
         global $wpdb;
 
-        $clients_table  = $wpdb->prefix . 'easy_mcp_ai_oauth_clients';
-        $tokens_table   = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
-        $codes_table    = $wpdb->prefix . 'easy_mcp_ai_oauth_codes';
-        $consents_table = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
+        $clients_table  = $wpdb->prefix . 'wordpress_code_ai_oauth_clients';
+        $tokens_table   = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
+        $codes_table    = $wpdb->prefix . 'wordpress_code_ai_oauth_codes';
+        $consents_table = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
 
         
         
@@ -80,8 +80,8 @@ class OAuth_Admin {
         }
         global $wpdb;
 
-        $consents_table = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
-        $tokens_table   = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $consents_table = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
+        $tokens_table   = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
 
         
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom plugin table; name prefixed by $wpdb->prefix.
@@ -160,7 +160,7 @@ class OAuth_Admin {
             return false;
         }
 
-        $valid_scopes = \Easy_MCP_AI\OAuth\Scope_Map::get_all_scopes();
+        $valid_scopes = \wordpress_code_ai\OAuth\Scope_Map::get_all_scopes();
 
         
         $clean_scopes = array_values( array_intersect( $scopes, $valid_scopes ) );
@@ -168,8 +168,8 @@ class OAuth_Admin {
 
         global $wpdb;
 
-        $consents_table = $wpdb->prefix . 'easy_mcp_ai_oauth_consents';
-        $tokens_table   = $wpdb->prefix . 'easy_mcp_ai_oauth_access_tokens';
+        $consents_table = $wpdb->prefix . 'wordpress_code_ai_oauth_consents';
+        $tokens_table   = $wpdb->prefix . 'wordpress_code_ai_oauth_access_tokens';
 
         
         // phpcs:disable WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, PluginCheck.Security.DirectDB.UnescapedDBParameter -- Custom plugin table; name prefixed by $wpdb->prefix.
@@ -218,7 +218,7 @@ class OAuth_Admin {
             
             
             
-            error_log( 'Easy MCP AI: token scope update failed after consent update — ' . $wpdb->last_error ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+            error_log( 'wordpress-code-ai: token scope update failed after consent update — ' . $wpdb->last_error ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
         }
 
         return true;

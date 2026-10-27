@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Taxonomy;
+namespace wordpress_code_ai\Tools\Taxonomy;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -74,7 +74,7 @@ class Delete_Term extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: term name, 2: taxonomy, 3: term id, 4: number of posts */
-            __( "Permanently delete the %2\$s '%1\$s' (ID %3\$d), currently on %4\$d post(s); this cannot be undone.", 'easy-mcp-ai' ),
+            __( "Permanently delete the %2\$s '%1\$s' (ID %3\$d), currently on %4\$d post(s); this cannot be undone.", 'wordpress-code-ai' ),
             self::rest_title( $term, 'name' ), $taxonomy, $id, isset( $term['count'] ) ? (int) $term['count'] : 0
         );
     }

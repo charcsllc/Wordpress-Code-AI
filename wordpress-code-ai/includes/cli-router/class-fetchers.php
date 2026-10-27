@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Cli_Router;
+namespace wordpress_code_ai\Cli_Router;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -220,7 +220,7 @@ final class Fetchers {
         if ( null !== $status ) {
             
             
-            $predicate = \Easy_MCP_AI\MCP\Tool_Status::predicate( $status );
+            $predicate = \wordpress_code_ai\MCP\Tool_Status::predicate( $status );
             if ( '' !== $predicate ) {
                 return sprintf( self::TOOL_OUT_OF_REACH, $command, $tool, $predicate );
             }

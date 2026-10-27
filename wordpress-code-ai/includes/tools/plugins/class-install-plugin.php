@@ -1,9 +1,9 @@
 <?php
-namespace Easy_MCP_AI\Tools\Plugins;
+namespace wordpress_code_ai\Tools\Plugins;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Lifecycle_Guard;
-use Easy_MCP_AI\Tools\Package_Guard;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Lifecycle_Guard;
+use wordpress_code_ai\Tools\Package_Guard;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -29,7 +29,7 @@ class Install_Plugin extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Installs a plugin from the wordpress.org plugin directory by its slug, as the Install Now button on Plugins → Add New does. The plugin is NOT activated: call wp_activate_plugin with the returned `plugin` to activate it. Required: `slug` (the wordpress.org slug, e.g. "akismet"; a zip file, server path or URL is refused). Optional: `version` (install that wordpress.org version instead of the latest, or "dev" for the development version), `force` (boolean, default false: replace a copy that is already installed in the same folder). Returns { slug, plugin (the plugin file, e.g. "akismet/akismet.php"), name, version, changed, replaced, active, messages (the installer log, every URL cut to its host) }. Refused when the plugin is already installed (pass force: true to replace it, or use wp_update_plugin), when wordpress.org does not list the slug or version, when WordPress refuses the package (its Requires PHP / Requires at least headers), when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress cannot write the plugins folder or wp-content directly, on multisite unless you are a super admin with manage_network_plugins, and for Easy MCP AI\'s own folder. Off by default; an administrator switches it on. Runs within this request and reaches wordpress.org.';
+        return 'Installs a plugin from the wordpress.org plugin directory by its slug, as the Install Now button on Plugins → Add New does. The plugin is NOT activated: call wp_activate_plugin with the returned `plugin` to activate it. Required: `slug` (the wordpress.org slug, e.g. "akismet"; a zip file, server path or URL is refused). Optional: `version` (install that wordpress.org version instead of the latest, or "dev" for the development version), `force` (boolean, default false: replace a copy that is already installed in the same folder). Returns { slug, plugin (the plugin file, e.g. "akismet/akismet.php"), name, version, changed, replaced, active, messages (the installer log, every URL cut to its host) }. Refused when the plugin is already installed (pass force: true to replace it, or use wp_update_plugin), when wordpress.org does not list the slug or version, when WordPress refuses the package (its Requires PHP / Requires at least headers), when file modifications are disabled (DISALLOW_FILE_MODS), when WordPress cannot write the plugins folder or wp-content directly, on multisite unless you are a super admin with manage_network_plugins, and for wordpress-code-ai\'s own folder. Off by default; an administrator switches it on. Runs within this request and reaches wordpress.org.';
     }
 
     public function get_category() {
@@ -90,10 +90,10 @@ class Install_Plugin extends Base_Tool {
         }
         return sprintf(
             /* translators: 1: plugin slug, 2: "the latest version" or "version 1.2", 3: optional replacement note */
-            __( 'Install the plugin "%1$s" from wordpress.org (%2$s) into wp-content/plugins/%1$s%3$s. It is not activated.', 'easy-mcp-ai' ),
+            __( 'Install the plugin "%1$s" from wordpress.org (%2$s) into wp-content/plugins/%1$s%3$s. It is not activated.', 'wordpress-code-ai' ),
             $slug,
-            null === $version ? __( 'the latest version', 'easy-mcp-ai' ) : sprintf( /* translators: %s: version */ __( 'version %s', 'easy-mcp-ai' ), $version ),
-            $this->parse_force( $arguments ) ? __( ', replacing any copy already installed there', 'easy-mcp-ai' ) : ''
+            null === $version ? __( 'the latest version', 'wordpress-code-ai' ) : sprintf( /* translators: %s: version */ __( 'version %s', 'wordpress-code-ai' ), $version ),
+            $this->parse_force( $arguments ) ? __( ', replacing any copy already installed there', 'wordpress-code-ai' ) : ''
         );
     }
 
@@ -199,9 +199,9 @@ class Install_Plugin extends Base_Tool {
 
 
     private static function refuse_self_reinstall( string $slug, bool $force ): void {
-        $own = defined( 'EASY_MCP_AI_PLUGIN_BASENAME' ) ? (string) EASY_MCP_AI_PLUGIN_BASENAME : '';
+        $own = defined( 'WORDPRESS_CODE_AI_PLUGIN_BASENAME' ) ? (string) WORDPRESS_CODE_AI_PLUGIN_BASENAME : '';
         if ( $force && '' !== $own && false !== strpos( $own, '/' ) && dirname( $own ) === $slug ) {
-            throw new \RuntimeException( 'Easy MCP AI cannot reinstall itself over MCP: replacing its files mid-request would cut off this connection. Use wp-admin → Plugins instead.' );
+            throw new \RuntimeException( 'wordpress-code-ai cannot reinstall itself over MCP: replacing its files mid-request would cut off this connection. Use wp-admin → Plugins instead.' );
         }
     }
 

@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\OAuth;
+namespace wordpress_code_ai\OAuth;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -20,7 +20,7 @@ class OAuth_Routes {
 
 
 
-    const NAMESPACE_V1 = 'easy-mcp-ai/v1';
+    const NAMESPACE_V1 = 'wordpress-code-ai/v1';
 
     
 
@@ -250,7 +250,7 @@ class OAuth_Routes {
         
         
         
-        \Easy_MCP_AI\Cache\Page_Cache_Opt_Out::apply_to_direct_response();
+        \wordpress_code_ai\Cache\Page_Cache_Opt_Out::apply_to_direct_response();
         \nocache_headers();
         
         
@@ -284,7 +284,7 @@ class OAuth_Routes {
         unset( $query_params['rest_route'], $query_params['_locale'] );
 
         
-        $query_params['easy_mcp_ai_oauth'] = 'authorize';
+        $query_params['wordpress_code_ai_oauth'] = 'authorize';
 
         return \home_url( '/' ) . '?' . http_build_query( $query_params );
     }
@@ -313,19 +313,19 @@ class OAuth_Routes {
         
         
         
-        $ip = \Easy_MCP_AI\Client_IP::get();
+        $ip = \wordpress_code_ai\Client_IP::get();
 
-        $per_ip_key    = 'easy_mcp_ai_revoke_rl_' . md5( $ip );
-        $global_key    = 'easy_mcp_ai_revoke_rl_global';
+        $per_ip_key    = 'wordpress_code_ai_revoke_rl_' . md5( $ip );
+        $global_key    = 'wordpress_code_ai_revoke_rl_global';
         $per_ip_limit  = 60;
         $global_limit  = 600;
 
         if ( \wp_using_ext_object_cache() ) {
-            \wp_cache_add( $per_ip_key, 0, 'easy_mcp_ai', HOUR_IN_SECONDS );
-            $ip_count = \wp_cache_incr( $per_ip_key, 1, 'easy_mcp_ai' );
+            \wp_cache_add( $per_ip_key, 0, 'wordpress_code_ai', HOUR_IN_SECONDS );
+            $ip_count = \wp_cache_incr( $per_ip_key, 1, 'wordpress_code_ai' );
 
-            \wp_cache_add( $global_key, 0, 'easy_mcp_ai', HOUR_IN_SECONDS );
-            $global_count = \wp_cache_incr( $global_key, 1, 'easy_mcp_ai' );
+            \wp_cache_add( $global_key, 0, 'wordpress_code_ai', HOUR_IN_SECONDS );
+            $global_count = \wp_cache_incr( $global_key, 1, 'wordpress_code_ai' );
         } else {
             
             $ip_count     = Token_Endpoint::rl_transient_increment( $per_ip_key );

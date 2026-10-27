@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Taxonomy;
+namespace wordpress_code_ai\Tools\Taxonomy;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -86,7 +86,7 @@ class Delete_Term_Meta extends Base_Tool {
         }
         $this->assert_term_meta_key_allowed( $key, $term, 'delete_term_meta' );
 
-        $blocked_patterns = apply_filters( 'easy_mcp_ai_term_meta_blocked_key_patterns', array() );
+        $blocked_patterns = apply_filters( 'wordpress_code_ai_term_meta_blocked_key_patterns', array() );
         foreach ( $blocked_patterns as $pattern ) {
             if ( fnmatch( $pattern, $key ) ) {
                 throw new \RuntimeException( 'This meta key cannot be deleted via MCP.' ); // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped

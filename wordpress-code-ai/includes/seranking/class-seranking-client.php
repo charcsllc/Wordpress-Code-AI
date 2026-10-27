@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\SeRanking;
+namespace wordpress_code_ai\SeRanking;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class SeRanking_Client {
 
-	const OPTION_API_KEY = 'easy_mcp_ai_seranking_api_key';
+	const OPTION_API_KEY = 'wordpress_code_ai_seranking_api_key';
 
 	const BASE_URL = 'https://api.seranking.com';
 
@@ -25,7 +25,7 @@ class SeRanking_Client {
 	
 	const CIPHER_VERSION    = "v2\x00";
 	const CIPHER_PREFIX_LEN = 3;
-	const HKDF_INFO         = 'easy_mcp_ai_seranking_v2';
+	const HKDF_INFO         = 'wordpress_code_ai_seranking_v2';
 
 	private static function derive_key(): string {
 		if ( ! defined( 'SECURE_AUTH_KEY' ) || ! defined( 'SECURE_AUTH_SALT' ) ) {
@@ -76,17 +76,17 @@ class SeRanking_Client {
 
 
 	public function get_api_key(): string {
-		$deployed = \Easy_MCP_AI\Provider_Credentials::deployed_secret( self::OPTION_API_KEY );
+		$deployed = \wordpress_code_ai\Provider_Credentials::deployed_secret( self::OPTION_API_KEY );
 		if ( null !== $deployed ) {
 			return $deployed; 
 		}
 		$enc = \get_option( self::OPTION_API_KEY, '' );
 		if ( empty( $enc ) ) {
-			throw new \RuntimeException( 'SE Ranking API key not configured. Go to Easy MCP AI → Tools → External data.' );
+			throw new \RuntimeException( 'SE Ranking API key not configured. Go to wordpress-code-ai → Tools → External data.' );
 		}
 		$plain = self::decrypt( $enc );
 		if ( false === $plain || '' === $plain ) {
-			throw new \RuntimeException( 'Failed to decrypt SE Ranking API key. Re-save credentials in Easy MCP AI → Tools → External data.' );
+			throw new \RuntimeException( 'Failed to decrypt SE Ranking API key. Re-save credentials in wordpress-code-ai → Tools → External data.' );
 		}
 		return $plain;
 	}
@@ -128,7 +128,7 @@ class SeRanking_Client {
 			'headers'     => array(
 				'Authorization' => 'Token ' . $api_key,
 				'Accept'        => 'application/json',
-				'User-Agent'    => 'EasyMCPAI/' . EASY_MCP_AI_VERSION,
+				'User-Agent'    => 'wordpress-code-ai/' . WORDPRESS_CODE_AI_VERSION,
 			),
 		);
 

@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\History;
+namespace wordpress_code_ai\History;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -189,7 +189,7 @@ class Change_Redactor {
         }
         $map = self::$table_personal_columns;
         if ( function_exists( 'apply_filters' ) ) {
-            $filtered = \apply_filters( 'easy_mcp_ai_change_log_table_personal_columns', $map );
+            $filtered = \apply_filters( 'wordpress_code_ai_change_log_table_personal_columns', $map );
             if ( is_array( $filtered ) ) {
                 $map = $filtered;
             }
@@ -298,7 +298,7 @@ class Change_Redactor {
     private static function address_blocks() {
         $list = self::$address_blocks;
         if ( function_exists( 'apply_filters' ) ) {
-            $filtered = \apply_filters( 'easy_mcp_ai_change_log_address_blocks', $list );
+            $filtered = \apply_filters( 'wordpress_code_ai_change_log_address_blocks', $list );
             if ( is_array( $filtered ) ) {
                 $list = $filtered;
             }
@@ -310,7 +310,7 @@ class Change_Redactor {
     private static function address_personal_keys() {
         $list = self::$address_personal_keys;
         if ( function_exists( 'apply_filters' ) ) {
-            $filtered = \apply_filters( 'easy_mcp_ai_change_log_address_personal_keys', $list );
+            $filtered = \apply_filters( 'wordpress_code_ai_change_log_address_personal_keys', $list );
             if ( is_array( $filtered ) ) {
                 $list = $filtered;
             }
@@ -341,7 +341,7 @@ class Change_Redactor {
         if ( '_key' === substr( $name, -4 ) ) {
             return true;
         }
-        $known = (array) \apply_filters( 'easy_mcp_ai_change_log_sensitive_option_names', self::$sensitive_option_names );
+        $known = (array) \apply_filters( 'wordpress_code_ai_change_log_sensitive_option_names', self::$sensitive_option_names );
         foreach ( $known as $entry ) {
             if ( strtolower( (string) $entry ) === $name ) {
                 return true;

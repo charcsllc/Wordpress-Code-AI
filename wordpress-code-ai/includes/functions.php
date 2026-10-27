@@ -21,15 +21,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 
-function easy_mcp_ai_is_mcp_request(): bool {
-    $is_mcp_request = defined( 'EASY_MCP_AI_MCP_REQUEST' ) && EASY_MCP_AI_MCP_REQUEST;
+function wordpress_code_ai_is_mcp_request(): bool {
+    $is_mcp_request = defined( 'WORDPRESS_CODE_AI_MCP_REQUEST' ) && WORDPRESS_CODE_AI_MCP_REQUEST;
 
     
 
 
 
 
-    return (bool) apply_filters( 'easy_mcp_ai_is_mcp_request', $is_mcp_request );
+    return (bool) apply_filters( 'wordpress_code_ai_is_mcp_request', $is_mcp_request );
 }
 
 
@@ -41,10 +41,10 @@ function easy_mcp_ai_is_mcp_request(): bool {
 
 
 
-function easy_mcp_ai_is_tool_call(): bool {
+function wordpress_code_ai_is_tool_call(): bool {
     
     
-    $tool_name = class_exists( '\\Easy_MCP_AI\\MCP\\Tool_Call_Stack', false ) ? \Easy_MCP_AI\MCP\Tool_Call_Stack::current() : null;
+    $tool_name = class_exists( '\\wordpress_code_ai\\MCP\\Tool_Call_Stack', false ) ? \wordpress_code_ai\MCP\Tool_Call_Stack::current() : null;
 
     
 
@@ -52,5 +52,5 @@ function easy_mcp_ai_is_tool_call(): bool {
 
 
 
-    return (bool) apply_filters( 'easy_mcp_ai_is_tool_call', null !== $tool_name, $tool_name );
+    return (bool) apply_filters( 'wordpress_code_ai_is_tool_call', null !== $tool_name, $tool_name );
 }

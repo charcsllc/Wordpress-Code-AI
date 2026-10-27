@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Feedback;
+namespace wordpress_code_ai\Feedback;
 
-use Easy_MCP_AI\Approvals\Wpdb_Approval_Store;
+use wordpress_code_ai\Approvals\Wpdb_Approval_Store;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class Wpdb_Feedback_Store extends Wpdb_Approval_Store implements Feedback_Report_Store {
 
     private function table_name(): string {
-        return \Easy_MCP_AI\Approvals\Approval_Schema::table_name();
+        return \wordpress_code_ai\Approvals\Approval_Schema::table_name();
     }
 
     public function list_pending( string $now, int $limit ): array {

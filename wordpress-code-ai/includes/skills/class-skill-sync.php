@@ -28,9 +28,9 @@
 
 
 
-namespace Easy_MCP_AI\Skills;
+namespace wordpress_code_ai\Skills;
 
-use Easy_MCP_AI\Config;
+use wordpress_code_ai\Config;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -38,18 +38,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 final class Skill_Sync {
 
-    const HOOK = 'easy_mcp_ai_skills_sync';
+    const HOOK = 'wordpress_code_ai_skills_sync';
 
     
-    const OPTION_RELEASE = 'easy_mcp_ai_skills_release';
+    const OPTION_RELEASE = 'wordpress_code_ai_skills_release';
 
     
-    const OPTION_STATE = 'easy_mcp_ai_skills_state';
+    const OPTION_STATE = 'wordpress_code_ai_skills_state';
 
     const BASE_URL = 'https://skills.easymcpai.com';
 
     
-    const BASE_URL_FILTER = 'easy_mcp_ai_skills_base_url';
+    const BASE_URL_FILTER = 'wordpress_code_ai_skills_base_url';
 
     const TIMEOUT = 10;
 
@@ -268,7 +268,7 @@ final class Skill_Sync {
                 
                 
                 
-                'user-agent'          => 'EasyMCPAI-Skills/' . ( defined( 'EASY_MCP_AI_VERSION' ) ? EASY_MCP_AI_VERSION : '0' ),
+                'user-agent'          => 'wordpress-code-ai-Skills/' . ( defined( 'WORDPRESS_CODE_AI_VERSION' ) ? WORDPRESS_CODE_AI_VERSION : '0' ),
                 'headers'             => array( 'Accept' => 'application/json' ),
             )
         );

@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools;
+namespace wordpress_code_ai\Tools;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -33,7 +33,7 @@ class Dynamic_Tool_Registrar {
             return;
         }
 
-        $enabled_slugs = (array) \get_option( 'easy_mcp_ai_enabled_abilities', array() );
+        $enabled_slugs = (array) \get_option( 'wordpress_code_ai_enabled_abilities', array() );
         if ( empty( $enabled_slugs ) ) {
             return;
         }
@@ -177,7 +177,7 @@ class Dynamic_Tool_Registrar {
             
             
             if ( method_exists( $ability, 'get_meta_item' ) ) {
-                $task_contract = \Easy_MCP_AI\Tasks\Task_Contract::normalize( $ability->get_meta_item( 'task' ), $raw_input_schema );
+                $task_contract = \wordpress_code_ai\Tasks\Task_Contract::normalize( $ability->get_meta_item( 'task' ), $raw_input_schema );
                 if ( null !== $task_contract && ! $input_needs_wrap ) {
                     $tool_config['task'] = $task_contract;
                 }

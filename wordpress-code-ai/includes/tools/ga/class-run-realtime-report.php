@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\GA;
+namespace wordpress_code_ai\Tools\GA;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\GA\GA_Client;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\GA\GA_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -13,7 +13,7 @@ class Run_Realtime_Report extends Base_Tool {
     public function get_name() { return 'wp_ga_run_realtime_report'; }
 
     public function get_description() {
-        return 'Runs a realtime GA4 report — active users in the last 30 minutes (60 minutes for GA 360 properties). Useful for "what is happening right now" questions. Realtime dimensions/metrics are a strict subset of the core catalog (e.g. activeUsers, screenPageViews, eventCount, country, deviceCategory, eventName, minutesAgo). Requires a Google service-account credential configured under Easy MCP AI → Tools → External data.';
+        return 'Runs a realtime GA4 report — active users in the last 30 minutes (60 minutes for GA 360 properties). Useful for "what is happening right now" questions. Realtime dimensions/metrics are a strict subset of the core catalog (e.g. activeUsers, screenPageViews, eventCount, country, deviceCategory, eventName, minutesAgo). Requires a Google service-account credential configured under wordpress-code-ai → Tools → External data.';
     }
 
     public function get_category() { return 'ga'; }

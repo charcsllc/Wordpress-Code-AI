@@ -1,8 +1,8 @@
 <?php
-namespace Easy_MCP_AI\Tools\WooCommerce;
+namespace wordpress_code_ai\Tools\WooCommerce;
 
-use Easy_MCP_AI\Tools\Base_Tool;
-use Easy_MCP_AI\Tools\Row_Extension;
+use wordpress_code_ai\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Row_Extension;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

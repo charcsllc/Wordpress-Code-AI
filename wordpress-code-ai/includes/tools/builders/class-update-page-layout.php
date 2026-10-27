@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Tools\Builders;
+namespace wordpress_code_ai\Tools\Builders;
 
-use Easy_MCP_AI\Builders\Builder_Registry;
-use Easy_MCP_AI\Builders\Elementor_Editor;
-use Easy_MCP_AI\Builders\Layout_Adapter;
-use Easy_MCP_AI\Builders\Layout_Lock;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Builders\Builder_Registry;
+use wordpress_code_ai\Builders\Elementor_Editor;
+use wordpress_code_ai\Builders\Layout_Adapter;
+use wordpress_code_ai\Builders\Layout_Lock;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

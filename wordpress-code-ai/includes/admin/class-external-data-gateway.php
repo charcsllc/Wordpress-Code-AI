@@ -7,14 +7,14 @@
 
 
 
-namespace Easy_MCP_AI\Admin;
+namespace wordpress_code_ai\Admin;
 
-use Easy_MCP_AI\Ahrefs\Ahrefs_Client;
-use Easy_MCP_AI\DFS\DataforSEO_Client;
-use Easy_MCP_AI\GA\GA_Client;
-use Easy_MCP_AI\GSC\GSC_Client;
-use Easy_MCP_AI\Semrush\Semrush_Client;
-use Easy_MCP_AI\SeRanking\SeRanking_Client;
+use wordpress_code_ai\Ahrefs\Ahrefs_Client;
+use wordpress_code_ai\DFS\DataforSEO_Client;
+use wordpress_code_ai\GA\GA_Client;
+use wordpress_code_ai\GSC\GSC_Client;
+use wordpress_code_ai\Semrush\Semrush_Client;
+use wordpress_code_ai\SeRanking\SeRanking_Client;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

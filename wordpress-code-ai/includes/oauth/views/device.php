@@ -22,7 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-$easy_mcp_ai_stage = isset( $stage ) ? (string) $stage : 'enter';
+$wordpress_code_ai_stage = isset( $stage ) ? (string) $stage : 'enter';
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo esc_attr( get_locale() ); ?>">
@@ -30,59 +30,59 @@ $easy_mcp_ai_stage = isset( $stage ) ? (string) $stage : 'enter';
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow">
-    <title><?php echo esc_html__( 'Connect a Device', 'easy-mcp-ai' ); ?> &mdash; <?php echo esc_html( \Easy_MCP_AI\Console_Styles::site_label() ); ?></title>
+    <title><?php echo esc_html__( 'Connect a Device', 'wordpress-code-ai' ); ?> &mdash; <?php echo esc_html( \wordpress_code_ai\Console_Styles::site_label() ); ?></title>
     <?php
     // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Plugin-owned stylesheet; see Console_Styles::inline().
-    echo \Easy_MCP_AI\Console_Styles::inline();
+    echo \wordpress_code_ai\Console_Styles::inline();
     ?>
 </head>
-<body class="emcp-page">
+<body class="wcai-page">
 
-<div class="emcp-shell emcp-shell--narrow">
+<div class="wcai-shell wcai-shell--narrow">
 
-    <div class="emcp-topbar">
+    <div class="wcai-topbar">
         <?php
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static plugin-owned markup; see Console_Styles::logo().
-        echo \Easy_MCP_AI\Console_Styles::logo();
+        echo \wordpress_code_ai\Console_Styles::logo();
         ?>
-        <h1 class="emcp-topbar__title"><?php echo esc_html__( 'Connect a Device', 'easy-mcp-ai' ); ?></h1>
+        <h1 class="wcai-topbar__title"><?php echo esc_html__( 'Connect a Device', 'wordpress-code-ai' ); ?></h1>
         <?php
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped inside Console_Styles::site_name().
-        echo \Easy_MCP_AI\Console_Styles::site_name();
+        echo \wordpress_code_ai\Console_Styles::site_name();
         ?>
     </div>
 
-    <div class="emcp-body">
-    <?php if ( 'done' === $easy_mcp_ai_stage ) : ?>
+    <div class="wcai-body">
+    <?php if ( 'done' === $wordpress_code_ai_stage ) : ?>
 
-        <div class="emcp-notice <?php echo ! empty( $approved ) ? 'emcp-notice--ok' : 'emcp-notice--error'; ?>">
-            <p class="emcp-notice__title"><?php echo esc_html( isset( $title ) ? $title : '' ); ?></p>
+        <div class="wcai-notice <?php echo ! empty( $approved ) ? 'wcai-notice--ok' : 'wcai-notice--error'; ?>">
+            <p class="wcai-notice__title"><?php echo esc_html( isset( $title ) ? $title : '' ); ?></p>
             <p><?php echo esc_html( isset( $message ) ? $message : '' ); ?></p>
         </div>
 
     <?php else : ?>
 
         <?php if ( ! empty( $error ) ) : ?>
-        <div class="emcp-notice emcp-notice--error"><?php echo esc_html( $error ); ?></div>
+        <div class="wcai-notice wcai-notice--error"><?php echo esc_html( $error ); ?></div>
         <?php endif; ?>
 
-        <p class="emcp-text">
-            <?php echo esc_html__( 'An application running in a terminal or on another machine is waiting to connect to this site. Enter the code it displayed.', 'easy-mcp-ai' ); ?>
+        <p class="wcai-text">
+            <?php echo esc_html__( 'An application running in a terminal or on another machine is waiting to connect to this site. Enter the code it displayed.', 'wordpress-code-ai' ); ?>
         </p>
 
-        <div class="emcp-notice emcp-notice--warn">
-            <?php echo esc_html__( 'Only enter a code you started yourself, on a device you control. A code someone else sent you would connect their application to your account.', 'easy-mcp-ai' ); ?>
+        <div class="wcai-notice wcai-notice--warn">
+            <?php echo esc_html__( 'Only enter a code you started yourself, on a device you control. A code someone else sent you would connect their application to your account.', 'wordpress-code-ai' ); ?>
         </div>
 
-        <form method="post" action="<?php echo esc_url( $form_action ); ?>" class="emcp-field">
-            <?php wp_nonce_field( 'easy_mcp_ai_oauth_device_lookup' ); ?>
+        <form method="post" action="<?php echo esc_url( $form_action ); ?>" class="wcai-field">
+            <?php wp_nonce_field( 'wordpress_code_ai_oauth_device_lookup' ); ?>
             <input type="hidden" name="device_action" value="lookup">
 
-            <label class="emcp-label" for="easy-mcp-ai-user-code"><?php echo esc_html__( 'Code', 'easy-mcp-ai' ); ?></label>
-            <input id="easy-mcp-ai-user-code" class="emcp-input emcp-input--code" type="text" name="user_code" value="" autocomplete="off" autocapitalize="characters" spellcheck="false" autofocus required maxlength="<?php echo esc_attr( (int) $code_length + 3 ); ?>" placeholder="XXXX-XXXX">
+            <label class="wcai-label" for="wordpress-code-ai-user-code"><?php echo esc_html__( 'Code', 'wordpress-code-ai' ); ?></label>
+            <input id="wordpress-code-ai-user-code" class="wcai-input wcai-input--code" type="text" name="user_code" value="" autocomplete="off" autocapitalize="characters" spellcheck="false" autofocus required maxlength="<?php echo esc_attr( (int) $code_length + 3 ); ?>" placeholder="XXXX-XXXX">
 
-            <div class="emcp-btn-row emcp-btn-row--end">
-                <button type="submit" class="emcp-btn emcp-btn--accent emcp-btn--lg"><?php echo esc_html__( 'Continue', 'easy-mcp-ai' ); ?></button>
+            <div class="wcai-btn-row wcai-btn-row--end">
+                <button type="submit" class="wcai-btn wcai-btn--accent wcai-btn--lg"><?php echo esc_html__( 'Continue', 'wordpress-code-ai' ); ?></button>
             </div>
         </form>
 
@@ -111,7 +111,7 @@ $easy_mcp_ai_stage = isset( $stage ) ? (string) $stage : 'enter';
         <script nonce="<?php echo esc_attr( isset( $script_nonce ) ? $script_nonce : '' ); ?>">
 (function () {
     'use strict';
-    var field = document.getElementById('easy-mcp-ai-user-code');
+    var field = document.getElementById('wordpress-code-ai-user-code');
     if (!field) { return; }
     var LETTERS = <?php echo (int) $code_length; ?>;
     var HALF = LETTERS / 2;
@@ -158,7 +158,7 @@ $easy_mcp_ai_stage = isset( $stage ) ? (string) $stage : 'enter';
     </div>
 </div>
 
-<p class="emcp-pagenote"><span class="emcp-dot"></span><?php echo esc_html__( 'Powered by Easy MCP AI', 'easy-mcp-ai' ); ?></p>
+<p class="wcai-pagenote"><span class="wcai-dot"></span><?php echo esc_html__( 'Powered by wordpress-code-ai', 'wordpress-code-ai' ); ?></p>
 
 </body>
 </html>

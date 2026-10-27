@@ -1,11 +1,11 @@
 <?php
-namespace Easy_MCP_AI\Tools\Skills;
+namespace wordpress_code_ai\Tools\Skills;
 
-use Easy_MCP_AI\MCP\Server;
-use Easy_MCP_AI\MCP\Tool_Status;
-use Easy_MCP_AI\Skills\Skill_Set;
-use Easy_MCP_AI\Skills\Skills;
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\MCP\Server;
+use wordpress_code_ai\MCP\Tool_Status;
+use wordpress_code_ai\Skills\Skill_Set;
+use wordpress_code_ai\Skills\Skills;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

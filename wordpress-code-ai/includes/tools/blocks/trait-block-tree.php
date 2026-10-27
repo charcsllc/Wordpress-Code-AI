@@ -1,5 +1,5 @@
 <?php
-namespace Easy_MCP_AI\Tools\Blocks;
+namespace wordpress_code_ai\Tools\Blocks;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -569,7 +569,7 @@ trait Block_Tree {
 
 
 
-        $filtered = apply_filters( 'easy_mcp_ai_block_attribute_schema', $attributes, (string) $name );
+        $filtered = apply_filters( 'wordpress_code_ai_block_attribute_schema', $attributes, (string) $name );
         return is_array( $filtered ) ? $filtered : $attributes;
     }
 

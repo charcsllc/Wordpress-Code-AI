@@ -23,7 +23,7 @@
 
 
 
-namespace Easy_MCP_AI\Diagnostics;
+namespace wordpress_code_ai\Diagnostics;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -190,11 +190,11 @@ class Diagnostic_Result {
     public function problem_badge_html() {
         if ( self::STATUS_FAIL === $this->status ) {
             $symbol = "\u{26D4}";
-            $text   = \__( 'Failed', 'easy-mcp-ai' );
+            $text   = \__( 'Failed', 'wordpress-code-ai' );
             $color  = '#b32d2e';
         } elseif ( self::STATUS_WARN === $this->status ) {
             $symbol = "\u{26A0}";
-            $text   = \__( 'Warning', 'easy-mcp-ai' );
+            $text   = \__( 'Warning', 'wordpress-code-ai' );
             $color  = '#996800';
         } else {
             return '';

@@ -20,7 +20,7 @@
 
 
 
-namespace Easy_MCP_AI\Skills;
+namespace wordpress_code_ai\Skills;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;

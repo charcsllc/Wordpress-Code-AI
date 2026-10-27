@@ -1,7 +1,7 @@
 <?php
-namespace Easy_MCP_AI\Tools\Site_Kit;
+namespace wordpress_code_ai\Tools\Site_Kit;
 
-use Easy_MCP_AI\Tools\Base_Tool;
+use wordpress_code_ai\Tools\Base_Tool;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -24,7 +24,7 @@ class GA_Run_Report extends Base_Tool {
     }
 
     public function get_description() {
-        return 'Runs a Google Analytics 4 report through Site Kit by Google\'s own connection, for the property Site Kit is connected to: no Google credentials needed in Easy MCP AI. Site Kit decides who gets data, as on its dashboard: its owner, a user with their own Google account connected in Site Kit, or a user whose role the owner shared the dashboard with (Site Kit then allows only its shared-dashboard metrics and dimensions). Site Kit limits every report to this site\'s hostnames. Required: `metrics` (GA4 apiNames, e.g. ["sessions", "totalUsers", "screenPageViews"]). Optional: `dimensions` (e.g. ["pagePath", "date", "sessionDefaultChannelGroup"]), `start_date`/`end_date` (YYYY-MM-DD, both or neither; default the last 28 days), `compare_start_date`/`compare_end_date`, `dimension_filters`, `url` (one page), `order_by`, `limit`. Returns Google\'s RunReportResponse as Site Kit returns it: { dimensionHeaders, metricHeaders, rows, totals, rowCount, metadata }. Call wp_sitekit_get_status first if unsure Site Kit gives this account Analytics data. For pivot, realtime or metadata reports, or to check which metrics and dimensions combine, use the service-account tools (wp_ga_run_pivot_report, wp_ga_run_realtime_report, wp_ga_get_metadata, wp_ga_check_compatibility).';
+        return 'Runs a Google Analytics 4 report through Site Kit by Google\'s own connection, for the property Site Kit is connected to: no Google credentials needed in wordpress-code-ai. Site Kit decides who gets data, as on its dashboard: its owner, a user with their own Google account connected in Site Kit, or a user whose role the owner shared the dashboard with (Site Kit then allows only its shared-dashboard metrics and dimensions). Site Kit limits every report to this site\'s hostnames. Required: `metrics` (GA4 apiNames, e.g. ["sessions", "totalUsers", "screenPageViews"]). Optional: `dimensions` (e.g. ["pagePath", "date", "sessionDefaultChannelGroup"]), `start_date`/`end_date` (YYYY-MM-DD, both or neither; default the last 28 days), `compare_start_date`/`compare_end_date`, `dimension_filters`, `url` (one page), `order_by`, `limit`. Returns Google\'s RunReportResponse as Site Kit returns it: { dimensionHeaders, metricHeaders, rows, totals, rowCount, metadata }. Call wp_sitekit_get_status first if unsure Site Kit gives this account Analytics data. For pivot, realtime or metadata reports, or to check which metrics and dimensions combine, use the service-account tools (wp_ga_run_pivot_report, wp_ga_run_realtime_report, wp_ga_get_metadata, wp_ga_check_compatibility).';
     }
 
     public function get_annotations() {

@@ -13,7 +13,7 @@
 
 
 
-namespace Easy_MCP_AI\Admin\Rest;
+namespace wordpress_code_ai\Admin\Rest;
 
 if ( ! defined( 'ABSPATH' ) ) {
     exit;
@@ -71,11 +71,11 @@ class Tools_Controller extends Admin_Rest_Controller {
 
     public function patch_enabled( $request ) {
         if ( ! $this->catalogue ) {
-            return $this->fail( 'easy_mcp_ai_unavailable', \__( 'The tool registry is not available on this request.', 'easy-mcp-ai' ), 503 );
+            return $this->fail( 'wordpress_code_ai_unavailable', \__( 'The tool registry is not available on this request.', 'wordpress-code-ai' ), 503 );
         }
         $body = $request->get_json_params();
         if ( ! is_array( $body ) ) {
-            return $this->fail( 'easy_mcp_ai_invalid_param', \__( 'Expected a JSON object.', 'easy-mcp-ai' ), 400, array( 'field' => '' ) );
+            return $this->fail( 'wordpress_code_ai_invalid_param', \__( 'Expected a JSON object.', 'wordpress-code-ai' ), 400, array( 'field' => '' ) );
         }
         $applied = $this->catalogue->apply( $body );
         if ( \is_wp_error( $applied ) ) {
