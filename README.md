@@ -665,7 +665,7 @@ wordpress-code-ai does not receive Easy MCP AI's updates, including security fix
 
 ## Credits
 
-wordpress-code-ai is a modified version of [Easy MCP AI](https://easymcpai.com) 2.3.0 by EasyMCPAI, used under the GNU General Public License v2 or later. Changes: the plugin is renamed and the bundled Themeisle SDK is removed.
+wordpress-code-ai is a modified version of [Easy MCP AI](https://easymcpai.com) 2.3.0 by EasyMCPAI, used under the GNU General Public License v2 or later. Changes: the plugin is renamed, the bundled Themeisle SDK and the feedback reports sent to Themeisle are removed, and support reports go to info@charcs.net.
 
 ---
 

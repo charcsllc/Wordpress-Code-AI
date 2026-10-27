@@ -16,7 +16,8 @@
  *
  * wordpress-code-ai is a modified version of Easy MCP AI 2.3.0 by EasyMCPAI
  * (https://easymcpai.com), used under the GNU GPL v2 or later. Changed on
- * 2026-10-27: renamed the plugin and removed the bundled Themeisle SDK.
+ * 2026-10-27: renamed the plugin and removed the bundled Themeisle SDK and
+ * the feedback reports sent to Themeisle.
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

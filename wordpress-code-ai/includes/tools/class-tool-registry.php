@@ -657,7 +657,8 @@ class Tool_Registry {
 
 
     private static function is_withheld( string $class ): bool {
-        return 'wordpress_code_ai\\Tools\\Feedback\\Send_Feedback' === $class && class_exists( '\\wordpress_code_ai\\Config' ) && \wordpress_code_ai\Config::is_white_labelled();
+        // wp_send_feedback reports to Themeisle, the original plugin's authors.
+        return 'wordpress_code_ai\\Tools\\Feedback\\Send_Feedback' === $class;
     }
 
     
