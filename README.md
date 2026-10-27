@@ -1,6 +1,6 @@
 # wordpress-code-ai
 
-> Connect Claude, ChatGPT, Cursor, Gemini, n8n, and any MCP-compatible AI to your WordPress site. Manage your entire site by chat — content, media, SEO, analytics, WooCommerce, and more. **214 tools. 14 resources. Free.**
+> Connect Claude, ChatGPT, Cursor, Gemini, n8n, and any MCP-compatible AI to your WordPress site. Manage your entire site by chat — content, media, SEO, analytics, WooCommerce, and more. **280+ tools. 16 resources. Free.**
 
 **Plugin page:** https://github.com/charcsllc/wordpress-code-ai  
 **License:** GPL-2.0-or-later  
@@ -28,10 +28,11 @@
   - [Gemini CLI](#gemini-cli)
   - [n8n](#n8n)
   - [Manus](#manus)
-- [Tools (214)](#tools-214)
-- [Resources](#resources-16)
+- [Tools](#tools)
+- [Resources](#resources)
 - [Skills](#skills)
 - [Security](#security)
+- [Updating from Easy MCP AI](#updating-from-easy-mcp-ai)
 - [Credits](#credits)
 - [License](#license)
 
@@ -74,7 +75,7 @@ https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp
 
 **Path A — OAuth (Recommended)**
 
-Use this if your AI client supports OAuth (Claude Desktop, Claude.ai, Cursor, ChatGPT, Google Antigravity). No token needed.
+Use this if your AI client supports OAuth (Claude Desktop, Claude.ai, Claude Code, Cursor, ChatGPT, Google Antigravity). No token needed.
 
 1. Copy your endpoint URL from the Dashboard.
 2. Open your AI client's MCP settings and paste the URL.
@@ -86,7 +87,7 @@ Manage or revoke connected clients anytime under **wordpress-code-ai → Connect
 
 **Path B — Manual Token (Bearer)**
 
-Use this if your client does not support OAuth (Claude Code CLI, Windsurf, Cline, Roo Code, n8n, Gemini CLI, Manus).
+Use this if your client does not support OAuth (Windsurf, Cline, Roo Code, n8n, Gemini CLI, Manus).
 
 1. Go to **wordpress-code-ai → Connections → API tokens** in your WordPress admin.
 2. Click **Create New Token**.
@@ -133,7 +134,20 @@ Or add manually to `claude_desktop_config.json` (see `config/claude-desktop.json
 
 ### Claude Code (CLI)
 
-Add to your `.claude/settings.json`:
+Claude Code supports OAuth. Add the server from the terminal, then run `/mcp` inside Claude Code and sign in to WordPress:
+
+```bash
+claude mcp add --transport http wordpress https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp
+```
+
+To use an API token instead, add the header:
+
+```bash
+claude mcp add --transport http wordpress https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp \
+  --header "Authorization: Bearer ${WP_API_TOKEN}"
+```
+
+To share the server with everyone working on a project, add it to `.mcp.json` in the project root instead. Claude Code fills in `${WP_SITE_URL}` and `${WP_API_TOKEN}` from your environment, so the token stays out of the file:
 
 ```json
 {
@@ -147,12 +161,6 @@ Add to your `.claude/settings.json`:
     }
   }
 }
-```
-
-Or from the terminal:
-```bash
-claude mcp add --transport http wordpress https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp \
-  --header "Authorization: Bearer ${WP_API_TOKEN}"
 ```
 
 ### Cursor
@@ -231,8 +239,7 @@ Add to `~/.gemini/settings.json`:
 {
   "mcpServers": {
     "wordpress": {
-      "type": "http",
-      "url": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
+      "httpUrl": "https://${WP_SITE_URL}/wp-json/wordpress-code-ai/v1/mcp",
       "headers": {
         "Authorization": "Bearer ${WP_API_TOKEN}"
       }
@@ -240,6 +247,8 @@ Add to `~/.gemini/settings.json`:
   }
 }
 ```
+
+Use `httpUrl`, not `url`: Gemini CLI treats `url` as the older SSE transport.
 
 Or from the terminal:
 ```bash
@@ -269,7 +278,9 @@ Go to **Connectors → Custom MCP** and fill in the form:
 
 ---
 
-## Tools (214)
+## Tools
+
+The plugin has more than 280 tools. About 130 of them work on any WordPress site; the rest turn on when WooCommerce, an SEO plugin or another supported integration is active. The tables below list the main ones. The full list for your site is under **wordpress-code-ai → Tools**.
 
 ### Posts (10)
 | Tool | Description |
@@ -597,9 +608,9 @@ Go to **Connectors → Custom MCP** and fill in the form:
 
 ---
 
-## Resources (16)
+## Resources
 
-The server exposes 14 read-only MCP resources accessible to any connected AI client:
+On a standard site the server exposes 16 read-only MCP resources to any connected AI client:
 
 | URI | Name | Description |
 |---|---|---|
@@ -617,6 +628,8 @@ The server exposes 14 read-only MCP resources accessible to any connected AI cli
 | `wp://users/authors` | Authors | All users who can create posts, with display names, logins, roles |
 | `wp://menus/all` | Menus | All registered navigation menus with assigned theme locations |
 | `wp://taxonomies/all` | Taxonomies | All categories and tags with IDs, names, slugs, parent relationships, post counts |
+| `skill://wordpress/site-health-review/SKILL.md` | Site health review | Step-by-step instructions for a common task; one resource per installed skill |
+| `ui://wordpress-code-ai/approval` | Approval card | Approve or deny a paused destructive tool call in the chat |
 
 ---
 
@@ -636,6 +649,17 @@ The `skills/wordpress-site-manager.md` file contains a ready-to-use Claude skill
 - **Change snapshots:** Write operations store before/after JSON payloads, queryable later via the `wp_history_*` tools.
 - **OAuth 2.1:** Full PKCE S256 flow with rotating refresh tokens, per-scope consent, and RFC 7009 token revocation.
 - **Force Draft:** A global switch that pins all AI-created content to `draft` status, regardless of what the AI requests.
+
+---
+
+## Updating from Easy MCP AI
+
+wordpress-code-ai does not receive Easy MCP AI's updates, including security fixes, on its own. To bring in a new Easy MCP AI release:
+
+1. Download the new Easy MCP AI ZIP and unzip it.
+2. Delete everything inside `wordpress-code-ai/`, then copy in the contents of the unzipped `easy-mcp-ai/` folder.
+3. Run `python3 tools/rename-upstream.py wordpress-code-ai` (on Windows, `py tools\rename-upstream.py wordpress-code-ai`). It renames the plugin, removes the Themeisle SDK and adds the credit. If a new release changed a line the script edits, it stops without writing anything and names that line.
+4. Commit, then rebuild the ZIP: `git archive --format=zip -o wordpress-code-ai.zip HEAD wordpress-code-ai`, and commit the ZIP.
 
 ---
 

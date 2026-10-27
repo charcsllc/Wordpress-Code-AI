@@ -8291,7 +8291,7 @@ msgid "Advanced"
 msgstr ""
 
 #: assets/build/page-settings.js:6
-msgid "Tool filtering, IP restrictions and usage sharing — most sites never need to change these."
+msgid "Tool filtering and IP restrictions — most sites never need to change these."
 msgstr ""
 
 #: assets/build/page-settings.js:6
