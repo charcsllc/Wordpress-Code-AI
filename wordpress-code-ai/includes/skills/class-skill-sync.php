@@ -46,7 +46,7 @@ final class Skill_Sync {
     
     const OPTION_STATE = 'wordpress_code_ai_skills_state';
 
-    const BASE_URL = 'https://skills.easymcpai.com';
+    const BASE_URL = 'https://raw.githubusercontent.com/charcsllc/Wordpress-Code-AI/main/skills-feed';
 
     
     const BASE_URL_FILTER = 'wordpress_code_ai_skills_base_url';
