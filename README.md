@@ -659,14 +659,14 @@ wordpress-code-ai does not receive Easy MCP AI's updates, including security fix
 1. Download the new Easy MCP AI ZIP and unzip it.
 2. Delete everything inside `wordpress-code-ai/`, then copy in the contents of the unzipped `easy-mcp-ai/` folder.
 3. Run `python3 tools/rename-upstream.py wordpress-code-ai` (on Windows, `py tools\rename-upstream.py wordpress-code-ai`). It renames the plugin, removes the Themeisle SDK and adds the credit. If a new release changed a line the script edits, it stops without writing anything and names that line.
-4. Run `python3 tools/update-skills-mirror.py --from-plugin wordpress-code-ai` to copy the skills release bundled with the new version into `skills-feed/` (see below).
+4. Run `python3 tools/update-skills-mirror.py --from-plugin wordpress-code-ai --bundle`. It copies the skills release bundled with the new version into `skills-feed/` if it is newer, and puts the newest release from `skills-feed/` back into the plugin (see below).
 5. Commit, then rebuild the ZIP: `git archive --format=zip -o wordpress-code-ai.zip HEAD wordpress-code-ai`, and commit the ZIP.
 
 ### Skill updates
 
 Once a day the plugin downloads its skills (step-by-step instructions for common tasks) from [`skills-feed/`](skills-feed/) in this repository, not from the original vendor's server. These files are byte-for-byte copies of Easy MCP AI's signed skill releases: the plugin checks the original signature and rejects any file that was edited.
 
-To publish a newer skills release from Easy MCP AI, run `python3 tools/update-skills-mirror.py` (it downloads the newest release from skills.easymcpai.com and checks it), then commit `skills-feed/`. Sites pick it up within a day.
+To publish a newer skills release from Easy MCP AI, run `python3 tools/update-skills-mirror.py --bundle` (it downloads the newest release from skills.easymcpai.com, checks it, and also copies it into the plugin), then commit. Sites pick it up within a day. Rebuild the ZIP too, so fresh installs start with the new release before their first download.
 
 The download address contains this repository's exact name (`charcsllc/Wordpress-Code-AI`) because the plugin follows no redirects. If you rename the repository, update `SKILLS_FEED` in `tools/rename-upstream.py` and run the steps above again.
 
